@@ -228,11 +228,11 @@ return [
                 ],
                 [
                     'text' => 'Alunos',
-                    'url'  => '',
+                    'url'  => 'secretaria/1/pessoas',
                 ],
                 [
                     'text' => 'Responsáveis',
-                    'url'  => '#',
+                    'url'  => 'secretaria/2/pessoas',
                 ],
                 [
                     'text' => 'Declarações',

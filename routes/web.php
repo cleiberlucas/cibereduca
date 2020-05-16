@@ -10,6 +10,19 @@ Route::prefix('secretaria')
         ->middleware('auth')
         ->group(function(){
 
+        /*
+        *Rotas Pessoas
+        */
+        Route::get('pessoas/create/aluno', 'PessoaController@create')->name('pessoas.create.aluno');
+        Route::get('pessoas/create/responsavel', 'PessoaController@create')->name('pessoas.create.responsavel');
+        Route::put('pessoas/{id_pessoa}', 'PessoaController@update')->name('pessoas.update');
+        Route::get('pessoas/{id_pessoa}/edit', 'PessoaController@edit')->name('pessoas.edit');
+        Route::any('pessoas/search', 'PessoaController@search')->name('pessoas.search');
+        Route::delete('pessoas/{id_pessoa}', 'PessoaController@destroy')->name('pessoas.destroy');
+        Route::get('pessoas/{id_pessoa}', 'PessoaController@show')->name('pessoas.show');
+        Route::post('pessoas', 'PessoaController@store')->name('pessoas.store');
+        Route::any('{id_tipo_pessoa}/pessoas', 'PessoaController@index')->name('pessoas.index');
+
         /**
          * Rotas disciplinas
          */
