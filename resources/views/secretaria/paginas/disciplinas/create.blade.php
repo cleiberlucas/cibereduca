@@ -1,17 +1,17 @@
 @extends('adminlte::page')
 
-@section('title', 'Rede Educa')
+@section('title_postfix', ' Disciplinas')
 
 @section('content_header')
-    <h1>Cadastrar Permissão </h1>
+    <h1>Cadastrar Disciplina </h1>
 @stop
 
 @section('content')
     <div class="card">
-        <form action="{{ route('permissoes.store')}}" class="form" method="POST">
+        <form action="{{ route('disciplinas.store')}}" class="form" method="POST">
             @csrf
             
-            @include('admin.paginas.permissoes._partials.form')
+            @include('secretaria.paginas.disciplinas._partials.form')
         </form>
     </div>
 @endsection

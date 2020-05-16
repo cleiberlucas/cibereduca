@@ -27,33 +27,33 @@
             </form>
         </div>
         <div class="card-body">
-                <table class="table table-condensed">
-                    <thead>
-                        <th>Permissões</th>                        
-                        <th width="270">Ações</th>
-                    </thead>
-                    <tbody>                        
-                        @foreach ($permissoes as $permissao)
-                            <tr>
-                                <td>
-                                    {{$permissao->permissao}}
-                                </td>                                
-                                <td style="width=10px;">                                                                    
-                                    <a href="{{ route('perfis.permissoes.remover', [$perfil->id_perfil, $permissao->id_permissao]) }}" class="btn btn-danger">Remover</a> 
-                                </td>
-                                
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-                <div class="card-footer">
-                    @if (isset($filtros))
-                    {!! $permissoes->appends($filtros)->links()!!}
-                    @else
-                        {!! $permissoes->links()!!}    
-                    @endif
-                    
-                </div>
+            <table class="table table-condensed">
+                <thead>
+                    <th>Permissões</th>                        
+                    <th width="270">Ações</th>
+                </thead>
+                <tbody>                        
+                    @foreach ($permissoes as $permissao)
+                        <tr>
+                            <td>
+                                {{$permissao->permissao}}
+                            </td>                                
+                            <td style="width=10px;">                                                                    
+                                <a href="{{ route('perfis.permissoes.remover', [$perfil->id_perfil, $permissao->id_permissao]) }}" class="btn btn-danger">Remover</a> 
+                            </td>
+                            
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+            <div class="card-footer">
+                @if (isset($filtros))
+                {!! $permissoes->appends($filtros)->links()!!}
+                @else
+                    {!! $permissoes->links()!!}    
+                @endif
+                
+            </div>
         </div>
     </div>
 @stop

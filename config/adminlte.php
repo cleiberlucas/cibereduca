@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'REDE EDUCA',
+    'title' => 'Rede Educa',
     'title_prefix' => '',
     'title_postfix' => '',
 

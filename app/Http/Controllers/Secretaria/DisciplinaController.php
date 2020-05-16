@@ -35,6 +35,9 @@ class DisciplinaController extends Controller
     public function store(StoreUpdateDisciplina $request )
     {
         $dados = $request->all();
+        $sit = $this->verificarSituacao($dados);
+        $dados = array_merge($dados, $sit);
+       // dd($dados);
         $this->repositorio->create($dados);
 
         return redirect()->route('disciplinas.index');
@@ -93,9 +96,24 @@ class DisciplinaController extends Controller
 
         if (!$disciplina)
             return redirect()->back();
+        
+        $sit = $this->verificarSituacao($request->all());
+        
+        $request->merge($sit);
 
         $disciplina->where('id_disciplina', $id)->update($request->except('_token', '_method'));
 
         return redirect()->route('disciplinas.index');
+    }
+
+    /**
+     * Verifica se a situação foi ativada
+     */
+    public function verificarSituacao(array $dados)
+    {
+        if (!array_key_exists('situacao_disciplina', $dados))
+            return ['situacao_disciplina' => '0'];
+        else
+             return ['situacao_disciplina' => '1'];            
     }
 }

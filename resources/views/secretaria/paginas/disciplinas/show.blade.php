@@ -1,9 +1,9 @@
 @extends('adminlte::page')
 
-@section('title', 'Detalhes Permissão')
+@section('title_postfix', ' Disciplinas')
 
 @section('content_header')
-    <h1>Permissão de usuário <b>{{ $permissao->permissao}}</b></h1>
+    <h1>Disciplina <b>{{ $disciplina->disciplina}}</b></h1>
 @stop
 
 @section('content')
@@ -11,14 +11,14 @@
         <div class="card-header">
             <ul>
                 <li>
-                    <strong>Permissão:</strong> {{ $permissao->permissao}}
+                    <strong>Disciplina:</strong> {{ $disciplina->disciplina}}
                 </li>
                 <li>
-                    <strong>Descrição:</strong> {{ $permissao->descricao_permissao}}
+                    <strong>Sigla:</strong> {{ $disciplina->sigla_disciplina}}
                 </li>
                 
             </ul>
-            <form action="{{ route('permissoes.destroy', $permissao->id_permissao) }}" method="POST">
+            <form action="{{ route('disciplinas.destroy', $disciplina->id_disciplina) }}" method="POST">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="btn btn-danger"> <i class="fas fa-trash"></i> Apagar</button>

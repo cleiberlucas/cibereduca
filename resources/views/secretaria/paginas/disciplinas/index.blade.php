@@ -1,6 +1,10 @@
+
+
 @extends('adminlte::page')
 
-@section('title', 'Rede Educa - Disciplinas')
+<section></section>
+
+@section('title_postfix', ' Disciplinas')
 
 @section('content_header')
     <ol class="breadcrumb">
@@ -11,7 +15,7 @@
             <a href="{{ route('disciplinas.index') }} " class="">Disciplinas</a>
         </li>
     </ol>
-
+    
     <h1>Disciplinas <a href="{{ route('disciplinas.create') }}" class="btn btn-dark">Cadastrar</a></h1>    
 @stop
 
@@ -41,28 +45,13 @@
                                 <td>
                                     {{$disciplina->sigla_disciplina}}
                                 </td>                   
-                                <td>                                  
-                                    {{-- <fieldset>
-                                        <input id="on" type="checkbox" name="situacao_disciplina" checked={{$disciplina->situacao_disciplina}}>                                    
-                                    </fieldset>
-                                    <label for="on">
-                                        <div class="chave"></div>
-                                        <span class="off text">off</span>
-                                        <span class="on text">on</span>
-                                    </label> --}}
-
-                                    <div class="col-sm-5">
-                                        <button type="button" class="btn btn-lg btn-toggle" data-toggle="button" aria-pressed="false" autocomplete="off">
-                                          <div class="handle"></div>
-                                        </button>
-                                      </div>
-                                  
-                                      <div class="col-sm-5">
-                                        <button type="button" class="btn btn-lg btn-toggle active" data-toggle="button" aria-pressed="true" autocomplete="off">
-                                          <div class="handle"></div>
-                                        </button>
-                                      </div>
-                                      
+                                <td>
+                                    @if ($disciplina->situacao_disciplina == 1)
+                                        <b>Ativo</b>
+                                    @else
+                                        Inativo                                        
+                                    @endif
+                                    
                                 </td>              
                                 <td style="width=10px;">
                                     <a href="{{ route('disciplinas.edit', $disciplina->id_disciplina) }}" class="btn btn-info">Editar</a>

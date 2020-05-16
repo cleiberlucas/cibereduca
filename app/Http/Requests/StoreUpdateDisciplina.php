@@ -30,6 +30,7 @@ class StoreUpdateDisciplina extends FormRequest
             'disciplina' => "required|min:3|max:100|unique:tb_disciplinas,disciplina,{$id},id_disciplina",
             'sigla' => "nullable|min:3|max:5",
             
+            
         ];    
     }
 }

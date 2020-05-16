@@ -11,7 +11,9 @@ class Disciplina extends Model
     
     public $timestamps = false;
     
-    protected $fillable = ['disciplina', 'sigla_disciplina'];
+    //protected $attributes = ['situacao_disciplina' => '0'];
+
+    protected $fillable = ['disciplina', 'sigla_disciplina', 'situacao_disciplina'];
    
     public function search($filtro = null)
     {
