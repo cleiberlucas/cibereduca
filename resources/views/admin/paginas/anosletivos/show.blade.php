@@ -16,6 +16,15 @@
                 <li>
                     <strong>Média aprovação:</strong> {{ $anoletivo->media_minima_aprovacao}}
                 </li>
+                <li>
+                    <strong>Situação:</strong>
+                    @if ($anoletivo->situacao == 1)
+                        Aberto
+                    @else
+                        Encerrado
+                    @endif
+                    {{ $anoletivo->media_minima_aprovacao}}
+                </li>
                 
             </ul>
             <form action="{{ route('anosletivos.destroy', $anoletivo->id_ano_letivo) }}" method="POST">

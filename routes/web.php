@@ -42,7 +42,13 @@ Route::prefix('admin')
         ->group(function(){
                 
         /**
-             * Rotas permissões
+             * Rotas períodos letivos
+             */
+            Route::any('periodosletivos/search', 'PeriodoLetivoController@search')->name('periodosletivos.search');
+            Route::resource('periodosletivos', 'PeriodoLetivoController');
+
+        /**
+             * Rotas anos letivos
              */
             Route::any('anosletivos/search', 'AnoLetivoController@search')->name('anosletivos.search');
             Route::resource('anosletivos', 'AnoLetivoController');

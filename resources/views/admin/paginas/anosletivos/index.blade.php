@@ -47,7 +47,7 @@
                                 </td>                   
                                 <td>
                                     @if ($anoletivo->situacao == 1)
-                                        <b>Em andamento</b>
+                                        <b>Aberto</b>
                                     @else
                                         Encerrado                                        
                                     @endif

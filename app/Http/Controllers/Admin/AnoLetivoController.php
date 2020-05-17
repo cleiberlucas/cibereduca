@@ -72,7 +72,7 @@ class AnoLetivoController extends Controller
         $anosLetivos = $this->repositorio->search($request->filtro);
         
         return view('admin.paginas.anosletivos.index', [
-            'anoletivo' => $anosLetivos,
+            'anosletivos' => $anosLetivos,
             'filtros' => $filtros,
         ]);
     }

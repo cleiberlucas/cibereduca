@@ -217,30 +217,37 @@ return [
         [
             'text'    => ' Secretaria',
             'icon' => 'fas fa-fw fa-school',
+            'icon_color' => 'cyan',
             'submenu' => [
                 [
                     'text' => 'Turmas',
                     'url'  => '#',
+                    'icon_color' => 'cyan',
                 ],
                 [
                     'text' => 'Matrículas',
                     'url'  => '#',
+                    'icon_color' => 'cyan',
                 ],
                 [
                     'text' => 'Alunos',
                     'url'  => 'secretaria/1/pessoas',
+                    'icon_color' => 'cyan',
                 ],
                 [
                     'text' => 'Responsáveis',
                     'url'  => 'secretaria/2/pessoas',
+                    'icon_color' => 'cyan',
                 ],
                 [
                     'text' => 'Declarações',
                     'url'  => '#',
+                    'icon_color' => 'cyan',
                 ],
                 [
                     'text' => 'Grade Curricular',
                     'url'  => '#',
+                    'icon_color' => 'cyan',
                 ],
                 
             ],
@@ -248,40 +255,54 @@ return [
         [
             'text'    => 'Pedagógico',
             'icon'    => 'fas fa-chalkboard-teacher',
+            'icon_color' => 'yellow',
             'submenu' => [
                                 [
                     'text' => 'Diário',
                     'url'  => '#',
+                    'icon_color' => 'yellow',
                 ],
                 [
                     'text' => 'Avaliações',
                     'url'  => '',
+                    'icon_color' => 'yellow',
                 ],
                 [
                     'text' => 'Boletins',
                     'url'  => '#',
+                    'icon_color' => 'yellow',
                 ],
             ],
         ],
         [
             'text'    => 'Configurações',
             'icon'    => 'fas fa-fw fa-cogs',
+            'icon_color' => 'red',
             'submenu' => [
-                                [
+                [
                     'text' => 'Anos Letivos',
                     'url'  => 'admin/anosletivos',
+                    'icon_color' => 'red',
+                ],
+                [
+                    'text' => 'Bimestres Letivos',
+                    'url'  => 'admin/periodosletivos',
+                    'icon_color' => 'red',
                 ],
                 [
                     'text' => 'Disciplinas',
                     'url'  => 'secretaria/disciplinas',
+                    'icon_color' => 'red',
                 ],
                 [
                     'text' => 'Tipos de Turmas',
                     'url'  => '#',
+                    'icon_color' => 'red',
                 ],
                 [
                     'text' => 'Unidade Ensino',
                     'url'  => 'admin/UnidadesEnsino',                    
+                    'icon_color' => 'red',
                 ],
                 [
                     'text'    => 'level_one',
@@ -334,19 +355,7 @@ return [
             ],
         ],
         
-        ['header' => 'labels'],
-        [
-            'text'       => 'important',
-            'icon_color' => 'red',
-        ],
-        [
-            'text'       => 'warning',
-            'icon_color' => 'yellow',
-        ],
-        [
-            'text'       => 'information',
-            'icon_color' => 'cyan',
-        ],
+        
     ],
 
     /*
