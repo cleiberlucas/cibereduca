@@ -40,14 +40,19 @@ Route::prefix('admin')
         ->namespace('Admin')
         ->middleware('auth')
         ->group(function(){
+                
+        /**
+             * Rotas permissões
+             */
+            Route::any('anosletivos/search', 'AnoLetivoController@search')->name('anosletivos.search');
+            Route::resource('anosletivos', 'AnoLetivoController');
 
              /**
              * Rotas permissões
              */
             Route::any('users/search', 'ACL\UserController@search')->name('users.search');
             Route::resource('users', 'ACL\UserController');
-           
-           
+                      
             /**
              * Rotas Perfis X Permissões
              */

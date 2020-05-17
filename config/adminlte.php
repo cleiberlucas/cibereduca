@@ -269,7 +269,7 @@ return [
             'submenu' => [
                                 [
                     'text' => 'Anos Letivos',
-                    'url'  => '#',
+                    'url'  => 'admin/anosletivos',
                 ],
                 [
                     'text' => 'Disciplinas',
