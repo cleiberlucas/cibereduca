@@ -220,15 +220,10 @@ return [
             'icon_color' => 'cyan',
             'submenu' => [
                 [
-                    'text' => 'Turmas',
-                    'url'  => '#',
+                    'text' => 'Turmas/Matrículas',
+                    'url'  => 'secretaria/turmas',
                     'icon_color' => 'cyan',
-                ],
-                [
-                    'text' => 'Matrículas',
-                    'url'  => '#',
-                    'icon_color' => 'cyan',
-                ],
+                ],                
                 [
                     'text' => 'Alunos',
                     'url'  => 'secretaria/1/pessoas',
@@ -296,7 +291,7 @@ return [
                 ],
                 [
                     'text' => 'Tipos de Turmas',
-                    'url'  => '#',
+                    'url'  => 'admin/tiposturmas',
                     'icon_color' => 'red',
                 ],
                 [

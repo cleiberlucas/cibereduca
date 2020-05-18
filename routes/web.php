@@ -10,6 +10,12 @@ Route::prefix('secretaria')
         ->middleware('auth')
         ->group(function(){
 
+        /**
+         * Rotas Turmas
+         */
+        Route::any('turmas/search', 'TurmaController@search')->name('turmas.search');
+        Route::resource('turmas', 'TurmaController');
+
         /*
         *Rotas Pessoas
         */
@@ -41,6 +47,14 @@ Route::prefix('admin')
         ->middleware('auth')
         ->group(function(){
                 
+            
+            /**
+             * Rotas Tipos Turmas
+             */
+            Route::any('tiposturmas/search', 'TipoTurmaController@search')->name('tiposturmas.search');
+            Route::resource('tiposturmas', 'TipoTurmaController');
+
+
         /**
              * Rotas períodos letivos
              */

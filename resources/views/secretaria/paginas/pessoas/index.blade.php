@@ -25,10 +25,10 @@
     
     <h1> @if ($tipo_pessoa == 1)
             Alunos
-            <a href="{{ route('pessoas.create.aluno') }}" class="btn btn-dark">Cadastrar</a></h1>    
+            <a href="{{ route('pessoas.create.aluno') }}" class="btn btn-success">Cadastrar</a></h1>    
         @else
             Responsável
-            <a href="{{ route('pessoas.create.responsavel') }}" class="btn btn-dark">Cadastrar</a></h1>    
+            <a href="{{ route('pessoas.create.responsavel') }}" class="btn btn-success">Cadastrar</a></h1>    
         @endif
     
 @stop
