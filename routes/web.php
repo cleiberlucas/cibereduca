@@ -10,6 +10,18 @@ Route::prefix('secretaria')
         ->middleware('auth')
         ->group(function(){
 
+         /**
+         * Rotas Matrículas
+         */
+        Route::get('matriculas/create', 'MatriculaController@create')->name('matriculas.create');
+        Route::put('matriculas/{id_turma}', 'MatriculaController@update')->name('matriculas.update');
+        Route::get('matriculas/{id_turma}/edit', 'MatriculaController@edit')->name('matriculas.edit');
+        Route::any('matriculas/search', 'MatriculaController@search')->name('matriculas.search');
+        Route::delete('matriculas/{id_turma}', 'MatriculaController@destroy')->name('matriculas.destroy');
+        Route::get('matriculas/{id_turma}', 'MatriculaController@show')->name('matriculas.show');
+        Route::post('matriculas', 'MatriculaController@store')->name('matriculas.store');
+        Route::any('{id_turma}/matriculas', 'MatriculaController@index')->name('matriculas.index');
+
         /**
          * Rotas Turmas
          */

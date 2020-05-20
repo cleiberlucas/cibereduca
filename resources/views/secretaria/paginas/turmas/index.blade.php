@@ -63,7 +63,7 @@
                                     {{$turma->limite_alunos}}
                                 </td>                                      
                                 <td style="width=10px;">
-                                    <a href="{{ route('turmas.edit', $turma->id_turma) }}" class="btn btn-sm btn-success">Matrículas</a>
+                                    <a href="{{ route('matriculas.index', $turma->id_turma) }}" class="btn btn-sm btn-success">Matrículas</a>
                                     <a href="{{ route('turmas.edit', $turma->id_turma) }}" class="btn btn-sm btn-primary">Editar</a>
                                     <a href="{{ route('turmas.show', $turma->id_turma) }}" class="btn btn-sm btn-info">VER</a>
                                 </td>

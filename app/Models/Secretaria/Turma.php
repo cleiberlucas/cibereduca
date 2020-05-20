@@ -2,6 +2,7 @@
 
 namespace App\Models\Secretaria;
 
+use App\Models\AnoLetivo;
 use App\Models\TipoTurma;
 use App\Models\Turno;
 use Illuminate\Database\Eloquent\Model;

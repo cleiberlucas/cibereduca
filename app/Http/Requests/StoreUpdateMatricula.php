@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreUpdateDisciplina extends FormRequest
+class StoreUpdateMatricula extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,14 +22,14 @@ class StoreUpdateDisciplina extends FormRequest
      * @return array
      */
     public function rules()
-    {
-        
+    {        
         $id = $this->segment(3);
     
         return [
-            'disciplina' => "required|min:3|max:100|unique:tb_disciplinas,disciplina,{$id},id_disciplina",
-            'sigla' => "nullable|min:3|max:5",            
-            
+            'fk_id_aluno' => "required",
+            'fk_id_responsavel' => "required",
+            'fk_id_turma' => "required",
+            'data_matricula' => "required",
         ];    
     }
 }
