@@ -25,7 +25,7 @@
             <form action="{{ route('matriculas.search') }}" method="POST" class="form form-inline">
                 @csrf
                 <input type="text" name="filtro" placeholder="Aluno" class="form-control" value="{{ $filtros['filtro'] ?? '' }}">
-                <button type="submit" class="btn btn-outline-info">Filtrar</button>
+                <button type="submit" class="btn btn-outline-info">Filtrar </button>
             </form>
         </div>
         <div class="table-responsive">
