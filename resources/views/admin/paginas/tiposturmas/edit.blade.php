@@ -8,7 +8,7 @@
 
 @section('content')
     <div class="card">
-        <form action="{{ route('tiposturmas.update', $tipoturma->id_tipo_turma)}}" class="form" method="POST">
+        <form action="{{ route('tiposturmas.update', $tipoTurma->id_tipo_turma)}}" class="form" method="POST">
             @csrf
             @method('PUT')
             

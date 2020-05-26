@@ -290,7 +290,7 @@ return [
                     'icon_color' => 'red',
                 ],
                 [
-                    'text' => 'Tipos de Turmas',
+                    'text' => 'Padrões de Turmas',
                     'url'  => 'admin/tiposturmas',
                     'icon_color' => 'red',
                 ],

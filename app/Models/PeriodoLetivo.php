@@ -11,7 +11,7 @@ class PeriodoLetivo extends Model
     
     public $timestamps = false;
         
-    protected $fillable = ['periodo_letivo',  'fk_id_ano_letivo', 'data_inicio', 'data_fim', 'situacao'];
+    protected $fillable = ['periodo_letivo',  'fk_id_ano_letivo', 'data_inicio', 'data_fim', 'situacao', 'fk_id_user'];
    
     public function search($filtro = null)
     {
@@ -24,5 +24,10 @@ class PeriodoLetivo extends Model
     public function anoLetivo()
     {       
         return $this->belongsTo(AnoLetivo::class, 'fk_id_ano_letivo', 'id_ano_letivo');
+    }
+
+    public function usuario()
+    {       
+        return $this->belongsTo(User::class, 'fk_id_user', 'id');
     }
 }

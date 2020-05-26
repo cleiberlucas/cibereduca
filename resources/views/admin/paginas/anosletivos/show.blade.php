@@ -22,8 +22,7 @@
                         Aberto
                     @else
                         Encerrado
-                    @endif
-                    {{ $anoletivo->media_minima_aprovacao}}
+                    @endif                    
                 </li>
                 
             </ul>

@@ -11,13 +11,24 @@ class AnoLetivo extends Model
     
     public $timestamps = false;
         
-    protected $fillable = ['ano',  'fk_id_unidade_ensino', 'media_minima_aprovacao', 'situacao'];
+    protected $fillable = ['ano', 'fk_id_unidade_ensino', 'media_minima_aprovacao', 'fk_id_user', 'situacao'];
    
     public function search($filtro = null)
     {
         $resultado = $this->where('ano', '=', "{$filtro}")                            
                             ->paginate();
         
+        return $resultado;
+    }
+
+    /**
+     * Anos letivos abertos, vinculados a uma unidade de ensino
+     */
+    public function anosLetivosAbertos($id_unidade_ensino)
+    {
+        $resultado = $this->where('situacao', '=', '1')
+                            ->where('fk_id_unidade_ensino', '=', $id_unidade_ensino)
+                            ->get();
         return $resultado;
     }
 }

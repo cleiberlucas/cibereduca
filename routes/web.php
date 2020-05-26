@@ -109,6 +109,7 @@ Route::prefix('admin')
             *Rotas Unidades de ensino
              */
             Route::get('UnidadesEnsino/create', 'UnidadeEnsinoController@create')->name('unidadesensino.create');
+            Route::get('UnidadesEnsino/define', 'UnidadeEnsinoController@define')->name('unidadesensino.define');
             Route::put('UnidadesEnsino/{id_unidade_ensino}', 'UnidadeEnsinoController@update')->name('unidadesensino.update');
             Route::get('UnidadesEnsino/{id_unidade_ensino}/edit', 'UnidadeEnsinoController@edit')->name('unidadesensino.edit');
             Route::any('UnidadesEnsino/search', 'UnidadeEnsinoController@search')->name('unidadesensino.search');
@@ -124,6 +125,11 @@ Route::prefix('admin')
 Route::get('/', function () {
     return view('welcome');
 });
+
+/**
+ * Principal
+ */
+Route::get('/', 'Principal\PrincipalController@index')->name('principal.home');
 
 Auth::routes(); 
 //desabilita link para auto registro de usuário

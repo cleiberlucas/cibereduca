@@ -16,7 +16,7 @@
         </li>
     </ol>
     
-    <h1>Padrão de Turmas <a href="{{ route('tiposturmas.create') }}" class="btn btn-success">Cadastrar</a></h1>    
+    <h1>Padrão de Turmas <a href="{{ route('tiposturmas.create') }}" class="btn btn-success"><i class="fas fa-plus-square"></i> Cadastrar</a></h1>    
 @stop
 
 @section('content')
@@ -25,7 +25,7 @@
             <form action="{{ route('tiposturmas.search') }}" method="POST" class="form form-inline">
                 @csrf
                 <input type="text" name="filtro" placeholder="Turma" class="form-control" value="{{ $filtros['filtro'] ?? '' }}">
-                <button type="submit" class="btn btn-outline-info">Filtrar</button>
+                <button type="submit" class="btn btn-outline-secondary"><i class="fas fa-filter"></i></button>
             </form>
         </div>
         <div class="table-responsive">
@@ -47,14 +47,14 @@
                                     {{$tipoturma->tipo_turma}}
                                 </td>                   
                                 <td>
-                                    
+                                    {{$tipoturma->subNivelEnsino->sub_nivel_ensino}}
                                 </td>                   
                                 <td>
-                                    {{$tipoturma->valor_padrao_mensalidade}}
+                                    R$ {{number_format($tipoturma->valor_padrao_mensalidade, 2, ',', '.')}}
                                 </td>                                                                                    
                                 <td style="width=10px;">
-                                    <a href="{{ route('tiposturmas.edit', $tipoturma->id_tipo_turma) }}" class="btn btn-sm btn-primary">Editar</a>
-                                    <a href="{{ route('tiposturmas.show', $tipoturma->id_tipo_turma) }}" class="btn btn-sm btn-info">VER</a>
+                                    <a href="{{ route('tiposturmas.edit', $tipoturma->id_tipo_turma) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>
+                                    <a href="{{ route('tiposturmas.show', $tipoturma->id_tipo_turma) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-eye"></i></a>
                                 </td>
                                 
                             </tr>

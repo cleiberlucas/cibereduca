@@ -26,4 +26,9 @@ class UnidadeEnsino extends Model
         return $this->hasMany(EnderecosUnidadeEnsino::class);
     }
 
+    public function unidadesEnsino($situacao)
+    {
+        return $this->where('situacao', '=', $situacao)->get();
+    }
+
 }

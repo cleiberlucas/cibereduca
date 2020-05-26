@@ -30,6 +30,22 @@ class UnidadeEnsinoController extends Controller
        // dd(view('admin.paginas.unidadesensino.create'));
         return view('admin.paginas.unidadesensino.create');
     }
+    
+    public function define()
+    {
+        //dd($this->repositorio->all());
+        return view('admin.paginas.unidadesensino.define', [
+                    'unidadesensino' => $this->repositorio->get(),
+        ]);
+    }
+
+
+    public function unidadesEnsino($situacao)
+    {
+        //dd($this->repositorio->all());
+        
+        return $this->repositorio->where('situacao', '=', $situacao)->get();
+    }
 
     public function store(StoreUpdateUnidadeEnsino $request )
     {

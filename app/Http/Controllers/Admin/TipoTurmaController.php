@@ -4,22 +4,31 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateTipoTurma;
+use App\Models\AnoLetivo;
+use App\Models\SubNivelEnsino;
 use App\Models\TipoTurma;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TipoTurmaController extends Controller
 {
-    private $repositorio;
+    private $repositorio, $anosLetivos, $subNiveisEnsino;
     
     public function __construct(TipoTurma $tipoTurma)
     {
         $this->repositorio = $tipoTurma;
-
+        $this->anosLetivos = new AnoLetivo();        
+        $this->subNiveisEnsino = new SubNivelEnsino();        
     }
 
     public function index()
     {
-        $tiposturmas = $this->repositorio->with('anoLetivo')->paginate();          
+        $tiposturmas = $this->repositorio
+                                ->orderBy('fk_id_ano_letivo', 'desc')
+                                ->orderBy('fk_id_sub_nivel_ensino', 'asc')
+                                ->orderBy('tipo_turma', 'asc')
+                                ->paginate();      
                 
         return view('admin.paginas.tiposturmas.index', [
                     'tiposturmas' => $tiposturmas,        
@@ -27,17 +36,18 @@ class TipoTurmaController extends Controller
     }
 
     public function create()
-    {
-       // dd(view('admin.paginas.tiposturmas.create'));
-        return view('admin.paginas.tiposturmas.create');
+    {       
+        return view('admin.paginas.tiposturmas.create', [
+            'anosLetivos' => $this->anosLetivos->anosLetivosAbertos(session()->get('id_unidade_ensino')),
+            'subNiveisEnsino' => $this->subNiveisEnsino->subNiveisEnsino(),
+        ]);
     }
 
     public function store(StoreUpdateTipoTurma $request )
     {
-        $dados = $request->all();
-        $sit = $this->verificarSituacao($dados);
-        $dados = array_merge($dados, $sit);
-       // dd($dados);
+        $dados = $request->all();        
+        $dados = array_merge($dados);
+       //dd($this->usuario);
         $this->repositorio->create($dados);
 
         return redirect()->route('tiposturmas.index');
@@ -45,7 +55,7 @@ class TipoTurmaController extends Controller
 
     public function show($id)
     {
-        $tipoTurma = $this->repositorio->where('id_tipo_turma', $id)->with('anoLetivo')->first();
+        $tipoTurma = $this->repositorio->where('id_tipo_turma', $id)->with('anoLetivo', 'subNivelEnsino', 'usuario')->first();
 
         if (!$tipoTurma)
             return redirect()->back();
@@ -79,41 +89,26 @@ class TipoTurmaController extends Controller
 
     public function edit($id)
     {
-
         $tipoTurma = $this->repositorio->where('id_tipo_turma', $id)->first();
-        
+             
         if (!$tipoTurma)
             return redirect()->back();
-                
+        
         return view('admin.paginas.tiposturmas.edit',[
-            'tipoturma' => $tipoTurma,
+            'tipoTurma' => $tipoTurma,
+            'anosLetivos' => $this->anosLetivos->anosLetivosAbertos(session()->get('id_unidade_ensino')),
+            'subNiveisEnsino' => $this->subNiveisEnsino->subNiveisEnsino(),
         ]);
     }
 
     public function update(StoreUpdateTipoTurma $request, $id)
-    {
-        $tipoTurma = $this->repositorio->where('id_tipo_turma', $id)->first();
-
+    {        
+        $tipoTurma = $this->repositorio->where('id_tipo_turma', $id)->first();     
         if (!$tipoTurma)
             return redirect()->back();
-        
-        $sit = $this->verificarSituacao($request->all());
-        
-        $request->merge($sit);
 
         $tipoTurma->where('id_tipo_turma', $id)->update($request->except('_token', '_method'));
 
         return redirect()->route('tiposturmas.index');
-    }
-
-    /**
-     * Verifica se a situação foi ativada
-     */
-    public function verificarSituacao(array $dados)
-    {
-        if (!array_key_exists('situacao', $dados))
-            return ['situacao' => '0'];
-        else
-             return ['situacao' => '1'];            
     }
 }

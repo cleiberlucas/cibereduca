@@ -25,10 +25,10 @@
     
     <h1> @if ($tipo_pessoa == 1)
             Alunos
-            <a href="{{ route('pessoas.create.aluno') }}" class="btn btn-success">Cadastrar</a></h1>    
+            <a href="{{ route('pessoas.create.aluno', $tipo_pessoa) }}" class="btn btn-success"><i class="fas fa-plus-square"></i> Cadastrar</a></h1>    
         @else
             Responsável
-            <a href="{{ route('pessoas.create.responsavel') }}" class="btn btn-success">Cadastrar</a></h1>    
+            <a href="{{ route('pessoas.create.responsavel') }}" class="btn btn-success"><i class="fas fa-plus-square"></i> Cadastrar</a></h1>    
         @endif
     
 @stop
@@ -40,7 +40,7 @@
                 @csrf
                 <input type="text" name="filtro" placeholder="Nome" class="form-control" value="{{ $filtros['filtro'] ?? '' }}">
                 <input type="hidden" name="tipo_pessoa" value="{{$tipo_pessoa}}">
-                <button class="submit" class="btn btn-dark">Filtrar</button>
+                <button type="submit" class="btn btn-outline-secondary"><i class="fas fa-filter"></i></button>
             </form>
         </div>
         <div class="table-responsive">
@@ -76,8 +76,8 @@
                                     
                                 </td>              
                                 <td >
-                                    <a href="{{ route('pessoas.edit', $pessoa->id_pessoa) }}" class="btn btn-sm btn-primary">Editar</a>
-                                    <a href="{{ route('pessoas.show', $pessoa->id_pessoa) }}" class="btn btn-sm btn-warning">VER</a>
+                                    <a href="{{ route('pessoas.edit', $pessoa->id_pessoa) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>
+                                    <a href="{{ route('pessoas.show', $pessoa->id_pessoa) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-address-book"></i></i></a>
                                 </td>
                                 
                             </tr>

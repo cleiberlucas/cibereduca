@@ -16,7 +16,7 @@
         </li>
     </ol>
     
-    <h1>Períodos Letivos <a href="{{ route('periodosletivos.create') }}" class="btn btn-success">Cadastrar</a></h1>    
+    <h1>Períodos Letivos <a href="{{ route('periodosletivos.create') }}" class="btn btn-success"><i class="fas fa-plus-square"></i> Cadastrar</a></h1>    
 @stop
 
 @section('content')
@@ -25,7 +25,7 @@
             <form action="{{ route('periodosletivos.search') }}" method="POST" class="form form-inline">
                 @csrf
                 <input type="text" name="filtro" placeholder="Período" class="form-control" value="{{ $filtros['filtro'] ?? '' }}">
-                <button type="submit" class="btn btn-outline-info">Filtrar</button>
+                <button type="submit" class="btn btn-outline-secondary"><i class="fas fa-filter"></i></button>
             </form>
         </div>
         <div class="table-responsive">
@@ -65,8 +65,8 @@
                                     {{$periodoletivo->data_alteracao}}
                                 </td>                            
                                 <td style="width=10px;">
-                                    <a href="{{ route('periodosletivos.edit', $periodoletivo->id_periodo_letivo) }}" class="btn btn-sm btn-primary">Editar</a>
-                                    <a href="{{ route('periodosletivos.show', $periodoletivo->id_periodo_letivo) }}" class="btn btn-sm btn-info">VER</a>
+                                    <a href="{{ route('periodosletivos.edit', $periodoletivo->id_periodo_letivo) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>
+                                    <a href="{{ route('periodosletivos.show', $periodoletivo->id_periodo_letivo) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-eye"></i></a>
                                 </td>
                                 
                             </tr>

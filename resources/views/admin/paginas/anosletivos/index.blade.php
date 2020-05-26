@@ -16,7 +16,7 @@
         </li>
     </ol>
     
-    <h1>Anos Letivos <a href="{{ route('anosletivos.create') }}" class="btn btn-dark">Cadastrar</a></h1>    
+    <h1>Anos Letivos <a href="{{ route('anosletivos.create') }}" class="btn btn-success"><i class="fas fa-plus-square"> </i> Cadastrar</a></h1>    
 @stop
 
 @section('content')
@@ -24,8 +24,8 @@
         <div class="card-header">
             <form action="{{ route('anosletivos.search') }}" method="POST" class="form form-inline">
                 @csrf
-            <input type="text" name="filtro" placeholder="Nome" class="form-control" value="{{ $filtros['filtro'] ?? '' }}">
-                <button class="submit" class="btn btn-dark">Filtrar</button>
+            <input type="text" name="filtro" placeholder="Ano" class="form-control" value="{{ $filtros['filtro'] ?? '' }}">
+                <button type="submit" class="btn btn-outline-secondary"> <i class="fas fa-filter"></i></button>
             </form>
         </div>
         <div class="card-body">
@@ -54,8 +54,8 @@
                                     
                                 </td>              
                                 <td style="width=10px;">
-                                    <a href="{{ route('anosletivos.edit', $anoletivo->id_ano_letivo) }}" class="btn btn-info">Editar</a>
-                                    <a href="{{ route('anosletivos.show', $anoletivo->id_ano_letivo) }}" class="btn btn-warning">VER</a>
+                                    <a href="{{ route('anosletivos.edit', $anoletivo->id_ano_letivo) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>
+                                    <a href="{{ route('anosletivos.show', $anoletivo->id_ano_letivo) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-eye"></i></a>
                                 </td>
                                 
                             </tr>

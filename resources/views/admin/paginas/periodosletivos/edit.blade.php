@@ -8,7 +8,7 @@
 
 @section('content')
     <div class="card">
-        <form action="{{ route('periodosletivos.update', $periodoletivo->id_periodo_letivo)}}" class="form" method="POST">
+        <form action="{{ route('periodosletivos.update', $periodoLetivo->id_periodo_letivo)}}" class="form" method="POST">
             @csrf
             @method('PUT')
             

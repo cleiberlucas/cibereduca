@@ -35,7 +35,7 @@
                     <strong>Data última Alteração:</strong> {{ $periodoletivo->data_inicio}}
                 </li>
                 <li>
-                    <strong>Usuário Última Alteração:</strong> 
+                    <strong>Alterado por:</strong> {{ $periodoletivo->usuario->name}}
                 </li>
                 
             </ul>

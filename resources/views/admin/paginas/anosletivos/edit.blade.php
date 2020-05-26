@@ -7,8 +7,9 @@
 @stop
 
 @section('content')
+
     <div class="card">
-        <form action="{{ route('anosletivos.update', $anoletivo->id_ano_letivo)}}" class="form" method="POST">
+        <form action="{{ route('anosletivos.update', $anoLetivo->id_ano_letivo)}}" class="form" method="POST">
             @csrf
             @method('PUT')
             

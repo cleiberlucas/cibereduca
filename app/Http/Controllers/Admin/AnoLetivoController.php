@@ -5,15 +5,17 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateAnoLetivo;
 use App\Models\AnoLetivo;
+use App\Models\UnidadeEnsino;
 use Illuminate\Http\Request;
 
 class AnoLetivoController extends Controller
 {
-    private $repositorio;
+    private $repositorio, $unidadesEnsino;
     
     public function __construct(AnoLetivo $anoLetivo)
     {
         $this->repositorio = $anoLetivo;
+        $this->unidadesEnsino = new UnidadeEnsino();
 
     }
 
@@ -29,7 +31,9 @@ class AnoLetivoController extends Controller
     public function create()
     {
        // dd(view('admin.paginas.anosletivos.create'));
-        return view('admin.paginas.anosletivos.create');
+        return view('admin.paginas.anosletivos.create', [
+            'unidadesEnsino' => $this->unidadesEnsino->unidadesEnsino(1),
+        ]);
     }
 
     public function store(StoreUpdateAnoLetivo $request )
@@ -79,14 +83,14 @@ class AnoLetivoController extends Controller
 
     public function edit($id)
     {
-
         $anoLetivo = $this->repositorio->where('id_ano_letivo', $id)->first();
         
         if (!$anoLetivo)
             return redirect()->back();
                 
         return view('admin.paginas.anosletivos.edit',[
-            'anoletivo' => $anoLetivo,
+            'anoLetivo' => $anoLetivo,
+            'unidadesEnsino' => $this->unidadesEnsino->unidadesEnsino(1),
         ]);
     }
 

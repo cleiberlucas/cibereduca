@@ -5,15 +5,18 @@ namespace App\Http\Controllers\Secretaria;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateTurma;
 use App\Models\Secretaria\Turma;
+use App\Models\Turno;
 use Illuminate\Http\Request;
 
 class TurmaController extends Controller
 {
-    private $repositorio;
+    private $repositorio, $turnos;
     
     public function __construct(Turma $Turma)
     {
         $this->repositorio = $Turma;
+        $this->turnos = new Turno;
+        $this->turnos = $this->turnos->all()->sortBy('descricao_turno');
 
     }
 
@@ -27,9 +30,10 @@ class TurmaController extends Controller
     }
 
     public function create()
-    {
-       // dd(view('secretaria.paginas.turmas.create'));
-        return view('secretaria.paginas.turmas.create');
+    {       
+        return view('secretaria.paginas.turmas.create', [
+            'turnos' => $this->turnos,
+        ]);
     }
 
     public function store(StoreUpdateTurma $request )
@@ -87,6 +91,7 @@ class TurmaController extends Controller
                 
         return view('secretaria.paginas.turmas.edit',[
             'turma' => $Turma,
+            'turnos' => $this->turnos,
         ]);
     }
 
@@ -104,5 +109,16 @@ class TurmaController extends Controller
         $Turma->where('id_turma', $id)->update($request->except('_token', '_method'));
 
         return redirect()->route('turmas.index');
+    }
+
+    /**
+     * Verifica se a situação foi ativada
+     */
+    public function verificarSituacao(array $dados)
+    {
+        if (!array_key_exists('situacao_turma', $dados))
+            return ['situacao_turma' => '0'];
+        else
+             return ['situacao_turma' => '1'];            
     }
 }

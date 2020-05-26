@@ -14,7 +14,36 @@
                     <strong>Nome:</strong> {{ $pessoa->nome}}
                 </li>
                 <li>
+                    <strong>CPF:</strong> {{ $pessoa->cpf}}
+                </li>
+                <li>
+                    <strong>Documento identidade:</strong> {{ $pessoa->doc_identidade}}
+                </li>
+                <li>
                     <strong>Data Nascimento:</strong> {{ $pessoa->data_nascimento}}
+                </li>
+                <li>
+                    <strong>Fone principal:</strong> {{ $pessoa->telefone_1}}
+                </li>
+                <li>
+                    <strong>Fone:</strong> {{ $pessoa->telefone_2}}
+                </li>
+                <li>
+                    <strong>Email principal:</strong> {{ $pessoa->email_1}}
+                </li>
+                <li>
+                    <strong>Email:</strong> {{ $pessoa->email_2}}
+                </li>
+                <li>
+                    <strong>Situação:</strong>  
+                    @if ($pessoa->situacao_pessoa == 1)
+                        Ativo
+                    @else
+                        Inativo
+                    @endif
+                </li>
+                <li>
+                    <strong>Cadastrado por:</strong> {{ $pessoa->usuario->name}}
                 </li>
                 
             </ul>

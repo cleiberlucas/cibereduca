@@ -4,6 +4,7 @@
 
 @section('content_header')
     <h1>Editar Disciplina </h1>
+    
 @stop
 
 @section('content')

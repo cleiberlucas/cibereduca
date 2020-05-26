@@ -4,17 +4,18 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdatePeriodoLetivo;
+use App\Models\AnoLetivo;
 use App\Models\PeriodoLetivo;
 use Illuminate\Http\Request;
 
 class PeriodoLetivoController extends Controller
 {
-    private $repositorio;
+    private $repositorio, $anosLetivos;
     
     public function __construct(PeriodoLetivo $periodoLetivo)
     {
         $this->repositorio = $periodoLetivo;
-
+        $this->anosLetivos = new AnoLetivo();
     }
 
     public function index()
@@ -29,7 +30,9 @@ class PeriodoLetivoController extends Controller
     public function create()
     {
        // dd(view('admin.paginas.periodosletivos.create'));
-        return view('admin.paginas.periodosletivos.create');
+        return view('admin.paginas.periodosletivos.create', [
+            'anosLetivos' => $this->anosLetivos->anosLetivosAbertos(session()->get('id_unidade_ensino')),
+        ]);
     }
 
     public function store(StoreUpdatePeriodoLetivo $request )
@@ -45,7 +48,7 @@ class PeriodoLetivoController extends Controller
 
     public function show($id)
     {
-        $periodoLetivo = $this->repositorio->where('id_periodo_letivo', $id)->with('anoLetivo')->first();
+        $periodoLetivo = $this->repositorio->where('id_periodo_letivo', $id)->with('anoLetivo', 'usuario')->first();
 
         if (!$periodoLetivo)
             return redirect()->back();
@@ -86,7 +89,8 @@ class PeriodoLetivoController extends Controller
             return redirect()->back();
                 
         return view('admin.paginas.periodosletivos.edit',[
-            'periodoletivo' => $periodoLetivo,
+            'periodoLetivo' => $periodoLetivo,
+            'anosLetivos' => $this->anosLetivos->anosLetivosAbertos(session()->get('id_unidade_ensino')),
         ]);
     }
 
