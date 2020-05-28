@@ -16,7 +16,7 @@
         </li>
     </ol>
     
-    <h1>Turmas <a href="{{ route('turmas.create') }}" class="btn btn-success">Cadastrar</a></h1>    
+    <h1>Turmas <a href="{{ route('turmas.create') }}" class="btn btn-success"> <i class="fas fa-plus-square"></i> Cadastrar</a></h1>    
 @stop
 
 @section('content')
@@ -25,7 +25,7 @@
             <form action="{{ route('turmas.search') }}" method="POST" class="form form-inline">
                 @csrf
                 <input type="text" name="filtro" placeholder="Turma" class="form-control" value="{{ $filtros['filtro'] ?? '' }}">
-                <button type="submit" class="btn btn-outline-info">Filtrar</button>
+                <button type="submit" class="btn btn-outline-secondary"><i class="fas fa-filter"></i></button>
             </form>
         </div>
         <div class="table-responsive">
@@ -34,7 +34,7 @@
                         <th>#</th>
                         <th>Ano</th>                        
                         <th>Padrão Turma</th>
-                        <th>Turma</th>
+                        <th>Turma</th>                        
                         <th>Turno</th>
                         <th>Localização</th>
                         <th>Limite alunos</th>
@@ -45,14 +45,14 @@
                             <tr>
                                 <th scope="row">{{$index+1}}</th>
                                 <td>
-                                    2020
+                                    {{$turma->tipoTurma->anoLetivo->ano}}
                                 </td>
                                 <td>
-                                    {{$turma->tipoTurma->tipo_turma}}
+                                    {{$turma->tipoTurma->tipo_turma}} - {{$turma->tipoTurma->subNivelEnsino->sub_nivel_ensino}}
                                 </td> 
                                 <td>
                                     {{$turma->nome_turma}}
-                                </td>                   
+                                </td>                                  
                                 <td>
                                     {{$turma->turno->descricao_turno}}
                                 </td>
@@ -64,8 +64,8 @@
                                 </td>                                      
                                 <td style="width=10px;">
                                     <a href="{{ route('matriculas.index', $turma->id_turma) }}" class="btn btn-sm btn-success">Matrículas</a>
-                                    <a href="{{ route('turmas.edit', $turma->id_turma) }}" class="btn btn-sm btn-primary">Editar</a>
-                                    <a href="{{ route('turmas.show', $turma->id_turma) }}" class="btn btn-sm btn-info">VER</a>
+                                    <a href="{{ route('turmas.edit', $turma->id_turma) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>
+                                    <a href="{{ route('turmas.show', $turma->id_turma) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-eye"></i></a>
                                 </td>
                                 
                             </tr>

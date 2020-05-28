@@ -3,7 +3,7 @@
 @section('title_postfix', ' Turma')
 
 @section('content_header')
-    <h1><b>{{ $turma->nome_turma}} - 2020</b></h1>
+    <h1><b>{{$turma->tipoTurma->anoLetivo->ano}} - {{ $turma->nome_turma}} - {{$turma->turno->descricao_turno}}</b></h1>
 @stop
 
 @section('content')
@@ -11,10 +11,10 @@
         <div class="card-header">
             <ul>
                 <li>
-                    <strong>Ano:</strong>2020
+                    <strong>Ano:</strong> {{$turma->tipoTurma->anoLetivo->ano}}
                 </li>
                 <li>
-                    <strong>Turma:</strong> {{ $turma->turma}} - {{$turma->turno->descricao_turno}}
+                    <strong>Turma:</strong> {{ $turma->nome_turma}} - {{$turma->turno->descricao_turno}}
                 </li>
                 <li>
                     <strong>Localização:</strong>  {{ $turma->localizacao}}
@@ -23,7 +23,7 @@
                     <strong>Limite alunos:</strong> {{ $turma->limite_alunos}}
                 </li>                                
                 <li>
-                    <strong>Usuário cadastro:</strong> Fulano
+                    <strong>Cadastrado por:</strong> {{$turma->usuario->name}}
                 </li>
                 
             </ul>

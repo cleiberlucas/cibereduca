@@ -13,6 +13,11 @@
             @method('PUT')
             @include('secretaria.paginas.pessoas._partials.form')
 
+             {{-- Endereço apenas para responsáveis --}}
+             @if ($pessoa->fk_id_tipo_pessoa == '2')
+                @include('secretaria.paginas.pessoas._partials.form_endereco')    
+            @endif
+
             <div class="row">
                 <div class="form-group col-sm-6 col-xs-12">                
                     <label>*Situação:</label><br>
@@ -24,7 +29,7 @@
                     Ativar  
                 </div>
             </div> 
-            
+
             <div class="row">
                 <div class="form-group col-sm-2 col-xs-6">     
                     <div>

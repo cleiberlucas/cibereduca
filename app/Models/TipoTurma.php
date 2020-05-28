@@ -22,7 +22,7 @@ class TipoTurma extends Model
     }
 
     public function anoLetivo()
-    {       
+    {      
         return $this->belongsTo(AnoLetivo::class, 'fk_id_ano_letivo', 'id_ano_letivo');
     }
 

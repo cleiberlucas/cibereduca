@@ -13,7 +13,7 @@ Route::prefix('secretaria')
          /**
          * Rotas Matrículas
          */
-        Route::get('matriculas/create', 'MatriculaController@create')->name('matriculas.create');
+        Route::get('matriculas/create/{id_turma}', 'MatriculaController@create')->name('matriculas.create');
         Route::put('matriculas/{id_turma}', 'MatriculaController@update')->name('matriculas.update');
         Route::get('matriculas/{id_turma}/edit', 'MatriculaController@edit')->name('matriculas.edit');
         Route::any('matriculas/search', 'MatriculaController@search')->name('matriculas.search');
@@ -57,15 +57,13 @@ Route::prefix('secretaria')
 Route::prefix('admin')
         ->namespace('Admin')
         ->middleware('auth')
-        ->group(function(){
-                
+        ->group(function(){                
             
             /**
              * Rotas Tipos Turmas
              */
             Route::any('tiposturmas/search', 'TipoTurmaController@search')->name('tiposturmas.search');
             Route::resource('tiposturmas', 'TipoTurmaController');
-
 
         /**
              * Rotas períodos letivos

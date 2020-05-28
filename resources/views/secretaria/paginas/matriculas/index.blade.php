@@ -14,9 +14,9 @@
         </li>
     </ol>
     
-    <h1>Ano letivo - {{$matriculas['0']['ano']}}</h1>
-    <h1>Alunos Matriculados - {{$matriculas['0']['nome_turma']}}</h1>
-    <a href="{{ route('matriculas.create') }}" class="btn btn-success"> Nova Matrícula</a></h1>    
+    <h1>Ano Letivo - {{$turma->ano}}</h1>
+    <h1>Alunos Matriculados - {{$turma->nome_turma}} - {{$turma->descricao_turno}}</h1>
+    <a href="{{ route('matriculas.create', $turma->id_turma) }}" class="btn btn-success"><i class="fas fa-plus-square"></i> Nova Matrícula</a></h1>    
 @stop
 
 @section('content')
@@ -25,7 +25,7 @@
             <form action="{{ route('matriculas.search') }}" method="POST" class="form form-inline">
                 @csrf
                 <input type="text" name="filtro" placeholder="Aluno" class="form-control" value="{{ $filtros['filtro'] ?? '' }}">
-                <button type="submit" class="btn btn-outline-info">Filtrar </button>
+                <button type="submit" class="btn btn-outline-secondary"><i class="fas fa-filter"></i></button>
             </form>
         </div>
         <div class="table-responsive">
@@ -48,10 +48,10 @@
                                 </td>                                                   
                                                                       
                                 <td style="width=10px;">                                
-                                    <a href="{{ route('matriculas.edit', $matricula->id_matricula) }}" class="btn btn-sm btn-primary">Editar</a>
-                                    <a href="{{ route('matriculas.show', $matricula->id_matricula) }}" class="btn btn-sm btn-info">VER</a>
-                                    <a href="" class="btn btn-sm btn-success">Contrato</a>
-                                    <a href="" class="btn btn-sm btn-warning">Ocorrências</a>
+                                    <a href="{{ route('matriculas.edit', $matricula->id_matricula) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>
+                                    <a href="{{ route('matriculas.show', $matricula->id_matricula) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-eye"></i></a>                                    
+                                    <a href="" class="btn btn-sm btn-outline-dark"><i class="fas fa-file-contract"></i></a>
+                                    <a href="" class="btn btn-sm btn-outline-warning"><i class="fas fa-address-book"></i></i></a>
                                 </td>
                                 
                             </tr>

@@ -3,7 +3,8 @@
 @section('title_postfix', ' Turma')
 
 @section('content_header')
-    <h1><b>{{ $matricula->nome_aluno}} - {{$matricula->nome_turma}} - {{$matricula->ano}}</b></h1>
+    <h1><b>Dados da Matrícula - {{$matricula->ano}} </b></h1>
+    <h1><b>{{ $matricula->nome_aluno}} - {{$matricula->nome_turma}} - {{$matricula->descricao_turno}}</b></h1>
     <h3>Responsável: {{$matricula->nome_responsavel}} - Fone: {{$matricula->telefone_1}}</h3>
 @stop
 

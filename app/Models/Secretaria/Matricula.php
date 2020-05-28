@@ -34,7 +34,7 @@ class Matricula extends Model
      */
     public function turma()
     {       
-        return $this->belongsTo(Turma::class, 'fk_id_turma', 'id_turma');
+        return $this->belongsTo(Turma::class, 'fk_id_turma', 'id_turma')->with('turno', 'tipoTurma');
     }
 
     /**
@@ -60,5 +60,6 @@ class Matricula extends Model
     {       
         return $this->belongsTo(situacaoMatricula::class, 'fk_id_situacao_matricula', 'id_situacao_matricula');
     }
+    
 
 }

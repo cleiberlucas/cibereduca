@@ -1,9 +1,11 @@
 @extends('adminlte::page')
 
-@section('title_postfix', ' Turmas')
+@section('title_postfix', ' Matrículas')
 
 @section('content_header')
-    <h1>Matricular Aluno</h1>
+    <h1><strong>Matricular Aluno - {{$turma->ano}}</strong></h1>
+    <h1><strong>Turma: {{$turma->nome_turma}} - {{$turma->descricao_turno}}</strong></h1>
+
 @stop
 
 @section('content')

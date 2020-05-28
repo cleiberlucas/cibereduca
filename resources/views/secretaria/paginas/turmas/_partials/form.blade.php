@@ -5,8 +5,24 @@
     
     <div class="row">
         <div class="form-group col-sm-3 col-xs-2">
+            <input type="hidden" name="fk_id_user" value="{{Auth::id()}}">
+            
             <label>Padrão de Turma:</label>
-            <input type="text" name="nome_turma" class="form-control" placeholder="1º Ano A" value="{{ $turma->nome_turma ?? old('nome_turma') }}">
+            <select name="fk_id_tipo_turma" id="fk_id_tipo_turma" class="form-control">
+                <option value="" ></option>                
+                {{-- - {{$tipoturma['subNivelEnsino']['sub_nivel_ensino']}} --}}
+                
+                @foreach ($tiposTurmas as $tipoturma)
+                
+                    <option value="{{$tipoturma->id_tipo_turma}} " 
+                        
+                        @if (isset($turma) && $tipoturma->id_turma == $turma->fk_id_padrao_turno ) 
+                            selected="selected"
+                        @endif
+
+                    >{{$tipoturma->tipo_turma}} - {{$tipoturma->subNivelEnsino->sub_nivel_ensino}} ({{$tipoturma->anoLetivo->ano}})</option>                    
+                @endforeach
+            </select>
         </div>
     </div>
 
@@ -46,7 +62,7 @@
 
     <div class="row">
         <div class="form-group col-sm-2 col-xs-2">            
-            <button type="submit" class="btn btn-success">Enviar</button>            
+            <button type="submit" class="btn btn-success"><i class="fas fa-forward"></i> Enviar</button>
         </div>
     </div>
     
