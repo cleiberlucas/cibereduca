@@ -20,4 +20,9 @@ class FormaPagamento extends Model
         
         return $resultado;
     }
+
+    public function getFormasPagamento()
+    {
+        return FormaPagamento::select('*')->orderBy('forma_pagamento')->get();
+    }
 }

@@ -26,6 +26,35 @@ class Pessoa extends Model
         return $resultado;
     }
 
+    /**
+     * Ler alunos não matriculados em um determinado ano letivo
+     */
+    public function alunosNaoMatriculados($ano = null) 
+    {        
+        $alunos = Pessoa::whereNotIn('id_pessoa', function($query) use ($ano){
+            $query->select('tb_matriculas.fk_id_aluno');
+            $query->from('tb_matriculas');
+            $query->leftJoin('tb_turmas', 'tb_turmas.id_turma', 'tb_matriculas.fk_id_turma');
+            $query->leftJoin('tb_tipos_turmas', 'tb_tipos_turmas.id_tipo_turma', 'tb_turmas.fk_id_tipo_turma');
+            $query->where("tb_tipos_turmas.fk_id_ano_letivo", '=', $ano);            
+            })            
+            ->where('tb_pessoas.fk_id_tipo_pessoa', '=', 1)
+            ->where('situacao_pessoa', 1)
+            ->orderBy('nome')
+            ->get();
+
+        return $alunos;
+    }
+
+    public function getResponsaveis()
+    {
+        return Pessoa::select('*')
+                ->where('fk_id_tipo_pessoa', '=', '2')
+                ->where('situacao_pessoa', 1)
+                ->orderBy('nome')
+                ->get();
+    }
+
     public function tipoPessoa()
     {       
         return $this->belongsTo(TipoPessoa::class, 'fk_id_tipo_pessoa', 'id_tipo_pessoa');

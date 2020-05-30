@@ -53,6 +53,7 @@
                                     R$ {{number_format($tipoturma->valor_padrao_mensalidade, 2, ',', '.')}}
                                 </td>                                                                                    
                                 <td style="width=10px;">
+                                    <a href="{{ route('tiposturmas.disciplinas', $tipoturma->id_tipo_turma) }}" class="btn btn-sm btn-outline-success"><i class="far fa-list-alt"></i></a>
                                     <a href="{{ route('tiposturmas.edit', $tipoturma->id_tipo_turma) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>
                                     <a href="{{ route('tiposturmas.show', $tipoturma->id_tipo_turma) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-eye"></i></a>
                                 </td>

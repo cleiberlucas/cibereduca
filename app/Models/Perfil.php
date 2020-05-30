@@ -34,7 +34,7 @@ class Perfil extends Model
     /**
      * Ler permissões livres para um perfil
      */
-    public function permissoesLivres($filtro = null)
+    public function permissoesLivres($filtro = null) 
     {
         $permissoes = Permissao::whereNotIn('id_permissao', function($query){
             $query->select('tb_perfis_permissoes.fk_id_permissao');

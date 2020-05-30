@@ -41,7 +41,7 @@ class PerfilPermissaoController extends Controller
             return redirect()->back();
 
         $filtros = $request->except('_token');
-        $permissoes = $perfil->permissoesLivres($request->filtro);        
+        $permissoes = $perfil->permissoesLivres($request->filtro);         
         
         return view('admin.paginas.perfis.permissoes.add', [
             'perfil' => $perfil,

@@ -19,10 +19,17 @@ class Turma extends Model
    
     public function search($filtro = null)
     {
-        $resultado = $this->where('nome_turma', 'like', "%{$filtro}%") 
+        $resultado = $this->where('nome_turma', 'like', "%{$filtro}%")
                             ->paginate();
         
         return $resultado;
+    }
+
+    public function quantLimiteAlunos($idTurma)
+    {
+        $quant = $this->select('limite_alunos')
+                        ->where('id_turma', '=', $idTurma)->first();
+        return $quant->limite_alunos;
     }
 
     public function tipoTurma()

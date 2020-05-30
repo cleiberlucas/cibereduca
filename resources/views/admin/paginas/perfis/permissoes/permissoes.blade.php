@@ -31,7 +31,7 @@
                 <thead>
                     <th>Permissões</th>                        
                     <th width="270">Ações</th>
-                </thead>
+                </thead> 
                 <tbody>                        
                     @foreach ($permissoes as $permissao)
                         <tr>

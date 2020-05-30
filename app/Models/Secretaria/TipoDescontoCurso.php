@@ -20,4 +20,8 @@ class TipoDescontoCurso extends Model
         
         return $resultado;
     }
+
+    public function getTiposDescontoCurso(){
+        return TipoDescontoCurso::select('*')->orderBy('tipo_desconto_curso')->get();
+    }
 }

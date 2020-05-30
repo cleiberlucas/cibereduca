@@ -36,9 +36,10 @@
                         <th>Padrão Turma</th>
                         <th>Turma</th>                        
                         <th>Turno</th>
+                        <th>Vagas</th>
                         <th>Localização</th>
-                        <th>Limite alunos</th>
-                        <th width="270">Ações</th>
+                        <th>Limite alunos</th>                        
+                        <th >Ações</th>
                     </thead>
                     <tbody>                        
                         @foreach ($turmas as $index => $turma)
@@ -57,11 +58,14 @@
                                     {{$turma->turno->descricao_turno}}
                                 </td>
                                 <td>
+                                    {{$quantVagas[$turma->id_turma]}}
+                                </td> 
+                                <td>
                                     {{$turma->localizacao}}
                                 </td>
                                 <td>
                                     {{$turma->limite_alunos}}
-                                </td>                                      
+                                </td>           
                                 <td style="width=10px;">
                                     <a href="{{ route('matriculas.index', $turma->id_turma) }}" class="btn btn-sm btn-success">Matrículas</a>
                                     <a href="{{ route('turmas.edit', $turma->id_turma) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Secretaria\Disciplina;
 use Illuminate\Database\Eloquent\Model;
 
 class TipoTurma extends Model
@@ -19,6 +20,36 @@ class TipoTurma extends Model
                             ->paginate();
         
         return $resultado;
+    }
+
+    /**
+     * Ler todas permissões
+     */
+    public function disciplinas()
+    {
+        //join M:M perfis X permissoes
+        return $this->belongsToMany(Disciplina::class, 'tb_grades_curriculares', 'fk_id_tipo_turma', 'fk_id_disciplina');
+    }
+
+    /**
+     * Ler disciplinas livres para um tipo de turma
+     */
+    public function disciplinasLivres($filtro = null) 
+    {
+        $disciplinas = Disciplina::whereNotIn('id_disciplina', function($query){
+            $query->select('tb_grades_curriculares.fk_id_disciplina');
+            $query->from('tb_grades_curriculares');            
+            $query->whereRaw("tb_grades_curriculares.fk_id_tipo_turma = {$this->id_tipo_turma}");        
+            })
+            ->where(function ($queryFiltro) use ($filtro){
+                if ($filtro)
+                    $queryFiltro->where('tb_disciplinas.disciplina', 'LIKE', "%{$filtro}%");
+            })
+            ->orderBy('disciplina')
+            ->where('situacao_disciplina', 1)
+            ->paginate();
+        //dd($disciplinas);
+        return $disciplinas;
     }
 
     public function anoLetivo()

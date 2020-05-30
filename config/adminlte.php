@@ -283,15 +283,20 @@ return [
                     'text' => 'Bimestres Letivos',
                     'url'  => 'admin/periodosletivos',
                     'icon_color' => 'red',
+                ],                
+                [
+                    'text' => 'Padrões de Turmas',
+                    'url'  => 'admin/tiposturmas',
+                    'icon_color' => 'red',
                 ],
                 [
                     'text' => 'Disciplinas',
                     'url'  => 'secretaria/disciplinas',
                     'icon_color' => 'red',
-                ],
+                ],                
                 [
-                    'text' => 'Padrões de Turmas',
-                    'url'  => 'admin/tiposturmas',
+                    'text' => 'Docs Matrícula',
+                    'url'  => 'admin/tiposdocumentos',
                     'icon_color' => 'red',
                 ],
                 [

@@ -59,11 +59,31 @@ Route::prefix('admin')
         ->middleware('auth')
         ->group(function(){                
             
+             /**
+             * Rotas Perfis X Permissões
+             */
+            route::get('tiposturmas/{id}/disciplina/{id_disciplina}/remove', 'GradeCurricular\GradeCurricularController@removerDisciplinasTurma')->name('tiposturmas.disciplinas.remover');            
+            route::post('tiposturmas/{id}/disciplinas', 'GradeCurricular\GradeCurricularController@vincularDisciplinasTurma')->name('tiposturmas.disciplinas.vincular');            
+            route::any('tiposturmas/{id}/disciplinas/add', 'GradeCurricular\GradeCurricularController@disciplinasAdd')->name('tiposturmas.disciplinas.add');
+            route::get('tiposturmas/{id}/disciplinas', 'GradeCurricular\GradeCurricularController@disciplinas')->name('tiposturmas.disciplinas');
+
             /**
              * Rotas Tipos Turmas
              */
             Route::any('tiposturmas/search', 'TipoTurmaController@search')->name('tiposturmas.search');
             Route::resource('tiposturmas', 'TipoTurmaController');
+
+            /**
+             * Rotas Grades curriculares
+             */
+            /* Route::any('gradescurriculares/search', 'GradeCurricularController@search')->name('gradescurriculares.search');
+            Route::resource('gradescurriculares', 'GradeCurricularController'); */
+
+            /**
+             * Rotas Docs Matrícula
+             */
+            Route::any('tiposdocumentos/search', 'TipoDocumentoController@search')->name('tiposdocumentos.search');
+            Route::resource('tiposdocumentos', 'TipoDocumentoController');
 
         /**
              * Rotas períodos letivos

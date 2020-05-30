@@ -22,4 +22,9 @@ class SituacaoMatricula extends Model
         
         return $resultado;
     }
+
+    public function getSituacoesMatricula()
+    {
+        return SituacaoMatricula::select('*')->orderBy('situacao_matricula')->get();
+    }
 }

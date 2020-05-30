@@ -26,74 +26,68 @@ class MatriculaController extends Controller
      * @param request
      */
     public function index(Request $request)
-    {
-       // dd($request->all());
+    {       
         $matriculas = $this->repositorio->where('fk_id_turma', $request->segment(2))
                                         ->paginate();
-        //dd($matriculas);
-         $turma = Turma::select('tb_turmas.nome_turma', 'tb_turmas.id_turma', 'tb_anos_letivos.ano', 'tb_turnos.descricao_turno', 'tb_sub_niveis_ensino.sub_nivel_ensino')                            
+        
+         $turma = Turma::select('tb_turmas.nome_turma', 'tb_turmas.id_turma', 'tb_turmas.limite_alunos', 'tb_anos_letivos.ano', 'tb_turnos.descricao_turno', 'tb_sub_niveis_ensino.sub_nivel_ensino')                            
                             ->join('tb_tipos_turmas', 'tb_turmas.fk_id_tipo_turma', '=', 'tb_tipos_turmas.id_tipo_turma' )
                             ->join('tb_sub_niveis_ensino', 'tb_tipos_turmas.fk_id_sub_nivel_ensino', '=', 'tb_sub_niveis_ensino.id_sub_nivel_ensino')
                             ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')
                             ->join('tb_turnos', 'tb_turmas.fk_id_turno', '=', 'tb_turnos.id_turno')         
                             ->where('tb_turmas.id_turma', '=', $request->segment(2))                         
-                            ->first();  
-        
+                            ->first();          
                 
         return view('secretaria.paginas.matriculas.index', [
                     'matriculas' => $matriculas,
                     'turma'      => $turma,
+                    'quantMatriculas'    => $this->repositorio->quantMatriculas($turma->id_turma),
+                    'quantVagasDisponiveis' => $this->repositorio->quantVagasDisponiveis($turma->id_turma),
         ]);
     }
 
     public function create(Request $request)
-    {
-        $alunos = Pessoa::select('id_pessoa', 'nome')
-                            ->where('fk_id_tipo_pessoa', '=', '1')
-                            ->where('situacao_pessoa', 1)
-                            ->orderBy('nome')
-                            ->get();
-        
-        $responsaveis = Pessoa::select('id_pessoa', 'nome')
-                                ->where('fk_id_tipo_pessoa', '=', '2')
-                                ->where('situacao_pessoa', 1)
-                                ->orderBy('nome')
-                                ->get();
-
-        $turma = Turma::select('tb_turmas.nome_turma', 'tb_anos_letivos.ano', 'tb_turnos.descricao_turno', 'tb_sub_niveis_ensino.sub_nivel_ensino')                            
+    {   
+        $turma = Turma::select('tb_turmas.nome_turma', 'tb_turmas.id_turma', 'tb_turmas.limite_alunos',
+                        'tb_anos_letivos.ano', 'tb_turnos.descricao_turno', 'tb_sub_niveis_ensino.sub_nivel_ensino',
+                        'tb_tipos_turmas.valor_padrao_mensalidade', 'tb_tipos_turmas.fk_id_ano_letivo' )
                         ->join('tb_tipos_turmas', 'tb_turmas.fk_id_tipo_turma', '=', 'tb_tipos_turmas.id_tipo_turma' )
                         ->join('tb_sub_niveis_ensino', 'tb_tipos_turmas.fk_id_sub_nivel_ensino', '=', 'tb_sub_niveis_ensino.id_sub_nivel_ensino')
                         ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')
                         ->join('tb_turnos', 'tb_turmas.fk_id_turno', '=', 'tb_turnos.id_turno')         
                         ->where('tb_turmas.id_turma', '=', $request->segment(4))                         
                         ->first(); 
+       
+        $formasPagto = new FormaPagamento;
 
-        $formasPagto = FormaPagamento::select('*')->orderBy('forma_pagamento')->get();
+        $tiposDesconto = new TipoDescontoCurso;
 
-        $tiposDesconto = TipoDescontoCurso::select('*')->orderBy('tipo_desconto_curso')->get();
+        $situacoesMatricula = new SituacaoMatricula;
 
-        $situacoesMatricula = SituacaoMatricula::select('*')->orderBy('situacao_matricula')->get();
-
-       // dd(view('secretaria.paginas.matriculas.create'));
+        $pessoa = new Pessoa;
+        //dd($turma->id_turma);
+        //dd($this->repositorio->quantMatriculas($turma->fk_id_turma));
         return view('secretaria.paginas.matriculas.create', [
-                    'alunos'       => $alunos,
-                    'responsaveis' => $responsaveis,
+                    'alunos'       => $pessoa->alunosNaoMatriculados($turma->fk_id_ano_letivo),
+                    'responsaveis' => $pessoa->getResponsaveis(),
                     'turma'        => $turma,
-                    'formasPagto' => $formasPagto,
-                    'tiposDesconto' => $tiposDesconto,
-                    'situacoesMatricula' => $situacoesMatricula,
+                    'formasPagto' => $formasPagto->getFormasPagamento(),
+                    'tiposDesconto' => $tiposDesconto->getTiposDescontoCurso(),
+                    'situacoesMatricula' => $situacoesMatricula->getSituacoesMatricula(),
+                    'quantMatriculas'    => $this->repositorio->quantMatriculas($turma->id_turma),
+                    'quantVagasDisponiveis' => $this->repositorio->quantVagasDisponiveis($turma->id_turma),
         ]);
     }
 
     public function store(StoreUpdateMatricula $request )
     {
         $dados = $request->all();
-        $sit = $this->verificarSituacao($dados);
-        $dados = array_merge($dados, $sit);
-       // dd($dados);
+        /* $sit = $this->verificarSituacao($dados);
+        $dados = array_merge($dados, $sit); */
+        //dd($request->fk_id_turma);
         $this->repositorio->create($dados);
 
-        return redirect()->route('matriculas.index');
+        return redirect()->route('matriculas.index', $request->fk_id_turma);
     }
 
     public function show($id)
@@ -164,28 +158,33 @@ class MatriculaController extends Controller
 
         $matricula = $this->repositorio
                                 ->select('tb_matriculas.*', 'tb_turmas.nome_turma', 'tb_anos_letivos.ano', 'tb_turnos.descricao_turno', 'tb_sub_niveis_ensino.sub_nivel_ensino',
-                                        'aluno.nome as nome_aluno', 'aluno.id_pessoa as id_aluno', 'responsavel.nome as nome_responsavel', 'responsavel.id_pessoa as id_responsavel',
-                                        'tb_situacoes_matricula.*') 
+                                        'aluno.nome as nome_aluno', 'aluno.id_pessoa as id_aluno', 'responsavel.nome as nome_responsavel', 'responsavel.id_pessoa as id_responsavel',                                        
+                                        'tb_situacoes_matricula.*',
+                                        'tb_tipos_turmas.valor_padrao_mensalidade') 
                                 ->join('tb_pessoas as aluno', 'aluno.id_pessoa', 'tb_matriculas.fk_id_aluno')
                                 ->join('tb_pessoas as responsavel', 'responsavel.id_pessoa', 'tb_matriculas.fk_id_responsavel')
-                                ->join('tb_situacoes_matricula', 'tb_situacoes_matricula.id_situacao_matricula', 'tb_matriculas.fk_id_situacao_matricula')
+                                ->join('tb_situacoes_matricula', 'tb_situacoes_matricula.id_situacao_matricula', 'tb_matriculas.fk_id_situacao_matricula')                                
                                 ->join('tb_turmas', 'tb_turmas.id_turma', 'tb_matriculas.fk_id_turma')                               
                                 ->join('tb_tipos_turmas', 'tb_turmas.fk_id_tipo_turma', '=', 'tb_tipos_turmas.id_tipo_turma' )
                                 ->join('tb_sub_niveis_ensino', 'tb_tipos_turmas.fk_id_sub_nivel_ensino', '=', 'tb_sub_niveis_ensino.id_sub_nivel_ensino')
                                 ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')
                                 ->join('tb_turnos', 'tb_turmas.fk_id_turno', '=', 'tb_turnos.id_turno')         
                                 ->where('id_matricula', $id)->first();
-        
+
+/*                                 ->join('tb_formas_pagamento as forma_pagto_matricula', 'forma_pagto_matricula.id_forma_pagamento', 'tb_matriculas.fk_id_forma_pagto_matricula')
+                                ->join('tb_formas_pagamento as forma_pagto_curso', 'forma_pagto_curso.id_forma_pagamento', 'tb_matriculas.fk_id_forma_pagto_curso')
+                                ->join('tb_formas_pagamento as forma_pagto_mat_did', 'forma_pagto_mat_did.id_forma_pagamento', 'tb_matriculas.fk_id_forma_pagto_mat_didatico') */
+        //dd($matricula);
         if (!$matricula)
             return redirect()->back();
                 
         return view('secretaria.paginas.matriculas.edit',[
-            'matricula' => $matricula,
-            'alunos'    => $alunos,
-            'responsaveis' => $responsaveis,
-            'formasPagto'   => $formasPagto,
-            'tiposDesconto' => $tiposDesconto,
-            'situacoesMatricula' =>$situacoesMatricula,
+            'matricula'          => $matricula,
+            'alunos'             => $alunos,
+            'responsaveis'       => $responsaveis,
+            'formasPagto'        => $formasPagto,
+            'tiposDesconto'      => $tiposDesconto,
+            'situacoesMatricula' => $situacoesMatricula,
         ]);
     }
 
@@ -196,13 +195,13 @@ class MatriculaController extends Controller
         if (!$matricula)
             return redirect()->back();
         
-        $sit = $this->verificarSituacao($request->all());
+        /* $sit = $this->verificarSituacao($request->all());
         
-        $request->merge($sit);
+        $request->merge($sit); */
 
         $matricula->where('id_matricula', $id)->update($request->except('_token', '_method'));
 
-        return redirect()->route('matriculas.index');
+        return redirect()->route('matriculas.index', $matricula->fk_id_turma);
     }
 
     /**

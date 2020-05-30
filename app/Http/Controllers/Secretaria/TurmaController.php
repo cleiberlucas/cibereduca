@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Secretaria;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateTurma;
+use App\Models\Secretaria\Matricula;
 use App\Models\Secretaria\Turma;
 use App\Models\TipoTurma;
 use App\Models\Turno;
@@ -41,9 +42,15 @@ class TurmaController extends Controller
                             ->orderBy('tb_sub_niveis_ensino.sub_nivel_ensino', 'asc')
                             ->orderBy('nome_turma', 'asc')
                             ->paginate();
-                        
+        $matriculas = new Matricula;
+        $quantVagas = [];
+        foreach ($turmas as $turma)
+        {
+            $quantVagas[$turma->id_turma] = $matriculas->quantVagasDisponiveis($turma->id_turma);
+        }
         return view('secretaria.paginas.turmas.index', [
-                    'turmas' => $turmas,                       
+                    'turmas' => $turmas,
+                    'quantVagas' => $quantVagas,                    
         ]);
     }
 
@@ -106,9 +113,17 @@ class TurmaController extends Controller
         $filtros = $request->except('_token');
         $turmas = $this->repositorio->search($request->filtro);
         
+        $matriculas = new Matricula;
+        $quantVagas = [];
+        foreach ($turmas as $turma)
+        {
+            $quantVagas[$turma->id_turma] = $matriculas->quantVagasDisponiveis($turma->id_turma);
+        }
+
         return view('secretaria.paginas.turmas.index', [
             'turmas' => $turmas,
             'filtros' => $filtros,
+            'quantVagas' => $quantVagas,
         ]);
     }
 
