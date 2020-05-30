@@ -239,12 +239,6 @@ return [
                     'url'  => '#',
                     'icon_color' => 'cyan',
                 ],
-                [
-                    'text' => 'Grade Curricular',
-                    'url'  => '#',
-                    'icon_color' => 'cyan',
-                ],
-                
             ],
         ],
         [
@@ -283,17 +277,18 @@ return [
                     'text' => 'Bimestres Letivos',
                     'url'  => 'admin/periodosletivos',
                     'icon_color' => 'red',
-                ],                
-                [
-                    'text' => 'Padrões de Turmas',
-                    'url'  => 'admin/tiposturmas',
-                    'icon_color' => 'red',
-                ],
+                ],               
+                
                 [
                     'text' => 'Disciplinas',
                     'url'  => 'secretaria/disciplinas',
                     'icon_color' => 'red',
-                ],                
+                ],  
+                [
+                    'text' => 'Padrões de Turmas',
+                    'url'  => 'admin/tiposturmas',
+                    'icon_color' => 'red',
+                ],              
                 [
                     'text' => 'Docs Matrícula',
                     'url'  => 'admin/tiposdocumentos',
@@ -304,7 +299,7 @@ return [
                     'url'  => 'admin/UnidadesEnsino',                    
                     'icon_color' => 'red',
                 ],
-                [
+               /*  [
                     'text'    => 'level_one',
                     'url'     => '#',
                     'submenu' => [
@@ -331,7 +326,7 @@ return [
                 [
                     'text' => 'level_one',
                     'url'  => '#',
-                ],
+                ], */
             ],
         ],
         ['text'    => 'Usuários',
