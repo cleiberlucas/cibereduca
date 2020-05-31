@@ -14,18 +14,19 @@
             <ul>
                 <li>
                     <strong>Matrícula:</strong> R$ {{$matricula->valor_matricula}}
-                    Pago em: {{$matricula->data_pagto_matricula}}
-                    Limite Desistência: {{$matricula->data_limite_desistencia}}
+                        Pago em: {{$matricula->data_pagto_matricula}}
+                        Limite Desistência: {{$matricula->data_limite_desistencia}}
                 </li>
                 <li>
                     <strong>Curso:</strong> R$ {{$matricula->valor_curso}}
-                    Desconto de R$: {{$matricula->valor_desconto}} - 
-                    Parcelas: {{$matricula->qt_parcelas}}
+                        Desconto de R$: {{$matricula->valor_desconto}} - 
+                        Parcelas: {{$matricula->qt_parcelas_curso}}
                      
                 </li>
                 <li>
                     <strong>Material Didático:</strong> R$ {{$matricula->valor_material_didatico}}
-                    Pago em: {{$matricula->data_pagto_mat_didatico}}
+                        Pago em: {{$matricula->data_pagto_mat_didatico}} - 
+                        Parcelas: {{$matricula->qt_parcelas_mat_didatico}}
                 </li>
                 <li>
                     <strong>Situação:</strong>

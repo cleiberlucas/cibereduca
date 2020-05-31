@@ -1,9 +1,9 @@
 @extends('adminlte::page')
 
-@section('title_postfix', ' '.$tipoPessoa)
+@section('title_postfix', ' '.$pessoa->tipoPessoa->tipo_pessoa)
 
 @section('content_header')
-    <h1>Ficha cadastral - <b>{{ $pessoa->nome}}</b></h1>
+    <h1>Ficha cadastral {{$pessoa->tipoPessoa->tipo_pessoa}} - <b>{{ $pessoa->nome}}</b></h1>
 @stop
 
 @section('content')
@@ -17,7 +17,7 @@
                     <strong>CPF:</strong> {{ $pessoa->cpf}}
                 </li>
                 <li>
-                    <strong>Documento identidade:</strong> {{ $pessoa->doc_identidade}}
+                    <strong>Documento identidade:</strong> {{ $pessoa->tipoDocIdentidade->tipo_doc_identidade ?? ''}} - {{ $pessoa->doc_identidade}}
                 </li>
                 <li>
                     <strong>Data Nascimento:</strong> {{ $pessoa->data_nascimento}}

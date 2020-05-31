@@ -3,6 +3,7 @@
 namespace App\Models\Secretaria;
 
 use App\Models\Endereco;
+use App\Models\TipoDocIdentidade;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,7 +16,7 @@ class Pessoa extends Model
     
     //protected $attributes = ['situacao_disciplina' => '0'];
 
-    protected $fillable = ['nome', 'cpf', 'doc_identidade', 'data_nascimento', 'telefone_1', 'telefone_2', 'email_1', 'email_2', 'fk_id_tipo_pessoa', 'fk_id_user', 'situacao_pessoa'];
+    protected $fillable = ['nome', 'cpf', 'fk_id_tipo_doc_identidade', 'doc_identidade', 'data_nascimento', 'telefone_1', 'telefone_2', 'email_1', 'email_2', 'fk_id_tipo_pessoa', 'obs_pessoa', 'fk_id_user', 'situacao_pessoa'];
    
     public function search($filtro = null, $tipo_pessoa)
     {        
@@ -68,5 +69,10 @@ class Pessoa extends Model
     public function endereco()
     {       
         return $this->hasOne(Endereco::class, 'fk_id_pessoa', 'id_pessoa')->with('cidade');       
+    }
+
+    public function tipoDocIdentidade()
+    {       
+        return $this->belongsTo(TipoDocIdentidade::class, 'fk_id_tipo_doc_identidade', 'id_tipo_doc_identidade');
     }
 }

@@ -19,6 +19,13 @@
                 @endif
 
                 <div class="row">
+                    <div class="form-group col-sm-12 col-xs-2"> 
+                        <label for="">Observações</label>
+                        <textarea class="form-control" name="obs_pessoa" id="" cols="100" rows="5">{{$pessoa->obs_pessoa ?? old('obs_pessoa')}}</textarea>
+                    </div>
+                </div>
+
+                <div class="row">
                     <div class="form-group col-sm-6 col-xs-12">                
                         <label>*Situação:</label><br>
                         @if (isset($pessoa->situacao_pessoa) && $pessoa->situacao_pessoa == 1)

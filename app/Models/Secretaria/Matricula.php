@@ -6,6 +6,7 @@ use App\Models\AnoLetivo;
 use App\Models\FormaPagamento;
 use App\Models\Secretaria\Turma;
 use App\Models\SituacaoMatricula;
+use App\Models\TipoAtendimentoEspecializado;
 use App\Models\TipoDescontoCurso;
 use App\Models\Turno;
 use App\Models\User;
@@ -21,9 +22,9 @@ class Matricula extends Model
         
     protected $fillable = ['fk_id_aluno', 'fk_id_responsavel', 'fk_id_turma', 
                             'data_matricula', 'valor_matricula', 'data_limite_desistencia', 'data_vigencia', 'data_pagto_matricula', 'fk_id_forma_pagto_matricula',
-                            'valor_desconto', 'fk_id_tipo_desconto_curso', 'qt_parcelas', 'data_venc_parcela_um', 'fk_id_forma_pagto_curso',
-                            'valor_material_didatico', 'data_pagto_mat_didatico', 'fk_id_forma_pagto_didatico', 
-                            'fk_id_situacao_matricula', 'fk_id_user_cadastro', 'fk_id_user_altera'];
+                            'valor_desconto', 'fk_id_tipo_desconto_curso', 'qt_parcelas_curso', 'data_venc_parcela_um', 'fk_id_forma_pagto_curso',
+                            'valor_material_didatico', 'data_pagto_mat_didatico', 'fk_id_forma_pagto_didatico', 'qt_parcelas_mat_didatico',
+                            'fk_id_atendimento_especializado', 'obs_matricula', 'fk_id_situacao_matricula', 'obs_matricula', 'fk_id_user_cadastro', 'fk_id_user_altera'];
    
     /* public function search($filtro = null)
     {
@@ -74,6 +75,15 @@ class Matricula extends Model
     public function aluno()
     {       
         return $this->belongsTo(Pessoa::class, 'fk_id_aluno', 'id_pessoa');
+    }
+
+    
+    /**
+     * Retorna tipo atendimento especializado MatrículaXAluno
+     */
+    public function tipoAtendimentoEspecializado()
+    {       
+        return $this->belongsTo(TipoAtendimentoEspecializado::class, 'fk_id_atendimento_especializado', 'id_atendimento_especializado');
     }
 
     /**

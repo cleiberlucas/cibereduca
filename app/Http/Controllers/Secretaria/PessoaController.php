@@ -8,20 +8,25 @@ use App\Models\Cidade;
 use App\Models\Endereco;
 use App\Models\Estado;
 use App\Models\Secretaria\Pessoa;
+use App\Models\TipoDocIdentidade;
 use Illuminate\Http\Request;
 
 class PessoaController extends Controller
 {
-    private $repositorio, $estados, $cidades;
+    private $repositorio, $estados, $cidades, $tiposDocIdentidade;
     
     public function __construct(Pessoa $pessoa)
     {
         $this->repositorio = $pessoa;
+        
         $this->estados = new Estado;
         $this->estados = $this->estados->all()->sortBy('sigla');
+        
         $this->cidades = new Cidade;
         $this->cidades = $this->cidades->all()->sortBy('cidade');
         
+        $this->tiposDocIdentidade = new TipoDocIdentidade;
+        $this->tiposDocIdentidade = $this->tiposDocIdentidade->all()->sortBy('tipo_doc_identidade');        
     }
 
     public function index(Request $request)
@@ -40,7 +45,8 @@ class PessoaController extends Controller
                     'tipo_pessoa' => $request->segment(4),
                     'estados' => $this->estados,
                     'cidades' => $this->cidades,
-        ]);
+                    'tiposDocIdentidade' => $this->tiposDocIdentidade,
+         ]);
     }
 
     public function store(StoreUpdatePessoa $request )
@@ -62,15 +68,13 @@ class PessoaController extends Controller
 
     public function show($id)
     {
-        $pessoa = $this->repositorio->where('id_pessoa', $id)->with('usuario')->first();
-        $tipoPessoa = $pessoa->tipoPessoa->tipo_pessoa;     
-
+        $pessoa = $this->repositorio->where('id_pessoa', $id)->first();
+        
         if (!$pessoa)
             return redirect()->back();
 
         return view('secretaria.paginas.pessoas.show', [
-            'pessoa' => $pessoa,
-            'tipoPessoa' => $tipoPessoa,
+            'pessoa' => $pessoa,        
         ]);
     }
 
@@ -110,6 +114,7 @@ class PessoaController extends Controller
             'tipoPessoa' => $tipoPessoa,
             'estados' => $this->estados,
             'cidades' => $this->cidades,
+            'tiposDocIdentidade' => $this->tiposDocIdentidade,
         ]);
     }
 

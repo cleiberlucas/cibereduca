@@ -10,6 +10,7 @@ use App\Models\Secretaria\Pessoa;
 use App\Models\Secretaria\Turma;
 use App\Models\Secretaria\TipoDescontoCurso;
 use App\Models\SituacaoMatricula;
+use App\Models\TipoAtendimentoEspecializado;
 use Illuminate\Http\Request;
 
 class MatriculaController extends Controller
@@ -64,18 +65,21 @@ class MatriculaController extends Controller
 
         $situacoesMatricula = new SituacaoMatricula;
 
+        $tiposAtendimentoEspecializado = new TipoAtendimentoEspecializado;
+
         $pessoa = new Pessoa;
         //dd($turma->id_turma);
         //dd($this->repositorio->quantMatriculas($turma->fk_id_turma));
         return view('secretaria.paginas.matriculas.create', [
-                    'alunos'       => $pessoa->alunosNaoMatriculados($turma->fk_id_ano_letivo),
-                    'responsaveis' => $pessoa->getResponsaveis(),
-                    'turma'        => $turma,
-                    'formasPagto' => $formasPagto->getFormasPagamento(),
-                    'tiposDesconto' => $tiposDesconto->getTiposDescontoCurso(),
-                    'situacoesMatricula' => $situacoesMatricula->getSituacoesMatricula(),
-                    'quantMatriculas'    => $this->repositorio->quantMatriculas($turma->id_turma),
+                    'alunos'                => $pessoa->alunosNaoMatriculados($turma->fk_id_ano_letivo),
+                    'responsaveis'          => $pessoa->getResponsaveis(),
+                    'turma'                 => $turma,
+                    'formasPagto'           => $formasPagto->getFormasPagamento(),
+                    'tiposDesconto'         => $tiposDesconto->getTiposDescontoCurso(),
+                    'situacoesMatricula'    => $situacoesMatricula->getSituacoesMatricula(),
+                    'quantMatriculas'       => $this->repositorio->quantMatriculas($turma->id_turma),
                     'quantVagasDisponiveis' => $this->repositorio->quantVagasDisponiveis($turma->id_turma),
+                    'tiposAtendimentoEspecializado' => $tiposAtendimentoEspecializado->getTiposAtendimentoEspecializado(),
         ]);
     }
 
@@ -156,6 +160,8 @@ class MatriculaController extends Controller
 
         $situacoesMatricula = SituacaoMatricula::select('*')->orderBy('situacao_matricula')->get();
 
+        $tiposAtendimentoEspecializado = new TipoAtendimentoEspecializado;
+
         $matricula = $this->repositorio
                                 ->select('tb_matriculas.*', 'tb_turmas.nome_turma', 'tb_anos_letivos.ano', 'tb_turnos.descricao_turno', 'tb_sub_niveis_ensino.sub_nivel_ensino',
                                         'aluno.nome as nome_aluno', 'aluno.id_pessoa as id_aluno', 'responsavel.nome as nome_responsavel', 'responsavel.id_pessoa as id_responsavel',                                        
@@ -185,6 +191,7 @@ class MatriculaController extends Controller
             'formasPagto'        => $formasPagto,
             'tiposDesconto'      => $tiposDesconto,
             'situacoesMatricula' => $situacoesMatricula,
+            'tiposAtendimentoEspecializado' => $tiposAtendimentoEspecializado->getTiposAtendimentoEspecializado(),
         ]);
     }
 

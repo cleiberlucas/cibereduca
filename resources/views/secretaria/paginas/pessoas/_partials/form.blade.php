@@ -22,7 +22,20 @@
         <label>CPF:</label>
         <input type="text" name="cpf" class="form-control" placeholder="CPF" value="{{ $pessoa->cpf ?? old('cpf') }}">
     </div>    
-
+    <div class="form-group col-sm-2 col-xs-2">            
+        <label>Tipo Identidade</label>
+        <select name="fk_id_tipo_doc_identidade" id="fk_id_tipo_doc_identidade" class="form-control">
+            <option value=""></option>
+            @foreach ($tiposDocIdentidade as $tipoDocIdentidade)
+                <option value="{{$tipoDocIdentidade->id_tipo_doc_identidade }}"
+                    @if (isset($pessoa) && $tipoDocIdentidade->id_tipo_doc_identidade == $pessoa->fk_id_tipo_doc_identidade)
+                        selected="selected"
+                    @endif
+                    >                    
+                    {{$tipoDocIdentidade->tipo_doc_identidade}}</option>
+            @endforeach
+        </select>
+    </div> 
     <div class="form-group col-sm-2 col-xs-12">
         <label>Identidade:</label>
         <input type="text" name="doc_identidade" class="form-control" placeholder="Documento de Identidade" value="{{ $pessoa->doc_identidade ?? old('doc_identidade') }}">

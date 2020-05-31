@@ -13,7 +13,8 @@
             <a href="{{ route('tiposturmas.index') }} " class="">Padrão de Turmas</a>
         </li>
     </ol>
-    <h1><strong>Grade Curricular</strong></h1>
+
+    <div align="center"><h1><strong>Grade Curricular</strong></h1></div>
     <h1><strong>Ano Letivo: </strong>{{$tipoTurma->anoLetivo->ano}}</h1>
     <h1><Strong>Padrão de Turma: </Strong>{{$tipoTurma->tipo_turma}} - {{$tipoTurma->subNivelEnsino->sub_nivel_ensino}}</h1>
     

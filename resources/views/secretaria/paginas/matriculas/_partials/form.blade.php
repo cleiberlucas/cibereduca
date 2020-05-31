@@ -107,7 +107,7 @@
     <div class="row">
         <div class="form-group col-sm-2 col-xs-2">            
             <label>Quantidade parcelas</label>
-            <input type="number" name="qt_parcelas" class="form-control"  value="{{ $matricula->qt_parcelas ?? old('qt_parcelas') }}">
+            <input type="number" name="qt_parcelas_curso" class="form-control"  value="{{ $matricula->qt_parcelas_curso ?? old('qt_parcelas_curso') }}">
         </div>   
         <div class="form-group col-sm-2 col-xs-2">            
             <label>Vencimento 1ª parcela</label>
@@ -136,6 +136,10 @@
             <input type="decimal" name="valor_material_didatico" class="form-control"  value="{{ $matricula->valor_material_didatico ?? old('valor_material_didatico') }}">
         </div>   
         <div class="form-group col-sm-2 col-xs-2">            
+            <label>Quantidade parcelas</label>
+            <input type="number" name="qt_parcelas_mat_didatico" class="form-control"  value="{{ $matricula->qt_parcelas_mat_didatico ?? old('qt_parcelas_mat_didatico') }}">
+        </div>
+        <div class="form-group col-sm-2 col-xs-2">            
             <label>Pagto Material Didático</label>
             <input type="date" name="data_pagto_mat_didatico" class="form-control"  value="{{ $matricula->data_pagto_mat_didatico ?? old('data_pagto_mat_didatico') }}">
         </div> 
@@ -156,6 +160,23 @@
     </div>
 
     <div class="row">
+        <div class="form-group col-sm-3 col-xs-2">            
+            <label>Atendimento Especializado</label>
+            <select name="fk_id_atendimento_especializado" id="fk_id_atendimento_especializado" class="form-control">
+                <option value=""></option>
+                @foreach ($tiposAtendimentoEspecializado as $tipoAtendimentoEspecializado)
+                    <option value="{{$tipoAtendimentoEspecializado->id_atendimento_especializado }}"
+                        @if (isset($matricula) && $tipoAtendimentoEspecializado->id_atendimento_especializado == $matricula->fk_id_atendimento_especializado)
+                            selected="selected"
+                        @endif
+                        >                    
+                        {{$tipoAtendimentoEspecializado->atendimento_especializado}}</option>
+                @endforeach
+            </select>
+        </div> 
+    </div>
+
+    <div class="row">
         <div class="form-group col-sm-2 col-xs-2">            
             <label>Situação Matrícula</label>
             <select name="fk_id_situacao_matricula" id="fk_id_situacao_matricula" class="form-control">
@@ -170,6 +191,13 @@
                 @endforeach
             </select>
         </div> 
+    </div>
+
+    <div class="row">
+        <div class="form-group col-sm-12 col-xs-2"> 
+            <label for="">Observações</label>
+            <textarea class="form-control" name="obs_matricula" id="" cols="100" rows="5">{{$matricula->obs_matricula ?? old('obs_matricula')}}</textarea>
+        </div>
     </div>
 
     <div class="row">

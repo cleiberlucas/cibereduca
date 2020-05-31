@@ -70,11 +70,30 @@ class GradeCurricularController extends Controller
                     ->back()
                     ->with('info', 'Escolha pelo menos uma disciplina.');
         }
-
+      
         $gradeCurricular = [];
+        $j = 0;//contador p disciplinas selecionadas
+        $ch_preenchidas = 0;
         //Sincronizando a escolha de disciplina e carga horária
-        for($i = 0; $i < count($request->disciplinas); $i++)
-            $gradeCurricular[$request->disciplinas[$i]] = ['carga_horaria_anual' => $request->cargas_horarias[$i]];
+        for($i = 0; $i < count($request->cargas_horarias); $i++)
+        {           
+            //verificando se a carga horaria foi preenchida
+            if ($request->cargas_horarias[$i]){
+                $ch_preenchidas ++;
+                //verificando se uma disciplina foi selecionada
+                if (isset($request->disciplinas[$j]))
+                    //sincroniza disciplina X carga horaria
+                    $gradeCurricular[$request->disciplinas[$j]] = ['carga_horaria_anual' => $request->cargas_horarias[$i]];
+                
+                    //incrementa contador disciplinas
+                $j++;
+            }            
+        }
+        //verificando se preencheu a carga horaria para todas as disciplinas selecionadas
+        if ($ch_preenchidas != count($request->disciplinas))
+            return redirect()
+                    ->back()
+                    ->with('info', 'Informe a carga horária para a(s) disciplina(s) escolhida(s).');
 
         $tipoTurma->disciplinas()->attach($gradeCurricular);
 

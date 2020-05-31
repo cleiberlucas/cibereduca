@@ -239,6 +239,11 @@ return [
                     'url'  => '#',
                     'icon_color' => 'cyan',
                 ],
+                [
+                    'text' => 'Histórico',
+                    'url'  => '#',
+                    'icon_color' => 'cyan',
+                ],
             ],
         ],
         [
