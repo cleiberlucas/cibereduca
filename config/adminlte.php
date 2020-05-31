@@ -300,6 +300,11 @@ return [
                     'icon_color' => 'red',
                 ],
                 [
+                    'text' => 'Atendimentos Especializados',
+                    'url'  => 'admin/atendimentosespecializados',
+                    'icon_color' => 'red',
+                ],
+                [
                     'text' => 'Unidade Ensino',
                     'url'  => 'admin/UnidadesEnsino',                    
                     'icon_color' => 'red',

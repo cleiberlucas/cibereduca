@@ -59,8 +59,15 @@ Route::prefix('admin')
         ->middleware('auth')
         ->group(function(){                
             
+            /**
+             * Rotas Atendimento Especializado
+             */
+            Route::any('atendimentosespecializados/search', 'AtendimentoEspecializadoController@search')->name('atendimentosespecializados.search');
+            Route::resource('atendimentosespecializados', 'AtendimentoEspecializadoController');
+
              /**
-             * Rotas Perfis X Permissões
+             * Rotas Grade curricular
+             * Turmas X Disciplinas
              */
             route::get('tiposturmas/{id}/disciplina/{id_disciplina}/remove', 'GradeCurricular\GradeCurricularController@removerDisciplinasTurma')->name('tiposturmas.disciplinas.remover');            
             route::post('tiposturmas/{id}/disciplinas', 'GradeCurricular\GradeCurricularController@vincularDisciplinasTurma')->name('tiposturmas.disciplinas.vincular');            
