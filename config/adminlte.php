@@ -295,6 +295,11 @@ return [
                     'icon_color' => 'red',
                 ],              
                 [
+                    'text' => 'Unidade Ensino',
+                    'url'  => 'admin/UnidadesEnsino',                    
+                    'icon_color' => 'red',
+                ],
+                [
                     'text' => 'Docs Matrícula',
                     'url'  => 'admin/tiposdocumentos',
                     'icon_color' => 'red',
@@ -305,10 +310,11 @@ return [
                     'icon_color' => 'red',
                 ],
                 [
-                    'text' => 'Unidade Ensino',
-                    'url'  => 'admin/UnidadesEnsino',                    
+                    'text' => 'Tipos Docs Identidade',
+                    'url'  => 'admin/tiposdocidentidade',
                     'icon_color' => 'red',
                 ],
+               
                /*  [
                     'text'    => 'level_one',
                     'url'     => '#',

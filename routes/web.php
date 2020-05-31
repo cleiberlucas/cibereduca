@@ -60,6 +60,12 @@ Route::prefix('admin')
         ->group(function(){                
             
             /**
+             * Rotas Tipos Documentos Identidade
+             */
+            Route::any('tiposdocidentidade/search', 'TipoDocIdentidadeController@search')->name('tiposdocidentidade.search');
+            Route::resource('tiposdocidentidade', 'TipoDocIdentidadeController');
+
+            /**
              * Rotas Atendimento Especializado
              */
             Route::any('atendimentosespecializados/search', 'AtendimentoEspecializadoController@search')->name('atendimentosespecializados.search');
