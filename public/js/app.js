@@ -1382,7 +1382,7 @@ module.exports = (
           search: urlParsingNode.search ? urlParsingNode.search.replace(/^\?/, '') : '',
           hash: urlParsingNode.hash ? urlParsingNode.hash.replace(/^#/, '') : '',
           hostname: urlParsingNode.hostname,
-          port: urlParsingNode,
+          /* port: urlParsingNode.port, */
           pathname: (urlParsingNode.pathname.charAt(0) === '/') ?
             urlParsingNode.pathname :
             '/' + urlParsingNode.pathname
