@@ -42,7 +42,7 @@
                                     {{$unidadeEnsino->telefone}}
                                 </td>
                                 <td style="width=10px;">
-                                    <a href="{{ route('unidadesensino.edit', $unidadeEnsino->id_unidade_ensino)}}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>
+                                    <a href="{{ route('unidadesensino.edit', $unidadeEnsino->id_unidade_ensino, false)}}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>
                                     <a href="{{ route('unidadesensino.show', $unidadeEnsino->id_unidade_ensino, false) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-eye"></i></a>                                    
                                 </td>
                                 
