@@ -12,7 +12,7 @@ class TipoTurma extends Model
         
     public $timestamps = false;
         
-    protected $fillable = ['tipo_turma',  'fk_id_ano_letivo', 'fk_id_sub_nivel_ensino', 'valor_padrao_mensalidade', 'fk_id_user'];
+    protected $fillable = ['tipo_turma',  'fk_id_ano_letivo', 'fk_id_sub_nivel_ensino', 'valor_curso', 'fk_id_user'];
    
     public function search($filtro = null)
     {

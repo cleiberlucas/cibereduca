@@ -34,7 +34,7 @@
                         <th>Ano</th>
                         <th>Padrão de Turma</th>
                         <th>Nível de Ensino</th>
-                        <th>Valor padrão mensalidade</th>
+                        <th>Valor Curso</th>
                         <th width="270">Ações</th>
                     </thead>
                     <tbody>                        
@@ -50,7 +50,7 @@
                                     {{$tipoturma->subNivelEnsino->sub_nivel_ensino}}
                                 </td>                   
                                 <td>
-                                    R$ {{number_format($tipoturma->valor_padrao_mensalidade, 2, ',', '.')}}
+                                    R$ {{number_format($tipoturma->valor_curso, 2, ',', '.')}}
                                 </td>                                                                                    
                                 <td style="width=10px;">
                                     <a href="{{ route('tiposturmas.disciplinas', $tipoturma->id_tipo_turma) }}" class="btn btn-sm btn-outline-success"><i class="far fa-list-alt"></i></a>

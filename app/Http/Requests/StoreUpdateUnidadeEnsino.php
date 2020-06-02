@@ -30,4 +30,14 @@ class StoreUpdateUnidadeEnsino extends FormRequest
             'nome_fantasia' => 'required|min:3|max:150',
         ];
     }
+
+    public function messages()
+    {     
+        return [
+            'razao_social.required' => "Informe a Razão Social.",
+            'razao_social.min'      => "Informe, no mínimo, 3 caracteres para a Razão Social.",
+            'nome_fantasia.required' => 'Informe o Nome Fantasia.',
+            'nome_fantasia.min' => 'Informe, no mínimo, 3 caracteres para o Nome Fantasia.',
+        ];
+    }
 }

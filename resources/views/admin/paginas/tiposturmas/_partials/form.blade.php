@@ -1,3 +1,4 @@
+
 <div class="container-fluid">
 
     @include('admin.includes.alerts')
@@ -7,7 +8,7 @@
         <input type="hidden" name="fk_id_user" value="{{Auth::id()}}">
         <div class="form-group col-sm-1 col-xs-2">            
             <label>Ano letivo:</label>
-            <select name="fk_id_ano_letivo" id="" class="form-control">
+            <select name="fk_id_ano_letivo" id="" class="form-control" required>
                 <option value=""></option>
                 @foreach ($anosLetivos as $anoletivo)
                     
@@ -25,12 +26,12 @@
     <div class="row">
         <div class="form-group col-sm-3 col-xs-2">
             <label>Nome padrão da turma:</label>
-            <input type="text" name="tipo_turma" class="form-control" placeholder="1º Ano" value="{{ $tipoTurma->tipo_turma ?? old('tipo_turma') }}">        
+            <input type="text" name="tipo_turma" required class="form-control" placeholder="1º Ano" value="{{ $tipoTurma->tipo_turma ?? old('tipo_turma') }}">        
         </div>
         
         <div class="form-group col-sm-3 col-xs-2">
         <label>Nível de Ensino:</label>
-            <select name="fk_id_sub_nivel_ensino" id="" class="form-control">
+            <select name="fk_id_sub_nivel_ensino" id="" class="form-control" required>
                 <option value=""></option>
                 @foreach ($subNiveisEnsino as $subNivelEnsino)
 
@@ -47,8 +48,8 @@
     
     <div class="row">
         <div class="form-group col-sm-2 col-xs-2">
-            <label>Valor padrão da mensalidade:</label>
-            <input type="text" name="valor_padrao_mensalidade" class="form-control" placeholder="" value="{{ $tipoTurma->valor_padrao_mensalidade ?? old('valor_padrao_mensalidade') }}">        
+            <label>Valor Curso:</label>
+            <input type="number" id="valor_curso" required name="valor_curso" step="0.010" class="form-control" placeholder="" value="{{ $tipoTurma->valor_curso ?? old('valor_curso') }}">
         </div>
     </div>
     
@@ -58,3 +59,9 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.getElementById("valor_curso").addEventListener("change", function(){
+   this.value = parseFloat(this.value).toFixed(2);
+});
+</script>

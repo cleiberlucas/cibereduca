@@ -8,7 +8,7 @@
         <div class="col-sm-8 col-xs-6">
             <h1><strong>Matricular </strong> Aluno {{$turma->ano}} - 
             Turma: {{$turma->nome_turma}} - {{$turma->descricao_turno}}</strong></h1>
-            <h3><strong>Valor do Curso: </strong> <font color=green> R$ {{$turma->valor_padrao_mensalidade}} </font></h3>
+            <h3><strong>Valor do Curso: </strong> <font color=green> R$ {{number_format($turma->valor_curso, 2, ',', '.')}} </font></h3>
         </div>
         
         <div class="col-sm-4 col-xs-6">

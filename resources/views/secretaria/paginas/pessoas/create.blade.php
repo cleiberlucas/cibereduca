@@ -12,7 +12,7 @@
             @csrf
             <div class="container-fluid">
                 @include('secretaria.paginas.pessoas._partials.form')
-                
+                <input type="hidden" name="fk_id_user_cadastro" value="{{Auth::id()}}">
                 {{-- Endereço apenas para responsáveis --}}
                 @if ($tipo_pessoa == 'responsavel')
                     @include('secretaria.paginas.pessoas._partials.form_endereco')    

@@ -38,7 +38,8 @@
                         <th>Turno</th>
                         <th>Vagas</th>
                         <th>Localização</th>
-                        <th>Limite alunos</th>                        
+                        <th>Limite vagas</th>                        
+                        <th>Situação</th>
                         <th >Ações</th>
                     </thead>
                     <tbody>                        
@@ -65,7 +66,14 @@
                                 </td>
                                 <td>
                                     {{$turma->limite_alunos}}
-                                </td>           
+                                </td>     
+                                <td>
+                                    @if ($turma->situacao_turma == 1)
+                                        <b>Aberta</b>
+                                    @else
+                                        Encerrada                                        
+                                    @endif                                    
+                                </td>       
                                 <td style="width=10px;">
                                     <a href="{{ route('matriculas.index', $turma->id_turma) }}" class="btn btn-sm btn-success">Matrículas</a>
                                     <a href="{{ route('turmas.edit', $turma->id_turma) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>

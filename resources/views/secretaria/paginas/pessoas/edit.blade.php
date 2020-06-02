@@ -1,9 +1,9 @@
 @extends('adminlte::page')
 
-@section('title_postfix', ' '.$tipoPessoa)
+@section('title_postfix', ' '.$pessoa->tipoPessoa->tipo_pessoa)
 
 @section('content_header')
-    <h1>Editar {{$tipoPessoa}} </h1>
+    <h1>Editar {{$pessoa->tipoPessoa->tipo_pessoa}} </h1>
 @stop
 
 @section('content')
@@ -12,7 +12,7 @@
             @csrf
             @method('PUT')
             @include('secretaria.paginas.pessoas._partials.form')
-
+            
              {{-- Endereço apenas para responsáveis --}}
              @if ($pessoa->fk_id_tipo_pessoa == '2')
                 @include('secretaria.paginas.pessoas._partials.form_endereco')    

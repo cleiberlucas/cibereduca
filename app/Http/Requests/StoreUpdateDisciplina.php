@@ -28,8 +28,19 @@ class StoreUpdateDisciplina extends FormRequest
     
         return [
             'disciplina' => "required|min:3|max:100|unique:tb_disciplinas,disciplina,{$id},id_disciplina",
-            'sigla' => "nullable|min:3|max:5",            
-            
+            'sigla_disciplina' => "required|min:2|max:10",          
         ];    
+    }
+
+    public function messages()
+    {
+        return [
+            'disciplina.min'    => 'Informe, no mínimo, 3 caracteres para o nome da disciplina',
+            'disciplina.required'    => 'Informe o nome da disciplina',
+            'sigla_disciplina.required'         => 'Informe a sigla.',
+            'sigla_disciplina.min'         => 'Informe, no mínimo, 2 caracteres para a sigla.',
+            'sigla_disciplina.max'         => 'Informe, no máximo, 10 caracteres para a sigla.',
+
+        ];
     }
 }

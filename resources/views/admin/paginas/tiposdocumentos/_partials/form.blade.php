@@ -6,7 +6,7 @@
     <div class="row">
         <div class="form-group col-sm-3 col-xs-2">
             <label>*Nome do documento:</label>
-            <input type="text" name="tipo_documento" class="form-control" placeholder="Nome do Documento" value="{{ $tipoDocumento->tipo_documento ?? old('tipo_documento') }}">
+            <input type="text" name="tipo_documento" required class="form-control" placeholder="Nome do Documento" value="{{ $tipoDocumento->tipo_documento ?? old('tipo_documento') }}">
         </div>
     </div>
     <div class="row">

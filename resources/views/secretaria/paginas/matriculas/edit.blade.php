@@ -5,7 +5,7 @@
 @section('content_header')
 <h1><strong>Editar </strong> Matrícula {{$matricula->ano}} - 
 Turma: {{$matricula->nome_turma}} - {{$matricula->descricao_turno}}</h1>
-<h3><strong>Valor do Curso: </strong><font color=green> R$ {{$matricula->valor_padrao_mensalidade}} </font> </h3>
+<h3><strong>Valor do Curso: </strong><font color=green> R$ {{number_format($matricula->valor_curso, 2, ',', '.')}} </font> </h3>
 <div class="" align="center">
     <h1><strong> Aluno: {{$matricula->nome_aluno}}</strong></h1>
 </div>

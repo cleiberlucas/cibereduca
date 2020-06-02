@@ -17,10 +17,10 @@
                     <strong>Período Letivo:</strong> {{ $periodoletivo->periodo_letivo}}
                 </li>
                 <li>
-                    <strong>Data início:</strong> {{ $periodoletivo->data_inicio}}
+                    <strong>Data início:</strong> {{date('d/m/Y', strtotime($periodoletivo->data_inicio))}}
                 </li>
                 <li>
-                    <strong>Data fim:</strong> {{ $periodoletivo->data_fim}}
+                    <strong>Data fim:</strong> {{date('d/m/Y', strtotime($periodoletivo->data_fim))}}
                 </li>
                 <li>
                     <strong>Situação:</strong>
@@ -28,11 +28,10 @@
                         Aberto
                     @else
                         Encerrado
-                    @endif
-                    {{ $periodoletivo->media_minima_aprovacao}}
+                    @endif                    
                 </li>
                 <li>
-                    <strong>Data última Alteração:</strong> {{ $periodoletivo->data_inicio}}
+                    <strong>Data última Alteração:</strong> {{date('d/m/Y', strtotime($periodoletivo->data_alteracao))}}
                 </li>
                 <li>
                     <strong>Alterado por:</strong> {{ $periodoletivo->usuario->name}}

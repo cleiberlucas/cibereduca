@@ -3,10 +3,12 @@
 @section('title_postfix', ' Padrão de Turma')
 
 @section('content_header')
-    <h1><b>Padrão de Turma {{ $tipoturma->tipo_turma}} - {{ $tipoturma->anoLetivo->ano}}</b></h1>
+    
 @stop
 
 @section('content')
+    <h1><strong>{{ $tipoturma->anoLetivo->unidadeEnsino->nome_fantasia}}</strong></h1>
+    <h1><b>Padrão de Turma {{ $tipoturma->tipo_turma}} - {{ $tipoturma->anoLetivo->ano}}</b></h1>
     <div class="container-fluid">        
         <div class="card-header">
             <ul>
@@ -20,7 +22,7 @@
                     <strong>Nível Ensino:</strong> {{ $tipoturma->subNivelEnsino->sub_nivel_ensino}}
                 </li>
                 <li>
-                    <strong>Valor padrão mensalidade:</strong> R$ {{ number_format($tipoturma->valor_padrao_mensalidade, 2, ',', '.')}}
+                    <strong>Valor Curso:</strong> R$ {{ number_format($tipoturma->valor_curso, 2, ',', '.')}}
                 </li>                                
                 <li>
                     <strong>Cadastrado por:</strong> {{ $tipoturma->usuario->name}}

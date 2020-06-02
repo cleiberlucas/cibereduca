@@ -2,14 +2,15 @@
 
 <div class="row">    
     <div class="form-group col-sm-6 col-xs-12">
-        @if (isset($tipo_pessoa) && $tipo_pessoa == 'aluno')
+        @if (isset($pessoa) && $pessoa->tipoPessoa->tipo_pessoa == 'aluno')
             <input type="hidden" name="fk_id_tipo_pessoa" value="1">
         @elseif (isset($tipo_pessoa) &&  $tipo_pessoa == 'responsavel')
             <input type="hidden" name="fk_id_tipo_pessoa" value="2">
         @endif
-        <input type="hidden" name="fk_id_user" value="{{Auth::id()}}">
+        
+        <input type="hidden" name="fk_id_user_alteracao" value="{{Auth::id()}}">
         <label>Nome:</label>
-        <input type="text" name="nome" class="form-control" placeholder="Nome" required value="{{ $pessoa->nome ?? old('nome') }} ">
+        <input type="text" name="nome" class="form-control" placeholder="Nome" required value="{{ $pessoa->nome ?? old('nome') }}">
     </div>
     <div class="form-group col-sm-3 col-xs-12">
         <label>Foto:</label>
@@ -42,7 +43,7 @@
     </div>
     <div class="form-group col-sm-2 col-xs-10">
         <label>Data Nascimento:</label>
-        <input type="date" name="data_nascimento" class="form-control" placeholder="Data de Nascimento" required value="{{ $pessoa->data_nascimento ?? old('data_nascimento') }}">
+        <input type="date" name="data_nascimento" class="form-control" placeholder="Data de Nascimento" value="{{ $pessoa->data_nascimento ?? old('data_nascimento') }}">
         <div class="input-group-addon" >
             <span class="glyphicon glyphicon-th"></span>
         </div>            

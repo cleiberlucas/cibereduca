@@ -27,8 +27,7 @@ class StoreUpdateTipoDocumento extends FormRequest
         $id = $this->segment(3);
     
         return [
-            'tipo_documento' => "required|min:2|max:100|unique:tb_tipos_documentos,tipo_documento,{$id},id_tipo_documento",
-            'comentario' => "nullable|min:3|max:100",            
+            'tipo_documento' => "required|min:2|max:100|unique:tb_tipos_documentos,tipo_documento,{$id},id_tipo_documento",          
             
         ];    
     }

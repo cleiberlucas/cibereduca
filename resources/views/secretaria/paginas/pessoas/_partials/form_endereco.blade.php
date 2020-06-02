@@ -1,7 +1,7 @@
 <div class="row">
     <div class="form-group col-sm-6 col-xs-12">
         <label>Endereço:</label>
-        <input type="text" name="endereco" class="form-control" placeholder="Endereço" value="{{ $pessoa->endereco->endereco ?? old('endereco') }}">
+        <input type="text" name="endereco" class="form-control" placeholder="Endereço" required value="{{ $pessoa->endereco->endereco ?? old('endereco') }}">
     </div>
     
     <div class="form-group col-sm-2 col-xs-12">
@@ -28,7 +28,7 @@
             <option value=""></option>
             @foreach ($estados as $estado)
                 <option value="{{$estado->id_estado }}"
-                    @if (isset($pessoa) && $estado->id_estado == $pessoa->endereco->cidade->fk_id_estado)
+                    @if (isset($pessoa) && isset($pessoa->endereco->cidade) && $estado->id_estado == $pessoa->endereco->cidade->estado->fk_id_estado)
                         selected="selected"
                     @endif
                     >                    

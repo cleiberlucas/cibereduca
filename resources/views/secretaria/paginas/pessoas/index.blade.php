@@ -62,7 +62,7 @@
                                     {{$pessoa->nome}}
                                 </td> 
                                 <td>
-                                    {{$pessoa->data_nascimento}}
+                                    {{date('d/m/Y', strtotime($pessoa->data_nascimento))}}
                                 </td>
                                 <td>
                                     {{$pessoa->telefone_1}}

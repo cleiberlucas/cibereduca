@@ -16,7 +16,23 @@ class Pessoa extends Model
     
     //protected $attributes = ['situacao_disciplina' => '0'];
 
-    protected $fillable = ['nome', 'cpf', 'fk_id_tipo_doc_identidade', 'doc_identidade', 'data_nascimento', 'telefone_1', 'telefone_2', 'email_1', 'email_2', 'fk_id_tipo_pessoa', 'obs_pessoa', 'fk_id_user', 'situacao_pessoa'];
+    protected $fillable = ['nome', 
+                            'cpf', 
+                            'fk_id_tipo_doc_identidade', 
+                            'doc_identidade', 
+                            'data_nascimento', 
+                            'telefone_1', 
+                            'telefone_2', 
+                            'email_1', 
+                            'email_2', 
+                            'fk_id_tipo_pessoa', 
+                            'obs_pessoa', 
+                            'fk_id_user_cadastro',
+                            'situacao_pessoa',
+                            'data_cadastro',
+                            'fk_id_user_alteracao',
+                            'data_alteracao',
+                        ];
    
     public function search($filtro = null, $tipo_pessoa)
     {        
@@ -30,14 +46,14 @@ class Pessoa extends Model
     /**
      * Ler alunos não matriculados em um determinado ano letivo
      */
-    public function alunosNaoMatriculados($ano = null) 
+    public function alunosNaoMatriculados($id_ano = null) 
     {        
-        $alunos = Pessoa::whereNotIn('id_pessoa', function($query) use ($ano){
+        $alunos = Pessoa::whereNotIn('id_pessoa', function($query) use ($id_ano){
             $query->select('tb_matriculas.fk_id_aluno');
             $query->from('tb_matriculas');
             $query->leftJoin('tb_turmas', 'tb_turmas.id_turma', 'tb_matriculas.fk_id_turma');
             $query->leftJoin('tb_tipos_turmas', 'tb_tipos_turmas.id_tipo_turma', 'tb_turmas.fk_id_tipo_turma');
-            $query->where("tb_tipos_turmas.fk_id_ano_letivo", '=', $ano);            
+            $query->where("tb_tipos_turmas.fk_id_ano_letivo", '=', $id_ano);            
             })            
             ->where('tb_pessoas.fk_id_tipo_pessoa', '=', 1)
             ->where('situacao_pessoa', 1)
@@ -61,14 +77,19 @@ class Pessoa extends Model
         return $this->belongsTo(TipoPessoa::class, 'fk_id_tipo_pessoa', 'id_tipo_pessoa');
     }
 
-    public function usuario()
+    public function usuarioCadastro()
     {
-        return $this->belongsTo(User::class, 'fk_id_user', 'id');
+        return $this->belongsTo(User::class, 'fk_id_user_cadastro', 'id');
+    }
+    
+    public function usuarioAlteracao()
+    {
+        return $this->belongsTo(User::class, 'fk_id_user_alteracao', 'id');
     }
 
     public function endereco()
     {       
-        return $this->hasOne(Endereco::class, 'fk_id_pessoa', 'id_pessoa')->with('cidade');       
+        return $this->hasOne(Endereco::class, 'fk_id_pessoa', 'id_pessoa');       
     }
 
     public function tipoDocIdentidade()

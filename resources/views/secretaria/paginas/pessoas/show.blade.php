@@ -20,7 +20,7 @@
                     <strong>Documento identidade:</strong> {{ $pessoa->tipoDocIdentidade->tipo_doc_identidade ?? ''}} - {{ $pessoa->doc_identidade}}
                 </li>
                 <li>
-                    <strong>Data Nascimento:</strong> {{ $pessoa->data_nascimento}}
+                    <strong>Data Nascimento:</strong> {{date('d/m/Y', strtotime($pessoa->data_nascimento))}}
                 </li>
                 <li>
                     <strong>Fone principal:</strong> {{ $pessoa->telefone_1}}
@@ -34,6 +34,16 @@
                 <li>
                     <strong>Email:</strong> {{ $pessoa->email_2}}
                 </li>
+                {{-- Endereço somente p responsável --}}
+                @if ($pessoa->fk_id_tipo_pessoa == 2)
+                    <li><strong>Endereço:</strong> {{$pessoa->endereco->endereco ?? ''}}</li>
+                    <li><strong>Complemento:</strong> {{$pessoa->endereco->complemento ?? ''}}</li>
+                    <li><strong>Número:</strong> {{$pessoa->endereco->numero  ?? ''}}</li>
+                    <li><strong>Bairro</strong> {{$pessoa->endereco->bairro  ?? ''}}</li>
+                    <li><Strong>Cidade:</Strong> {{$pessoa->endereco->cidade->cidade ?? ''}}/{{$pessoa->endereco->cidade->estado->sigla ?? ''}}</li>
+                    <li><strong>CEP:</strong>{{$pessoa->endereco->cep ?? ''}}</li>
+                    
+                @endif
                 <li>
                     <strong>Situação:</strong>  
                     @if ($pessoa->situacao_pessoa == 1)
@@ -43,7 +53,10 @@
                     @endif
                 </li>
                 <li>
-                    <strong>Cadastrado por:</strong> {{ $pessoa->usuario->name}}
+                    <strong>Cadastrado por:</strong> {{ $pessoa->usuarioCadastro->name}} em {{date('d/m/Y H:m:i', strtotime($pessoa->data_cadastro))}}
+                </li>
+                <li>
+                    <strong>Última alteração por:</strong> {{ $pessoa->usuarioAlteracao->name ?? ''}} em {{date('d/m/Y H:m:i', strtotime($pessoa->data_alteracao))}}
                 </li>
                 
             </ul>

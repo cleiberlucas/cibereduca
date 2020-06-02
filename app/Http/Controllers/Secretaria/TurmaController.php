@@ -65,7 +65,6 @@ class TurmaController extends Controller
                                     ->orderBy('tb_sub_niveis_ensino.sub_nivel_ensino', 'asc')
                                     ->orderBy('tb_tipos_turmas.tipo_turma', 'asc')
                                     ->get();
-
        
         return view('secretaria.paginas.turmas.create', [
             'turnos' => $this->turnos,
@@ -77,11 +76,11 @@ class TurmaController extends Controller
     public function store(StoreUpdateTurma $request )
     {
         $dados = $request->all();
-        /* $sit = $this->verificarSituacao($dados);
-        $dados = array_merge($dados, $sit); */
+        $sit = $this->verificarSituacao($dados);
+        $dados = array_merge($dados, $sit);
        // dd($dados);
         $this->repositorio->create($dados);
-
+ 
         return redirect()->route('turmas.index');
     }
 
@@ -115,11 +114,10 @@ class TurmaController extends Controller
         
         $matriculas = new Matricula;
         $quantVagas = [];
+        
         foreach ($turmas as $turma)
-        {
             $quantVagas[$turma->id_turma] = $matriculas->quantVagasDisponiveis($turma->id_turma);
-        }
-
+        
         return view('secretaria.paginas.turmas.index', [
             'turmas' => $turmas,
             'filtros' => $filtros,
@@ -134,8 +132,6 @@ class TurmaController extends Controller
         if (!$turma)
             return redirect()->back();
                 
-            //$this->tiposTurmas = $this->tiposTurmas->all()->with('subNivelEnsino');
-
         return view('secretaria.paginas.turmas.edit',[
             'turma'         => $turma,
             'turnos'        => $this->turnos,
@@ -150,9 +146,9 @@ class TurmaController extends Controller
         if (!$turma)
             return redirect()->back();
         
-       /*  $sit = $this->verificarSituacao($request->all());
+        $sit = $this->verificarSituacao($request->all());
         
-        $request->merge($sit); */
+        $request->merge($sit);
 
         $turma->where('id_turma', $id)->update($request->except('_token', '_method'));
 
@@ -162,11 +158,11 @@ class TurmaController extends Controller
     /**
      * Verifica se a situação foi ativada
      */
-    /* public function verificarSituacao(array $dados)
+    public function verificarSituacao(array $dados)
     {
         if (!array_key_exists('situacao_turma', $dados))
             return ['situacao_turma' => '0'];
         else
              return ['situacao_turma' => '1'];            
-    } */
+    }
 }

@@ -274,45 +274,53 @@ return [
             'icon_color' => 'red',
             'submenu' => [
                 [
-                    'text' => 'Anos Letivos',
-                    'url'  => 'admin/anosletivos',
-                    'icon_color' => 'red',
-                ],
-                [
-                    'text' => 'Bimestres Letivos',
-                    'url'  => 'admin/periodosletivos',
-                    'icon_color' => 'red',
-                ],               
-                
-                [
-                    'text' => 'Disciplinas',
-                    'url'  => 'secretaria/disciplinas',
-                    'icon_color' => 'red',
-                ],  
-                [
-                    'text' => 'Padrões de Turmas',
-                    'url'  => 'admin/tiposturmas',
-                    'icon_color' => 'red',
-                ],              
-                [
                     'text' => 'Unidade Ensino',
                     'url'  => 'admin/UnidadesEnsino',                    
                     'icon_color' => 'red',
                 ],
                 [
-                    'text' => 'Docs Matrícula',
-                    'url'  => 'admin/tiposdocumentos',
+                    'text' => 'Anos Letivos',
+                    'url'  => 'admin/anosletivos',
                     'icon_color' => 'red',
                 ],
                 [
-                    'text' => 'Atendimentos Especializados',
-                    'url'  => 'admin/atendimentosespecializados',
+                    'text' => 'Bimestres',
+                    'url'  => 'admin/periodosletivos',
                     'icon_color' => 'red',
-                ],
+                ],               
                 [
-                    'text' => 'Tipos Docs Identidade',
-                    'url'  => 'admin/tiposdocidentidade',
+                    'text' => 'Padrões de Turmas',
+                    'url'  => 'admin/tiposturmas',
                     'icon_color' => 'red',
+                ],              
+                
+                [
+                    'text'    => 'Parâmetros Gerais',
+                    'url'     => '#',
+                    'icon'    => 'fas fa-fw fa-cog',
+                    'icon_color' => 'red',
+                    'submenu' => [
+                        [
+                            'text' => 'Disciplinas',
+                            'url'  => 'secretaria/disciplinas',
+                            'icon_color' => 'red',
+                        ],  
+                        [
+                            'text' => 'Documentos Matrícula',
+                            'url'  => 'admin/tiposdocumentos',
+                            'icon_color' => 'red',
+                        ],
+                        [
+                            'text' => 'Atendimentos Especializados',
+                            'url'  => 'admin/atendimentosespecializados',
+                            'icon_color' => 'red',
+                        ],
+                        [
+                            'text' => 'Tipos Docs Identidade',
+                            'url'  => 'admin/tiposdocidentidade',
+                            'icon_color' => 'red',
+                        ],
+                    ],
                 ],
                
                /*  [

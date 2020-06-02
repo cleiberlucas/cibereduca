@@ -103,8 +103,8 @@ class PessoaController extends Controller
 
     public function edit($id)
     {
-        $pessoa = $this->repositorio->where('id_pessoa', $id)->with('endereco')->first();
-        $tipoPessoa = $pessoa->tipoPessoa->tipo_pessoa;        
+        $pessoa = $this->repositorio->where('id_pessoa', $id)->first();
+        $tipoPessoa = $pessoa->tipoPessoa->tipo_pessoa;             
 
         if (!$pessoa)
             return redirect()->back();
@@ -134,9 +134,14 @@ class PessoaController extends Controller
         //Gravando endereço
         //somente para responsável
         if ($pessoa->fk_id_tipo_pessoa == 2)
-            Endereco::where('fk_id_pessoa', $pessoa->id_pessoa)->update($request->except('_token', '_method', 'nome', 'cpf', 'doc_identidade', 'data_nascimento', 'foto', 
-                                                                                    'telefone_1', 'telefone_2', 'email_1', 'email_2', 'fk_id_tipo_pessoa', 'fk_id_user', 'situacao_pessoa', 'estado'));
-        //$updatePessoa->endereco()->update($request);
+            Endereco::where('fk_id_pessoa', $pessoa->id_pessoa)
+                            ->update($request
+                                        ->except('_token', '_method', 
+                                                    'nome', 'cpf', 'doc_identidade', 'data_nascimento', 'foto', 'fk_id_tipo_doc_identidade', 
+                                                    'obs_pessoa',
+                                                    'telefone_1', 'telefone_2', 'email_1', 'email_2', 'fk_id_tipo_pessoa', 
+                                                    'fk_id_user', 'situacao_pessoa', 'estado', 'fk_id_user_alteracao'));
+
         return redirect()->back();
        /* return view('secretaria.paginas.pessoas.index', [
             'pessoas' => $pessoas,

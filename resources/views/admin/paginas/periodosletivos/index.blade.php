@@ -49,10 +49,10 @@
                                     {{$periodoletivo->periodo_letivo}}
                                 </td>                   
                                 <td>
-                                    {{$periodoletivo->data_inicio}}
+                                    {{date('d/m/Y', strtotime($periodoletivo->data_inicio))}}
                                 </td>                   
                                 <td>
-                                    {{$periodoletivo->data_fim}}
+                                    {{date('d/m/Y', strtotime($periodoletivo->data_fim))}}
                                 </td>                   
                                 <td>
                                     @if ($periodoletivo->situacao == 1)
@@ -62,7 +62,7 @@
                                     @endif                                    
                                 </td>     
                                 <td>
-                                    {{$periodoletivo->data_alteracao}}
+                                    {{date('d/m/Y H:m:i', strtotime($periodoletivo->data_alteracao))}}
                                 </td>                            
                                 <td style="width=10px;">
                                     <a href="{{ route('periodosletivos.edit', $periodoletivo->id_periodo_letivo) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>

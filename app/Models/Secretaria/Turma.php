@@ -15,7 +15,7 @@ class Turma extends Model
     
     public $timestamps = false;
         
-    protected $fillable = ['nome_turma',  'fk_id_tipo_turma', 'fk_id_turno', 'localizacao', 'limite_alunos', 'fk_id_user'];
+    protected $fillable = ['nome_turma',  'fk_id_tipo_turma', 'fk_id_turno', 'localizacao', 'limite_alunos', 'fk_id_user', 'situacao_turma'];
    
     public function search($filtro = null)
     {

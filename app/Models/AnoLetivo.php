@@ -31,4 +31,9 @@ class AnoLetivo extends Model
                             ->get();
         return $resultado;
     }
+
+    public function unidadeEnsino()
+    {      
+        return $this->belongsTo(UnidadeEnsino::class, 'fk_id_unidade_ensino', 'id_unidade_ensino');
+    }
 }
