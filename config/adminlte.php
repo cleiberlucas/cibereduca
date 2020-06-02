@@ -276,7 +276,7 @@ return [
                 [
                     'text' => 'Unidade Ensino',
                     'url'  => 'admin/UnidadesEnsino',                    
-                    'port' => 'false',
+                    'port' => '0',
                     'icon_color' => 'red',
                 ],
                 [
