@@ -50,7 +50,7 @@
                                     {{$turma->tipoTurma->anoLetivo->ano}}
                                 </td>
                                 <td>
-                                    {{$turma->tipoTurma->tipo_turma}} - {{$turma->tipoTurma->subNivelEnsino->sub_nivel_ensino}}
+                                    {{$turma->tipoTurma->tipo_turma}}<br>{{$turma->tipoTurma->subNivelEnsino->sub_nivel_ensino}}
                                 </td> 
                                 <td>
                                     {{$turma->nome_turma}}
