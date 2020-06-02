@@ -275,8 +275,7 @@ return [
             'submenu' => [
                 [
                     'text' => 'Unidade Ensino',
-                    'url'  => 'admin/UnidadesEnsino',                    
-                    'port' => '0',
+                    'url'  => 'admin/UnidadesEnsino',                                        
                     'icon_color' => 'red',
                 ],
                 [
