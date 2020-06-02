@@ -54,7 +54,7 @@ Route::prefix('secretaria')
 /**
  * Rotas Admin
  */
-Route::prefix('admin', false)
+Route::prefix('admin', [], false)
         ->namespace('Admin')        
         ->middleware('auth')
         ->group(function(){                
