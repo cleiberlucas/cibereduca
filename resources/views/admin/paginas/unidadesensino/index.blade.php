@@ -28,7 +28,7 @@
                 @include('admin.includes.alerts')
                 <table class="table table-condensed">
                     <thead>
-                        <th>Campus</th>
+                        <th>Campus/Unidade</th>
                         <th>Telefone</th>
                         <th width="270">Ações</th>
                     </thead>
