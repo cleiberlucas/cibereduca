@@ -275,7 +275,7 @@ return [
             'submenu' => [
                 [
                     'text' => 'Unidade Ensino',
-                    'url'  => 'admin/UnidadesEnsino',                                        
+                    'route'  => 'unidadesensino.index',                     
                     'icon_color' => 'red',
                 ],
                 [
