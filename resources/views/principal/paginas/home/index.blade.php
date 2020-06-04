@@ -2,7 +2,7 @@
 
 <section></section>
 
-@section('title_postfix', ' Principal')
+@section('title_postfix', '')
 
 @section('content_header')        
    

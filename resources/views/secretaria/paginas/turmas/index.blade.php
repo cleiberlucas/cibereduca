@@ -53,7 +53,7 @@
                                     {{$turma->tipoTurma->tipo_turma}}<br>{{$turma->tipoTurma->subNivelEnsino->sub_nivel_ensino}}
                                 </td> 
                                 <td>
-                                    {{$turma->nome_turma}}
+                                    <a href="{{ route('matriculas.index', $turma->id_turma) }}" class="btn btn-link">{{$turma->nome_turma}}</a>                                    
                                 </td>                                  
                                 <td>
                                     {{$turma->turno->descricao_turno}}

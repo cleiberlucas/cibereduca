@@ -59,7 +59,8 @@
                             <tr>
                                 <th scope="row">{{$index+1}}</th>
                                 <td>
-                                    {{$pessoa->nome}}
+                                    <a href="{{ route('pessoas.edit', $pessoa->id_pessoa) }}" class="btn btn-link">{{$pessoa->nome}}</a>
+                                    
                                 </td> 
                                 <td>
                                     {{date('d/m/Y', strtotime($pessoa->data_nascimento))}}
