@@ -21,7 +21,7 @@
                 <form action="{{ route('unidadesensino.search') }}" method="POST" class="form form-inline">
                     @csrf
                 <input type="text" name="filtro" placeholder="Nome" class="form-control" value="{{ $filtros['filtro'] ?? '' }}">
-                    <button class="submit" class="btn btn-dark">Filtrar</button>
+                <button type="submit" class="btn btn-outline-secondary"><i class="fas fa-filter"></i></button>
                 </form>
             </div>
             <div class="card-body">
