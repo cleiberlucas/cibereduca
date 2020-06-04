@@ -167,7 +167,7 @@ return [
 
     'use_route_url' => false,
 
-    'dashboard_url' => 'home',
+    'dashboard_url' => '/',
 
     'logout_url' => 'logout',
 
@@ -217,32 +217,32 @@ return [
         [
             'text'    => ' Secretaria',
             'icon' => 'fas fa-fw fa-school',
-            'icon_color' => 'cyan',
+            'icon_color' => 'green',
             'submenu' => [
                 [
                     'text' => 'Turmas/Matrículas',
                     'url'  => 'secretaria/turmas',
-                    'icon_color' => 'cyan',
+                    'icon_color' => 'green',
                 ],                
                 [
                     'text' => 'Alunos',
                     'url'  => 'secretaria/1/pessoas',
-                    'icon_color' => 'cyan',
+                    'icon_color' => 'green',
                 ],
                 [
                     'text' => 'Responsáveis',
                     'url'  => 'secretaria/2/pessoas',
-                    'icon_color' => 'cyan',
+                    'icon_color' => 'green',
                 ],
                 [
                     'text' => 'Declarações',
                     'url'  => '#',
-                    'icon_color' => 'cyan',
+                    'icon_color' => 'green',
                 ],
                 [
                     'text' => 'Histórico',
                     'url'  => '#',
-                    'icon_color' => 'cyan',
+                    'icon_color' => 'green',
                 ],
             ],
         ],
@@ -258,7 +258,7 @@ return [
                 ],
                 [
                     'text' => 'Avaliações',
-                    'url'  => '',
+                    'url'  => '#',
                     'icon_color' => 'yellow',
                 ],
                 [

@@ -160,8 +160,8 @@ Route::get('/', function () {
 /**
  * Principal
  */
-Route::get('/', 'Principal\PrincipalController@index')->name('principal.home');
+Route::get('/', 'Principal\PrincipalController@index')->name('home');
 
-Auth::routes(); 
+//Auth::routes(); 
 //desabilita link para auto registro de usuário
-//Auth::routes(['register' =>false]);
+Auth::routes(['register' =>false]);

@@ -3,7 +3,15 @@
 @section('content')
 
 <div class="container">
-    
+    <div class="row justify-content-center">
+        <div class="">
+            <h4>CiberEduca - Plataforma de Gestão Escolar</h4>
+        </div>
+    </div>
+    <div class="row">
+        
+    </div>
+
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
@@ -86,11 +94,13 @@
 
 <footer>
     <div class="row justify-content-center">            
-        <img width="7%" src="vendor/cibersys/img/cubo_magico.gif" alt="">            
+        <img width="5%" src="vendor/cibersys/img/cubo_magico.gif" alt="">            
     </div>
+    
     <div class="row justify-content-center">
         <div class="">
-            CiberSys - Sistemas Inteligentes
+            <a href="cibereduca.cibersys.com.br"> 
+            CiberSys - Sistemas Inteligentes </a>
         </div>
     </div>
 </footer>
