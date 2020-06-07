@@ -69,6 +69,29 @@ class Matricula extends Model
         return $this->belongsTo(Pessoa::class, 'fk_id_aluno', 'id_pessoa');
     }
 
+    /**
+     * Retorna forma pagamento matricula
+     */
+    public function formaPagamentoMatricula()
+    {       
+        return $this->belongsTo(FormaPagamento::class, 'fk_id_forma_pagto_matricula', 'id_forma_pagamento');
+    }
+
+    /**
+     * Retorna forma pagamento curso
+     */
+    public function formaPagamentoCurso()
+    {       
+        return $this->belongsTo(FormaPagamento::class, 'fk_id_forma_pagto_curso', 'id_forma_pagamento');        
+    }
+
+    /**
+     * Retorna forma pagamento material didático
+     */
+    public function formaPagamentoMaterialDidatico()
+    {       
+        return $this->belongsTo(FormaPagamento::class, 'fk_id_forma_pagto_mat_didatico', 'id_forma_pagamento');
+    }
     
     /**
      * Retorna tipo atendimento especializado MatrículaXAluno
@@ -76,7 +99,7 @@ class Matricula extends Model
     public function tipoAtendimentoEspecializado()
     {       
         return $this->belongsTo(TipoAtendimentoEspecializado::class, 'fk_id_atendimento_especializado', 'id_atendimento_especializado');
-    }
+    }   
 
     /**
      * Retorna situação MatrículaXAluno
@@ -112,7 +135,6 @@ class Matricula extends Model
             ->paginate();
         //dd($permissoes);
         return $documentos;
-    }
-    
+    }    
 
 }

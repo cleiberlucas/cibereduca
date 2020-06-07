@@ -99,10 +99,21 @@ class MatriculaController extends Controller
         //$matricula = $this->repositorio->where('id_matricula', $id)->first();
 
         $matricula = $this->repositorio
-                            ->select('tb_matriculas.*', 'aluno.nome as nome_aluno', 'respons.nome as nome_responsavel', 'respons.telefone_1',
-                                    'tb_turmas.nome_turma', 'tb_anos_letivos.ano', 'tb_turnos.descricao_turno')
+                            ->select('tb_matriculas.*', 
+                                        'aluno.nome as nome_aluno', 
+                                        'respons.nome as nome_responsavel',
+                                        'respons.telefone_1',
+                                        'tb_turmas.nome_turma',
+                                        'tb_anos_letivos.ano',
+                                        'tb_turnos.descricao_turno',                                        
+                                        'user_cadastro.name as nome_user_cadastro',
+                                        'user_altera.name as nome_user_altera'
+                                    )
                             ->join('tb_pessoas as aluno', 'aluno.id_pessoa', '=', 'fk_id_aluno')
                             ->join('tb_pessoas as respons', 'respons.id_pessoa', '=', 'fk_id_responsavel')
+                            
+                            ->leftJoin('users as user_cadastro', 'user_cadastro.id', 'tb_matriculas.fk_id_user_cadastro')
+                            ->leftJoin('users as user_altera', 'user_altera.id', 'tb_matriculas.fk_id_user_altera')
                             ->join('tb_turmas', 'tb_turmas.id_turma', '=', 'tb_matriculas.fk_id_turma')
                             ->join('tb_tipos_turmas', 'tb_tipos_turmas.id_tipo_turma', '=', 'tb_turmas.fk_id_tipo_turma')
                             ->join('tb_anos_letivos', 'tb_anos_letivos.id_ano_letivo', '=', 'tb_tipos_turmas.fk_id_ano_letivo')

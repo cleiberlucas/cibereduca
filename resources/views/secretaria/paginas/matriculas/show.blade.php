@@ -13,29 +13,42 @@
         <div class="card-header">
             <ul>
                 <li>
-                    <strong>Matrícula:</strong> R$ {{$matricula->valor_matricula}}
-                        Pago em: {{$matricula->data_pagto_matricula}}
-                        Limite Desistência: {{$matricula->data_limite_desistencia}}
+                    <strong>Matriculado em :</strong> {{date('d/m/Y', strtotime($matricula->data_matricula))}}
+                        - Limite Desistência: {{date('d/m/Y', strtotime($matricula->data_limite_desistencia))}}
+                        <br>
+                        - Valor: R$ {{number_format($matricula->valor_matricula, 2, ',', '.')}}
+                        - Pago em: {{date('d/m/Y', strtotime($matricula->data_pagto_matricula))}} - {{$matricula->formaPagamentoMatricula->forma_pagamento}}
+                        
                 </li>
+                <br>
                 <li>
-                    <strong>Curso:</strong> R$ {{$matricula->valor_curso}}
-                        Desconto de R$: {{$matricula->valor_desconto}} - 
-                        Parcelas: {{$matricula->qt_parcelas_curso}}
-                     
+                    <strong>Curso:</strong> R$ {{number_format($matricula->turma->tipoTurma->valor_curso, 2, ',', '.')}}
+                        - Desconto de R$: {{number_format($matricula->valor_desconto, 2, ',', '.')}} <br>
+                        - Número de Parcelas: {{$matricula->qt_parcelas_curso}} 
+                        - Data 1ª parcela: {{date('d/m/Y', strtotime($matricula->data_venc_parcela_um))}}
+                        - Forma de pagamento: {{$matricula->formaPagamentoCurso->forma_pagamento}}                     
                 </li>
+                <br>
                 <li>
-                    <strong>Material Didático:</strong> R$ {{$matricula->valor_material_didatico}}
-                        Pago em: {{$matricula->data_pagto_mat_didatico}} - 
-                        Parcelas: {{$matricula->qt_parcelas_mat_didatico}}
+                    <strong>Material Didático:</strong> R$ {{number_format($matricula->valor_material_didatico, 2, ',', '.')}}
+                        - Pago em: {{date('d/m/Y', strtotime($matricula->data_pagto_mat_didatico))}}
+                        - Número de Parcelas: {{$matricula->qt_parcelas_mat_didatico}} Forma de pagamento: {{$matricula->formaPagamentoMaterialDidatico->forma_pagamento ?? ''}}
                 </li>
+                <br>
+                <li><strong>Atendimento Especializado:</strong></li> {{$matricula->atendimentoEspecializado->atendimentoEspecializado ?? ''}}
+                <br>
                 <li>
-                    <strong>Situação:</strong>
+                    <strong>Situação:</strong> {{$matricula->situacaoMatricula->situacao_matricula}}
                 </li>
+                <br>
+                <li><strong>Observações:</strong> {{$matricula->obs_matricula}}</li> 
+                <br>
                 <li>
-                    <strong>Cadastro em:</strong> {{$matricula->data_cadastro}} - por 
+                    <strong>Cadastro em:</strong> {{date('d/m/Y', strtotime($matricula->data_cadastro))}} - por {{$matricula->nome_user_cadastro}}
                 </li>                                
+                <br>
                 <li>
-                    <strong>Última alteração em:</strong> {{$matricula->data_alteracao}} - por
+                    <strong>Última alteração em:</strong> {{date('d/m/Y', strtotime($matricula->data_alteracao))}} - por {{$matricula->nome_user_altera}}
                 </li>
                 
             </ul>

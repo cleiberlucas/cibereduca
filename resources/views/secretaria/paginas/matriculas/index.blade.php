@@ -53,7 +53,7 @@
                 <table class="table table-hover">
                     <thead>
                         <th>#</th>
-                        <th>Nome</th>                                                
+                        <th>Aluno</th>                                                
                         <th>Situação</th>
                         <th width="270">Ações</th>
                     </thead>

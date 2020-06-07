@@ -43,7 +43,7 @@
                                 </font>
                             </td>                                
                             <td style="width=10px;">                                                                    
-                                <a href="{{ route('matriculas.documentos.remover', [$matricula->id_matricula, $documento->id_tipo_documento]) }}" class="btn btn-danger"><i class="fas fa-trash"></i></a> 
+                                <a href="{{ route('matriculas.documentos.remover', [$matricula->id_matricula, $documento->id_tipo_documento]) }}" class="btn btn-outline-danger"><i class="fas fa-trash"></i></a> 
                             </td>
                             
                         </tr>
@@ -98,7 +98,7 @@
                                 <td colspan=500>
                                     @include('admin.includes.alerts')
 
-                                    <button type="submit" class="btn btn-success">Adicionar</button>
+                                    <button type="submit" class="btn btn-success">Receber Documentos</button>
                                 </td>
                             </tr>
                         </form>
