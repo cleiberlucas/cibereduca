@@ -62,7 +62,7 @@
                             <tr>
                                 <th scope="row">{{$index+1}}</th>                                
                                 <td>
-                                    {{$matricula->aluno->nome}}
+                                    <a href="{{ route('matriculas.edit', $matricula->id_matricula) }}" class="btn btn-link"> {{$matricula->aluno->nome}}</a>
                                 </td> 
                                 <td>
                                     {{$matricula->situacaoMatricula->situacao_matricula}}
@@ -70,6 +70,7 @@
                                                                     
                                 <td style="width=10px;">                                
                                     <a href="{{ route('matriculas.edit', $matricula->id_matricula) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>
+                                    <a href="{{ route('matriculas.documentos', $matricula->id_matricula) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-tasks"></i></a>                                    
                                     <a href="{{ route('matriculas.show', $matricula->id_matricula) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-eye"></i></a>                                    
                                     <a href="" class="btn btn-sm btn-outline-dark"><i class="fas fa-file-contract"></i></a>
                                     <a href="" class="btn btn-sm btn-outline-warning"><i class="fas fa-address-book"></i></i></a>

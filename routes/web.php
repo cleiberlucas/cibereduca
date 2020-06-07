@@ -10,6 +10,14 @@ Route::prefix('secretaria')
         ->middleware('auth')
         ->group(function(){
 
+        /**
+         * Rotas Check List Matrículas X Documentos
+         */
+        route::get('matriculas/{id}/matricula/{id_matricula}/remove', 'MatriculaDocumentoController@removerDocumentosMatricula')->name('matriculas.documentos.remover');            
+        route::post('matriculas/{id}/documentos', 'MatriculaDocumentoController@vincularDocumentosMatricula')->name('matriculas.documentos.vincular');            
+        route::any('matriculas/{id}/documentos/add', 'MatriculaDocumentoController@documentosAdd')->name('matriculas.documentos.add');
+        route::get('matriculas/{id}/documentos', 'MatriculaDocumentoController@documentos')->name('matriculas.documentos');
+
          /**
          * Rotas Matrículas
          */
@@ -85,12 +93,6 @@ Route::prefix('admin')
              */
             Route::any('tiposturmas/search', 'TipoTurmaController@search')->name('tiposturmas.search');
             Route::resource('tiposturmas', 'TipoTurmaController');
-
-            /**
-             * Rotas Grades curriculares
-             */
-            /* Route::any('gradescurriculares/search', 'GradeCurricularController@search')->name('gradescurriculares.search');
-            Route::resource('gradescurriculares', 'GradeCurricularController'); */
 
             /**
              * Rotas Docs Matrícula

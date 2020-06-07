@@ -8,6 +8,7 @@ use App\Models\Secretaria\Turma;
 use App\Models\SituacaoMatricula;
 use App\Models\TipoAtendimentoEspecializado;
 use App\Models\TipoDescontoCurso;
+use App\Models\TipoDocumento;
 use App\Models\Turno;
 use App\Models\User;
 
@@ -60,15 +61,6 @@ class Matricula extends Model
         return $limiteAlunos - $qtmatriculas;
     }
 
-
-    /**
-     * Retorna Ano da matrículaXAluno
-     */
-    /*  public function ano()
-    {
-        return $this->belongsTo(Turma::class, 'fk_id_turma', 'id_turma');
-    }  */
-
     /**
      * Retorna aluno MatrículaXAluno
      */
@@ -92,6 +84,34 @@ class Matricula extends Model
     public function situacaoMatricula()
     {       
         return $this->belongsTo(situacaoMatricula::class, 'fk_id_situacao_matricula', 'id_situacao_matricula');
+    }
+
+    /**
+     * Ler todos documentos entregues
+     */
+    public function tiposDocumentos()
+    {
+        //join M:M matricula X documentos
+        return $this->belongsToMany(TipoDocumento::class, 'tb_documentos_matricula', 'fk_id_matricula', 'fk_id_tipo_documento');
+    }
+
+    /**
+     * Ler permissões livres para um perfil
+     */
+    public function documentosNaoEntregues($filtro = null) 
+    {
+        $documentos = TipoDocumento::whereNotIn('id_tipo_documento', function($query){
+            $query->select('tb_documentos_matricula.fk_id_tipo_documento');
+            $query->from('tb_documentos_matricula');
+            $query->whereRaw("tb_documentos_matricula.fk_id_matricula = {$this->id_matricula}");        
+            })
+            ->where(function ($queryFiltro) use ($filtro){
+                if ($filtro)
+                    $queryFiltro->where('tb_tipo_documentos.tipo_documento', 'LIKE', "%{$filtro}%");
+            })
+            ->paginate();
+        //dd($permissoes);
+        return $documentos;
     }
     
 
