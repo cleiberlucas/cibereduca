@@ -13,7 +13,7 @@
     </ol>
 
     <h1><strong>{{$matricula->aluno->nome}}</strong> 
-    <h2>{{$matricula->turma->nome_turma}}</h2>
+    <h2>{{$matricula->turma->nome_turma}} - {{$matricula->turma->tipoTurma->anoLetivo->ano}}</h2>
     <h2>Entrega de Documentos </h2>
     {{-- <a href="{{ route('matriculas.permissoes.add', $matricula->id_matricula) }}" class="btn btn-dark">ADD permissão</a></h1> --}}
 
@@ -50,14 +50,6 @@
                     @endforeach
                 </tbody>
             </table>
-            <div class="card-footer">
-                @if (isset($filtros))
-                {!! $documentosEntregues->appends($filtros)->links()!!}
-                @else
-                    {!! $documentosEntregues->links()!!}    
-                @endif
-                
-            </div>
         </div>
     </div>
 

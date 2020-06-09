@@ -25,7 +25,7 @@ class MatriculaDocumentoController extends Controller
         if (!$matricula)
             return redirect()->back();
         
-        $documentosEntregues = $matricula->tiposDocumentos()->paginate();
+        $documentosEntregues = $matricula->tiposDocumentos()->get();
         $documentosNaoEntregues = $matricula->documentosNaoEntregues();
 
         return view('secretaria.paginas.matriculas.documentos.documentos', [

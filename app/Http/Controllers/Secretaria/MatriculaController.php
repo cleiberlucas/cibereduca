@@ -146,24 +146,24 @@ class MatriculaController extends Controller
         $matriculas = $this->repositorio->search($request->filtro);
         
         return view('secretaria.paginas.matriculas.index', [
-            'matricula' => $matriculas,
-            'filtros' => $filtros,
+                    'matricula' => $matriculas,
+                    'filtros' => $filtros,
         ]);
     }
 
     public function edit($id)
     {
         $alunos = Pessoa::select('id_pessoa', 'nome')
-        ->where('fk_id_tipo_pessoa', '=', '1')
-        ->where('situacao_pessoa', 1)
-        ->orderBy('nome')
-        ->get();
-
-        $responsaveis = Pessoa::select('id_pessoa', 'nome')
-                    ->where('fk_id_tipo_pessoa', '=', '2')
+                    ->where('fk_id_tipo_pessoa', '=', '1')
                     ->where('situacao_pessoa', 1)
                     ->orderBy('nome')
                     ->get();
+
+        $responsaveis = Pessoa::select('id_pessoa', 'nome')
+                        ->where('fk_id_tipo_pessoa', '=', '2')
+                        ->where('situacao_pessoa', 1)
+                        ->orderBy('nome')
+                        ->get();
 
         $formasPagto = FormaPagamento::select('*')->orderBy('forma_pagamento')->get();
 

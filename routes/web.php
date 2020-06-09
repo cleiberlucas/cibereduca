@@ -11,6 +11,11 @@ Route::prefix('secretaria')
         ->group(function(){
 
         /**
+         * Rotas pasta do aluno
+         */
+        Route::any('matriculas/{id_turma}/pasta', 'MatriculaPastaController@pasta')->name('matriculas.pasta');
+
+        /**
          * Rotas Check List Matrículas X Documentos
          */
         route::get('matriculas/{id}/matricula/{id_matricula}/remove', 'MatriculaDocumentoController@removerDocumentosMatricula')->name('matriculas.documentos.remover');            
@@ -29,7 +34,7 @@ Route::prefix('secretaria')
         Route::get('matriculas/{id_turma}', 'MatriculaController@show')->name('matriculas.show');
         Route::post('matriculas', 'MatriculaController@store')->name('matriculas.store');
         Route::any('{id_turma}/matriculas', 'MatriculaController@index')->name('matriculas.index');
-
+        
         /**
          * Rotas Turmas
          */
@@ -118,6 +123,15 @@ Route::prefix('admin')
             Route::any('users/search', 'ACL\UserController@search')->name('users.search');
             Route::resource('users', 'ACL\UserController');
                       
+            /**
+             * Rotas Usuários X Unidades Ensino
+             */
+            route::get('users/{id}/unidadeensino/{id_unidade_ensino}/remove', 'ACL\UserUnidadeEnsinoController@removerUnidadesUser')->name('users.unidadesensino.remover');            
+            route::post('users/unidadeensino/{id_usuario_unidade_ensino}/update', 'ACL\UserUnidadeEnsinoController@update')->name('users.unidadesensino.update');            
+            route::post('users/{id}/unidadesensino', 'ACL\UserUnidadeEnsinoController@vincularUnidadesUser')->name('users.unidadesensino.vincular');            
+            route::any('users/{id}/unidadesensino/add', 'ACL\UserUnidadeEnsinoController@unidadesEnsinoAdd')->name('users.unidadesensino.add');
+            route::get('users/{id}/unidadesensino', 'ACL\UserUnidadeEnsinoController@unidadesEnsino')->name('users.unidadesensino');
+
             /**
              * Rotas Perfis X Permissões
              */

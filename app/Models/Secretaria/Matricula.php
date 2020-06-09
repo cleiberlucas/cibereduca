@@ -132,7 +132,7 @@ class Matricula extends Model
                 if ($filtro)
                     $queryFiltro->where('tb_tipo_documentos.tipo_documento', 'LIKE', "%{$filtro}%");
             })
-            ->paginate();
+            ->get();
         //dd($permissoes);
         return $documentos;
     }    

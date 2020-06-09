@@ -17,9 +17,9 @@ class UserController extends Controller
 
     }
 
-    public function index()
+public function index() 
     {
-        $users = $this->repositorio->paginate();
+        $users = $this->repositorio->orderBy('email')->paginate();
         
         return view('admin.paginas.users.index', [
                     'users' => $users,

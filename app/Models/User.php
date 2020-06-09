@@ -45,4 +45,32 @@ class User extends Authenticatable
         
         return $resultado;
     }
+
+    /**
+     * Ler todos documentos entregues
+     */
+    public function unidadesEnsino()
+    {
+        //join M:M matricula X documentos
+        return $this->belongsToMany(UnidadeEnsino::class, 'tb_usuarios_unidade_ensino', 'fk_id_unidade_ensino', 'fk_id_user');
+    }
+
+    /**
+     * Ler permissões livres para um perfil
+     */
+    public function unidadesEnsinoLivres($filtro = null) 
+    {
+        $unidadesEnsino = UnidadeEnsino::whereNotIn('id_unidade_ensino', function($query){
+            $query->select('tb_usuarios_unidade_ensino.fk_id_unidade_ensino');
+            $query->from('tb_usuarios_unidade_ensino');
+            $query->whereRaw("tb_usuarios_unidade_ensino.fk_id_user = {$this->id}");        
+            })
+            ->where(function ($queryFiltro) use ($filtro){
+                if ($filtro)
+                    $queryFiltro->where('tb_unidades_ensino.nome_fantasia', 'LIKE', "%{$filtro}%");
+            })
+            ->get();
+        
+        return $unidadesEnsino;
+    }    
 }

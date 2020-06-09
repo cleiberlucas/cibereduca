@@ -31,7 +31,7 @@ class PessoaController extends Controller
 
     public function index(Request $request)
     {        
-        $pessoas = $this->repositorio->where('fk_id_tipo_pessoa', $request->segment(2))->orderBy('nome', 'asc')->paginate();
+        $pessoas = $this->repositorio->where('fk_id_tipo_pessoa', $request->segment(2))->orderBy('nome', 'asc')->paginate(20);
         
         return view('secretaria.paginas.pessoas.index', [
                     'pessoas' => $pessoas,
