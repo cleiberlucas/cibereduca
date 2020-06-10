@@ -3,13 +3,31 @@
 @section('title_postfix', ' '.$pessoa->tipoPessoa->tipo_pessoa)
 
 @section('content_header')
-    <h1>Ficha cadastral {{$pessoa->tipoPessoa->tipo_pessoa}} - <b>{{ $pessoa->nome}}</b></h1>
+    <div class="row">
+        <div class="colspan-10">
+            <ol class="breadcrumb">        
+                <li class="breadcrumb-item active" >           
+                    <a href="{{ route('pessoas.index', $pessoa->fk_id_tipo_pessoa) }} " class=""> {{$pessoa->tipoPessoa->tipo_pessoa}} </a>        
+                </li>
+                <li class="breadcrumb-item active" >
+                    <a href="{{ route('pessoas.edit', $pessoa->id_pessoa) }}" class="btn btn-xp btn-link">Editar</a>
+                    
+                </li>
+            </ol>
+
+            <h1>Ficha cadastral {{$pessoa->tipoPessoa->tipo_pessoa}} - <b>{{ $pessoa->nome}}</b></h1>
+        </div>
+
+        <div class="colspan-2">
+            <img src="{{url("storage/$pessoa->foto")}}" alt="" width="100" heigth="200">
+        </div>
+    </div>
 @stop
 
 @section('content')
     <div class="card">
         <div class="card-header">
-            <ul>
+            <ul>                
                 <li>
                     <strong>Nome:</strong> {{ $pessoa->nome}}
                 </li>

@@ -3,12 +3,15 @@
 @section('title', ' Grade Curricular')
 
 @section('content_header')
-    <ol class="breadcrumb">
-        <li class="breadcamb-item">
-            <a href="">Cadastrar</a> / 
-        </li>
+    <ol class="breadcrumb">    
         <li class="breadcrumb-item active" >
             <a href="{{ route('tiposturmas.index') }} " class="">Padrões de Turmas</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{{ route('tiposturmas.disciplinas', $tipoTurma->id_tipo_turma) }}" class="">Grade Curricular</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="#" class="">Cadastrar</a>
         </li>
     </ol>
     <h1><strong>Grade Curricular - Adicionar Disciplinas</strong></h1>

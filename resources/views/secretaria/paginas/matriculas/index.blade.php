@@ -6,11 +6,11 @@
 
 @section('content_header')
     <ol class="breadcrumb">
-        <li class="breadcamb-item">
-            <a href="">Cadastrar</a> / 
+        <li class="breadcrumb-item active" >
+            <a href="{{ route('turmas.index') }} " class="">Turmas</a>
         </li>
         <li class="breadcrumb-item active" >
-            {{-- <a href="{{ route('matriculas.index', ) }} " class="">Matrículas</a> --}}
+            <a href="#" class="">Matrículas</a>
         </li>
     </ol>
     <div class="row">

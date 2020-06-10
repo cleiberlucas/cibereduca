@@ -3,12 +3,11 @@
 @section('title', 'Rede Educa')
 
     @section('content_header')
-        <ol class="box">
-            <li class="breadcamb-item">
-                <a href="">Cadastrar</a> / 
-                <a href="{{ route('unidadesensino.index') }} " class="">Unidades Ensino</a>
-            </li>
-        </ol>
+    <ol class="breadcrumb">        
+        <li class="breadcrumb-item active" >                
+            <a href="{{ route('unidadesensino.index') }} " class="">Unidades Ensino</a>
+        </li>
+    </ol> 
 
         <h1>Unidade Ensino <a href="{{ route('unidadesensino.create') }}" class="btn btn-success"><i class="fas fa-plus-square"></i> Cadastrar</a></h1>
     @stop

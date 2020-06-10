@@ -7,14 +7,11 @@
 @section('title_postfix', ' Turmas')
 
 @section('content_header')
-    <ol class="breadcrumb">
-        <li class="breadcamb-item">
-            <a href="">Cadastrar</a> / 
-        </li>
+    {{-- <ol class="breadcrumb">        
         <li class="breadcrumb-item active" >
             <a href="{{ route('turmas.index') }} " class="">Turmas</a>
         </li>
-    </ol>
+    </ol> --}}
     
     <h1>Turmas <a href="{{ route('turmas.create') }}" class="btn btn-success"> <i class="fas fa-plus-square"></i> Cadastrar</a></h1>    
 @stop
@@ -75,7 +72,7 @@
                                     @endif                                    
                                 </td>       
                                 <td style="width=10px;">
-                                    <a href="{{ route('matriculas.index', $turma->id_turma) }}" class="btn btn-sm btn-success">Matrículas</a>
+                                    <a href="{{ route('matriculas.index', $turma->id_turma) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-users"></i></a>
                                     <a href="{{ route('turmas.edit', $turma->id_turma) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>
                                     <a href="{{ route('turmas.show', $turma->id_turma) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-eye"></i></a>
                                 </td>

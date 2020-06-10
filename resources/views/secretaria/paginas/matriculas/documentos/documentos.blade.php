@@ -3,14 +3,17 @@
 @section('title', 'Documentos Matrícula')
 
 @section('content_header')
-    <ol class="breadcrumb">
-        <li class="breadcamb-item">
-            <a href="">Cadastrar</a> / 
-        </li>
-        <li class="breadcrumb-item active" >
-{{--             <a href="{{ route('matriculas.index') }} " class="">Matrículas</a> --}}
-        </li>
-    </ol>
+<ol class="breadcrumb">
+    <li class="breadcrumb-item active" >
+        <a href="{{ route('turmas.index') }} " class="">Turmas</a>
+    </li>
+    <li class="breadcrumb-item active" >
+        <a href="{{route('matriculas.index', $matricula->fk_id_turma)}}" class="">Matrículas</a>
+    </li>
+    <li class="breadcrumb-item active" >
+        <a href="#" class="">Documentos</a>
+    </li>
+</ol>
 
     <h1><strong>{{$matricula->aluno->nome}}</strong> 
     <h2>{{$matricula->turma->nome_turma}} - {{$matricula->turma->tipoTurma->anoLetivo->ano}}</h2>

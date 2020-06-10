@@ -7,10 +7,7 @@
 @section('title_postfix', ' Períodos Letivos')
 
 @section('content_header')
-    <ol class="breadcrumb">
-        <li class="breadcamb-item">
-            <a href="">Cadastrar</a> / 
-        </li>
+    <ol class="breadcrumb">        
         <li class="breadcrumb-item active" >
             <a href="{{ route('periodosletivos.index') }} " class="">Períodos Letivos</a>
         </li>

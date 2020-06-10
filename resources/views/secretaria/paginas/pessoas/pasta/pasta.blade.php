@@ -5,29 +5,14 @@
 @section('title_postfix', ' Pasta do Aluno')
 
 @section('content_header')
-    <ol class="breadcrumb">
-        <li class="breadcamb-item">
-            <a href="">Cadastrar</a> / 
-        </li>
-        <li class="breadcrumb-item active" >
-            
-           {{--  <a href="{{ route('pessoas.index', 1) }} " class=""> 
-                @if ($tipo_pessoa == 1)
-                    Aluno
-                @else
-                    Responsável
-                @endif
-            </a> --}}
-        </li>
-    </ol>
-    
-   {{--  <h1> @if ($tipo_pessoa == 1)
-            Aluno
-            <a href="{{ route('pessoas.create.aluno', $tipo_pessoa) }}" class="btn btn-success"><i class="fas fa-plus-square"></i> Cadastrar</a></h1>    
-        @else
-            Responsável
-            <a href="{{ route('pessoas.create.responsavel') }}" class="btn btn-success"><i class="fas fa-plus-square"></i> Cadastrar</a></h1>    
-        @endif --}}
+<ol class="breadcrumb">        
+    <li class="breadcrumb-item active" >           
+        <a href="{{ route('pessoas.index', 1) }} " class=""> Alunos </a>        
+    </li>
+    <li class="breadcrumb-item active" >
+        <a href="#" class="">Pasta do Aluno</a>
+    </li>
+</ol>
     
 @stop
 

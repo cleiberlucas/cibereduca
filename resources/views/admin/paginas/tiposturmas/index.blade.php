@@ -7,12 +7,9 @@
 @section('title_postfix', ' Padrão de Turmas')
 
 @section('content_header')
-    <ol class="breadcrumb">
-        <li class="breadcamb-item">
-            <a href="">Cadastrar</a> / 
-        </li>
+    <ol class="breadcrumb">        
         <li class="breadcrumb-item active" >
-            <a href="{{ route('tiposturmas.index') }} " class="">Padrão de Turmas</a>
+            <a href="{{ route('tiposturmas.index') }} " class="">Padrões de Turmas</a>
         </li>
     </ol>
     

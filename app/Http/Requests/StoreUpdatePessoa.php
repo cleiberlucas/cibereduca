@@ -28,6 +28,7 @@ class StoreUpdatePessoa extends FormRequest
     
         return [
             'nome' => "required|min:5|max:100",
+            'foto' => ['nullable', 'image'],
             
         ];    
     }

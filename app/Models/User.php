@@ -52,7 +52,7 @@ class User extends Authenticatable
     public function unidadesEnsino()
     {
         //join M:M matricula X documentos
-        return $this->belongsToMany(UnidadeEnsino::class, 'tb_usuarios_unidade_ensino', 'fk_id_unidade_ensino', 'fk_id_user');
+        return $this->belongsToMany(UnidadeEnsino::class, 'tb_usuarios_unidade_ensino', 'fk_id_user', 'fk_id_unidade_ensino');
     }
 
     /**

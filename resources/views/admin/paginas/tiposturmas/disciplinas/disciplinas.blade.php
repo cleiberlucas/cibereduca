@@ -5,14 +5,14 @@
 @section('title_postfix', ' Grades Curriculares')
 
 @section('content_header')
-    <ol class="breadcrumb">
-        <li class="breadcamb-item">
-            <a href="">Cadastrar</a> / 
-        </li>
-        <li class="breadcrumb-item active" >
-            <a href="{{ route('tiposturmas.index') }} " class="">Padrão de Turmas</a>
-        </li>
-    </ol>
+<ol class="breadcrumb">    
+    <li class="breadcrumb-item active" >
+        <a href="{{ route('tiposturmas.index') }} " class="">Padrões de Turmas</a>
+    </li>
+    <li class="breadcrumb-item">
+        <a href="#" class="">Grade Curricular</a>
+    </li>
+</ol>
 
     <div align="center"><h1><strong>Grade Curricular</strong></h1></div>
     <h1><strong>Ano Letivo: </strong>{{$tipoTurma->anoLetivo->ano}}</h1>

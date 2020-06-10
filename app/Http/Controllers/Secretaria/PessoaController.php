@@ -55,6 +55,14 @@ class PessoaController extends Controller
         $sit = $this->verificarSituacao($dados);
         $dados = array_merge($dados, $sit);
         //dd($dados['fk_id_tipo_pessoa']);
+
+        /* if ($request->foto->isValid()){
+            //dd($request->foto->extension());
+            $request->file('foto')->store('pessoas');
+        } */
+        if ($request->hasfile('foto') && $request->foto->isValid()){
+            $dados['foto'] = $request->file('foto')->store('pessoas');
+        }
         //Gravando pessoa
         $insertPessoa = Pessoa::create($dados);
 
@@ -128,7 +136,12 @@ class PessoaController extends Controller
         $sit = $this->verificarSituacao($request->all());
         
         $request->merge($sit);
-
+        $dados = $request->all();
+        
+        if ($request->hasfile('foto') && $request->foto->isValid()){
+            $request['foto'] = $request->file('foto')->store('pessoas');
+        }
+        
         $pessoa->where('id_pessoa', $id)->update($request->except('_token', '_method', 'endereco', 'complemento', 'numero', 'bairro', 'fk_id_cidade', 'cep', 'estado'));
 
         //Gravando endereço

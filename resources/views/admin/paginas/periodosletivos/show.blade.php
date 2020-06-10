@@ -3,6 +3,14 @@
 @section('title_postfix', ' Períodos Letivos')
 
 @section('content_header')
+    <ol class="breadcrumb">   
+        <li class="breadcrumb-item active" >
+            <a href="{{ route('periodosletivos.index') }} " class="">Períodos Letivos</a>
+        </li>
+        <li class="breadcrumb-item active">
+            <a href="#" class="">Dados Período Letivo</a> 
+        </li>
+    </ol>
     <h1><b>{{ $periodoletivo->periodo_letivo}} - {{ $periodoletivo->anoLetivo->ano}}</b></h1>
 @stop
 

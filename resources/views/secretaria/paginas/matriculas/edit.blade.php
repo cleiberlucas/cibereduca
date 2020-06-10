@@ -3,6 +3,18 @@
 @section('title_postfix', ' Turma')
 
 @section('content_header')
+<ol class="breadcrumb">
+    <li class="breadcrumb-item active" >
+        <a href="{{ route('turmas.index') }} " class="">Turmas</a>
+    </li>
+    <li class="breadcrumb-item active" >
+        <a href="{{route('matriculas.index', $matricula->fk_id_turma)}}" class="">Matrículas</a>
+    </li>
+    <li class="breadcrumb-item active" >
+        <a href="#" class="">Editar Matrícula</a>
+    </li>
+</ol>
+
 <h1><strong>Editar </strong> Matrícula {{$matricula->ano}} - 
 Turma: {{$matricula->nome_turma}} - {{$matricula->descricao_turno}}</h1>
 <h3><strong>Valor do Curso: </strong><font color=green> R$ {{number_format($matricula->valor_curso, 2, ',', '.')}} </font> </h3>

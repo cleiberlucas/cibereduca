@@ -3,14 +3,14 @@
 @section('title_postfix', ' Usuários')
 
 @section('content_header')
-    <ol class="breadcrumb">
-        <li class="breadcamb-item">
-            <a href="">Cadastrar</a> / 
-        </li>
+    <ol class="breadcrumb">       
         <li class="breadcrumb-item active" >
-{{--             <a href="{{ route('matriculas.index') }} " class="">Matrículas</a> --}}
+            <a href="{{ route('users.index') }} " class="">Usuários</a>
+        </li> 
+        <li class="breadcrumb-item">
+            <a href="">Vínculos Unidade Ensino</a>
         </li>
-    </ol>
+    </ol>              
     <h3>Vínculo com Unidades de Ensino </h3>
     <h3><strong>{{$user->name}}</strong>     </h3>
     

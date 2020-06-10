@@ -7,13 +7,9 @@
 @section('title_postfix', ' Pessoas')
 
 @section('content_header')
-    <ol class="breadcrumb">
-        <li class="breadcamb-item">
-            <a href="">Cadastrar</a> / 
-        </li>
-        <li class="breadcrumb-item active" >
-            
-            <a href="{{ route('pessoas.index', 1) }} " class=""> 
+    <ol class="breadcrumb">        
+        <li class="breadcrumb-item active" >            
+            <a href="{{ route('pessoas.index', $tipo_pessoa) }} " class=""> 
                 @if ($tipo_pessoa == 1)
                     Alunos
                 @else
@@ -25,7 +21,7 @@
     
     <h1> @if ($tipo_pessoa == 1)
             Alunos
-            <a href="{{ route('pessoas.create.aluno', $tipo_pessoa) }}" class="btn btn-success"><i class="fas fa-plus-square"></i> Cadastrar</a></h1>    
+            <a href="{{ route('pessoas.create.aluno') }}" class="btn btn-success"><i class="fas fa-plus-square"></i> Cadastrar</a></h1>    
         @else
             Responsável
             <a href="{{ route('pessoas.create.responsavel') }}" class="btn btn-success"><i class="fas fa-plus-square"></i> Cadastrar</a></h1>    

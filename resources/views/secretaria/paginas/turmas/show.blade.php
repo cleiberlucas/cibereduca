@@ -3,6 +3,15 @@
 @section('title_postfix', ' Turma')
 
 @section('content_header')
+<ol class="breadcrumb">
+    <li class="breadcrumb-item active" >
+        <a href="{{ route('turmas.index') }} " class="">Turmas</a>
+    </li>
+    <li class="breadcrumb-item active" >
+        <a href="#" class="">Dados da Turma</a>
+    </li>
+</ol>
+
     <h1><strong>{{$turma->tipoTurma->anoLetivo->unidadeEnsino->nome_fantasia}}</strong></h1>
     <h1><b>{{$turma->tipoTurma->anoLetivo->ano}} - {{ $turma->nome_turma}} - {{$turma->turno->descricao_turno}}</b></h1>
 @stop

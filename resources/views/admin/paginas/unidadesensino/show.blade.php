@@ -3,6 +3,14 @@
 @section('title', 'Detalhes Unidade Ensino')
 
 @section('content_header')
+<ol class="breadcrumb">        
+    <li class="breadcrumb-item active" >        
+        <a href="{{ route('unidadesensino.index') }} " class="">Unidades Ensino</a>
+    </li>
+    <li class="breadcrumb-item active" >
+        <a href="#" class="">Dados da Unidade de Ensino</a>
+    </li>
+</ol> 
     <h1>Unidade Ensino <b>{{ $UnidadeEnsino->razao_social}}</b></h1>
 @stop
 

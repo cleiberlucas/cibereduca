@@ -3,12 +3,25 @@
 @section('title_postfix', ' '.$tipo_pessoa )
 
 @section('content_header')
+<ol class="breadcrumb">        
+    <li class="breadcrumb-item active" >   
+        @if ($tipo_pessoa == 'aluno')
+            <a href="{{ route('pessoas.index', 1) }} " class=""> Aluno </a>
+        @else
+        <a href="{{ route('pessoas.index', 2) }} " class=""> Responsável </a>
+        @endif                 
+    </li>
+    <li class="breadcrumb-item active" >
+        <a href="#" class="">Novo</a>
+    </li>
+</ol>
+
     <h1>Cadastrar {{$tipo_pessoa}}</h1>
 @stop
 
 @section('content')
     <div class="container-fluid">
-        <form action="{{ route('pessoas.store')}}" class="form" method="POST">
+        <form action="{{ route('pessoas.store')}}" class="form" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="container-fluid">
                 @include('secretaria.paginas.pessoas._partials.form')

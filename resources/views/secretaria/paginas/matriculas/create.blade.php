@@ -3,6 +3,17 @@
 @section('title_postfix', ' Matrículas')
 
 @section('content_header')
+<ol class="breadcrumb">
+    <li class="breadcrumb-item active" >
+        <a href="{{ route('turmas.index') }} " class="">Turmas</a>
+    </li>
+    <li class="breadcrumb-item active" >
+        <a href="{{route('matriculas.index', $turma->id_turma)}}" class="">Matrículas</a>
+    </li>
+    <li class="breadcrumb-item active" >
+        <a href="#" class="">Nova Matrícula</a>
+    </li>
+</ol>
     
     <div class="row">
         <div class="col-sm-8 col-xs-6">

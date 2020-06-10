@@ -18,6 +18,7 @@ class Pessoa extends Model
 
     protected $fillable = ['nome', 
                             'cpf', 
+                            'foto',
                             'fk_id_tipo_doc_identidade', 
                             'doc_identidade', 
                             'data_nascimento', 
