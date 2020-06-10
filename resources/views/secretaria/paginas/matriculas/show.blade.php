@@ -3,21 +3,29 @@
 @section('title_postfix', ' Turma')
 
 @section('content_header')
-<ol class="breadcrumb">
-    <li class="breadcrumb-item active" >
-        <a href="{{ route('turmas.index') }} " class="">Turmas</a>
-    </li>
-    <li class="breadcrumb-item active" >
-        <a href="{{route('matriculas.index', $matricula->fk_id_turma)}}" class="">Matrículas</a>
-    </li>
-    <li class="breadcrumb-item active" >
-        <a href="#" class="">Dados da Matrícula</a>
-    </li>
-</ol>
-
-    <h1><b>Dados da Matrícula - {{$matricula->ano}} </b></h1>
-    <h1><b>{{ $matricula->nome_aluno}} - {{$matricula->nome_turma}} - {{$matricula->descricao_turno}}</b></h1>
-    <h3>Responsável: {{$matricula->nome_responsavel}} - Fone: {{$matricula->telefone_1}}</h3>
+    <div class="d-flex justify-content-between">
+        <div class="p-2">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active" >
+                    <a href="{{ route('turmas.index') }} " class="">Turmas</a>
+                </li>
+                <li class="breadcrumb-item active" >
+                    <a href="{{route('matriculas.index', $matricula->fk_id_turma)}}" class="">Matrículas</a>
+                </li>
+                <li class="breadcrumb-item active" >
+                    <a href="#" class="">Dados da Matrícula</a>
+                </li>
+            </ol>
+        
+            <h1><b>Dados da Matrícula - {{$matricula->ano}} </b></h1>
+            <h1><b>{{ $matricula->nome_aluno}} - {{$matricula->nome_turma}} - {{$matricula->descricao_turno}}</b></h1>
+            <h3>Responsável: {{$matricula->nome_responsavel}} - Fone: {{$matricula->telefone_1}}</h3>
+        </div>
+        <div class="p-2">
+            <img src="{{url("storage/$matricula->foto")}}" alt="" width="100" heigth="200">
+        </div>
+        <div class="p-2"> </div>
+    </div>
 @stop
 
 @section('content')

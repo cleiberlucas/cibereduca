@@ -10,6 +10,7 @@ use App\Models\Estado;
 use App\Models\Secretaria\Pessoa;
 use App\Models\TipoDocIdentidade;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PessoaController extends Controller
 {
@@ -136,13 +137,17 @@ class PessoaController extends Controller
         $sit = $this->verificarSituacao($request->all());
         
         $request->merge($sit);
-        $dados = $request->all();
+        $dados = $request->except('_token', '_method', 'endereco', 'complemento', 'numero', 'bairro', 'fk_id_cidade', 'cep', 'estado');
         
         if ($request->hasfile('foto') && $request->foto->isValid()){
-            $request['foto'] = $request->file('foto')->store('pessoas');
+            //Removendo foto anterior
+            if (Storage::exists($pessoa->foto)) {
+                Storage::delete($pessoa->foto);
+            }
+            $dados['foto'] = $request->file('foto')->store('pessoas');
         }
         
-        $pessoa->where('id_pessoa', $id)->update($request->except('_token', '_method', 'endereco', 'complemento', 'numero', 'bairro', 'fk_id_cidade', 'cep', 'estado'));
+        $pessoa->update($dados);
 
         //Gravando endereço
         //somente para responsável
@@ -155,11 +160,12 @@ class PessoaController extends Controller
                                                     'telefone_1', 'telefone_2', 'email_1', 'email_2', 'fk_id_tipo_pessoa', 
                                                     'fk_id_user', 'situacao_pessoa', 'estado', 'fk_id_user_alteracao'));
 
-        return redirect()->back();
-       /* return view('secretaria.paginas.pessoas.index', [
-            'pessoas' => $pessoas,
-            'tipo_pessoa' => $request->segment(2),
-        ]); */
+        $pessoas = $this->repositorio->where('fk_id_tipo_pessoa', $pessoa->fk_id_tipo_pessoa)->orderBy('nome', 'asc')->paginate(20);
+       
+        return view('secretaria.paginas.pessoas.index', [
+                    'tipo_pessoa' => $pessoa->fk_id_tipo_pessoa,
+                    'pessoas'     => $pessoas,
+        ]);
     }
 
     /**

@@ -42,7 +42,7 @@
             <option value=""></option>
             @foreach ($cidades as $cidade)
                 <option value="{{$cidade->id_cidade }}"
-                    @if (isset($pessoa) && $cidade->id_cidade == $pessoa->endereco->fk_id_cidade)
+                    @if (isset($pessoa) && isset($pessoa->endereco->fk_id_cidade) && $cidade->id_cidade == $pessoa->endereco->fk_id_cidade)
                         selected="selected"
                     @endif
                     >                    

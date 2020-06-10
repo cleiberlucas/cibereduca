@@ -100,7 +100,7 @@ class MatriculaController extends Controller
 
         $matricula = $this->repositorio
                             ->select('tb_matriculas.*', 
-                                        'aluno.nome as nome_aluno', 
+                                        'aluno.nome as nome_aluno', 'aluno.foto',
                                         'respons.nome as nome_responsavel',
                                         'respons.telefone_1',
                                         'tb_turmas.nome_turma',
@@ -174,8 +174,13 @@ class MatriculaController extends Controller
         $tiposAtendimentoEspecializado = new TipoAtendimentoEspecializado;
 
         $matricula = $this->repositorio
-                                ->select('tb_matriculas.*', 'tb_turmas.nome_turma', 'tb_anos_letivos.ano', 'tb_turnos.descricao_turno', 'tb_sub_niveis_ensino.sub_nivel_ensino',
-                                        'aluno.nome as nome_aluno', 'aluno.id_pessoa as id_aluno', 'responsavel.nome as nome_responsavel', 'responsavel.id_pessoa as id_responsavel',                                        
+                                ->select('tb_matriculas.*', 
+                                        'tb_turmas.nome_turma', 
+                                        'tb_anos_letivos.ano', 
+                                        'tb_turnos.descricao_turno', 
+                                        'tb_sub_niveis_ensino.sub_nivel_ensino',
+                                        'aluno.nome as nome_aluno', 'aluno.id_pessoa as id_aluno', 'aluno.foto',
+                                        'responsavel.nome as nome_responsavel', 'responsavel.id_pessoa as id_responsavel',                                        
                                         'tb_situacoes_matricula.*',
                                         'tb_tipos_turmas.valor_curso') 
                                 ->join('tb_pessoas as aluno', 'aluno.id_pessoa', 'tb_matriculas.fk_id_aluno')

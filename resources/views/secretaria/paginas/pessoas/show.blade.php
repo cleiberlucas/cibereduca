@@ -3,8 +3,8 @@
 @section('title_postfix', ' '.$pessoa->tipoPessoa->tipo_pessoa)
 
 @section('content_header')
-    <div class="row">
-        <div class="colspan-10">
+    <div class="d-flex justify-content-between">
+        <div class="p-2">
             <ol class="breadcrumb">        
                 <li class="breadcrumb-item active" >           
                     <a href="{{ route('pessoas.index', $pessoa->fk_id_tipo_pessoa) }} " class=""> {{$pessoa->tipoPessoa->tipo_pessoa}} </a>        
@@ -18,9 +18,10 @@
             <h1>Ficha cadastral {{$pessoa->tipoPessoa->tipo_pessoa}} - <b>{{ $pessoa->nome}}</b></h1>
         </div>
 
-        <div class="colspan-2">
+        <div class="p-2">
             <img src="{{url("storage/$pessoa->foto")}}" alt="" width="100" heigth="200">
         </div>
+        <div class="p-2"> </div>
     </div>
 @stop
 

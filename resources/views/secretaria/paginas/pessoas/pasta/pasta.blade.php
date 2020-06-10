@@ -27,27 +27,39 @@
             </form>
         </div> --}}
         <div>
-           <h3>Pasta do Aluno</h3>
+           
            @if (count($matriculas) == 0)
                Nenhuma matrícula gerada para este aluno.
            @endif
         </div>
             
         <div class="table-responsive">
-                <table class="table table-hover">
+                
                     @foreach ($matriculas as $index => $matricula)
                         @if ($index == 0)
-                            <thead>
-                                <td colspan=5>
-                                    <h3><b>{{$matricula->aluno->nome}}</b></h3>
-                                </td>
-                            </thead>                    
-                            
-                            <th scope="col">#</th>
-                            <th scope="col">Ano</th>
-                            <th scope="col">Matrícula</th>
-                            <th scope="col">Situação</th>                        
-                            <th width="270">Ações</th>
+                        <div class="d-flex justify-content-between">
+                            <div class="p-2">  
+                                <h3>Pasta do Aluno</h3>                          
+                                <h3><b>{{$matricula->aluno->nome}}</b></h3>
+                            </div>
+                            <div class="p-2">
+                                <img src="{{url("storage/".$matricula->aluno->foto)}}" alt="" width="100" heigth="200">
+                            </div>
+                            <div class="p-2"> </div>
+                        </div>
+
+                            <table class="table table-hover">
+                                <thead>
+                                    <td colspan=5>
+                                        
+                                    </td>
+                                </thead>                    
+                                
+                                <th scope="col">#</th>
+                                <th scope="col">Ano</th>
+                                <th scope="col">Matrícula</th>
+                                <th scope="col">Situação</th>                        
+                                <th width="270">Ações</th>
                             
                         @endif
 

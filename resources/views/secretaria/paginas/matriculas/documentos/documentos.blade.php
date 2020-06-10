@@ -3,22 +3,29 @@
 @section('title', 'Documentos Matrícula')
 
 @section('content_header')
-<ol class="breadcrumb">
-    <li class="breadcrumb-item active" >
-        <a href="{{ route('turmas.index') }} " class="">Turmas</a>
-    </li>
-    <li class="breadcrumb-item active" >
-        <a href="{{route('matriculas.index', $matricula->fk_id_turma)}}" class="">Matrículas</a>
-    </li>
-    <li class="breadcrumb-item active" >
-        <a href="#" class="">Documentos</a>
-    </li>
-</ol>
+    <div class="d-flex justify-content-between">
+        <div class="p-2">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active" >
+                    <a href="{{ route('turmas.index') }} " class="">Turmas</a>
+                </li>
+                <li class="breadcrumb-item active" >
+                    <a href="{{route('matriculas.index', $matricula->fk_id_turma)}}" class="">Matrículas</a>
+                </li>
+                <li class="breadcrumb-item active" >
+                    <a href="#" class="">Documentos</a>
+                </li>
+            </ol>
 
-    <h1><strong>{{$matricula->aluno->nome}}</strong> 
-    <h2>{{$matricula->turma->nome_turma}} - {{$matricula->turma->tipoTurma->anoLetivo->ano}}</h2>
-    <h2>Entrega de Documentos </h2>
-    {{-- <a href="{{ route('matriculas.permissoes.add', $matricula->id_matricula) }}" class="btn btn-dark">ADD permissão</a></h1> --}}
+            <h1><strong>{{$matricula->aluno->nome}}</strong> </h1>
+            <h2>{{$matricula->turma->nome_turma}} - {{$matricula->turma->tipoTurma->anoLetivo->ano}}</h2>
+            <h2>Entrega de Documentos </h2>
+        </div>
+        <div class="p-2">            
+            <img src="{{url("storage/".$matricula->aluno->foto)}}" alt="" width="100" heigth="200">
+        </div>
+        <div class="p-2"> </div>
+    </div>    
 
 @stop
 
