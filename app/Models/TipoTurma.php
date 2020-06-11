@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Secretaria\Disciplina;
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 class TipoTurma extends Model

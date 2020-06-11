@@ -70,8 +70,8 @@ Route::prefix('secretaria')
 Route::prefix('admin')
         ->namespace('Admin')        
         ->middleware('auth')
-        ->group(function(){                
-            
+        ->group(function(){  
+                       
             /**
              * Rotas Tipos Documentos Identidade
              */
@@ -163,7 +163,7 @@ Route::prefix('admin')
             Route::delete('UnidadesEnsino/{id_unidade_ensino}', 'UnidadeEnsinoController@destroy')->name('unidadesensino.destroy');
             Route::get('UnidadesEnsino/{id_unidade_ensino}', 'UnidadeEnsinoController@show')->name('unidadesensino.show');
             Route::post('UnidadesEnsino', 'UnidadeEnsinoController@store')->name('unidadesensino.store');
-            Route::get('UnidadesEnsino', 'UnidadeEnsinoController@index')->name('unidadesensino.index');
+            Route::get('UnidadesEnsino', 'UnidadeEnsinoController@index')->name('unidadesensino.index')->middleware('can:Unidade Ensino Ver');
             
             Route::get('/', 'UnidadeEnsinoController@index')->name('admin.index');
 

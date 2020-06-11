@@ -32,8 +32,8 @@
                 <table class="table table-condensed">
                     <thead>
                         <th width="50px">#</th>
-                        <th>Permissões disponíveis</th>                        
-                        <th width="270">Ações</th>
+                        <th>Permissões disponíveis</th>   
+                        <th>Observações</th>                                             
                     </thead>
                     <tbody>                        
                         <form action="{{ route('perfis.permissoes.vincular', $perfil->id_perfil) }}" method="POST">
@@ -46,7 +46,10 @@
                                     </td>
                                     <td>
                                         {{$permissao->permissao}}
-                                    </td>                                
+                                    </td>  
+                                    <td>
+                                        {{$permissao->descricao_permissao}}
+                                    </td>                              
                                 </tr>
                             @endforeach
                             <tr>

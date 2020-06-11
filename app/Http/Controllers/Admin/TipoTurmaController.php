@@ -7,7 +7,7 @@ use App\Http\Requests\StoreUpdateTipoTurma;
 use App\Models\AnoLetivo;
 use App\Models\SubNivelEnsino;
 use App\Models\TipoTurma;
-use App\Models\User;
+use App\User;
 use Illuminate\Http\Request;
 
 class TipoTurmaController extends Controller

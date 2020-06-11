@@ -30,6 +30,8 @@
                             }                            
                         ?>
                     @endif
+
+                    {{-- Caso tenha mais de uma, o usuário deve selecionar --}}
                     @if (count($unidadesEnsino) > 0)        
                         <select name="unidadeensino" id="unidadeensino" class="form-control">
                             @foreach ($unidadesEnsino as $unidadeEnsino)

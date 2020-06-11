@@ -5,16 +5,19 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateUnidadeEnsino;
 use App\Models\UnidadeEnsino;
+use App\Models\User;
+use App\Models\UserUnidadeEnsino;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class UnidadeEnsinoController extends Controller
 {
-    private $repositorio;
+    private $repositorio, $userUnidadeEnsinoPermissao;
 
     public function __construct(UnidadeEnsino $unidadeEnsino)
     {
         $this->repositorio = $unidadeEnsino;
+        $this->userUnidadeEnsinoPermissao = new UserUnidadeEnsino;
     }
 
     public function index()

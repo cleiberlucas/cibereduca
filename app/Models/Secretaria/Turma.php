@@ -5,7 +5,7 @@ namespace App\Models\Secretaria;
 use App\Models\AnoLetivo;
 use App\Models\TipoTurma;
 use App\Models\Turno;
-use App\Models\User;
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Turma extends Model

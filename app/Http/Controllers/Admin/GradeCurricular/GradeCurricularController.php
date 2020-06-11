@@ -7,7 +7,7 @@ use App\Http\Requests\StoreUpdateGradeCurricular;
 use App\Models\GradeCurricular;
 use App\Models\Secretaria\Disciplina;
 use App\Models\TipoTurma;
-use App\Models\User;
+use App\User;
 use Illuminate\Http\Request;
 
 class GradeCurricularController extends Controller

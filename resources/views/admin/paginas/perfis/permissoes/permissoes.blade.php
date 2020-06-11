@@ -36,7 +36,7 @@
                     @foreach ($permissoes as $permissao)
                         <tr>
                             <td>
-                                {{$permissao->permissao}}
+                                {{$permissao->permissao}} - <i>{{$permissao->descricao_permissao}}</i>
                             </td>                                
                             <td style="width=10px;">                                                                    
                                 <a href="{{ route('perfis.permissoes.remover', [$perfil->id_perfil, $permissao->id_permissao]) }}" class="btn btn-sm btn-outline-danger"> <i class="fas fa-trash"></i> </a> 

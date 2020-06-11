@@ -11,7 +11,7 @@ use App\Models\Secretaria\Turma;
 use App\Models\Secretaria\TipoDescontoCurso;
 use App\Models\SituacaoMatricula;
 use App\Models\TipoAtendimentoEspecializado;
-use App\Models\User;
+use App\User;
 use Illuminate\Http\Request;
 
 class MatriculaController extends Controller

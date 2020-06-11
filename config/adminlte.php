@@ -223,16 +223,19 @@ return [
                     'text' => 'Turmas/Matrículas',
                     'url'  => 'secretaria/turmas',
                     'icon_color' => 'green',
+                    'can'  => 'Turma Ver',
                 ],                
                 [
                     'text' => 'Alunos',
                     'url'  => 'secretaria/1/pessoas',
                     'icon_color' => 'green',
+                    'can'  => 'Aluno Ver',
                 ],
                 [
                     'text' => 'Responsáveis',
                     'url'  => 'secretaria/2/pessoas',
                     'icon_color' => 'green',
+                    'can'  => 'Responsável Ver',
                 ],
                 [
                     'text' => 'Declarações',
@@ -271,27 +274,32 @@ return [
         [
             'text'    => 'Configurações',
             'icon'    => 'fas fa-fw fa-cogs',
-            'icon_color' => 'red',
+            'icon_color' => 'red',   
+                   
             'submenu' => [
                 [
                     'text' => 'Unidade Ensino',
                     'route'  => 'unidadesensino.index',                     
                     'icon_color' => 'red',
+                    'can'  => 'Unidade Ensino Ver',
                 ],
                 [
                     'text' => 'Anos Letivos',
                     'url'  => 'admin/anosletivos',
                     'icon_color' => 'red',
+                    'can'  => 'Ano Letivo Ver',
                 ],
                 [
                     'text' => 'Bimestres',
                     'url'  => 'admin/periodosletivos',
                     'icon_color' => 'red',
+                    'can'  => 'Periodo Letivo Ver',
                 ],               
                 [
                     'text' => 'Padrões de Turmas',
                     'url'  => 'admin/tiposturmas',
                     'icon_color' => 'red',
+                    'can'  => 'Padrao Turma Ver',
                 ],              
                 
                 [
@@ -303,7 +311,7 @@ return [
                         [
                             'text' => 'Disciplinas',
                             'url'  => 'secretaria/disciplinas',
-                            'icon_color' => 'red',
+                            'icon_color' => 'red',                            
                         ],  
                         [
                             'text' => 'Documentos Matrícula',
@@ -370,6 +378,7 @@ return [
                     'text' => 'Permissões',
                     'url'  => 'admin/permissoes',
                     'icon' => 'fas fa-fw fa-lock',
+                    'can'  => 'Usuarios',
                 ],
             ],
         ],

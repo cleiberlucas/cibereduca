@@ -19,7 +19,7 @@ class PermissaoController extends Controller
 
     public function index()
     {
-        $permissoes = $this->repositorio->paginate();
+        $permissoes = Permissao::orderBy('permissao')->paginate();
         
         return view('admin.paginas.permissoes.index', [
                     'permissoes' => $permissoes,

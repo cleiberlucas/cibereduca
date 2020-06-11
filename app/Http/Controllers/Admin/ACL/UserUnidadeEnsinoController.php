@@ -4,8 +4,9 @@ namespace App\Http\Controllers\Admin\ACL;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateUserUnidadeEnsino;
+use App\Models\Perfil;
 use Illuminate\Http\Request;
-use App\Models\User;
+use App\User;
 use App\Models\UnidadeEnsino;
 use App\Models\UserUnidadeEnsino;
 
@@ -27,23 +28,29 @@ class UserUnidadeEnsinoController extends Controller
         if (!$user)
             return redirect()->back();
         
-        //$unidadesEnsino = $user->unidadesEnsino()->paginate();
-
         $unidadesEnsino = UnidadeEnsino::select('id_usuario_unidade_ensino', 
                                                 'tb_unidades_ensino.id_unidade_ensino', 
-                                                'tb_unidades_ensino.nome_fantasia', 'situacao_vinculo')                                        
+                                                'tb_unidades_ensino.nome_fantasia', 'situacao_vinculo',
+                                                'tb_perfis.id_perfil', 'tb_perfis.perfil',
+                                                'tb_usuarios_unidade_ensino.fk_id_perfil',
+                                                )  
                                         ->join('tb_usuarios_unidade_ensino', 'tb_usuarios_unidade_ensino.fk_id_unidade_ensino', 'tb_unidades_ensino.id_unidade_ensino')
                                         ->join('users', 'id', 'tb_usuarios_unidade_ensino.fk_id_user')
+                                        ->leftJoin('tb_perfis', 'fk_id_perfil', 'id_perfil')
                                         ->where('tb_usuarios_unidade_ensino.fk_id_user', $id)
                                         ->orderBy('nome_fantasia')
                                         ->get();
 
-        $unidadesEnsinoLivres = $user->unidadesEnsinoLivres();  
+        $unidadesEnsinoLivres = $user->unidadesEnsinoLivres();
+        $perfis = new Perfil;
 
+        $perfis = $perfis->all()->sortBy('perfil');
+        
         return view('admin.paginas.users.unidadesensino.unidadesensino', [
             'user' => $user,
             'unidadesEnsino' => $unidadesEnsino,
             'unidadesEnsinoLivres' => $unidadesEnsinoLivres,
+            'perfis' => $perfis,
         ]);
     }
 

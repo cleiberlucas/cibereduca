@@ -5,7 +5,7 @@ namespace App\Models\Secretaria;
 use App\Models\Endereco;
 use App\Models\TipoDocIdentidade;
 use App\Models\UnidadeEnsino;
-use App\Models\User;
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Pessoa extends Model

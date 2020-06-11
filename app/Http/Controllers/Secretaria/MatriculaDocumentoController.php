@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Secretaria\Matricula;
 use App\Models\TipoDocumento;
-use App\Models\User;
+use App\User;
 
 class MatriculaDocumentoController extends Controller
 {

@@ -32,8 +32,9 @@
             <table class="table table-condensed">
                 <thead>
                     <th>Unidades de Ensino vinculadas</th>    
-                    <th>Situação vínculo</th>                    
-                    <th width="570">Ações</th>
+                    <th>Situação vínculo</th>    
+                    <th>Perfil</th>                
+                    <th width="470">Ações</th>
                 </thead> 
                 <tbody>                        
                     @foreach ($unidadesEnsino as $unidadeEnsino)
@@ -41,9 +42,15 @@
                             @csrf
                             <tr>
                                 <td>
-                                    <font color="green">
-                                        {{$unidadeEnsino->nome_fantasia}}
-                                    </font>
+                                    @if (isset($unidadeEnsino->situacao_vinculo) && $unidadeEnsino->situacao_vinculo == 1)
+                                        <font color="green">
+                                            {{$unidadeEnsino->nome_fantasia}}
+                                        </font>
+                                    @else
+                                        <font color="grey">
+                                            {{$unidadeEnsino->nome_fantasia}}
+                                        </font>
+                                    @endif
                                 </td>         
                                 <td>                                
                                     @if (isset($unidadeEnsino->situacao_vinculo) && $unidadeEnsino->situacao_vinculo == 1)
@@ -53,9 +60,21 @@
                                     @endif
                                     Ativar                                 
                                 </td>                       
+                                <td>
+                                    <select name="fk_id_perfil" id="" class="form-control">
+                                        <option value=""></option>
+                                        @foreach ($perfis as $perfil)                                            
+                                            <option value="{{$perfil->id_perfil}}" 
+                                                @if (isset($perfil) && $perfil->id_perfil == $unidadeEnsino->fk_id_perfil)
+                                                    selected="selected"
+                                                @endif
+                                            >{{$perfil->perfil}}</option>
+                                            
+                                        @endforeach
+                                    </select>
+                                </td>
                                 <td style="width=10px;">       
-                                    <button type="submit" class="btn btn-sm btn-outline-success"><i class="fas fa-save"></i></button>                                                             
-                                    {{-- <a href="{{ route('users.unidadesensino.update', $unidadeEnsino->id_usuario_unidade_ensino) }}" class="btn btn-outline-success"><i class="fas fa-save"></i></a>                                  --}}
+                                    <button type="submit" class="btn btn-sm btn-outline-success"><i class="fas fa-save"></i></button>                                                                                                 
                                 </td>                            
                             </tr>
                         </form>
@@ -72,7 +91,7 @@
                     <table class="table table-condensed">
                         <thead>
                             <th width="50px">#</th>
-                            <th>Unidades Não vinculadas</th>                                                
+                            <th width="350px">Unidades Não vinculadas</th>                               
                         </thead>
                         <tbody>                        
                             <form action="{{ route('users.unidadesensino.vincular', $user->id) }}" method="POST">
@@ -85,7 +104,7 @@
                                         </td>                                   
                                         <td>
                                             {{$unidadeEnsino->nome_fantasia}}    
-                                        </td>                
+                                        </td>                                                       
                                     </tr>
                                 @endforeach
                                 <tr>

@@ -10,7 +10,7 @@ use App\Models\Estado;
 use App\Models\Secretaria\Pessoa;
 use App\Models\TipoDocIdentidade;
 use App\Models\UnidadeEnsino;
-use App\Models\User;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 

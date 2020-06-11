@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdatePeriodoLetivo;
 use App\Models\AnoLetivo;
 use App\Models\PeriodoLetivo;
-use App\Models\User;
+use App\User;
 use Illuminate\Http\Request;
 
 class PeriodoLetivoController extends Controller

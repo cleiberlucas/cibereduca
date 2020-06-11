@@ -8,7 +8,7 @@ use App\Models\Secretaria\Matricula;
 use App\Models\Secretaria\Turma;
 use App\Models\TipoTurma;
 use App\Models\Turno;
-use App\Models\User;
+use App\User;
 use Illuminate\Http\Request;
 
 class TurmaController extends Controller

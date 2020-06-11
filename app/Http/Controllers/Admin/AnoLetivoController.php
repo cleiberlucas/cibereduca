@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateAnoLetivo;
 use App\Models\AnoLetivo;
 use App\Models\UnidadeEnsino;
-use App\Models\User;
+use App\User;
 use Illuminate\Http\Request;
 
 class AnoLetivoController extends Controller
