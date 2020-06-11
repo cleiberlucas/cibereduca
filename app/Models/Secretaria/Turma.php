@@ -19,7 +19,11 @@ class Turma extends Model
    
     public function search($filtro = null)
     {
-        $resultado = $this->where('nome_turma', 'like', "%{$filtro}%")
+        $resultado = $this
+                            ->join('tb_tipos_turmas', 'fk_id_tipo_turma', 'id_tipo_turma')
+                            ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')                                       
+                            ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())                                    
+                            ->where('nome_turma', 'like', "%{$filtro}%")
                             ->paginate();
         
         return $resultado;

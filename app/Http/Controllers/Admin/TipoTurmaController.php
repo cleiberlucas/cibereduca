@@ -9,7 +9,6 @@ use App\Models\SubNivelEnsino;
 use App\Models\TipoTurma;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class TipoTurmaController extends Controller
 {
@@ -25,6 +24,8 @@ class TipoTurmaController extends Controller
     public function index()
     {
         $tiposturmas = $this->repositorio
+                                ->join('tb_anos_letivos', 'fk_id_ano_letivo', 'id_ano_letivo')
+                                ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())
                                 ->orderBy('fk_id_ano_letivo', 'desc')
                                 ->orderBy('fk_id_sub_nivel_ensino', 'asc')
                                 ->orderBy('tipo_turma', 'asc')
@@ -38,7 +39,7 @@ class TipoTurmaController extends Controller
     public function create()
     {       
         return view('admin.paginas.tiposturmas.create', [
-            'anosLetivos' => $this->anosLetivos->anosLetivosAbertos(session()->get('id_unidade_ensino')),
+            'anosLetivos' => $this->anosLetivos->anosLetivosAbertos(User::getUnidadeEnsinoSelecionada()),
             'subNiveisEnsino' => $this->subNiveisEnsino->subNiveisEnsino(),
         ]);
     }
@@ -55,7 +56,10 @@ class TipoTurmaController extends Controller
 
     public function show($id)
     {
-        $tipoTurma = $this->repositorio->where('id_tipo_turma', $id)->with('anoLetivo', 'subNivelEnsino', 'usuario')->first();
+        $tipoTurma = $this->repositorio
+                            ->join('tb_anos_letivos', 'fk_id_ano_letivo', 'id_ano_letivo')
+                            ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())
+                            ->where('id_tipo_turma', $id)->with('anoLetivo', 'subNivelEnsino', 'usuario')->first();
 
         if (!$tipoTurma)
             return redirect()->back();
@@ -89,7 +93,10 @@ class TipoTurmaController extends Controller
 
     public function edit($id)
     {
-        $tipoTurma = $this->repositorio->where('id_tipo_turma', $id)->first();
+        $tipoTurma = $this->repositorio
+                                ->join('tb_anos_letivos', 'fk_id_ano_letivo', 'id_ano_letivo')
+                                ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())
+                                ->where('id_tipo_turma', $id)->first();
              
         if (!$tipoTurma)
             return redirect()->back();

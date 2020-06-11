@@ -54,7 +54,7 @@
                                     Ativar                                 
                                 </td>                       
                                 <td style="width=10px;">       
-                                    <button type="submit" class="btn btn-outline-success"><i class="fas fa-save"></i></button>                                                             
+                                    <button type="submit" class="btn btn-sm btn-outline-success"><i class="fas fa-save"></i></button>                                                             
                                     {{-- <a href="{{ route('users.unidadesensino.update', $unidadeEnsino->id_usuario_unidade_ensino) }}" class="btn btn-outline-success"><i class="fas fa-save"></i></a>                                  --}}
                                 </td>                            
                             </tr>

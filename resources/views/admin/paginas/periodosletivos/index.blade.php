@@ -37,33 +37,33 @@
                         <th width="270">Ações</th>
                     </thead>
                     <tbody>                        
-                        @foreach ($periodosletivos as $periodoletivo)
+                        @foreach ($periodosLetivos as $periodoLetivo)
                             <tr>
                                 <td>
-                                    {{$periodoletivo->anoLetivo->ano}}
+                                    {{$periodoLetivo->anoLetivo->ano}}
                                 </td> 
                                 <td>
-                                    {{$periodoletivo->periodo_letivo}}
+                                    {{$periodoLetivo->periodo_letivo}}
                                 </td>                   
                                 <td>
-                                    {{date('d/m/Y', strtotime($periodoletivo->data_inicio))}}
+                                    {{date('d/m/Y', strtotime($periodoLetivo->data_inicio))}}
                                 </td>                   
                                 <td>
-                                    {{date('d/m/Y', strtotime($periodoletivo->data_fim))}}
+                                    {{date('d/m/Y', strtotime($periodoLetivo->data_fim))}}
                                 </td>                   
                                 <td>
-                                    @if ($periodoletivo->situacao == 1)
+                                    @if ($periodoLetivo->situacao == 1)
                                         <b>Aberto</b>
                                     @else
                                         Encerrado                                        
                                     @endif                                    
                                 </td>     
                                 <td>
-                                    {{date('d/m/Y H:m:i', strtotime($periodoletivo->data_alteracao))}}
+                                    {{date('d/m/Y H:m:i', strtotime($periodoLetivo->data_alteracao))}}
                                 </td>                            
                                 <td style="width=10px;">
-                                    <a href="{{ route('periodosletivos.edit', $periodoletivo->id_periodo_letivo) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>
-                                    <a href="{{ route('periodosletivos.show', $periodoletivo->id_periodo_letivo) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-eye"></i></a>
+                                    <a href="{{ route('periodosletivos.edit', $periodoLetivo->id_periodo_letivo) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>
+                                    <a href="{{ route('periodosletivos.show', $periodoLetivo->id_periodo_letivo) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-eye"></i></a>
                                 </td>
                                 
                             </tr>
@@ -72,9 +72,9 @@
                 </table>
                 <div class="card-footer">
                     @if (isset($filtros))
-                    {!! $periodosletivos->appends($filtros)->links()!!}
+                    {!! $periodosLetivos->appends($filtros)->links()!!}
                     @else
-                        {!! $periodosletivos->links()!!}    
+                        {!! $periodosLetivos->links()!!}    
                     @endif
                     
                 </div>

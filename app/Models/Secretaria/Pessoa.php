@@ -4,6 +4,7 @@ namespace App\Models\Secretaria;
 
 use App\Models\Endereco;
 use App\Models\TipoDocIdentidade;
+use App\Models\UnidadeEnsino;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 
@@ -28,6 +29,7 @@ class Pessoa extends Model
                             'email_2', 
                             'fk_id_tipo_pessoa', 
                             'obs_pessoa', 
+                            'fk_id_unidade_ensino',
                             'fk_id_user_cadastro',
                             'situacao_pessoa',
                             'data_cadastro',
@@ -59,6 +61,7 @@ class Pessoa extends Model
             })            
             ->where('tb_pessoas.fk_id_tipo_pessoa', '=', 1)
             ->where('situacao_pessoa', 1)
+            ->where('tb_pessoas.fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())
             ->orderBy('nome')
             ->get();
 
@@ -97,5 +100,10 @@ class Pessoa extends Model
     public function tipoDocIdentidade()
     {       
         return $this->belongsTo(TipoDocIdentidade::class, 'fk_id_tipo_doc_identidade', 'id_tipo_doc_identidade');
+    }
+
+    public function unidadeEnsino()
+    {       
+        return $this->belongsTo(UnidadeEnsino::class, 'fk_id_unidade_ensino', 'id_unidade_ensino');
     }
 }

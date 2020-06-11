@@ -30,6 +30,14 @@
                 <li>
                     <strong>E-mail:</strong> {{$UnidadeEnsino->email}}
                 </li>
+                <li>
+                    <strong>Situação:</strong> 
+                        @if ($UnidadeEnsino->situacao == 1)
+                            <b>Ativo</b>
+                        @else
+                            Inativo                                        
+                        @endif
+                </li>
             </ul>
             <form action="{{ route('unidadesensino.destroy', $UnidadeEnsino->id_unidade_ensino) }}" method="POST">
                 @csrf

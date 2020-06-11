@@ -4,7 +4,7 @@
     @csrf
     
     <div class="row">
-        <div class="form-group col-sm-3 col-xs-2">
+        <div class="form-group col-sm-4 col-xs-2">
             <input type="hidden" name="fk_id_user" value="{{Auth::id()}}">
             
             <label>Padrão de Turma:</label>
@@ -16,7 +16,7 @@
                 
                     <option value="{{$tipoturma->id_tipo_turma}} " 
                         
-                        @if (isset($turma) && $tipoturma->id_turma == $turma->fk_id_padrao_turno ) 
+                        @if (isset($turma) && $tipoturma->id_tipo_turma == $turma->fk_id_tipo_turma ) 
                             selected="selected"
                         @endif
 

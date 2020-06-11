@@ -11,8 +11,8 @@ class UnidadeEnsino extends Model
 
     public $timestamps = false;
     
-    protected $fillable = ['razao_social', 'nome_fantasia', 'cnpj', 'telefone', 'email', 'nome_assinatura', 'cargo_assinatura', 'url_site'];
-   
+    protected $fillable = ['razao_social', 'nome_fantasia', 'cnpj', 'telefone', 'email', 'nome_assinatura', 'cargo_assinatura', 'url_site', 'situacao'];
+      
     public function search($filtro = null)
     {
         $resultado = $this->where('nome_fantasia', 'LIKE', "%{$filtro}%")
@@ -27,9 +27,10 @@ class UnidadeEnsino extends Model
         return $this->hasMany(EnderecosUnidadeEnsino::class);
     }
 
-    public function unidadesEnsino($situacao)
+    public function unidadesEnsino($id_unidade_ensino)
     {
-        return $this->where('situacao', '=', $situacao)->get();
+        return $this->where('id_unidade_ensino', '=', $id_unidade_ensino)
+                    ->where('situacao', '=', 1)->get();
     }
 
 }

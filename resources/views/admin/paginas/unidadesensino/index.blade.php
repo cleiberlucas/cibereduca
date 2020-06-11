@@ -29,6 +29,7 @@
                     <thead>
                         <th>Campus/Unidade</th>
                         <th>Telefone</th>
+                        <th>Situação</th>
                         <th width="270">Ações</th>
                     </thead>
                     <tbody>
@@ -39,6 +40,13 @@
                                 </td>
                                 <td>
                                     {{$unidadeEnsino->telefone}}
+                                </td>
+                                <td>
+                                    @if ($unidadeEnsino->situacao == 1)
+                                        <b>Ativo</b>
+                                    @else
+                                        Inativo                                        
+                                    @endif
                                 </td>
                                 <td style="width=10px;">
                                     <a href="{{ route('unidadesensino.edit', $unidadeEnsino->id_unidade_ensino, false)}}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>

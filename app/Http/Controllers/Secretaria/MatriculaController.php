@@ -11,6 +11,7 @@ use App\Models\Secretaria\Turma;
 use App\Models\Secretaria\TipoDescontoCurso;
 use App\Models\SituacaoMatricula;
 use App\Models\TipoAtendimentoEspecializado;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class MatriculaController extends Controller
@@ -36,7 +37,8 @@ class MatriculaController extends Controller
                             ->join('tb_sub_niveis_ensino', 'tb_tipos_turmas.fk_id_sub_nivel_ensino', '=', 'tb_sub_niveis_ensino.id_sub_nivel_ensino')
                             ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')
                             ->join('tb_turnos', 'tb_turmas.fk_id_turno', '=', 'tb_turnos.id_turno')         
-                            ->where('tb_turmas.id_turma', '=', $request->segment(2))                         
+                            ->where('tb_turmas.id_turma', '=', $request->segment(2)) 
+                            ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())                        
                             ->first();          
                 
         return view('secretaria.paginas.matriculas.index', [
@@ -56,7 +58,8 @@ class MatriculaController extends Controller
                         ->join('tb_sub_niveis_ensino', 'tb_tipos_turmas.fk_id_sub_nivel_ensino', '=', 'tb_sub_niveis_ensino.id_sub_nivel_ensino')
                         ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')
                         ->join('tb_turnos', 'tb_turmas.fk_id_turno', '=', 'tb_turnos.id_turno')         
-                        ->where('tb_turmas.id_turma', '=', $request->segment(4))                         
+                        ->where('tb_turmas.id_turma', '=', $request->segment(4))     
+                        ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())                    
                         ->first(); 
        
         $formasPagto = new FormaPagamento;
@@ -119,6 +122,7 @@ class MatriculaController extends Controller
                             ->join('tb_anos_letivos', 'tb_anos_letivos.id_ano_letivo', '=', 'tb_tipos_turmas.fk_id_ano_letivo')
                             ->join('tb_turnos', 'tb_turnos.id_turno', '=', 'tb_turmas.fk_id_turno')                            
                             ->where('id_matricula', $id)
+                            ->where('tb_anos_letivos.fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())
                             ->first();
 
         if (!$matricula)
@@ -156,6 +160,7 @@ class MatriculaController extends Controller
         $alunos = Pessoa::select('id_pessoa', 'nome')
                     ->where('fk_id_tipo_pessoa', '=', '1')
                     ->where('situacao_pessoa', 1)
+                    ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())
                     ->orderBy('nome')
                     ->get();
 
@@ -190,7 +195,8 @@ class MatriculaController extends Controller
                                 ->join('tb_tipos_turmas', 'tb_turmas.fk_id_tipo_turma', '=', 'tb_tipos_turmas.id_tipo_turma' )
                                 ->join('tb_sub_niveis_ensino', 'tb_tipos_turmas.fk_id_sub_nivel_ensino', '=', 'tb_sub_niveis_ensino.id_sub_nivel_ensino')
                                 ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')
-                                ->join('tb_turnos', 'tb_turmas.fk_id_turno', '=', 'tb_turnos.id_turno')         
+                                ->join('tb_turnos', 'tb_turmas.fk_id_turno', '=', 'tb_turnos.id_turno')   
+                                ->where('tb_anos_letivos.fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())      
                                 ->where('id_matricula', $id)->first();
 
 /*                                 ->join('tb_formas_pagamento as forma_pagto_matricula', 'forma_pagto_matricula.id_forma_pagamento', 'tb_matriculas.fk_id_forma_pagto_matricula')
@@ -201,13 +207,13 @@ class MatriculaController extends Controller
             return redirect()->back();
                 
         return view('secretaria.paginas.matriculas.edit',[
-            'matricula'          => $matricula,
-            'alunos'             => $alunos,
-            'responsaveis'       => $responsaveis,
-            'formasPagto'        => $formasPagto,
-            'tiposDesconto'      => $tiposDesconto,
-            'situacoesMatricula' => $situacoesMatricula,
-            'tiposAtendimentoEspecializado' => $tiposAtendimentoEspecializado->getTiposAtendimentoEspecializado(),
+                        'matricula'          => $matricula,
+                        'alunos'             => $alunos,
+                        'responsaveis'       => $responsaveis,
+                        'formasPagto'        => $formasPagto,
+                        'tiposDesconto'      => $tiposDesconto,
+                        'situacoesMatricula' => $situacoesMatricula,
+                        'tiposAtendimentoEspecializado' => $tiposAtendimentoEspecializado->getTiposAtendimentoEspecializado(),
         ]);
     }
 

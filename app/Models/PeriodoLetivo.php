@@ -5,7 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
-class PeriodoLetivo extends Model
+class PeriodoLetivo extends Model 
 {
     protected $table = "tb_periodos_letivos";
     protected $primaryKey = 'id_periodo_letivo';
@@ -16,7 +16,9 @@ class PeriodoLetivo extends Model
    
     public function search($filtro = null)
     {
-        $resultado = $this->where('periodo_letivo', 'like', "%{$filtro}%") 
+        $resultado = $this->join('tb_anos_letivos', 'fk_id_ano_letivo', 'id_ano_letivo')
+                            ->where('periodo_letivo', 'like', "%{$filtro}%") 
+                            ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())
                             ->paginate();
         
         return $resultado;

@@ -73,4 +73,12 @@ class User extends Authenticatable
         
         return $unidadesEnsino;
     }    
+
+    public static function getUnidadeEnsinoSelecionada()
+    {
+        $situacaoUnidade = UnidadeEnsino::where('id_unidade_ensino', '=', session()->get('id_unidade_ensino'))->first();
+        /* dd($situacaoUnidade->situacao); */
+        if (isset($situacaoUnidade->situacao) && $situacaoUnidade->situacao == 1)
+            return $situacaoUnidade->id_unidade_ensino;
+    }
 }

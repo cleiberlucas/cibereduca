@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdatePeriodoLetivo;
 use App\Models\AnoLetivo;
 use App\Models\PeriodoLetivo;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class PeriodoLetivoController extends Controller
@@ -20,10 +21,12 @@ class PeriodoLetivoController extends Controller
 
     public function index()
     {
-        $periodosLetivos = $this->repositorio->with('anoLetivo')->paginate();          
-                
+        $periodosLetivos = $this->repositorio->join('tb_anos_letivos', 'fk_id_ano_letivo', 'id_ano_letivo')
+                                            ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())                                            
+                                            ->paginate();          
+        //dd($periodosLetivos);
         return view('admin.paginas.periodosletivos.index', [
-                    'periodosletivos' => $periodosLetivos,        
+                    'periodosLetivos' => $periodosLetivos,        
         ]);
     }
 
@@ -31,7 +34,7 @@ class PeriodoLetivoController extends Controller
     {
        // dd(view('admin.paginas.periodosletivos.create'));
         return view('admin.paginas.periodosletivos.create', [
-            'anosLetivos' => $this->anosLetivos->anosLetivosAbertos(session()->get('id_unidade_ensino')),
+            'anosLetivos' => $this->anosLetivos->anosLetivosAbertos(User::getUnidadeEnsinoSelecionada()),
         ]);
     }
 
@@ -48,7 +51,10 @@ class PeriodoLetivoController extends Controller
 
     public function show($id)
     {
-        $periodoLetivo = $this->repositorio->where('id_periodo_letivo', $id)->with('anoLetivo', 'usuario')->first();
+        $periodoLetivo = $this->repositorio->join('tb_anos_letivos', 'fk_id_ano_letivo', 'id_ano_letivo')
+                                            ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())
+                                            ->where('id_periodo_letivo', $id)
+                                            ->first();
 
         if (!$periodoLetivo)
             return redirect()->back();
@@ -75,7 +81,7 @@ class PeriodoLetivoController extends Controller
         $periodosLetivos = $this->repositorio->search($request->filtro);
         
         return view('admin.paginas.periodosletivos.index', [
-            'periodosletivos' => $periodosLetivos,
+            'periodosLetivos' => $periodosLetivos,
             'filtros' => $filtros,
         ]);
     }

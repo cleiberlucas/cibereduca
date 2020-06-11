@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateAnoLetivo;
 use App\Models\AnoLetivo;
 use App\Models\UnidadeEnsino;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class AnoLetivoController extends Controller
@@ -15,13 +16,12 @@ class AnoLetivoController extends Controller
     public function __construct(AnoLetivo $anoLetivo)
     {
         $this->repositorio = $anoLetivo;
-        $this->unidadesEnsino = new UnidadeEnsino();
-
+        $this->unidadesEnsino = new UnidadeEnsino();   
     }
 
     public function index()
     {
-        $anosLetivos = $this->repositorio->paginate();
+        $anosLetivos = $this->repositorio->where('fk_id_unidade_ensino', '=', User::getUnidadeEnsinoSelecionada())->paginate();
         
         return view('admin.paginas.anosletivos.index', [
                     'anosletivos' => $anosLetivos,
@@ -32,7 +32,7 @@ class AnoLetivoController extends Controller
     {
        // dd(view('admin.paginas.anosletivos.create'));
         return view('admin.paginas.anosletivos.create', [
-            'unidadesEnsino' => $this->unidadesEnsino->unidadesEnsino(1),
+            'unidadesEnsino' => $this->unidadesEnsino->unidadesEnsino(User::getUnidadeEnsinoSelecionada()),
         ]);
     }
 
@@ -48,9 +48,10 @@ class AnoLetivoController extends Controller
     }
 
     public function show($id)
-    {
-        $anoLetivo = $this->repositorio->where('id_ano_letivo', $id)->first();
-
+    {        
+        $anoLetivo = $this->repositorio->where('fk_id_unidade_ensino', '=', User::getUnidadeEnsinoSelecionada())
+                                        ->where('id_ano_letivo', $id)->first();
+        
         if (!$anoLetivo)
             return redirect()->back();
 
@@ -83,14 +84,15 @@ class AnoLetivoController extends Controller
 
     public function edit($id)
     {
-        $anoLetivo = $this->repositorio->where('id_ano_letivo', $id)->first();
+        $anoLetivo = $this->repositorio->where('fk_id_unidade_ensino', '=', User::getUnidadeEnsinoSelecionada())
+                                        ->where('id_ano_letivo', $id)->first();
         
         if (!$anoLetivo)
             return redirect()->back();
                 
         return view('admin.paginas.anosletivos.edit',[
             'anoLetivo' => $anoLetivo,
-            'unidadesEnsino' => $this->unidadesEnsino->unidadesEnsino(1),
+            'unidadesEnsino' => $this->unidadesEnsino->unidadesEnsino(User::getUnidadeEnsinoSelecionada()),
         ]);
     }
 

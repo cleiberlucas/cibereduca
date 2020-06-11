@@ -38,6 +38,26 @@
                     </div>
                 </div>
 
+                {{-- Unidade de ensino somente para alunos --}}
+                @if ($tipo_pessoa == 'aluno')
+                    <div class="row">
+                        <div class="form-group col-sm-6 col-xs-2"> 
+                            <label for="">Unidade de Ensino</label>
+                            <select name="fk_id_unidade_ensino" id="fk_id_unidade_ensino" class="form-control">
+                                <option value=""></option>
+                                @foreach ($unidadesEnsino as $unidadeEnsino)
+                                    <option value="{{$unidadeEnsino->id_unidade_ensino }}"
+                                        @if (isset($pessoa) && $unidadeEnsino->id_unidade_ensino == $pessoa->fk_id_unidade_ensino)
+                                            selected="selected"
+                                        @endif
+                                        >                    
+                                        {{$unidadeEnsino->nome_fantasia}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                @endif
+
                 <div class="row">
                     <div class="form-group col-sm-6 col-xs-12">                
                         <label>*Situação:</label><br>

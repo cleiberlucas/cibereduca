@@ -7,6 +7,7 @@ use App\Http\Requests\StoreUpdateGradeCurricular;
 use App\Models\GradeCurricular;
 use App\Models\Secretaria\Disciplina;
 use App\Models\TipoTurma;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class GradeCurricularController extends Controller
@@ -22,7 +23,10 @@ class GradeCurricularController extends Controller
     //Disciplinas de uma turma
     public function disciplinas($id_tipo_turma)
     {
-        $tipoTurma = $this->tipoTurma->where('id_tipo_turma', $id_tipo_turma)->with('anoLetivo', 'subNivelEnsino')->first();
+        $tipoTurma = $this->tipoTurma
+                                    ->join('tb_anos_letivos', 'fk_id_ano_letivo', 'id_ano_letivo')
+                                    ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())
+                                    ->where('id_tipo_turma', $id_tipo_turma)->with('subNivelEnsino')->first();
 
         if (!$tipoTurma)
             return redirect()->back();
@@ -30,7 +34,7 @@ class GradeCurricularController extends Controller
         //$disciplinas = $tipoTurma->disciplinas()->paginate();
         $disciplinas = GradeCurricular::select('id_grade_curricular', 'id_disciplina', 'disciplina', 'carga_horaria_anual')
                                         ->join('tb_tipos_turmas', 'id_tipo_turma', 'fk_id_tipo_turma')
-                                        ->join('tb_disciplinas', 'id_disciplina', 'fk_id_disciplina')
+                                        ->join('tb_disciplinas', 'id_disciplina', 'fk_id_disciplina')                                        
                                         ->where('fk_id_tipo_turma', $id_tipo_turma)
                                         ->orderBy('disciplina')
                                         ->paginate(30);
@@ -43,7 +47,11 @@ class GradeCurricularController extends Controller
 
     public function disciplinasAdd(Request $request, $id_tipo_turma)
     {
-        $tipoTurma = $this->tipoTurma->where('id_tipo_turma', $id_tipo_turma)->first();
+        $tipoTurma = $this->tipoTurma
+                            ->join('tb_anos_letivos', 'fk_id_ano_letivo', 'id_ano_letivo')
+                            ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())
+                            ->where('id_tipo_turma', $id_tipo_turma)
+                            ->first();
 
         if (!$tipoTurma)
             return redirect()->back();

@@ -122,4 +122,5 @@ class UserUnidadeEnsinoController extends Controller
         else
              return ['situacao_vinculo' => '1'];            
     }
+
 }

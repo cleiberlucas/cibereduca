@@ -9,12 +9,14 @@ use App\Models\Endereco;
 use App\Models\Estado;
 use App\Models\Secretaria\Pessoa;
 use App\Models\TipoDocIdentidade;
+use App\Models\UnidadeEnsino;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class PessoaController extends Controller
 {
-    private $repositorio, $estados, $cidades, $tiposDocIdentidade;
+    private $repositorio, $estados, $cidades, $tiposDocIdentidade, $unidadesEnsino;
     
     public function __construct(Pessoa $pessoa)
     {
@@ -27,12 +29,29 @@ class PessoaController extends Controller
         $this->cidades = $this->cidades->all()->sortBy('cidade');
         
         $this->tiposDocIdentidade = new TipoDocIdentidade;
-        $this->tiposDocIdentidade = $this->tiposDocIdentidade->all()->sortBy('tipo_doc_identidade');        
+        $this->tiposDocIdentidade = $this->tiposDocIdentidade->all()->sortBy('tipo_doc_identidade');   
+        
+         $this->unidadesEnsino = new UnidadeEnsino;
+        /*$this->unidadesEnsino = $this->unidadesEnsino->all()->sortBy('nome_fantasia'); */
     }
 
     public function index(Request $request)
     {        
-        $pessoas = $this->repositorio->where('fk_id_tipo_pessoa', $request->segment(2))->orderBy('nome', 'asc')->paginate(20);
+        /* Alunos 
+            Mostra somente unidades de ensino vinculadas ao usuário logado
+        */
+        if ($request->segment(2) == '1'){
+            $pessoas = $this->repositorio
+                                        ->join('tb_unidades_ensino', 'fk_id_unidade_ensino', 'id_unidade_ensino')
+                                        ->where('fk_id_tipo_pessoa', $request->segment(2))->orderBy('nome', 'asc')
+                                        ->where('id_unidade_ensino', '=', User::getUnidadeEnsinoSelecionada())
+                                        ->paginate(20);
+        }
+        /* Responsável 
+            Não mostra unidade ensino
+        */
+        else
+            $pessoas = $this->repositorio->where('fk_id_tipo_pessoa', $request->segment(2))->orderBy('nome', 'asc')->paginate(20); 
         
         return view('secretaria.paginas.pessoas.index', [
                     'pessoas' => $pessoas,
@@ -42,11 +61,14 @@ class PessoaController extends Controller
 
     public function create(Request $request)
     {   
+        $unidadesEnsino = $this->unidadesEnsino->where('id_unidade_ensino', User::getUnidadeEnsinoSelecionada())->get();
+
         return view('secretaria.paginas.pessoas.create', [
                     'tipo_pessoa' => $request->segment(4),
                     'estados' => $this->estados,
                     'cidades' => $this->cidades,
                     'tiposDocIdentidade' => $this->tiposDocIdentidade,
+                    'unidadesEnsino'     => $unidadesEnsino,
          ]);
     }
 
@@ -117,13 +139,16 @@ class PessoaController extends Controller
 
         if (!$pessoa)
             return redirect()->back();
-                
+        
+        $unidadesEnsino = $this->unidadesEnsino->where('id_unidade_ensino', User::getUnidadeEnsinoSelecionada())->get();
+
         return view('secretaria.paginas.pessoas.edit',[
             'pessoa' => $pessoa,
             'tipoPessoa' => $tipoPessoa,
             'estados' => $this->estados,
             'cidades' => $this->cidades,
             'tiposDocIdentidade' => $this->tiposDocIdentidade,
+            'unidadesEnsino'    => $unidadesEnsino,
         ]);
     }
 

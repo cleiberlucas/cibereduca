@@ -8,6 +8,10 @@ class AnoLetivo extends Model
 {
     protected $table = "tb_anos_letivos";
     protected $primaryKey = 'id_ano_letivo';
+
+    /* protected $attributes = array(
+        'fk_id_unidade_ensino' => session()->get('id_unidade_ensino'),
+    ); */
     
     public $timestamps = false;
         

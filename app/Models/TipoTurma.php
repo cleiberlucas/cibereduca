@@ -16,7 +16,9 @@ class TipoTurma extends Model
    
     public function search($filtro = null)
     {
-        $resultado = $this->where('tipo_turma', 'like', "%{$filtro}%") 
+        $resultado = $this->join('tb_anos_letivos', 'fk_id_ano_letivo', 'id_ano_letivo')
+                            ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())
+                            ->where('tipo_turma', 'like', "%{$filtro}%") 
                             ->paginate();
         
         return $resultado;
