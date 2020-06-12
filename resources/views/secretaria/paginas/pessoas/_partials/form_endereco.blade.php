@@ -1,6 +1,6 @@
 <div class="row">
     <div class="form-group col-sm-6 col-xs-12">
-        <label>Endereço:</label>
+        <label>* Endereço:</label>
         <input type="text" name="endereco" class="form-control" placeholder="Endereço" required value="{{ $pessoa->endereco->endereco ?? old('endereco') }}">
     </div>
     

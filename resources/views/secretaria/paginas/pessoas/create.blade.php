@@ -71,8 +71,9 @@
                 </div>   
 
                 <div class="row">
-                    <div class="form-group col-sm-2 col-xs-6">     
+                    <div class="form-group col-sm-4 col-xs-6">     
                         <div>
+                            * Campos Obrigatórios<br>
                             <button type="submit" class="btn btn-success"><i class="fas fa-forward"></i> Enviar</button>
                         </div>
                     </div>

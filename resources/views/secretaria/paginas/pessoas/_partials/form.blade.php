@@ -11,7 +11,7 @@
         @endif
         
         <input type="hidden" name="fk_id_user_alteracao" value="{{Auth::id()}}">
-        <label>Nome:</label>
+        <label>* Nome:</label>
         <input type="text" name="nome" class="form-control" placeholder="Nome" required value="{{ $pessoa->nome ?? old('nome') }}">
     </div>
     <div class="form-group col-sm-3 col-xs-12">

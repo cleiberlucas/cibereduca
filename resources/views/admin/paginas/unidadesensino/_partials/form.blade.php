@@ -4,15 +4,15 @@
 
     <div class="row">
         <div class="form-group col-sm-6 col-xs-12">
-            <label>Razão Social:</label>
-            <input type="text" name="razao_social" class="form-control" placeholder="Razão Social" value="{{ $unidadeensino->razao_social ?? old('razao_social') }} ">
+            <label>* Razão Social:</label>
+            <input type="text" name="razao_social" class="form-control" required placeholder="Razão Social" value="{{ $unidadeensino->razao_social ?? old('razao_social') }} ">
         </div>
     </div>
 
     <div class="row">
         <div class="form-group col-sm-6 col-xs-12">
-            <label>Nome fantasia:</label>
-            <input type="text" name="nome_fantasia" class="form-control" placeholder="Nome Fantasia" value="{{ $unidadeensino->nome_fantasia ?? old('nome_fantasia') }}">
+            <label>* Nome fantasia:</label>
+            <input type="text" name="nome_fantasia" class="form-control" required placeholder="Nome Fantasia" value="{{ $unidadeensino->nome_fantasia ?? old('nome_fantasia') }}">
         </div>    
     </div>
     
@@ -61,8 +61,9 @@
         Ativar  
     </div>
     <div class="row">
-        <div class="form-group col-sm-2 col-xs-6">     
-            <div>               
+        <div class="form-group col-sm-4 col-xs-6">     
+            <div>   
+                * Campos Obrigatórios<br>            
                 <button type="submit" class="btn btn-success"><i class="fas fa-forward"></i> Enviar</button>            
             </div>
         </div>

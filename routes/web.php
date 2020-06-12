@@ -79,6 +79,12 @@ Route::prefix('admin')
             Route::resource('tiposdocidentidade', 'TipoDocIdentidadeController');
 
             /**
+             * Rotas Tipos Desconto Curso
+             */
+            Route::any('descontoscursos/search', 'DescontoCursoController@search')->name('descontoscursos.search');
+            Route::resource('descontoscursos', 'DescontoCursoController');
+
+            /**
              * Rotas Atendimento Especializado
              */
             Route::any('atendimentosespecializados/search', 'AtendimentoEspecializadoController@search')->name('atendimentosespecializados.search');

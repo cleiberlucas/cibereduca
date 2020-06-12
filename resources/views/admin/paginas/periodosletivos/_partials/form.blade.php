@@ -23,17 +23,17 @@
     
         <div class="form-group col-sm-3 col-xs-2">
             <label>Período Letivo:</label>
-            <input type="text" name="periodo_letivo" class="form-control" placeholder="1º Bimestre" value="{{ $periodoLetivo->periodo_letivo ?? old('periodo_letivo') }}">        
+            <input type="text" name="periodo_letivo" class="form-control" required placeholder="1º Bimestre" value="{{ $periodoLetivo->periodo_letivo ?? old('periodo_letivo') }}">        
         </div>
     </div>
     <div class="row">
         <div class="form-group col-sm-2 col-xs-2">
             <label>Data início:</label>
-            <input type="date" name="data_inicio" class="form-control" value="{{ $periodoLetivo->data_inicio ?? old('data_inicio') }}">
+            <input type="date" name="data_inicio" class="form-control" required value="{{ $periodoLetivo->data_inicio ?? old('data_inicio') }}">
         </div>
         <div class="form-group col-sm-2 col-xs-2">
             <label>Data fim:</label>
-            <input type="date" name="data_fim" class="form-control" value="{{ $periodoLetivo->data_fim ?? old('data_fim') }}">
+            <input type="date" name="data_fim" class="form-control" required value="{{ $periodoLetivo->data_fim ?? old('data_fim') }}">
         </div>
 
         <div class="form-group col-sm-3 col-xs-2">
@@ -48,7 +48,8 @@
     </div>
 
     <div class="row">
-        <div class="form-group col-sm-2 col-xs-2">            
+        <div class="form-group col-sm-4 col-xs-2">            
+            * Todos os Campos Obrigatórios<br>
             <button type="submit" class="btn btn-success"><i class="fas fa-forward"></i> Enviar</button>
         </div>
     </div>

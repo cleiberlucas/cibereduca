@@ -328,6 +328,11 @@ return [
                             'url'  => 'admin/tiposdocidentidade',
                             'icon_color' => 'red',
                         ],
+                        [
+                            'text' => 'Tipos Desconto Curso',
+                            'url'  => 'admin/descontoscursos',
+                            'icon_color' => 'red',
+                        ],
                     ],
                 ],
                

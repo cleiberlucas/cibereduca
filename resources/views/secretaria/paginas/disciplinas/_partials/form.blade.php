@@ -21,7 +21,8 @@
 </div>
 
 <div class="row">
-    <div class="form-group col-sm-2 col-xs-2">            
+    <div class="form-group col-sm-4 col-xs-2">     
+        * Todos os Campos Obrigatórios<br>       
         <button type="submit" class="btn btn-success"><i class="fas fa-forward"></i> Enviar</button>            
     </div>
 </div>

@@ -3,8 +3,8 @@
 @csrf
 
 <div class="form-group">
-    <label>Atendimento Especializado:</label>
-    <input type="text" name="atendimento_especializado" required class="form-control" placeholder="Descrição" value="{{ $atendimentoEspecializado->atendimento_especializado ?? old('atendimento_especializado') }}">
+    <label>Tipo Desconto Curso:</label>
+    <input type="text" name="tipo_desconto_curso" required class="form-control" placeholder="Descrição" value="{{ $descontoCurso->tipo_desconto_curso ?? old('tipo_desconto_curso') }}">
 </div>
 
 <div class="row">
