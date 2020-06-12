@@ -18,7 +18,9 @@ class Pessoa extends Model
     //protected $attributes = ['situacao_disciplina' => '0'];
 
     protected $fillable = ['nome', 
-                            'cpf', 
+                            'cpf',
+                            'pai',
+                            'mae',
                             'foto',
                             'fk_id_tipo_doc_identidade', 
                             'doc_identidade', 

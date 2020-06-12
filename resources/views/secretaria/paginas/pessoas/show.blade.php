@@ -42,6 +42,12 @@
                     <strong>Data Nascimento:</strong> {{date('d/m/Y', strtotime($pessoa->data_nascimento))}}
                 </li>
                 <li>
+                    <strong>Pai:</strong> {{$pessoa->pai}}
+                </li>
+                <li>
+                    <strong>Mãe:</strong> {{$pessoa->mae}}
+                </li>
+                <li>
                     <strong>Fone principal:</strong> {{ $pessoa->telefone_1}}
                 </li>
                 <li>

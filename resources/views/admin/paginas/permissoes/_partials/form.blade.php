@@ -4,7 +4,7 @@
     <div class="row">
         <div class="form-group col-sm-3 col-xs-2">     
             <label>Permissão:</label>
-            <input type="text" name="permissao" class="form-control" placeholder="Permissões de usuário" value="{{ $permissao->permissao ?? old('permissao') }}">
+            <input type="text" name="permissao" class="form-control" placeholder="Permissões de usuário" autofocus value="{{ $permissao->permissao ?? old('permissao') }}">
         </div>
     </div>
     <div class="row">

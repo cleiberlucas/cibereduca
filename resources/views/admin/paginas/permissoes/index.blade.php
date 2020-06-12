@@ -24,18 +24,22 @@
         <div class="card-body">
                 <table class="table table-condensed">
                     <thead>
-                        <th>Permissão</th>                        
-                        <th width="770">Ações</th>
+                        <th>Permissão</th>  
+                        <th>Observações</th>                      
+                        <th width="570">Ações</th>
                     </thead>
                     <tbody>                        
-                        @foreach ($permissoes as $permissaol)
+                        @foreach ($permissoes as $permissao)
                             <tr>
                                 <td>
-                                    {{$permissaol->permissao}}
-                                </td>                                
+                                    {{$permissao->permissao}}
+                                </td>                           
+                                <td>
+                                    {{$permissao->descricao_permissao}}
+                                </td>     
                                 <td style="width=10px;">
-                                    <a href="{{ route('permissoes.edit', $permissaol->id_permissao) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>
-                                    <a href="{{ route('permissoes.show', $permissaol->id_permissao) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-eye"></i></a>
+                                    <a href="{{ route('permissoes.edit', $permissao->id_permissao) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>
+                                    <a href="{{ route('permissoes.show', $permissao->id_permissao) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-eye"></i></a>
                                 </td>
                                 
                             </tr>

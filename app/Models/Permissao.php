@@ -17,6 +17,7 @@ class Permissao extends Model
     {
         $resultado = $this->where('permissao', 'LIKE', "%{$filtro}%")
                             ->orWhere('descricao_permissao', 'LIKE', "%{$filtro}%")
+                            ->orderBy('permissao')
                             ->paginate();
         
         return $resultado;
