@@ -28,7 +28,7 @@ class TipoDocIdentidadeController extends Controller
 
     public function create()
     {
-       // dd(view('admin.paginas.tiposdocidentidade.create'));
+        $this->authorize('Tipo Docs Identidade Cadastrar');       
         return view('admin.paginas.tiposdocidentidade.create');
     }
 
@@ -77,6 +77,7 @@ class TipoDocIdentidadeController extends Controller
 
     public function edit($id)
     {
+        $this->authorize('Tipo Docs Identidade Alterar');       
         $tipoDocIdentidade = $this->repositorio->where('id_tipo_doc_identidade', $id)->first();
         
         if (!$tipoDocIdentidade)

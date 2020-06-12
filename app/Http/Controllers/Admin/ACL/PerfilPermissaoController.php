@@ -20,12 +20,13 @@ class PerfilPermissaoController extends Controller
     //Permissões de um perfil
     public function permissoes($id_perfil)
     {
+        $this->authorize('Perfil Permissão Ver');   
         $perfil = $this->perfil->where('id_perfil', $id_perfil)->first();
 
         if (!$perfil)
             return redirect()->back();
         
-        $permissoes = $perfil->permissoes()->paginate();
+        $permissoes = $perfil->permissoes()->orderBy('permissao')->paginate();
 
         return view('admin.paginas.perfis.permissoes.permissoes', [
             'perfil' => $perfil,
@@ -35,6 +36,7 @@ class PerfilPermissaoController extends Controller
 
     public function permissoesAdd(Request $request, $id_perfil)
     {
+        $this->authorize('Perfil Permissão Adicionar');   
         $perfil = $this->perfil->where('id_perfil', $id_perfil)->first();
 
         if (!$perfil)
@@ -70,6 +72,7 @@ class PerfilPermissaoController extends Controller
 
     public function removerPermissoesPerfil($id_perfil, $id_permissao)
     {
+        $this->authorize('Perfil Permissão Remover');   
         $perfil = $this->perfil->where('id_perfil', $id_perfil)->first();
         $permissao = $this->permissao->where('id_permissao', $id_permissao)->first();
 

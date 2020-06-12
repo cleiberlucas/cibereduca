@@ -28,7 +28,7 @@ public function index()
 
     public function create()
     {
-       // dd(view('admin.paginas.users.create'));
+        $this->authorize('Usuário Cadastrar');              
         return view('admin.paginas.users.create');
     }
 
@@ -43,6 +43,7 @@ public function index()
 
     public function show($id)
     {
+        $this->authorize('Usuário Ver');       
         $user = $this->repositorio->where('id', $id)->first();
 
         if (!$user)
@@ -77,6 +78,7 @@ public function index()
 
     public function edit($id)
     {
+        $this->authorize('Usuário Alterar');       
         $user = $this->repositorio->where('id', $id)->first();
         
         if (!$user)

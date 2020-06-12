@@ -39,7 +39,7 @@ Route::prefix('secretaria')
          * Rotas Turmas
          */
         Route::any('turmas/search', 'TurmaController@search')->name('turmas.search');
-        Route::resource('turmas', 'TurmaController');
+        Route::resource('turmas', 'TurmaController')->middleware('can:Turma Ver');;
 
         /*
         *Rotas Pessoas
@@ -52,7 +52,7 @@ Route::prefix('secretaria')
         Route::delete('pessoas/{id_pessoa}', 'PessoaController@destroy')->name('pessoas.destroy');
         Route::get('pessoas/{id_pessoa}', 'PessoaController@show')->name('pessoas.show');
         Route::post('pessoas', 'PessoaController@store')->name('pessoas.store');
-        Route::any('{id_tipo_pessoa}/pessoas', 'PessoaController@index')->name('pessoas.index');
+        Route::any('{id_tipo_pessoa}/pessoas', 'PessoaController@index')->name('pessoas.index')->middleware('can:Pessoa Ver');
 
         /**
          * Rotas disciplinas
@@ -97,7 +97,7 @@ Route::prefix('admin')
              * Rotas Tipos Turmas
              */
             Route::any('tiposturmas/search', 'TipoTurmaController@search')->name('tiposturmas.search');
-            Route::resource('tiposturmas', 'TipoTurmaController');
+            Route::resource('tiposturmas', 'TipoTurmaController')->middleware('can:Padrão Turma Ver');
 
             /**
              * Rotas Docs Matrícula
@@ -109,16 +109,16 @@ Route::prefix('admin')
              * Rotas períodos letivos
              */
             Route::any('periodosletivos/search', 'PeriodoLetivoController@search')->name('periodosletivos.search');
-            Route::resource('periodosletivos', 'PeriodoLetivoController');
+            Route::resource('periodosletivos', 'PeriodoLetivoController')->middleware('can:Período Letivo Ver');
 
         /**
              * Rotas anos letivos
              */
             Route::any('anosletivos/search', 'AnoLetivoController@search')->name('anosletivos.search');
-            Route::resource('anosletivos', 'AnoLetivoController');
+            Route::resource('anosletivos', 'AnoLetivoController')->middleware('can:Ano Letivo Ver');
 
              /**
-             * Rotas permissões
+             * Rotas users
              */
             Route::any('users/search', 'ACL\UserController@search')->name('users.search');
             Route::resource('users', 'ACL\UserController');
@@ -144,13 +144,13 @@ Route::prefix('admin')
              * Rotas permissões
              */
             Route::any('permissoes/search', 'ACL\PermissaoController@search')->name('permissoes.search');
-            Route::resource('permissoes', 'ACL\PermissaoController');
+            Route::resource('permissoes', 'ACL\PermissaoController')->middleware('can:Permissão Ver');
            
             /**
              * Rotas perfis
              */
             Route::any('perfis/search', 'ACL\PerfilController@search')->name('perfis.search');
-            Route::resource('perfis', 'ACL\PerfilController');
+            Route::resource('perfis', 'ACL\PerfilController')->middleware('can:Perfil Ver');
            
             /*
             *Rotas Unidades de ensino

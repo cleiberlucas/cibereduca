@@ -17,6 +17,7 @@ class MatriculaPastaController extends Controller
     }
 
     public function pasta($id_aluno){
+        $this->authorize('Pasta Aluno Ver');   
         $matriculas = $this->repositorio->where('fk_id_aluno', $id_aluno)->get();
 
        /*  $turma = Turma::select('tb_turmas.nome_turma', 'tb_turmas.id_turma', 'tb_turmas.limite_alunos', 'tb_anos_letivos.ano', 'tb_turnos.descricao_turno', 'tb_sub_niveis_ensino.sub_nivel_ensino')                            

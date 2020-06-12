@@ -58,6 +58,7 @@ class TurmaController extends Controller
 
     public function create()
     {  
+        $this->authorize('Turma Cadastrar');   
         $tiposTurma = TipoTurma::select('*')
                                     ->join('tb_sub_niveis_ensino', 'tb_tipos_turmas.fk_id_sub_nivel_ensino', '=', 'tb_sub_niveis_ensino.id_sub_nivel_ensino')
                                     ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')                                       
@@ -88,6 +89,7 @@ class TurmaController extends Controller
 
     public function show($id)
     {
+        $this->authorize('Turma Ver');   
         $turma = $this->repositorio
                             ->join('tb_tipos_turmas', 'fk_id_tipo_turma', 'id_tipo_turma')
                             ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')                                       
@@ -132,7 +134,8 @@ class TurmaController extends Controller
     }
 
     public function edit($id)
-    {        
+    {       
+        $this->authorize('Turma Alterar');    
         $turma = $this->repositorio
                                 ->join('tb_tipos_turmas', 'tb_turmas.fk_id_tipo_turma', '=', 'tb_tipos_turmas.id_tipo_turma' )
                                 ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')                                       

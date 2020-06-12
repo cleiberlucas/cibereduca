@@ -28,7 +28,7 @@ class AtendimentoEspecializadoController extends Controller
 
     public function create()
     {
-       // dd(view('admin.paginas.atendimentosespecializados.create'));
+        $this->authorize('Tipo Atendimento Especializado Cadastrar');       
         return view('admin.paginas.atendimentosespecializados.create');
     }
 
@@ -77,6 +77,7 @@ class AtendimentoEspecializadoController extends Controller
 
     public function edit($id)
     {
+        $this->authorize('Tipo Atendimento Especializado Alterar');       
         $atendimentoEspecializado = $this->repositorio->where('id_atendimento_especializado', $id)->first();
         
         if (!$atendimentoEspecializado)

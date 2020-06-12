@@ -36,7 +36,7 @@ class PessoaController extends Controller
     }
 
     public function index(Request $request)
-    {        
+    {   
         /* Alunos 
             Mostra somente unidades de ensino vinculadas ao usuário logado
         */
@@ -61,6 +61,7 @@ class PessoaController extends Controller
 
     public function create(Request $request)
     {   
+        $this->authorize('Pessoa Cadastrar');   
         $unidadesEnsino = $this->unidadesEnsino->where('id_unidade_ensino', User::getUnidadeEnsinoSelecionada())->get();
 
         return view('secretaria.paginas.pessoas.create', [
@@ -99,6 +100,7 @@ class PessoaController extends Controller
 
     public function show($id)
     {
+        $this->authorize('Pessoa Ver');   
         $pessoa = $this->repositorio->where('id_pessoa', $id)->first();
         
         if (!$pessoa)
@@ -134,6 +136,7 @@ class PessoaController extends Controller
 
     public function edit($id)
     {
+        $this->authorize('Pessoa Alterar');   
         $pessoa = $this->repositorio->where('id_pessoa', $id)->first();
         $tipoPessoa = $pessoa->tipoPessoa->tipo_pessoa;             
 

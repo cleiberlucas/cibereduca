@@ -45,6 +45,7 @@ class Perfil extends Model
                 if ($filtro)
                     $queryFiltro->where('tb_permissoes.permissao', 'LIKE', "%{$filtro}%");
             })
+            ->orderBy('permissao')
             ->paginate();
         //dd($permissoes);
         return $permissoes;

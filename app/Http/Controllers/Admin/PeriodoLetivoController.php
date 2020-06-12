@@ -32,6 +32,7 @@ class PeriodoLetivoController extends Controller
 
     public function create()
     {
+        $this->authorize('Período Letivo Cadastrar');
        // dd(view('admin.paginas.periodosletivos.create'));
         return view('admin.paginas.periodosletivos.create', [
             'anosLetivos' => $this->anosLetivos->anosLetivosAbertos(User::getUnidadeEnsinoSelecionada()),
@@ -50,7 +51,7 @@ class PeriodoLetivoController extends Controller
     }
 
     public function show($id)
-    {
+    {        
         $periodoLetivo = $this->repositorio->join('tb_anos_letivos', 'fk_id_ano_letivo', 'id_ano_letivo')
                                             ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())
                                             ->where('id_periodo_letivo', $id)
@@ -88,7 +89,7 @@ class PeriodoLetivoController extends Controller
 
     public function edit($id)
     {
-
+        $this->authorize('Período Letivo Alterar');
         $periodoLetivo = $this->repositorio->where('id_periodo_letivo', $id)->first();
         
         if (!$periodoLetivo)

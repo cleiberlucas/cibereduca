@@ -7,6 +7,7 @@ use App\Http\Requests\StoreUpdateAnoLetivo;
 use App\Models\AnoLetivo;
 use App\Models\UnidadeEnsino;
 use App\User;
+use Illuminate\Auth\Access\Gate;
 use Illuminate\Http\Request;
 
 class AnoLetivoController extends Controller
@@ -29,7 +30,8 @@ class AnoLetivoController extends Controller
     }
 
     public function create()
-    {
+    {        
+        $this->authorize('Ano Letivo Cadastrar');
        // dd(view('admin.paginas.anosletivos.create'));
         return view('admin.paginas.anosletivos.create', [
             'unidadesEnsino' => $this->unidadesEnsino->unidadesEnsino(User::getUnidadeEnsinoSelecionada()),
@@ -49,6 +51,7 @@ class AnoLetivoController extends Controller
 
     public function show($id)
     {        
+        $this->authorize('Ano Letivo Ver');
         $anoLetivo = $this->repositorio->where('fk_id_unidade_ensino', '=', User::getUnidadeEnsinoSelecionada())
                                         ->where('id_ano_letivo', $id)->first();
         
@@ -84,6 +87,7 @@ class AnoLetivoController extends Controller
 
     public function edit($id)
     {
+        $this->authorize('Ano Letivo Alterar');
         $anoLetivo = $this->repositorio->where('fk_id_unidade_ensino', '=', User::getUnidadeEnsinoSelecionada())
                                         ->where('id_ano_letivo', $id)->first();
         

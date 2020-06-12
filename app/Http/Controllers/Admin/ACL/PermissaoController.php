@@ -28,7 +28,7 @@ class PermissaoController extends Controller
 
     public function create()
     {
-       // dd(view('admin.paginas.permissoes.create'));
+        $this->authorize('Permissão Cadastrar');
         return view('admin.paginas.permissoes.create');
     }
 
@@ -42,6 +42,7 @@ class PermissaoController extends Controller
 
     public function show($id)
     {
+        $this->authorize('Permissão Ver');
         $permissao = $this->repositorio->where('id_permissao', $id)->first();
 
         if (!$permissao)
@@ -76,7 +77,7 @@ class PermissaoController extends Controller
 
     public function edit($id)
     {
-
+        $this->authorize('Permissão Alterar');
         $permissao = $this->repositorio->where('id_permissao', $id)->first();
         
         if (!$permissao)

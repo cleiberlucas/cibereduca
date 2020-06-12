@@ -51,6 +51,7 @@ class MatriculaController extends Controller
 
     public function create(Request $request)
     {   
+        $this->authorize('Matrícula Cadastrar');   
         $turma = Turma::select('tb_turmas.nome_turma', 'tb_turmas.id_turma', 'tb_turmas.limite_alunos',
                         'tb_anos_letivos.ano', 'tb_turnos.descricao_turno', 'tb_sub_niveis_ensino.sub_nivel_ensino',
                         'tb_tipos_turmas.valor_curso', 'tb_tipos_turmas.fk_id_ano_letivo' )
@@ -100,6 +101,7 @@ class MatriculaController extends Controller
     public function show($id)
     {
         //$matricula = $this->repositorio->where('id_matricula', $id)->first();
+        $this->authorize('Matrícula Ver');   
 
         $matricula = $this->repositorio
                             ->select('tb_matriculas.*', 
@@ -157,6 +159,8 @@ class MatriculaController extends Controller
 
     public function edit($id)
     {
+        $this->authorize('Matrícula Alterar');   
+        
         $alunos = Pessoa::select('id_pessoa', 'nome')
                     ->where('fk_id_tipo_pessoa', '=', '1')
                     ->where('situacao_pessoa', 1)

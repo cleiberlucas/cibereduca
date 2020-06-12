@@ -28,6 +28,7 @@ class DisciplinaController extends Controller
 
     public function create()
     {
+        $this->authorize('Disciplina Cadastrar');
        // dd(view('secretaria.paginas.disciplinas.create'));
         return view('secretaria.paginas.disciplinas.create');
     }
@@ -79,7 +80,7 @@ class DisciplinaController extends Controller
 
     public function edit($id)
     {
-
+        $this->authorize('Disciplina Alterar');
         $disciplina = $this->repositorio->where('id_disciplina', $id)->first();
         
         if (!$disciplina)

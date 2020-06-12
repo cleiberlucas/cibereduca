@@ -29,7 +29,7 @@ class PerfilController extends Controller
 
     public function create()
     {
-       // dd(view('admin.paginas.perfis.create'));
+        $this->authorize('Perfil Cadastrar');
         return view('admin.paginas.perfis.create');
     }
 
@@ -43,6 +43,7 @@ class PerfilController extends Controller
 
     public function show($id)
     {
+        $this->authorize('Perfil Ver');
         $perfil = $this->repositorio->where('id_perfil', $id)->first();
 
         if (!$perfil)
@@ -77,7 +78,7 @@ class PerfilController extends Controller
 
     public function edit($id)
     {
-
+        $this->authorize('Perfil Alterar');
         $perfil = $this->repositorio->where('id_perfil', $id)->first();
         
         if (!$perfil)

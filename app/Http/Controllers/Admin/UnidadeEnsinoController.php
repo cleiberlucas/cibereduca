@@ -21,7 +21,7 @@ class UnidadeEnsinoController extends Controller
     }
 
     public function index()
-    {
+    {        
         $unidadesEnsino = $this->repositorio->paginate();
         //dd($unidadesEnsino);
         return view('admin.paginas.unidadesensino.index', [
@@ -31,6 +31,7 @@ class UnidadeEnsinoController extends Controller
 
     public function create()
     {
+        $this->authorize('Unidade Ensino Cadastrar');
        // dd(view('admin.paginas.unidadesensino.create'));
         return view('admin.paginas.unidadesensino.create');
     }
@@ -69,6 +70,7 @@ class UnidadeEnsinoController extends Controller
 
     public function show($id)
     {
+        $this->authorize('Unidade Ensino Ver');
         $unidadeEnsino = $this->repositorio->where('id_unidade_ensino', $id)->first();
 
         if (!$unidadeEnsino)
@@ -103,6 +105,7 @@ class UnidadeEnsinoController extends Controller
 
     public function edit($id)
     {
+        $this->authorize('Unidade Ensino Alterar');
         $unidadeEnsino = $this->repositorio->where('id_unidade_ensino', $id)->first();
 
         if (!$unidadeEnsino)

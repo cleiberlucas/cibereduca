@@ -293,7 +293,7 @@ return [
                     'text' => 'Bimestres',
                     'url'  => 'admin/periodosletivos',
                     'icon_color' => 'red',
-                    'can'  => 'Periodo Letivo Ver',
+                    'can'  => 'Período Letivo Ver',
                 ],               
                 [
                     'text' => 'Padrões de Turmas',
@@ -363,16 +363,19 @@ return [
         ],
         ['text'    => 'Usuários',
             'icon'    => 'fas fa-fw fa-users-cog',
+            'can'  => 'Usuário Ver',
             'submenu' => [
                 [
                     'text' => 'Usuários',
                     'url'  => 'admin/users',
                     'icon' => 'fas fa-fw fa-user',
+                    'can'  => 'Usuário Ver',
                 ],
                 [
                     'text' => 'Perfis',
                     'url'  => 'admin/perfis',
                     'icon' => 'fas fa-fw fa-address-book',
+                    'can'  => 'Perfil Ver',
                 ],
                 [
                     'text' => 'Permissões',

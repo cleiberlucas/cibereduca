@@ -20,11 +20,11 @@
 @section('content')
     <div class="card">
         <div class="card-header">
-            <form action="{{ route('perfis.search') }}" method="POST" class="form form-inline">
+            {{-- <form action="{{ route('perfi s.search') }}" method="POST" class="form form-inline">
                 @csrf
             <input type="text" name="filtro" placeholder="Nome" class="form-control" value="{{ $filtros['filtro'] ?? '' }}">
                 <button class="submit" class="btn btn-outline-secondary"><i class="fas fa-filter"></i></button>
-            </form>
+            </form> --}}
         </div>
         <div class="card-body">
             <table class="table table-condensed">

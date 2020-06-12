@@ -38,6 +38,7 @@ class TipoTurmaController extends Controller
 
     public function create()
     {       
+        $this->authorize('Padrão Turma Cadastrar');
         return view('admin.paginas.tiposturmas.create', [
             'anosLetivos' => $this->anosLetivos->anosLetivosAbertos(User::getUnidadeEnsinoSelecionada()),
             'subNiveisEnsino' => $this->subNiveisEnsino->subNiveisEnsino(),
@@ -56,6 +57,7 @@ class TipoTurmaController extends Controller
 
     public function show($id)
     {
+        $this->authorize('Padrão Turma Ver');
         $tipoTurma = $this->repositorio
                             ->join('tb_anos_letivos', 'fk_id_ano_letivo', 'id_ano_letivo')
                             ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())
@@ -93,6 +95,7 @@ class TipoTurmaController extends Controller
 
     public function edit($id)
     {
+        $this->authorize('Padrão Turma Alterar');
         $tipoTurma = $this->repositorio
                                 ->join('tb_anos_letivos', 'fk_id_ano_letivo', 'id_ano_letivo')
                                 ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())

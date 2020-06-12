@@ -30,6 +30,7 @@ class TipoDocumentoController extends Controller
 
     public function create()
     {       
+        $this->authorize('Tipo Documento Matrícula Cadastrar');
         return view('admin.paginas.tiposdocumentos.create');
     }
 
@@ -87,6 +88,7 @@ class TipoDocumentoController extends Controller
 
     public function edit($id)
     {
+        $this->authorize('Tipo Documento Matrícula Alterar');
         $tipoDocumento = $this->repositorio->where('id_tipo_documento', $id)->first();
              
         if (!$tipoDocumento)
