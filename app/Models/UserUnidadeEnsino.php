@@ -31,7 +31,7 @@ class UserUnidadeEnsino extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'fk_id_user', 'id');
+        return $this->belongsTo(User::class, 'fk_id_unidade_ensino', 'fk_id_user');
     }
 
     public function perfil()
