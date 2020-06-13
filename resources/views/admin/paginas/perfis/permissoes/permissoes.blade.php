@@ -30,7 +30,7 @@
             <table class="table table-condensed">
                 <thead>
                     <th>Permissões</th>                        
-                    <th width="770">Ações</th>
+                    <th width="570">Ações</th>
                 </thead> 
                 <tbody>                        
                     @foreach ($permissoes as $permissao)
