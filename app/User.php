@@ -56,7 +56,7 @@ class User extends Authenticatable
     public function unidadesEnsino()
     {
         //join M:M user X UNIDADE ENSINO
-        return $this->belongsToMany(UserUnidadeEnsino::class, 'tb_usuarios_unidade_ensino', 'fk_id_user', 'id');
+        return $this->belongsToMany(UserUnidadeEnsino::class, 'tb_usuarios_unidade_ensino', 'fk_id_user', 'fk_id_unidade_ensino');
     }
 
     /* public function perfil()
