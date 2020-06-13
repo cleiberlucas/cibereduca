@@ -64,11 +64,11 @@
                 <li><strong>Observações:</strong> {{$matricula->obs_matricula}}</li> 
                 <br>
                 <li>
-                    <strong>Cadastro em:</strong> {{date('d/m/Y', strtotime($matricula->data_cadastro))}} - por {{$matricula->nome_user_cadastro}}
+                    <strong>Cadastro em:</strong> {{date('d/m/Y H:m:i', strtotime($matricula->data_cadastro))}} - por {{$matricula->nome_user_cadastro}}
                 </li>                                
                 <br>
                 <li>
-                    <strong>Última alteração em:</strong> {{date('d/m/Y', strtotime($matricula->data_alteracao))}} - por {{$matricula->nome_user_altera}}
+                    <strong>Última alteração em:</strong> {{date('d/m/Y H:m:i', strtotime($matricula->data_alteracao))}} - por {{$matricula->nome_user_altera}}
                 </li>
                 
             </ul>
