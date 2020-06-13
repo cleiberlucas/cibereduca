@@ -8,7 +8,7 @@ use App\Models\FormaPagamento;
 use App\Models\Secretaria\Matricula;
 use App\Models\Secretaria\Pessoa;
 use App\Models\Secretaria\Turma;
-use App\Models\Secretaria\TipoDescontoCurso;
+use App\Models\TipoDescontoCurso;
 use App\Models\SituacaoMatricula;
 use App\Models\TipoAtendimentoEspecializado;
 use App\User;

@@ -15,7 +15,7 @@
             >
             <div class="form-group">
                 <input type="hidden" name="fk_id_turma" value="{{$matricula->fk_id_turma ?? $turma->id_turma}}">
-                <label>Aluno:</label>
+                <label>* Aluno:</label>
                 <select name="fk_id_aluno" class="form-control" required>
                     <option value=""></option>
                     @foreach ($alunos as $aluno)
@@ -33,7 +33,7 @@
 
     <div class="row">
         <div class="form-group col-sm-3 col-xs-2">
-            <label>Responsável:</label>
+            <label>* Responsável:</label>
             <select name="fk_id_responsavel" id="fk_id_responsavel" class="form-control" required>
                 <option value=""></option>
                 @foreach ($responsaveis as $responsavel)
@@ -51,11 +51,11 @@
     <h3>Matrícula</h3>
     <div class="row">
         <div class="form-group col-sm-2 col-xs-2">            
-            <label>Valor Matrícula</label>
+            <label>* Valor Matrícula</label>
             <input type="number"  name="valor_matricula" id="valor_matricula" step="0.010" class="form-control"  required value="{{ $matricula->valor_matricula ?? old('valor_matricula') }}">
         </div>  
         <div class="form-group col-sm-2 col-xs-2">            
-            <label>Matrícula</label>
+            <label>* Matrícula</label>
             <input type="date" name="data_matricula" class="form-control"  required value="{{ $matricula->data_matricula ?? old('data_matricula') }}">
         </div>  
         <div class="form-group col-sm-2 col-xs-2">            
@@ -63,7 +63,7 @@
             <input type="date" name="data_pagto_matricula" class="form-control"  value="{{ $matricula->data_pagto_matricula ?? old('data_pagto_matricula') }}">
         </div>  
         <div class="form-group col-sm-2 col-xs-2">            
-            <label>Limite desistência</label>
+            <label>* Limite desistência</label>
             <input type="date" name="data_limite_desistencia" class="form-control"  required value="{{ $matricula->data_limite_desistencia ?? old('data_limite_desistencia') }}">
         </div>  
         <div class="form-group col-sm-2 col-xs-4">            
@@ -106,15 +106,15 @@
 
     <div class="row">
         <div class="form-group col-sm-2 col-xs-2">            
-            <label>Quantidade parcelas</label>
+            <label>* Quantidade parcelas</label>
             <input type="number" name="qt_parcelas_curso" class="form-control" required value="{{ $matricula->qt_parcelas_curso ?? old('qt_parcelas_curso') }}">
         </div>   
         <div class="form-group col-sm-2 col-xs-2">            
-            <label>Vencimento 1ª parcela</label>
+            <label>* Vencimento 1ª parcela</label>
             <input type="date" name="data_venc_parcela_um" class="form-control" required value="{{ $matricula->data_venc_parcela_um ?? old('data_venc_parcela_um') }}">
         </div> 
         <div class="form-group col-sm-2 col-xs-2">            
-            <label>Forma de Pagamento</label>
+            <label>* Forma de Pagamento</label>
             <select name="fk_id_forma_pagto_curso" id="fk_id_forma_pagto_curso" class="form-control" required>
                 <option value=""></option>
                 @foreach ($formasPagto as $formaPagto)
@@ -178,7 +178,7 @@
 
     <div class="row">
         <div class="form-group col-sm-2 col-xs-2">            
-            <label>Situação Matrícula</label>
+            <label>* Situação Matrícula</label>
             <select name="fk_id_situacao_matricula" id="fk_id_situacao_matricula" class="form-control" required>
                 <option value=""></option>
                 @foreach ($situacoesMatricula as $situacaoMatricula)
@@ -201,7 +201,8 @@
     </div>
 
     <div class="row">
-        <div class="form-group col-sm-2 col-xs-2">            
+        <div class="form-group col-sm-2 col-xs-2">  
+            * Campos obrigatórios.<br>          
             <button type="submit" class="btn btn-success"><i class="fas fa-forward"></i> Enviar</button>
         </div>
     </div>
