@@ -40,6 +40,7 @@ class PessoaController extends Controller
         /* Alunos 
             Mostra somente unidades de ensino vinculadas ao usuário logado
         */
+        
         if ($request->segment(2) == '1'){
             $pessoas = $this->repositorio
                                         ->join('tb_unidades_ensino', 'fk_id_unidade_ensino', 'id_unidade_ensino')
@@ -75,6 +76,10 @@ class PessoaController extends Controller
 
     public function store(StoreUpdatePessoa $request )
     {
+        $request['cpf'] = somenteNumeros($request['cpf']); 
+        $request['telefone_1'] = somenteNumeros($request['telefone_1']); 
+        $request['telefone_2'] = somenteNumeros($request['telefone_2']); 
+
         $dados = $request->all();
         $sit = $this->verificarSituacao($dados);
         $dados = array_merge($dados, $sit);
@@ -163,7 +168,10 @@ class PessoaController extends Controller
             return redirect()->back();
         
         $sit = $this->verificarSituacao($request->all());
-        
+        $request['cpf'] = somenteNumeros($request['cpf']);     
+        $request['telefone_1'] = somenteNumeros($request['telefone_1']); 
+        $request['telefone_2'] = somenteNumeros($request['telefone_2']);    
+
         $request->merge($sit);
         $dados = $request->except('_token', '_method', 'endereco', 'complemento', 'numero', 'bairro', 'fk_id_cidade', 'cep', 'estado');
         
@@ -206,4 +214,6 @@ class PessoaController extends Controller
         else
              return ['situacao_pessoa' => '1'];            
     }
+
+    
 }

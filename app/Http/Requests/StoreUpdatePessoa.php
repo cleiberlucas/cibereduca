@@ -27,7 +27,7 @@ class StoreUpdatePessoa extends FormRequest
         $id = $this->segment(3);
     
         return [
-            'nome' => "required|min:5|max:100",
+            'nome' => "required|min:5|max:100",                
             'foto' => ['nullable', 'image'],
             
         ];    

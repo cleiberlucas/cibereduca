@@ -3,6 +3,8 @@
 @section('title_postfix', ' '.$pessoa->tipoPessoa->tipo_pessoa)
 
 @section('content_header')
+    <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
+    
     <div class="d-flex justify-content-between">
         <div class="p-2">
             <ol class="breadcrumb">        
@@ -26,6 +28,9 @@
 @stop
 
 @section('content')
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.js"></script>
+
     <div class="container-fluid">
         <form action="{{ route('pessoas.update', $pessoa->id_pessoa)}}" class="form" method="POST" enctype="multipart/form-data">            
             @csrf
@@ -48,8 +53,8 @@
             @if ($pessoa->fk_id_tipo_pessoa == '1')
                 <div class="row">
                     <div class="form-group col-sm-6 col-xs-2"> 
-                        <label for="">Unidade de Ensino</label>
-                        <select name="fk_id_unidade_ensino" id="fk_id_unidade_ensino" class="form-control">
+                        <label for="">* Unidade de Ensino</label>
+                        <select name="fk_id_unidade_ensino" id="fk_id_unidade_ensino" required  class="form-control">
                             <option value=""></option>
                             @foreach ($unidadesEnsino as $unidadeEnsino)
                                 <option value="{{$unidadeEnsino->id_unidade_ensino }}"

@@ -3,6 +3,8 @@
 @section('title_postfix', ' '.$pessoa->tipoPessoa->tipo_pessoa)
 
 @section('content_header')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
+
     <div class="d-flex justify-content-between">
         <div class="p-2">
             <ol class="breadcrumb">        
@@ -33,7 +35,7 @@
                     <strong>Nome:</strong> {{ $pessoa->nome}}
                 </li>
                 <li>
-                    <strong>CPF:</strong> {{ $pessoa->cpf}}
+                    <strong>CPF:</strong> {{ mascaraCpfCnpj('###.###.###-##', $pessoa->cpf)}}
                 </li>
                 <li>
                     <strong>Documento identidade:</strong> {{ $pessoa->tipoDocIdentidade->tipo_doc_identidade ?? ''}} - {{ $pessoa->doc_identidade}}
@@ -48,10 +50,10 @@
                     <strong>Mãe:</strong> {{$pessoa->mae}}
                 </li>
                 <li>
-                    <strong>Fone principal:</strong> {{ $pessoa->telefone_1}}
+                    <strong>Fone principal:</strong> {{ mascaraTelefone("(##) #####-####", $pessoa->telefone_1)}}
                 </li>
                 <li>
-                    <strong>Fone:</strong> {{ $pessoa->telefone_2}}
+                    <strong>Fone:</strong> {{ mascaraTelefone("(##) #####-####", $pessoa->telefone_2)}}
                 </li>
                 <li>
                     <strong>Email principal:</strong> {{ $pessoa->email_1}}
@@ -92,4 +94,5 @@
             </form>
         </div>
     </div>
+    
 @endsection

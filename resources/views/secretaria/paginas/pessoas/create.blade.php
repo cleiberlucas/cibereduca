@@ -3,23 +3,29 @@
 @section('title_postfix', ' '.$tipo_pessoa )
 
 @section('content_header')
-<ol class="breadcrumb">        
-    <li class="breadcrumb-item active" >   
-        @if ($tipo_pessoa == 'aluno')
-            <a href="{{ route('pessoas.index', 1) }} " class=""> Aluno </a>
-        @else
-        <a href="{{ route('pessoas.index', 2) }} " class=""> Responsável </a>
-        @endif                 
-    </li>
-    <li class="breadcrumb-item active" >
-        <a href="#" class="">Novo</a>
-    </li>
-</ol>
+
+    <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
+
+    <ol class="breadcrumb">        
+        <li class="breadcrumb-item active" >   
+            @if ($tipo_pessoa == 'aluno')
+                <a href="{{ route('pessoas.index', 1) }} " class=""> Aluno </a>
+            @else
+            <a href="{{ route('pessoas.index', 2) }} " class=""> Responsável </a>
+            @endif                 
+        </li>
+        <li class="breadcrumb-item active" >
+            <a href="#" class="">Novo</a>
+        </li>
+    </ol>
 
     <h1>Cadastrar {{$tipo_pessoa}}</h1>
 @stop
 
 @section('content')
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.js"></script>
+
     <div class="container-fluid">
         <form action="{{ route('pessoas.store')}}" class="form" method="POST" enctype="multipart/form-data">
             @csrf
@@ -42,8 +48,8 @@
                 @if ($tipo_pessoa == 'aluno')
                     <div class="row">
                         <div class="form-group col-sm-6 col-xs-2"> 
-                            <label for="">Unidade de Ensino</label>
-                            <select name="fk_id_unidade_ensino" id="fk_id_unidade_ensino" class="form-control">
+                            <label for="">* Unidade de Ensino</label>
+                            <select name="fk_id_unidade_ensino" id="fk_id_unidade_ensino" required class="form-control">
                                 <option value=""></option>
                                 @foreach ($unidadesEnsino as $unidadeEnsino)
                                     <option value="{{$unidadeEnsino->id_unidade_ensino }}"
@@ -62,7 +68,7 @@
                     <div class="form-group col-sm-6 col-xs-12">                
                         <label>*Situação:</label><br>
                         @if (isset($pessoa->situacao_pessoa) && $pessoa->situacao_pessoa == 1)
-                            <input type="checkbox" id="situacao_pessoa" name="situacao_pessoa" value="1" checked> 
+                            <input type="checkbox" id="situacao_pessoa" name="situacao_pessoa" value="1" checked="checked"> 
                         @else
                             <input type="checkbox" id="situacao_pessoa" name="situacao_pessoa" value="0"> 
                         @endif
@@ -81,4 +87,5 @@
             </div>    
         </form>
     </div>
+
 @endsection

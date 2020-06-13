@@ -229,13 +229,13 @@ return [
                     'text' => 'Alunos',
                     'url'  => 'secretaria/1/pessoas',
                     'icon_color' => 'green',
-                    'can'  => 'Aluno Ver',
+                    'can'  => 'Pessoa Ver',
                 ],
                 [
                     'text' => 'Responsáveis',
                     'url'  => 'secretaria/2/pessoas',
                     'icon_color' => 'green',
-                    'can'  => 'Responsável Ver',
+                    'can'  => 'Pessoa Ver',
                 ],
                 [
                     'text' => 'Declarações',
