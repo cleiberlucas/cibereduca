@@ -171,7 +171,7 @@ Route::prefix('admin')
             Route::post('UnidadesEnsino', 'UnidadeEnsinoController@store')->name('unidadesensino.store');
             Route::get('UnidadesEnsino', 'UnidadeEnsinoController@index')->name('unidadesensino.index')->middleware('can:Unidade Ensino Ver');
             
-            Route::get('/', 'UnidadeEnsinoController@index')->name('admin.index');
+            //Route::get('/', 'UnidadeEnsinoController@index')->name('admin.index');
 
         });
 

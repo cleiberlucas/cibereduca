@@ -21,6 +21,11 @@
                     @csrf
                     @method('PUT')
 
+                    {{-- Se o login cair, mostra link p login --}}
+                    @if ( Auth::id() == null)
+                        <a href="/login" class="">Faça Login novamente </a>                        
+                    @endif
+                  
                     {{-- Caso tenha só uma unidade de ensino, seta p sessão automaticamente --}}
                     @if(count($unidadesEnsino) == 1)
                         <?php
@@ -30,7 +35,7 @@
                             }                            
                         ?>
                     @endif
-
+                  
                     {{-- Caso tenha mais de uma, o usuário deve selecionar --}}
                     @if (count($unidadesEnsino) > 0)        
                         <select name="unidadeensino" id="unidadeensino" class="form-control">
@@ -38,15 +43,24 @@
                                 <option value="{{$unidadeEnsino->id_unidade_ensino}}">{{$unidadeEnsino->nome_fantasia}}</option>                                
                             @endforeach
                         </select>
+                        
                     @else
-                        <h2> Não há Unidade de Ensino ativa para o seu usuário!</h2>
-                    @endif                    
-            </div>
-            <div class="form-group col-sm-1 col-xs-2">                 
-                <button type="submit" class="btn btn-success"><i class="fas fa-check-double"></i></button>
-
-            </div>
+                    
+                        @if (Auth::id() != null)
+                            <h2> Não há Unidade de Ensino ativa para o seu usuário!</h2>    
+                        @endif
+                        
+                    @endif      
+                    
+            </div>  
+            @if (count($unidadesEnsino) > 0)   
+                <div class="form-group col-sm-1 col-xs-2">                 
+                    <button type="submit" class="btn btn-success"><i class="fas fa-check-double"></i></button>
+                </div>
+            @endif
+                      
         </div>
+
         <div class="row card-body justify-content-center">         
             <img width="85%" height="85%" src="vendor/adminlte/dist/img/rede-banner4.png" alt="">            
         </div>

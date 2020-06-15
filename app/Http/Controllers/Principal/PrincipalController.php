@@ -30,8 +30,7 @@ class PrincipalController extends Controller
     }
 
     public function defineUnidadePadrao(Request $request)
-    {
-        //dd($request['unidadeensino']);
+    {        
         session()->forget('id_unidade_ensino');
         session()->put('id_unidade_ensino', $request['unidadeensino']);
 

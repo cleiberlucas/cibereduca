@@ -5,10 +5,12 @@
 <div class="form-group">    
     
     @if (isset($unidadeEnsino))
-        Unidade de Trabalho: {{$unidadeEnsino->nome_fantasia}}   
+        Unidade de Trabalho: <strong>{{$unidadeEnsino->nome_fantasia}}   </strong>
         <a href="{{route('home')}}" class=""> &nbsp&nbsp Alterar</a>
     @else
-        <h2> ATENÇÃO! Selecione a Unidade de Ensino!</h2> 
-        <a href="{{route('home')}}" class="">Definir Unidade de Ensino</a>        
+        @if (Auth::id() != null)
+            <h2> ATENÇÃO! Selecione a Unidade de Ensino!</h2> 
+            <a href="{{route('home')}}" class="">Definir Unidade de Ensino</a>         
+        @endif
     @endif
 </div>
