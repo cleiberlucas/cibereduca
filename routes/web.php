@@ -3,6 +3,37 @@
 use Illuminate\Support\Facades\Route;
 
 /**
+ * Rotas Pedagogico
+ */
+Route::prefix('pedagogico')
+        ->namespace('Pedagogico')
+        ->middleware('auth')
+        ->group(function(){
+
+/**
+         * Rotas Contéudos Lecionados
+         */
+        Route::any('turmas/conteudoslecionados/search', 'ConteudoLecionadoController@search')->name('turmas.conteudoslecionados.search');
+        Route::resource('turmas/conteudoslecionados', 'ConteudoLecionadoController')->middleware('can:Conteudo Lecionado Ver');
+        route::get('turmas/{id}/conteudoslecionados', 'ConteudoLecionadoController@index')->name('turmas.conteudoslecionados');
+
+        /**
+         * Rotas turmas pedagógico
+         */
+        Route::resource('turmas', 'PedagogicoTurmaController')->middleware('can:Turma Ver');
+      
+        });
+
+        /**
+             * Rotas Turmas X Período Letivo
+             */
+            /* route::get('turmas/{id}/periodoletivo/{id_periodo_letivo}/remove', 'Pedagogico\TurmaPeriodoLetivoController@removerPeriodosTurma')->name('turmas.periodosletivos.remover');             */
+            route::post('turmas/periodoletivo/{id_turma_periodo_letivo}/update', 'Pedagogico\TurmaPeriodoLetivoController@update')->name('turmas.periodosletivos.update');            
+            route::post('turmas/{id}/periodosletivos', 'Pedagogico\TurmaPeriodoLetivoController@vincularPeriodosTurma')->name('turmas.periodoletivo.vincular');            
+            route::any('turmas/{id}/periodosletivos/add', 'Pedagogico\TurmaPeriodoLetivoController@periodosLetivosAdd')->name('turmas.periodosletivos.add');
+            route::get('turmas/{id}/periodosletivos', 'Pedagogico\TurmaPeriodoLetivoController@periodosLetivos')->name('turmas.periodosletivos');
+
+/**
  * Rotas Secretaria
  */
 Route::prefix('secretaria')
@@ -39,7 +70,7 @@ Route::prefix('secretaria')
          * Rotas Turmas
          */
         Route::any('turmas/search', 'TurmaController@search')->name('turmas.search');
-        Route::resource('turmas', 'TurmaController')->middleware('can:Turma Ver');;
+        Route::resource('turmas', 'TurmaController')->middleware('can:Turma Ver');
 
         /*
         *Rotas Pessoas

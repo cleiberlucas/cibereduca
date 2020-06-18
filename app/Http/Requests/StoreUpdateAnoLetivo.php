@@ -28,7 +28,7 @@ class StoreUpdateAnoLetivo extends FormRequest
     
         return [
             'fk_id_unidade_ensino' => 'required',
-            'ano' => "required|min:4|max:4|unique:tb_anos_letivos,ano,{$id},id_ano_letivo",
+            'ano' => "required|min:4|max:4",
             'media_minima_aprovacao' => "required|min:2|max:3",
         ];    
     }

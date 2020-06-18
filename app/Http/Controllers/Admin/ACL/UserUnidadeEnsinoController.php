@@ -8,7 +8,7 @@ use App\Models\Perfil;
 use Illuminate\Http\Request;
 use App\User;
 use App\Models\UnidadeEnsino;
-use App\Models\UserUnidadeEnsino;
+use App\Models\Secretaria\UserUnidadeEnsino;
 
 class UserUnidadeEnsinoController extends Controller
 {

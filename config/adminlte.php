@@ -255,8 +255,8 @@ return [
             'icon_color' => 'yellow',
             'submenu' => [
                                 [
-                    'text' => 'Diário',
-                    'url'  => '#',
+                    'text' => 'Diários',
+                    'url'  => 'pedagogico/turmas',
                     'icon_color' => 'yellow',
                 ],
                 [

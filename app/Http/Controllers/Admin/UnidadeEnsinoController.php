@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateUnidadeEnsino;
 use App\Models\UnidadeEnsino;
-use App\Models\User;
-use App\Models\UserUnidadeEnsino;
+/* use App\Models\User; */
+use App\Models\Secretaria\UserUnidadeEnsino;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 

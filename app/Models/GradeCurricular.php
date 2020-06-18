@@ -27,4 +27,18 @@ class GradeCurricular extends Model
     {       
         return $this->belongsTo(Disciplina::class, 'fk_id_disciplina', 'id_disciplina');
     }
+
+    /**
+     * Retorna as disciplinas de uma turma
+     */
+    public function disciplinasTurma($id_turma)
+    {
+        return $this::select('*')
+                ->join('tb_tipos_turmas', 'tb_grades_curriculares.fk_id_tipo_turma', 'id_tipo_turma')
+                ->join('tb_turmas', 'tb_turmas.fk_id_tipo_turma', 'id_tipo_turma')
+                ->join('tb_disciplinas', 'fk_id_disciplina', 'id_disciplina')
+                ->where('tb_turmas.id_turma', '=', $id_turma)
+                ->OrderBy('disciplina')
+                ->get();
+    }
 }
