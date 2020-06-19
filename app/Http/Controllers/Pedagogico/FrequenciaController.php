@@ -3,43 +3,43 @@
 namespace App\Http\Controllers\Pedagogico;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreUpdateConteudoLecionado;
+use App\Http\Requests\StoreUpdateFrequencia;
 use App\Models\GradeCurricular;
-use App\Models\Pedagogico\ConteudoLecionado;
+use App\Models\Pedagogico\Frequencia;
 use App\Models\Pedagogico\TurmaPeriodoLetivo;
 
 use Illuminate\Http\Request;
 
-class ConteudoLecionadoController extends Controller
+class FrequenciaController extends Controller
 {
     private $repositorio;
         
-    public function __construct(ConteudoLecionado $conteudoLecionado)
+    public function __construct(Frequencia $frequencia)
     {
-        $this->repositorio = $conteudoLecionado;
+        $this->repositorio = $frequencia;
         
     }
 
     public function index($id_turma, $id_periodo_letivo = null, $id_disciplina = null)
     {
-        $this->authorize('Conteúdo Lecionado Ver');   
+        $this->authorize('Frequência Ver');   
 
         //Somente disciplinas vinculadas à grade curricular da turma
         $disciplinasTurma = new GradeCurricular;
         $disciplinasTurma = $disciplinasTurma->disciplinasTurma($id_turma);
         $turmaPeriodoLetivo = new TurmaPeriodoLetivo;
 
-        return view('pedagogico.paginas.turmas.conteudoslecionados.index', [
+        return view('pedagogico.paginas.turmas.frequencias.index', [
             'id_turma' => $id_turma,
             'disciplinasTurma' => $disciplinasTurma,
             'turmaPeriodosLetivos' => $turmaPeriodoLetivo->getTurmaPeriodosLetivos($id_turma),     
-            'conteudosLecionados' => $this->repositorio->getConteudosLecionados($id_turma),
+            /* 'frequencias' => $this->repositorio->getFrequencias($id_turma), */
         ]); 
     }
 
-    public function store(StoreUpdateConteudoLecionado $request)
+    public function store(StoreUpdateFrequencia $request)
     {
-        $this->authorize('Conteúdo Lecionado Cadastrar');
+        $this->authorize('Frequência Cadastrar');
 
         $dados = $request->all();
         $id_turma = $dados['fk_id_turma'];
@@ -50,26 +50,26 @@ class ConteudoLecionadoController extends Controller
         $disciplinasTurma = $disciplinasTurma->disciplinasTurma($id_turma);
         $turmaPeriodoLetivo = new TurmaPeriodoLetivo;
 
-        return view('pedagogico.paginas.turmas.conteudoslecionados.index', [
+        return view('pedagogico.paginas.turmas.frequencias.index', [
                         'id_turma' => $id_turma,
                         'disciplinasTurma'     => $disciplinasTurma,
                         'turmaPeriodosLetivos' => $turmaPeriodoLetivo->getTurmaPeriodosLetivos($id_turma),     
-                        'conteudosLecionados' => $this->repositorio->getConteudosLecionados($id_turma),
+                        'frequencias' => $this->repositorio->getFrequencias($id_turma),
                         'selectPeriodoLetivo'  => $dados['id_periodo_letivo'],
                         'selectDisciplina'     =>  $dados['fk_id_disciplina'],
         ]);         
     }
 
-    public function update(StoreUpdateConteudoLecionado $request, $id)
+    public function update(StoreUpdateFrequencia $request, $id)
     {        
-        $this->authorize('Conteúdo Lecionado Alterar');
+        $this->authorize('Frequência Alterar');
 
-        $conteudoLecionado = $this->repositorio->where('id_conteudo_lecionado', $id)->first();
+        $frequencia = $this->repositorio->where('id_frequencia', $id)->first();
         
-        if (!$conteudoLecionado)
+        if (!$frequencia)
             return redirect()->back();
       
-        $conteudoLecionado->where('id_conteudo_lecionado', $id)->update($request->except('_token', '_method', 'fk_id_turma', 'id_periodo_letivo'));
+        $frequencia->where('id_frequencia', $id)->update($request->except('_token', '_method', 'fk_id_turma', 'id_periodo_letivo'));
 
         $dados = $request->all();
         $id_turma = $dados['fk_id_turma'];
@@ -79,11 +79,11 @@ class ConteudoLecionadoController extends Controller
         $turmaPeriodoLetivo = new TurmaPeriodoLetivo;
 
         //return redirect()->back();
-       return view('pedagogico.paginas.turmas.conteudoslecionados.index', [
+       return view('pedagogico.paginas.turmas.frequencias.index', [
                     'id_turma' => $id_turma,
                     'disciplinasTurma'     => $disciplinasTurma,
                     'turmaPeriodosLetivos' => $turmaPeriodoLetivo->getTurmaPeriodosLetivos($id_turma),     
-                    'conteudosLecionados' => $this->repositorio->getConteudosLecionados($id_turma),
+                    'frequencias' => $this->repositorio->getFrequencias($id_turma),
                     'selectPeriodoLetivo'  => $dados['id_periodo_letivo'],
                     'selectDisciplina'     => $dados['fk_id_disciplina'],
         ]);
@@ -92,30 +92,30 @@ class ConteudoLecionadoController extends Controller
     /**
      * Remover conteúdo lecionado
      */
-    public function remover($id_conteudo_lecionado)
+    public function remover($id_frequencia)
     {
-        $this->authorize('Conteúdo Lecionado Remover');   
+        $this->authorize('Frequência Remover');   
         
-        $conteudoLecionado = $this->repositorio->where('id_conteudo_lecionado', $id_conteudo_lecionado, )->first();
+        $frequencia = $this->repositorio->where('id_frequencia', $id_frequencia, )->first();
         
-        if (!$conteudoLecionado)
+        if (!$frequencia)
             return redirect()->back();
 
-        $id_turma = $conteudoLecionado->turmaPeriodoLetivo->fk_id_turma;
-        $id_periodo_letivo = $conteudoLecionado->turmaPeriodoLetivo->fk_id_periodo_letivo;
-        $id_disciplina = $conteudoLecionado->fk_id_disciplina;
+        $id_turma = $frequencia->turmaPeriodoLetivo->fk_id_turma;
+        $id_periodo_letivo = $frequencia->turmaPeriodoLetivo->fk_id_periodo_letivo;
+        $id_disciplina = $frequencia->fk_id_disciplina;
 
-        $conteudoLecionado->where('id_conteudo_lecionado', $id_conteudo_lecionado, )->delete();
+        $frequencia->where('id_frequencia', $id_frequencia, )->delete();
 
         $disciplinasTurma = new GradeCurricular;
         $disciplinasTurma = $disciplinasTurma->disciplinasTurma($id_turma);
         $turmaPeriodoLetivo = new TurmaPeriodoLetivo;
         
-        return view('pedagogico.paginas.turmas.conteudoslecionados.index', [
+        return view('pedagogico.paginas.turmas.frequencias.index', [
                     'id_turma' => $id_turma,
                     'disciplinasTurma'     => $disciplinasTurma,
                     'turmaPeriodosLetivos' => $turmaPeriodoLetivo->getTurmaPeriodosLetivos($id_turma),     
-                    'conteudosLecionados' => $this->repositorio->getConteudosLecionados($id_turma),
+                    'frequencias' => $this->repositorio->getFrequencias($id_turma),
                     'selectPeriodoLetivo'  => $id_periodo_letivo,
                     'selectDisciplina'     => $id_disciplina,
         ]); 

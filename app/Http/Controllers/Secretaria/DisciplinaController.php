@@ -19,7 +19,7 @@ class DisciplinaController extends Controller
 
     public function index()
     {
-        $disciplinas = $this->repositorio->paginate();
+        $disciplinas = $this->repositorio->orderBy('disciplina')->paginate();
         
         return view('secretaria.paginas.disciplinas.index', [
                     'disciplinas' => $disciplinas,

@@ -9,18 +9,21 @@ Route::prefix('pedagogico')
         ->namespace('Pedagogico')
         ->middleware('auth')
         ->group(function(){
-
-/**
-         * Rotas Contéudos Lecionados
-         */
-        Route::any('turmas/conteudoslecionados/search', 'ConteudoLecionadoController@search')->name('turmas.conteudoslecionados.search');
-        Route::resource('turmas/conteudoslecionados', 'ConteudoLecionadoController')->middleware('can:Conteudo Lecionado Ver');
-        route::get('turmas/{id}/conteudoslecionados', 'ConteudoLecionadoController@index')->name('turmas.conteudoslecionados');
-
-        /**
+        
+            /**
          * Rotas turmas pedagógico
          */
-        Route::resource('turmas', 'PedagogicoTurmaController')->middleware('can:Turma Ver');
+        Route::any('turmas', 'PedagogicoTurmaController@index')->name('turmas.diarios')->middleware('can:Turma Ver');
+
+        /**
+         * Rotas Contéudos Lecionados
+         */        
+        route::get('turmas/conteudolecionado/{id_conteudo_lecionado}', 'ConteudoLecionadoController@remover')->name('turmas.conteudoslecionados.remover');            
+        route::put('turmas/conteudolecionado/{id_conteudo_lecionado}', 'ConteudoLecionadoController@update')->name('turmas.conteudoslecionados.update');                    
+        Route::post('turmas/conteudoslecionados', 'ConteudoLecionadoController@store')->name('turmas.conteudoslecionados.store'); 
+        route::any('turmas/{id}/conteudoslecionados', 'ConteudoLecionadoController@index')->name('turmas.conteudoslecionados');
+        
+        
       
         });
 

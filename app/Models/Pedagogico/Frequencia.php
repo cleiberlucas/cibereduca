@@ -5,23 +5,23 @@ namespace App\Models\Pedagogico;
 use App\Models\Secretaria\Disciplina;
 use Illuminate\Database\Eloquent\Model;
 
-class ConteudoLecionado extends Model
+class Frequencia extends Model
 {
-    protected $table = "tb_conteudos_lecionados";
-    protected $primaryKey = 'id_conteudo_lecionado';
+    protected $table = "tb_frequencias";
+    protected $primaryKey = 'id_frequencia';
     
     public $timestamps = false;
         
-    protected $fillable = ['fk_id_turma_periodo_letivo', 'fk_id_disciplina', 'data_aula', 'conteudo_lecionado', 'fk_id_user', 'data_cadastro'];
+    protected $fillable = ['fk_id_matricula', 'fk_id_disciplina', 'data_aula', 'fk_id_tipo_frequencia', 'fk_id_user', 'data_cadastro'];
    
-    public function search($filtro = null)
+   /*  public function search($filtro = null)
     {
         $resultado = $this                           
                             ->where('conteudo_lecionado', 'like', "%{$filtro}%")
                             ->paginate();
         
         return $resultado;
-    }
+    } */
 
     public function turmaPeriodoLetivo()
     {       

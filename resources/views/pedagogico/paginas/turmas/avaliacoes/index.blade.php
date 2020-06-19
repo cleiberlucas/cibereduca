@@ -18,29 +18,23 @@
             <a href="{{url('pedagogico/turmas')}} " class="">Diários</a>
         </li>
         <li class="breadcrumb-item active" >
-            <a href="#" class="">Conteúdos Lecionados</a>
+            <a href="#" class="">Frequências</a>
         </li>
     </ol>
     @foreach ($turmaPeriodosLetivos as $index => $turma)
         @if ($index == 0)
-            <h2>Contéudos Lecionados - {{$turma->nome_turma}} {{$turma->sub_nivel_ensino}} - {{$turma->descricao_turno}} </h2>    
+            <h2>Frequências - {{$turma->nome_turma}} {{$turma->sub_nivel_ensino}} - {{$turma->descricao_turno}} </h2>    
         @endif
     @endforeach
 @stop
 
 @section('content')
 
-   {{--  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> --}}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
     <div class="container-fluid">
-        <div class="card-header">
-          {{--   <form action="{{ route('turmas.conteudoslecionados.search') }}" method="POST" class="form form-inline">
-                @csrf
-                <input type="text" name="filtro" placeholder="Conteúdo" class="form-control" value="{{ $filtros['filtro'] ?? '' }}">
-                <button type="submit" class="btn btn-outline-secondary"><i class="fas fa-filter"></i></button>
-            </form> --}}            
+        <div class="card-header">          
             <i class="fas fa-pencil-alt"></i> - Período aberto &nbsp&nbsp&nbsp 
             <i class="fas fa-ban"></i> - Período fechado
         </div>
@@ -96,7 +90,7 @@
                                     {{-- Libera lançamento de conteúdo somente se o período estiver aberto --}}
                                     @if ($turmaPeriodoLetivo->situacao == 1)
                                         {{-- Lançar Conteúdo lecionado --}}
-                                        <form action="{{ route('turmas.conteudoslecionados.store')}}" class="form" method="POST">
+                                        <form action="{{ route('turmas.frequencias.store')}}" class="form" method="POST">
                                             @csrf                                        
                                             <input type="hidden" name="fk_id_turma_periodo_letivo" value={{$turmaPeriodoLetivo->id_turma_periodo_letivo}}>
                                             <input type="hidden" name="fk_id_disciplina" value={{$disciplinaTurma->fk_id_disciplina}}>
@@ -104,7 +98,8 @@
                                             <input type="hidden" name="fk_id_turma" value={{$turmaPeriodoLetivo->fk_id_turma}}>
                                             <input type="hidden" name="id_periodo_letivo" value={{$turmaPeriodoLetivo->id_periodo_letivo}}>
                                             <div class="container-fluid">
-                                                <div class="row">
+                                                {{-- Listagem de alunos --}}
+                                                {{-- <div class="row">
                                                     <div class="form-group col-sm-2 col-xs-2">
                                                         <label>Data aula:</label>
                                                         <input type="date" name="data_aula" min="{{$turmaPeriodoLetivo->data_inicio}}" max="{{$turmaPeriodoLetivo->data_fim}}"  class="form-control" required>
@@ -117,7 +112,7 @@
                                                         <br><br><br>                                             
                                                         <button type="submit" class="btn btn-outline-success"><i class="fas fa-save"></i></button>
                                                     </div>
-                                                </div>
+                                                </div> --}}
                                             </div>
                                         </form>
                                     
@@ -134,10 +129,10 @@
                                             </thead>
                                             <tbody>                        
                                                 
-                                                @foreach ($conteudosLecionados as $index => $conteudoLecionado)
+                                               {{--  @foreach ($conteudosLecionados as $index => $conteudoLecionado) --}}
                                                     {{-- Listar conteúdo somente da aba/disciplina selecionada --}}
-                                                    @if ($turmaPeriodoLetivo->id_turma_periodo_letivo == $conteudoLecionado->fk_id_turma_periodo_letivo && $conteudoLecionado->fk_id_disciplina == $disciplinaTurma->fk_id_disciplina)
-                                                        <form action="{{ route('turmas.conteudoslecionados.update', $conteudoLecionado->id_conteudo_lecionado)}}" method="POST">
+                                                    {{-- @if ($turmaPeriodoLetivo->id_turma_periodo_letivo == $conteudoLecionado->fk_id_turma_periodo_letivo && $conteudoLecionado->fk_id_disciplina == $disciplinaTurma->fk_id_disciplina)
+                                                        <form action="{{ route('turmas.frequencias.update', $conteudoLecionado->id_conteudo_lecionado)}}" method="POST">
                                                             @csrf 
                                                             @method('PUT')
                                                             <input type="hidden" name="fk_id_turma_periodo_letivo" value={{$turmaPeriodoLetivo->id_turma_periodo_letivo}}>
@@ -161,17 +156,17 @@
                                                                 <td style="width=10px;">   
                                                                     @if ($turmaPeriodoLetivo->situacao == 1)                                                                 
                                                                         <button type="submit" class="btn btn-sm btn-outline-success"><i class="fas fa-save"></i></button> &nbsp&nbsp&nbsp
-                                                                        <a href="{{ route('turmas.conteudoslecionados.remover', [$conteudoLecionado->id_conteudo_lecionado]) }}" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></a> 
-                                                                        {{-- <a href="{{ route('turmas.conteudoslecionados.update', $conteudoLecionado->id_conteudo_lecionado) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-save"></i></a> --}}
-                                                                        {{-- <a href="{{ route('conteudoslecionados.store') }}" class="btn btn-sm btn-outline-success"><i class="fas fa-save"></i></a> --}}
-                                                                    @endif
+                                                                        <a href="{{ route('turmas.frequencias.remover', [$conteudoLecionado->id_conteudo_lecionado]) }}" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></a> 
+                                                                        {{-- <a href="{{ route('turmas.frequencias.update', $conteudoLecionado->id_conteudo_lecionado) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-save"></i></a> --}}
+                                                                        {{-- <a href="{{ route('frequencias.store') }}" class="btn btn-sm btn-outline-success"><i class="fas fa-save"></i></a> --}}
+                                                                    {{--@endif
                                                                     
                                                                 </td>
                                                                 
                                                             </tr>
                                                         </form>
                                                     @endif
-                                                @endforeach
+                                                @endforeach --}}
                                             </tbody>
                                         </table>
                                     </div>
