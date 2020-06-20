@@ -30,15 +30,14 @@ class FrequenciaController extends Controller
         $disciplinasTurma = $disciplinasTurma->disciplinasTurma($id_turma);
         $turmaPeriodoLetivo = new TurmaPeriodoLetivo;
         $tiposFrequencia = new TipoFrequencia;
-        $tiposFrequencia = $tiposFrequencia->get();
+        $tiposFrequencia = $tiposFrequencia->getTiposFrequencia();
         
         return view('pedagogico.paginas.turmas.frequencias.index', [
             'id_turma' => $id_turma,
             'disciplinasTurma' => $disciplinasTurma,
             'turmaPeriodosLetivos' => $turmaPeriodoLetivo->getTurmaPeriodosLetivos($id_turma),     
             'turmaMatriculas'      => $this->getTurmaMatriculas($id_turma),
-            'tiposFrequencia'      => $tiposFrequencia,
-            /* 'frequencias' => $this->repositorio->getFrequencias($id_turma), */
+            'tiposFrequencia'      => $tiposFrequencia,            
         ]); 
     }
 
@@ -48,18 +47,36 @@ class FrequenciaController extends Controller
 
         $dados = $request->all();
         $id_turma = $dados['fk_id_turma'];
-       
-        $this->repositorio->create($dados);
+        //dd($dados);
+        //dd($dados['fk_id_matricula']);
+        $frequencias = [];
+        foreach($dados['fk_id_matricula'] as $index => $matricula){            
+            $frequencias['fk_id_turma_periodo_letivo'] = $dados['fk_id_turma_periodo_letivo'];
+            $frequencias['fk_id_matricula'] = $matricula;
+            $frequencias['fk_id_disciplina'] = $dados['fk_id_disciplina'];
+            $frequencias['data_aula'] = $dados['data_aula'];
+            $frequencias['fk_id_tipo_frequencia'] = $dados['fk_id_tipo_frequencia'][$index];
+            $frequencias['fk_id_user'] = $dados['fk_id_user'];
+            //dd($frequencias);
+
+            $this->repositorio->create($frequencias);    
+        }
         
         $disciplinasTurma = new GradeCurricular;
         $disciplinasTurma = $disciplinasTurma->disciplinasTurma($id_turma);
+        
         $turmaPeriodoLetivo = new TurmaPeriodoLetivo;
+
+        $tiposFrequencia = new TipoFrequencia;
+        $tiposFrequencia = $tiposFrequencia->getTiposFrequencia();
 
         return view('pedagogico.paginas.turmas.frequencias.index', [
                         'id_turma' => $id_turma,
                         'disciplinasTurma'     => $disciplinasTurma,
-                        'turmaPeriodosLetivos' => $turmaPeriodoLetivo->getTurmaPeriodosLetivos($id_turma),     
-                        'frequencias' => $this->repositorio->getFrequencias($id_turma),
+                        'turmaPeriodosLetivos' => $turmaPeriodoLetivo->getTurmaPeriodosLetivos($id_turma),  
+                        'turmaMatriculas'      => $this->getTurmaMatriculas($id_turma),   
+            /*             'frequencias' => $this->repositorio->getFrequencias($id_turma), */
+                        'tiposFrequencia'      => $tiposFrequencia,
                         'selectPeriodoLetivo'  => $dados['id_periodo_letivo'],
                         'selectDisciplina'     =>  $dados['fk_id_disciplina'],
         ]);         
