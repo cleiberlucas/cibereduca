@@ -7,7 +7,8 @@ use App\Http\Requests\StoreUpdateFrequencia;
 use App\Models\GradeCurricular;
 use App\Models\Pedagogico\Frequencia;
 use App\Models\Pedagogico\TurmaPeriodoLetivo;
-
+use App\Models\Secretaria\Matricula;
+use App\Models\Pedagogico\TipoFrequencia;
 use Illuminate\Http\Request;
 
 class FrequenciaController extends Controller
@@ -28,11 +29,15 @@ class FrequenciaController extends Controller
         $disciplinasTurma = new GradeCurricular;
         $disciplinasTurma = $disciplinasTurma->disciplinasTurma($id_turma);
         $turmaPeriodoLetivo = new TurmaPeriodoLetivo;
-
+        $tiposFrequencia = new TipoFrequencia;
+        $tiposFrequencia = $tiposFrequencia->get();
+        
         return view('pedagogico.paginas.turmas.frequencias.index', [
             'id_turma' => $id_turma,
             'disciplinasTurma' => $disciplinasTurma,
             'turmaPeriodosLetivos' => $turmaPeriodoLetivo->getTurmaPeriodosLetivos($id_turma),     
+            'turmaMatriculas'      => $this->getTurmaMatriculas($id_turma),
+            'tiposFrequencia'      => $tiposFrequencia,
             /* 'frequencias' => $this->repositorio->getFrequencias($id_turma), */
         ]); 
     }
@@ -119,6 +124,22 @@ class FrequenciaController extends Controller
                     'selectPeriodoLetivo'  => $id_periodo_letivo,
                     'selectDisciplina'     => $id_disciplina,
         ]); 
+    }
+
+    /**
+     * Retorna todas as matrículas de uma turma
+     */
+    public function getTurmaMatriculas($id_turma)    
+    {
+        $matricula = new Matricula;
+        $turmaMatriculas = $matricula->select('id_matricula',
+                                                'tb_pessoas.nome')                                    
+                                    ->join('tb_pessoas', 'fk_id_aluno', 'id_pessoa')
+                                    ->where('tb_matriculas.fk_id_turma', '=', $id_turma)
+                                    ->orderBy('tb_pessoas.nome')
+                                    ->get();
+
+        return $turmaMatriculas;
     }
 
 }

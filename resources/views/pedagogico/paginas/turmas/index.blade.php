@@ -15,6 +15,7 @@
             <a href="{{url('pedagogico/turmas')}} " class="">Diários</a>
         </li>
     </ol>
+    <h4>Lançamentos no Diário:&nbsp&nbsp&nbsp <i class="fas fa-chalkboard"></i> Conteúdos Lecionados &nbsp&nbsp&nbsp&nbsp&nbsp  <i class="fas fa-user-check"></i> Frequências</h4>
 @stop
 
 @section('content')
@@ -27,57 +28,58 @@
             </form>
         </div>
         <div class="table-responsive">
-                <table class="table table-hover">
-                    <thead>
-                        <th>#</th>
-                        <th>Ano</th>                                                
-                        <th>Turma</th>                        
-                        <th>Turno</th>
-                        
-                        {{-- <th>Situação</th> --}}
-                        <th >Ações</th>
-                    </thead>
-                    <tbody>                        
-                        @foreach ($turmas as $index => $turma)
-                            <tr>
-                                <th scope="row">{{$index+1}}</th>
-                                <td>
-                                    {{$turma->tipoTurma->anoLetivo->ano}}
-                                </td>
-                                <td>
-                                    {{$turma->nome_turma}} {{$turma->tipoTurma->subNivelEnsino->sub_nivel_ensino}}
-                                </td>                                 
-                                <td>
-                                    {{$turma->turno->descricao_turno}}
-                                </td>
-                                
-                                {{-- <td>
-                                    @if ($turma->situacao_turma == 1)
-                                        <b>Aberta</b>
-                                    @else
-                                        Encerrada                                        
-                                    @endif                                    
-                                </td>  --}}      
-                                <td style="width=10px;">
-                                    <a href="{{ route('turmas.conteudoslecionados', $turma->id_turma) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-chalkboard"></i></a>
-                                    <a href="{{ route('turmas.periodosletivos', $turma->id_turma) }}" class="btn btn-sm btn-outline-warning"><i class="fas fa-key"></i></a>
-                              {{--       <a href="{{ route('pedagogico.turmas.periodo', $turma->id_turma) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-users"></i></a> --}}
-                                    
-                                    
-                                </td>
-                                
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-                <div class="card-footer">
-                    @if (isset($filtros))
-                    {!! $turmas->appends($filtros)->links()!!}
-                    @else
-                        {!! $turmas->links()!!}    
-                    @endif
+            <table class="table table-hover">
+                <thead>
+                    <th>#</th>
+                    <th>Ano</th>                                                
+                    <th>Turma</th>                        
+                    <th>Turno</th>
                     
-                </div>
+                    {{-- <th>Situação</th> --}}
+                    <th >Ações</th>
+                </thead>
+                <tbody>                        
+                    @foreach ($turmas as $index => $turma)
+                        <tr>
+                            <th scope="row">{{$index+1}}</th>
+                            <td>
+                                {{$turma->tipoTurma->anoLetivo->ano}}
+                            </td>
+                            <td>
+                                {{$turma->nome_turma}} {{$turma->tipoTurma->subNivelEnsino->sub_nivel_ensino}}
+                            </td>                                 
+                            <td>
+                                {{$turma->turno->descricao_turno}}
+                            </td>
+                            
+                            {{-- <td>
+                                @if ($turma->situacao_turma == 1)
+                                    <b>Aberta</b>
+                                @else
+                                    Encerrada                                        
+                                @endif                                    
+                            </td>  --}}      
+                            <td style="width=10px;">
+                                <a href="{{ route('turmas.conteudoslecionados', $turma->id_turma) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-chalkboard"></i></a>
+                                <a href="{{ route('turmas.frequencias', $turma->id_turma) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-user-check"></i></a>
+                                <a href="{{ route('turmas.periodosletivos', $turma->id_turma) }}" class="btn btn-sm btn-outline-warning"><i class="fas fa-key"></i></a>
+                            {{--       <a href="{{ route('pedagogico.turmas.periodo', $turma->id_turma) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-users"></i></a> --}}
+                                
+                                
+                            </td>
+                            
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+            <div class="card-footer">
+                @if (isset($filtros))
+                {!! $turmas->appends($filtros)->links()!!}
+                @else
+                    {!! $turmas->links()!!}    
+                @endif
+                
+            </div>
         </div>
     </div>
 @stop

@@ -3,6 +3,7 @@
 namespace App\Models\Pedagogico;
 
 use App\Models\Secretaria\Disciplina;
+use App\Models\Secretaria\Matricula;
 use Illuminate\Database\Eloquent\Model;
 
 class Frequencia extends Model
@@ -14,18 +15,19 @@ class Frequencia extends Model
         
     protected $fillable = ['fk_id_matricula', 'fk_id_disciplina', 'data_aula', 'fk_id_tipo_frequencia', 'fk_id_user', 'data_cadastro'];
    
-   /*  public function search($filtro = null)
+    public function getTurmaFrequencia($id_turma)
     {
-        $resultado = $this                           
-                            ->where('conteudo_lecionado', 'like', "%{$filtro}%")
-                            ->paginate();
-        
-        return $resultado;
-    } */
+        $this->select('tb_matriculas.id_matricula',
+                'tb_pessoas.nome')
+                ->Join('tb_matriculas', 'fk_id_matricula', 'id_matricula')
+                ->join('tb_pessoas', 'fk_id_aluno', 'id_pessoa')
+                ->where('tb_matriculas.fk_id_turma', '=', '$id_turma')
+                ->orderBy('tb_pessoas.nome');
+    }
 
-    public function turmaPeriodoLetivo()
-    {       
-        return $this->belongsTo(TurmaPeriodoLetivo::class, 'fk_id_turma_periodo_letivo', 'id_turma_periodo_letivo');
+    public function matricula()
+    {
+         $this->belongsTo(Matricula::class, 'fk_id_matricula', 'id_matricula');
     }
 
     public function disciplina()
@@ -36,20 +38,6 @@ class Frequencia extends Model
     public function usuario()
     {
         return $this->belongsTo(User::class, 'fk_id_user', 'id');
-    }
-
-    /**
-     * Retorna todos os conteúdos lecionados de uma turma, de toda a grade curricular (todas as disciplinas)
-     */
-    public function getConteudosLecionados($id_turma)
-    {
-        $conteudosLecionados = $this->join('tb_turmas_periodos_letivos', 'fk_id_turma_periodo_letivo', 'id_turma_periodo_letivo')
-                                    ->join('tb_disciplinas', 'fk_id_disciplina', 'id_disciplina')
-                                    ->where('fk_id_turma', '=', $id_turma)
-                                    ->orderBy('disciplina')
-                                    ->orderBy('data_aula', 'asc')
-                                    ->get();
-        return $conteudosLecionados;
     }
    
 }

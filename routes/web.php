@@ -23,18 +23,24 @@ Route::prefix('pedagogico')
         Route::post('turmas/conteudoslecionados', 'ConteudoLecionadoController@store')->name('turmas.conteudoslecionados.store'); 
         route::any('turmas/{id}/conteudoslecionados', 'ConteudoLecionadoController@index')->name('turmas.conteudoslecionados');
         
-        
-      
+        /**
+         * Rotas Frequências
+         */        
+        route::get('turmas/frequencia/{id_frequencia}', 'FrequenciaController@remover')->name('turmas.frequencias.remover');            
+        route::put('turmas/frequencia/{id_frequencia}', 'FrequenciaController@update')->name('turmas.frequencias.update');                    
+        Route::post('turmas/frequencias', 'FrequenciaController@store')->name('turmas.frequencias.store'); 
+        route::any('turmas/{id}/frequencias', 'FrequenciaController@index')->name('turmas.frequencias');
+              
         });
 
         /**
-             * Rotas Turmas X Período Letivo
-             */
-            /* route::get('turmas/{id}/periodoletivo/{id_periodo_letivo}/remove', 'Pedagogico\TurmaPeriodoLetivoController@removerPeriodosTurma')->name('turmas.periodosletivos.remover');             */
-            route::post('turmas/periodoletivo/{id_turma_periodo_letivo}/update', 'Pedagogico\TurmaPeriodoLetivoController@update')->name('turmas.periodosletivos.update');            
-            route::post('turmas/{id}/periodosletivos', 'Pedagogico\TurmaPeriodoLetivoController@vincularPeriodosTurma')->name('turmas.periodoletivo.vincular');            
-            route::any('turmas/{id}/periodosletivos/add', 'Pedagogico\TurmaPeriodoLetivoController@periodosLetivosAdd')->name('turmas.periodosletivos.add');
-            route::get('turmas/{id}/periodosletivos', 'Pedagogico\TurmaPeriodoLetivoController@periodosLetivos')->name('turmas.periodosletivos');
+         * Rotas Turmas X Período Letivo
+         */
+        /* route::get('turmas/{id}/periodoletivo/{id_periodo_letivo}/remove', 'Pedagogico\TurmaPeriodoLetivoController@removerPeriodosTurma')->name('turmas.periodosletivos.remover');             */
+        route::post('turmas/periodoletivo/{id_turma_periodo_letivo}/update', 'Pedagogico\TurmaPeriodoLetivoController@update')->name('turmas.periodosletivos.update');            
+        route::post('turmas/{id}/periodosletivos', 'Pedagogico\TurmaPeriodoLetivoController@vincularPeriodosTurma')->name('turmas.periodoletivo.vincular');            
+        route::any('turmas/{id}/periodosletivos/add', 'Pedagogico\TurmaPeriodoLetivoController@periodosLetivosAdd')->name('turmas.periodosletivos.add');
+        route::get('turmas/{id}/periodosletivos', 'Pedagogico\TurmaPeriodoLetivoController@periodosLetivos')->name('turmas.periodosletivos');
 
 /**
  * Rotas Secretaria
