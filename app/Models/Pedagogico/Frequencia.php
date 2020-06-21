@@ -5,6 +5,7 @@ namespace App\Models\Pedagogico;
 use App\Models\Secretaria\Disciplina;
 use App\Models\Secretaria\Matricula;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Frequencia extends Model
 {
@@ -29,34 +30,76 @@ class Frequencia extends Model
     }
 
     /**
-     * 
-     * Retorna as frequências de uma TURMA X PERIODO LETIVO X DISCIPLINA
+     * Retorna as disciplinas que o aluno tem registro de frequencia em um período
      */
-    public function getTurmaFrequenciaDisciplina($id_turma, $id_periodo_letivo, $id_disciplina)
+    public function getFrequenciasAlunoDisciplinasPeriodo($id_turma_periodo_letivo, $id_matricula)
     {
-        $this->select('tb_frequencias.*',
-                        'tb_turmas.nome_turma',
-                        'sub_nivel_ensino',
-                        'descricao_turno',
-                        'periodo_letivo')
-             ->join('tb_turmas_periodos_letivos', 'fk_id_turma_periodo_letivo', 'id_turma_periodo_letivo')
-             ->join('tb_turmas', 'fk_id_turma', 'id_turma')
-             ->join('tb_tipos_turmas', 'fk_id_tipo_turma', 'id_tipo_turma')
-             ->join('tb_sub_niveis_ensino', 'fk_id_sub_nivel_ensino', 'id_sub_nivel_ensino')
-             ->join('tb_turnos', 'fk_id_turno', 'id_turno')
-             ->join('tb_periodos_letivos', 'fk_id_periodo_letivo', 'id_periodo_letivo')
-             ->join('tb_tipos_frequencia', 'fk_id_tipo_frequencia', 'id_tipo_frequencia')
-             ->join('tb_matriculas', 'fk_id_matricula', 'id_matricula')
-             ->join('tb_pessoas', 'fk_id_aluno', 'id_pessoa')
-             ->join('tb_disciplinas', 'fk_id_disciplina', 'id_disciplina')
-             ->where('tb_turmas_periodos_letivos.fk_id_turma', '=', $id_turma)
-             ->where('tb_turmas_periodos_letivos.id_periodo_letivo', '=', $id_periodo_letivo)
-             ->where('tb_frequencias.fk_id_disciplina', '=', $id_disciplina)
-             ->orderBy('tb_disciplinas.disciplina')
-             ->orderBy('tb_pessoas.nome')
-             ->orderBy('tb_frequencias.data_aula')
-             ->get();
-             
+        $frequenciasAlunoDisciplinasPeriodo = $this->select('id_disciplina', 'disciplina')
+                                                    ->join('tb_disciplinas', 'fk_id_disciplina', 'id_disciplina')
+                                                    ->where('fk_id_turma_periodo_letivo', '=', $id_turma_periodo_letivo)
+                                                    ->where('fk_id_matricula', '=', $id_matricula)
+                                                    ->groupBy('id_disciplina')
+                                                    ->groupBy('disciplina')
+                                                    ->get();
+        return $frequenciasAlunoDisciplinasPeriodo;
+    }
+
+    /**
+     * Retorna as datas que o aluno tem registro de frequencia em todas as disciplinas em um período
+     */
+    public function getFrequenciasAlunoDatasPeriodo($id_turma_periodo_letivo, $id_matricula)
+    {
+        $frequenciasAlunoDatasPeriodo = $this->select('data_aula')                                                    
+                                                    ->where('fk_id_turma_periodo_letivo', '=', $id_turma_periodo_letivo)
+                                                    ->where('fk_id_matricula', '=', $id_matricula)
+                                                    ->groupBy('data_aula')
+                                                    ->get();
+        return $frequenciasAlunoDatasPeriodo;
+    }
+
+    /**
+     * Retorna os meses que o aluno tem registro de frequencia em todas as disciplinas em um período
+     */
+    public function getFrequenciasAlunoMesesPeriodo($id_turma_periodo_letivo, $id_matricula)
+    {
+        $frequenciasAlunoMesesPeriodo = DB::table('tb_frequencias')
+                                            ->select(DB::raw('month(data_aula) as mes'))
+                                            ->where('fk_id_turma_periodo_letivo', '=', $id_turma_periodo_letivo)
+                                            ->where('fk_id_matricula', '=', $id_matricula)
+                                            ->groupBy(DB::raw('month(data_aula)'))
+                                            ->get();
+        return $frequenciasAlunoMesesPeriodo;
+    }
+
+    /**
+     * 
+     * Retorna as frequências de todas as disciplinas de um ALUNO X PERIODO LETIVO
+     */
+    public function getFrequenciasAlunoPeriodo($id_turma_periodo_letivo, $id_matricula)
+    {
+        $frequenciaAlunoPeriodo =  $this->select('tb_frequencias.*',
+                                                'nome_turma',
+                                                'sub_nivel_ensino',
+                                                'descricao_turno',
+                                                'periodo_letivo',
+                                                'nome',
+                                                'sigla_frequencia',
+                                                )
+                                        ->join('tb_turmas_periodos_letivos', 'fk_id_turma_periodo_letivo', 'id_turma_periodo_letivo')
+                                        ->join('tb_turmas', 'fk_id_turma', 'id_turma')
+                                        ->join('tb_tipos_turmas', 'fk_id_tipo_turma', 'id_tipo_turma')
+                                        ->join('tb_sub_niveis_ensino', 'fk_id_sub_nivel_ensino', 'id_sub_nivel_ensino')
+                                        ->join('tb_turnos', 'fk_id_turno', 'id_turno')
+                                        ->join('tb_periodos_letivos', 'fk_id_periodo_letivo', 'id_periodo_letivo')
+                                        ->join('tb_tipos_frequencia', 'fk_id_tipo_frequencia', 'id_tipo_frequencia')
+                                        ->join('tb_matriculas', 'fk_id_matricula', 'id_matricula')
+                                        ->join('tb_pessoas', 'fk_id_aluno', 'id_pessoa')                                        
+                                        ->where('tb_frequencias.fk_id_matricula', '=', $id_matricula)
+                                        ->where('tb_turmas_periodos_letivos.id_turma_periodo_letivo', '=', $id_turma_periodo_letivo)                                                     
+                                        ->orderBy('tb_frequencias.data_aula')
+                                        ->get();
+        return $frequenciaAlunoPeriodo;
+        
     }
 
     public function matricula()

@@ -20,6 +20,7 @@
     @foreach ($turmaPeriodosLetivos as $index => $turma)
         @if ($index == 0)
             <h2>Frequências - {{$turma->nome_turma}} {{$turma->sub_nivel_ensino}} - {{$turma->descricao_turno}} </h2>    
+            @break            
         @endif
     @endforeach
 @stop
@@ -58,7 +59,7 @@
                     @if (isset($selectPeriodoLetivo) && $selectPeriodoLetivo == $turmaPeriodoLetivo->id_periodo_letivo)
                         class="tab-pane active"         
                     @else
-                        class="tab-pane " 
+                        class="tab-pane" 
                     @endif
                     id="{{$turmaPeriodoLetivo->id_periodo_letivo}}">     
 
@@ -66,7 +67,7 @@
                     <ul class="nav nav-tabs nav-pills nav-fill justify-content-center" role="tablist">
                         @foreach ($disciplinasTurma as $index => $disciplinaTurma)                
                             <li role="presentation" class="nav-item ">
-                                <a class="nav-link " href="#{{$turmaPeriodoLetivo->id_periodo_letivo}}{{$disciplinaTurma->fk_id_disciplina}}" aria-controls="{{$turmaPeriodoLetivo->id_periodo_letivo}}{{$disciplinaTurma->fk_id_disciplina}}" role="tab" data-toggle="tab">{{$disciplinaTurma->disciplina}}</a>
+                                <a class="nav-link" href="#{{$turmaPeriodoLetivo->id_periodo_letivo}}{{$disciplinaTurma->fk_id_disciplina}}" aria-controls="{{$turmaPeriodoLetivo->id_periodo_letivo}}{{$disciplinaTurma->fk_id_disciplina}}" role="tab" data-toggle="tab">{{$disciplinaTurma->disciplina}}</a>
                             </li>                        
                         @endforeach
                     </ul> 
@@ -96,7 +97,14 @@
 
                                         <div class="row">
                                             <div class="form-group col-sm-12 col-xs-1" align="center">
-                                                <h5><strong>Frequências <font color="blue">{{$turmaPeriodoLetivo->periodo_letivo}} - {{$disciplinaTurma->disciplina}}</font></strong></h5>
+                                                <h5><strong>Lançar Frequências <font color="blue">{{$turmaPeriodoLetivo->periodo_letivo}} - {{$disciplinaTurma->disciplina}}</font></strong></h5>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-sm-12 col-xs-1" align="left">
+                                                <font color='#0080FF'>
+                                                    Utilize os ícones <i class="fas fa-edit"></i> para alterar as frequências de um aluno.
+                                                </font>
                                             </div>
                                         </div>
                                         
@@ -109,15 +117,12 @@
                                                         <strong>N°</strong>
                                                     </div>
                                                     <div class="form-group col-sm-4 col-xs-2">
-                                                        <strong>Nome do(a) Aluno(a)</strong>
+                                                        <strong>Nome do(a) Aluno(a)</strong>                                                        
                                                     </div>     
                                                     {{-- Libera lançamento de frequencia somente se o período estiver aberto --}}
-                                                    @if ($turmaPeriodoLetivo->situacao == 1)                                                               
-                                                        <div class="form-group col-sm-1 col-xs-2">
-                                                            <strong>Lançar </strong>
-                                                        </div>
+                                                    @if ($turmaPeriodoLetivo->situacao == 1)                                                                                                                       
                                                         <div class="form-group col-sm-2 col-xs-2">
-                                                            <input type="date" name="data_aula" min="{{$turmaPeriodoLetivo->data_inicio}}" max="{{$turmaPeriodoLetivo->data_fim}}" class="form-control" required>
+                                                            <input type="date" name="data_aula" autofocus min="{{$turmaPeriodoLetivo->data_inicio}}" max="{{$turmaPeriodoLetivo->data_fim}}" class="form-control" required>
                                                         </div>
                                                         <div class="form-group col-sm-2 col-xs-2">
                                                             <button type="submit" class="btn btn-sm btn-outline-success"><i class="fas fa-forward"></i> Enviar</button>
@@ -132,7 +137,8 @@
                                                 <div class="form-group col-sm-1 col-xs-2">
                                                     <strong>{{$index+1}}  </strong>                                                                  
                                                 </div>
-                                                <div class="form-group col-sm-4 col-xs-2">
+                                                <div class="form-group col-sm-4 col-xs-2">                                                    
+                                                    <a href="{{route('turmas.frequencias.edit', [$turmaPeriodoLetivo->id_turma_periodo_letivo, $turmaMatricula->id_matricula])}}" class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></a>
                                                     {{$turmaMatricula->nome}}
                                                 </div>                                                                
                                                 

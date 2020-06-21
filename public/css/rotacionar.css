@@ -1,0 +1,25 @@
+.main-row{
+	flex-wrap: nowrap;
+	word-break: break-all;
+}
+
+.column, .rotate{
+	border: 1px solid;
+		flex: 1 1 0;
+}
+
+.rotate {
+    height: 140px;
+    white-space: nowrap;
+	width: 0;
+	
+    > div {
+      transform: 
+        translate(0px, 110px)
+        rotate(-90deg);
+    }
+    > div > span {
+      border-bottom: 1px solid #ccc;
+      padding: 5px 10px;
+    }
+  }

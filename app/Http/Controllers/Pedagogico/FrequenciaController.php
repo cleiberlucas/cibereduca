@@ -81,6 +81,29 @@ class FrequenciaController extends Controller
                         'selectDisciplina'     =>  $dados['fk_id_disciplina'],
         ]);         
     }
+    
+    public function edit($id_turma_periodo_letivo, $id_matricula)
+    {
+        $frequenciasAlunoDisciplinasPeriodo = $this->repositorio->getFrequenciasAlunoDisciplinasPeriodo($id_turma_periodo_letivo, $id_matricula);
+        $frequenciasAlunoDatasPeriodo = $this->repositorio->getFrequenciasAlunoDatasPeriodo($id_turma_periodo_letivo, $id_matricula);
+        $frequenciasAlunoMesesPeriodo = $this->repositorio->getFrequenciasAlunoMesesPeriodo($id_turma_periodo_letivo, $id_matricula);
+        $frequenciasAlunoPeriodo = $this->repositorio->getFrequenciasAlunoPeriodo($id_turma_periodo_letivo, $id_matricula);
+
+        $frequencia = $this->repositorio->select('fk_id_turma')
+                                    ->join('tb_matriculas', 'fk_id_matricula', 'id_matricula')
+                                    ->where('fk_id_matricula', '=', $id_matricula)
+                                    ->first();
+
+        $id_turma = $frequencia->fk_id_turma;
+        //dd($id_turma);
+        return view('pedagogico.paginas.turmas.frequencias.edit', [
+            'id_turma'                  => $id_turma,
+            'frequenciasAlunoPeriodo' => $frequenciasAlunoPeriodo,
+            'frequenciasAlunoDisciplinasPeriodo' => $frequenciasAlunoDisciplinasPeriodo,
+            'frequenciasAlunoDatasPeriodo'  => $frequenciasAlunoDatasPeriodo,
+            'frequenciasAlunoMesesPeriodo'  => $frequenciasAlunoMesesPeriodo,
+        ]);
+    }
 
     public function update(StoreUpdateFrequencia $request, $id)
     {        

@@ -28,6 +28,7 @@ Route::prefix('pedagogico')
          */        
         route::get('turmas/frequencia/{id_frequencia}', 'FrequenciaController@remover')->name('turmas.frequencias.remover');            
         route::put('turmas/frequencia/{id_frequencia}', 'FrequenciaController@update')->name('turmas.frequencias.update');                    
+        Route::get('turmas/{id_turma_periodo_letivo}/frequencia/{id_matricula}/edit', 'FrequenciaController@edit')->name('turmas.frequencias.edit');
         Route::post('turmas/frequencias', 'FrequenciaController@store')->name('turmas.frequencias.store'); 
         route::any('turmas/{id}/frequencias', 'FrequenciaController@index')->name('turmas.frequencias');
               
