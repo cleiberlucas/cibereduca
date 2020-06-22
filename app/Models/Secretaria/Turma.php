@@ -2,7 +2,6 @@
 
 namespace App\Models\Secretaria;
 
-use App\Models\AnoLetivo;
 use App\Models\Pedagogico\TurmaPeriodoLetivo;
 use App\Models\PeriodoLetivo;
 use App\Models\TipoTurma;
@@ -43,7 +42,7 @@ class Turma extends Model
         return $this->belongsTo(TipoTurma::class, 'fk_id_tipo_turma', 'id_tipo_turma')->with('anoLetivo', 'subNivelEnsino');
     }
 
-    public function turno()
+    public function turno() 
     {
         return $this->belongsTo(Turno::class, 'fk_id_turno', 'id_turno');
     }

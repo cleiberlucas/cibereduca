@@ -9,15 +9,17 @@ use App\Models\Pedagogico\Frequencia;
 use App\Models\Pedagogico\TurmaPeriodoLetivo;
 use App\Models\Secretaria\Matricula;
 use App\Models\Pedagogico\TipoFrequencia;
+use App\Models\Secretaria\Disciplina;
 use Illuminate\Http\Request;
 
 class FrequenciaController extends Controller
 {
-    private $repositorio;
+    private $repositorio, $disciplina;
         
     public function __construct(Frequencia $frequencia)
     {
         $this->repositorio = $frequencia;
+        $this->disciplina = new Disciplina;
         
     }
 
@@ -39,6 +41,20 @@ class FrequenciaController extends Controller
             'turmaMatriculas'      => $this->getTurmaMatriculas($id_turma),
             'tiposFrequencia'      => $tiposFrequencia,            
         ]); 
+    }
+
+    public function edit($id_frequencia)
+    {
+        $frequencia = $this->repositorio->where('id_frequencia', $id_frequencia)                                    
+                                    ->get();
+        
+        $tiposFrequencia = new TipoFrequencia;
+        $tiposFrequencia = $tiposFrequencia->getTiposFrequencia();
+        //dd($frequencia);
+        return view('pedagogico.paginas.turmas.frequencias.edit', [
+            'frequenciaAluno' => $frequencia,
+            'tiposFrequencia' => $tiposFrequencia,
+        ]);
     }
 
     public function store(StoreUpdateFrequencia $request)
@@ -82,7 +98,7 @@ class FrequenciaController extends Controller
         ]);         
     }
     
-    public function edit($id_turma_periodo_letivo, $id_matricula)
+    public function frequenciaShowAluno($id_turma_periodo_letivo, $id_matricula)
     {
         $frequenciasAlunoDisciplinasPeriodo = $this->repositorio->getFrequenciasAlunoDisciplinasPeriodo($id_turma_periodo_letivo, $id_matricula);
         $frequenciasAlunoDatasPeriodo = $this->repositorio->getFrequenciasAlunoDatasPeriodo($id_turma_periodo_letivo, $id_matricula);
@@ -96,7 +112,7 @@ class FrequenciaController extends Controller
 
         $id_turma = $frequencia->fk_id_turma;
         //dd($id_turma);
-        return view('pedagogico.paginas.turmas.frequencias.edit', [
+        return view('pedagogico.paginas.turmas.frequencias.showaluno', [
             'id_turma'                  => $id_turma,
             'frequenciasAlunoPeriodo' => $frequenciasAlunoPeriodo,
             'frequenciasAlunoDisciplinasPeriodo' => $frequenciasAlunoDisciplinasPeriodo,
@@ -114,24 +130,34 @@ class FrequenciaController extends Controller
         if (!$frequencia)
             return redirect()->back();
       
-        $frequencia->where('id_frequencia', $id)->update($request->except('_token', '_method', 'fk_id_turma', 'id_periodo_letivo'));
+        $frequencia->where('id_frequencia', $id)->update($request->except('_token', '_method'));
 
-        $dados = $request->all();
+        $frequenciaAluno = $this->repositorio->where('id_frequencia', $id)->get();
+
+        $tiposFrequencia = new TipoFrequencia;
+        $tiposFrequencia = $tiposFrequencia->getTiposFrequencia();
+        //dd($frequencia);
+        return view('pedagogico.paginas.turmas.frequencias.edit', [
+            'frequenciaAluno' => $frequenciaAluno,
+            'tiposFrequencia' => $tiposFrequencia,
+        ]);
+        
+        /* $dados = $request->all();
         $id_turma = $dados['fk_id_turma'];
 
         $disciplinasTurma = new GradeCurricular;
         $disciplinasTurma = $disciplinasTurma->disciplinasTurma($id_turma);
-        $turmaPeriodoLetivo = new TurmaPeriodoLetivo;
+        $turmaPeriodoLetivo = new TurmaPeriodoLetivo; */
 
         //return redirect()->back();
-       return view('pedagogico.paginas.turmas.frequencias.index', [
+       /* return view('pedagogico.paginas.turmas.frequencias.index', [
                     'id_turma' => $id_turma,
                     'disciplinasTurma'     => $disciplinasTurma,
                     'turmaPeriodosLetivos' => $turmaPeriodoLetivo->getTurmaPeriodosLetivos($id_turma),     
                     'frequencias' => $this->repositorio->getFrequencias($id_turma),
                     'selectPeriodoLetivo'  => $dados['id_periodo_letivo'],
                     'selectDisciplina'     => $dados['fk_id_disciplina'],
-        ]);
+        ]); */
     } 
 
     /**

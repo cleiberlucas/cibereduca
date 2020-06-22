@@ -34,10 +34,11 @@ class Frequencia extends Model
      */
     public function getFrequenciasAlunoDisciplinasPeriodo($id_turma_periodo_letivo, $id_matricula)
     {
-        $frequenciasAlunoDisciplinasPeriodo = $this->select('id_disciplina', 'disciplina')
+        $frequenciasAlunoDisciplinasPeriodo = $this->select('id_disciplina', 'sigla_disciplina')
                                                     ->join('tb_disciplinas', 'fk_id_disciplina', 'id_disciplina')
                                                     ->where('fk_id_turma_periodo_letivo', '=', $id_turma_periodo_letivo)
                                                     ->where('fk_id_matricula', '=', $id_matricula)
+                                                    ->orderBy('disciplina')
                                                     ->groupBy('id_disciplina')
                                                     ->groupBy('disciplina')
                                                     ->get();
@@ -102,9 +103,14 @@ class Frequencia extends Model
         
     }
 
+    public function turmaPeriodoLetivo()
+    {
+        return $this->belongsTo(TurmaPeriodoLetivo::class, 'fk_id_turma_periodo_letivo', 'id_turma_periodo_letivo');
+    }
+
     public function matricula()
     {
-         $this->belongsTo(Matricula::class, 'fk_id_matricula', 'id_matricula');
+        return $this->belongsTo(Matricula::class, 'fk_id_matricula', 'id_matricula');
     }
 
     public function disciplina()

@@ -94,7 +94,10 @@ class TurmaController extends Controller
                             ->join('tb_tipos_turmas', 'fk_id_tipo_turma', 'id_tipo_turma')
                             ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')                                       
                             ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())                                    
-                            ->where('id_turma', $id)->with('tipoTurma', 'usuario')->first();
+                            ->where('id_turma', $id)
+                            ->with('tipoTurma', 'usuario')
+                            ->first();
+        //dd($turma);
 
         if (!$turma)
             return redirect()->back();
@@ -140,7 +143,9 @@ class TurmaController extends Controller
                                 ->join('tb_tipos_turmas', 'tb_turmas.fk_id_tipo_turma', '=', 'tb_tipos_turmas.id_tipo_turma' )
                                 ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')                                       
                                 ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada()) 
-                                ->where('id_turma', $id)->with('tipoTurma')->first();
+                                ->where('id_turma', $id)
+                                ->with('tipoTurma')
+                                ->first();
         
         if (!$turma)
             return redirect()->back();

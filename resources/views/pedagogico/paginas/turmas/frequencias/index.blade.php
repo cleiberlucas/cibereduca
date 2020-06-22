@@ -138,7 +138,7 @@
                                                     <strong>{{$index+1}}  </strong>                                                                  
                                                 </div>
                                                 <div class="form-group col-sm-4 col-xs-2">                                                    
-                                                    <a href="{{route('turmas.frequencias.edit', [$turmaPeriodoLetivo->id_turma_periodo_letivo, $turmaMatricula->id_matricula])}}" class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></a>
+                                                    <a href="{{route('turmas.frequencias.showaluno', [$turmaPeriodoLetivo->id_turma_periodo_letivo, $turmaMatricula->id_matricula])}}" class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></a>
                                                     {{$turmaMatricula->nome}}
                                                 </div>                                                                
                                                 
