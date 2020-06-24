@@ -6,7 +6,7 @@
     <div class="row">
         <div class="form-group col-sm-3 col-xs-2">
             <input type="hidden" name="fk_id_tipo_turma" value="{{$tipoTurma}}">            
-            <label>Período Letivo: {{$tipoTurma}}</label>
+            <label>* Período Letivo:</label>
             
             <select name="fk_id_periodo_letivo" id="fk_id_periodo_letivo" required class="form-control">
                 <option value="" ></option>                                                
@@ -23,7 +23,7 @@
         </div>
    
         <div class="form-group col-sm-3 col-xs-2">
-            <label>Disciplina:</label>
+            <label>* Disciplina:</label>
             <select name="fk_id_disciplina" id="fk_id_disciplina" required class="form-control">
                 <option value="" ></option>                                                
                 @foreach ($gradeCurricular as $disciplina)
@@ -40,7 +40,7 @@
     </div>
     <div class="row">
         <div class="form-group col-sm-3 col-xs-2">
-            <label>Tipo de Avaliação:</label>            
+            <label>* Tipo de Avaliação:</label>            
             <select name="fk_id_tipo_avaliacao" id="fk_id_tipo_avaliacao" class="form-control" required >
                 <option value="" ></option>                
                 @foreach ($tiposAvaliacao as $tipoAvaliacao)
@@ -58,20 +58,25 @@
 
     <div class="row">
         <div class="form-group col-sm-3 col-xs-2">            
-            <label>Valor</label>
+            <label>* Valor</label>
             <input type="number" step="0.010"  name="valor_avaliacao" class="form-control" placeholder="50" required  value="{{ $avaliacao->valor_avaliacao ?? old('valor_avaliacao') }}">
+        </div>          
+    </div>
+    <div class="row">
+        <div class="form-group col-sm-12 col-xs-2">            
+            <label>Conteúdo Avaliativo</label><br>
+            <textarea name="conteudo" id="" cols="140" rows="5">{{$avaliacao->conteudo ?? old('conteudo')}}</textarea>
         </div>          
     </div>
 
     <div class="row">
         <div class="form-group col-sm-4 col-xs-2">   
-            * Todos os campos são obrigatórios.<br>
+            * Campos obrigatórios.<br>
             <button type="submit" class="btn btn-success"><i class="fas fa-forward"></i> Enviar</button>
         </div>
     </div>
     
 </div>
-
 
 <script>
     document.getElementById("valor_avaliacao").addEventListener("change", function(){

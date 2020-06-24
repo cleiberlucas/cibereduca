@@ -261,7 +261,7 @@ return [
                 ],
                 [
                     'text' => 'Avaliações',
-                    'url'  => 'pedagogico/tiposturmas/avaliacoes',
+                    'url'  => 'pedagogico/tiposturmas',
                     'icon_color' => 'yellow',
                     'can'  => 'Avaliação Ver',
                 ],

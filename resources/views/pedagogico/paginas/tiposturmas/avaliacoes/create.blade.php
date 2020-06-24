@@ -8,7 +8,7 @@
             <a href="#" class="">Pedagógico</a>
         </li>       
         <li class="breadcrumb-item active" >
-            <a href="{{ url('pedagogico/tiposturmas/avaliacoes') }} " class="">Padrões de Turmas</a>
+            <a href="{{ url('pedagogico/tiposturmas') }} " class="">Padrões de Turmas</a>
         </li>
         <li class="breadcrumb-item active" >
             <a href="{{ route('tiposturmas.avaliacoes', $tipoTurma) }}" class="">Avaliações</a>

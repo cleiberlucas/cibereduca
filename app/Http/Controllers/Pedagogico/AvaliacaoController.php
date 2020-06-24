@@ -24,7 +24,7 @@ class AvaliacaoController extends Controller
 
     public function index($id_tipo_turma)
     {
-       
+        $this->authorize('Avaliação Ver');
         $avaliacoes = $this->repositorio->where('fk_id_tipo_turma', $id_tipo_turma)
         /* ->select ('*')
                             ->join('tb_tipos_turmas', 'tb_turmas.fk_id_tipo_turma', '=', 'tb_tipos_turmas.id_tipo_turma' )
@@ -84,108 +84,75 @@ class AvaliacaoController extends Controller
 
     public function show($id)
     {
-        $this->authorize('Turma Ver');   
-        $turma = $this->repositorio
-                            ->join('tb_tipos_turmas', 'fk_id_tipo_turma', 'id_tipo_turma')
-                            ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')                                       
-                            ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())                                    
-                            ->where('id_turma', $id)
-                            ->with('tipoTurma', 'usuario')
+        $this->authorize('Avaliação Ver');   
+        $avaliacao = $this->repositorio                            
+                            ->where('id_avaliacao', $id)                            
                             ->first();
-        //dd($turma);
+        //dd($avaliacao);
 
-        if (!$turma)
+        if (!$avaliacao)
             return redirect()->back();
 
-        return view('secretaria.paginas.turmas.show', [
-            'turma' => $turma
+        return view('pedagogico.paginas.tiposturmas.avaliacoes.show', [
+            'avaliacao' => $avaliacao
         ]);
     }
 
     public function destroy($id)
     {
-        $Turma = $this->repositorio->where('id_turma', $id)->first();
+        $this->authorize('Avaliação Apagar');
 
-        if (!$Turma)
+        $avaliacao = $this->repositorio->where('id_avaliacao', $id)->first();
+
+        if (!$avaliacao)
             return redirect()->back();
 
-        $Turma->where('id_turma', $id)->delete();
-        return redirect()->route('turmas.index');
-    }
-
-    public function search(Request $request)
-    {
-        $filtros = $request->except('_token');
-        $turmas = $this->repositorio->search($request->filtro);
-        
-        $matriculas = new Matricula;
-        $quantVagas = [];
-        
-        foreach ($turmas as $turma)
-            $quantVagas[$turma->id_turma] = $matriculas->quantVagasDisponiveis($turma->id_turma);
-        
-        return view('secretaria.paginas.turmas.index', [
-            'turmas' => $turmas,
-            'filtros' => $filtros,
-            'quantVagas' => $quantVagas,
-        ]);
+        $avaliacao->where('id_avaliacao', $id)->delete();
+        return redirect()->route('tiposturmas.avaliacoes', $avaliacao->fk_id_tipo_turma);
     }
 
     public function edit($id)
     {       
-        $this->authorize('Turma Alterar');    
-        $turma = $this->repositorio
-                                ->join('tb_tipos_turmas', 'tb_turmas.fk_id_tipo_turma', '=', 'tb_tipos_turmas.id_tipo_turma' )
-                                ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')                                       
-                                ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada()) 
-                                ->where('id_turma', $id)
-                                ->with('tipoTurma')
-                                ->first();
-        
-        if (!$turma)
-            return redirect()->back();
-     
-            $tiposTurmas = TipoTurma::select('*')
-                                    ->join('tb_sub_niveis_ensino', 'tb_tipos_turmas.fk_id_sub_nivel_ensino', '=', 'tb_sub_niveis_ensino.id_sub_nivel_ensino')
-                                    ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')                                       
-                                    ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())                                    
-                                    ->where('tb_anos_letivos.situacao', '=', '1')
-                                    ->orderBy('tb_anos_letivos.ano', 'desc')
-                                    ->orderBy('tb_sub_niveis_ensino.sub_nivel_ensino', 'asc')
-                                    ->orderBy('tb_tipos_turmas.tipo_turma', 'asc')
-                                    ->get();
+        $this->authorize('Avaliação Alterar');
 
-        return view('secretaria.paginas.turmas.edit',[
-            'turma'         => $turma,
-            'turnos'        => $this->turnos,
-            'tiposTurmas'   => $tiposTurmas,
+        $avaliacao = $this->repositorio->where('id_avaliacao', $id)->first();
+             
+        if (!$avaliacao)
+            return redirect()->back();
+        
+        $id_tipo_turma = $avaliacao->fk_id_tipo_turma;
+
+        $periodosLetivos = new PeriodoLetivo;
+        $periodosLetivos = $periodosLetivos->join('tb_tipos_turmas', 'tb_tipos_turmas.fk_id_ano_letivo', 'tb_periodos_letivos.fk_id_ano_letivo')                                            
+                                            ->where('id_tipo_turma', $id_tipo_turma)
+                                            ->where('tb_periodos_letivos.situacao', '1')
+                                            ->orderBy('periodo_letivo')->get();
+
+        $gradeCurricular = new GradeCurricular();
+        $gradeCurricular = $gradeCurricular->disciplinasTipoTurma($id_tipo_turma);
+        //dd($gradeCurricular);
+        $tiposAvaliacao = new TipoAvaliacao;
+        $tiposAvaliacao = $tiposAvaliacao->getTiposAvaliacao(1);
+        
+        return view('pedagogico.paginas.tiposturmas.avaliacoes.edit',[
+                    'avaliacao' => $avaliacao,    
+                    'tipoTurma' => $id_tipo_turma,
+                    'periodosLetivos' => $periodosLetivos,
+                    'gradeCurricular' => $gradeCurricular,
+                    'tiposAvaliacao'  => $tiposAvaliacao,
         ]);
     }
 
-    public function update(StoreUpdateTurma $request, $id)
+    public function update(StoreUpdateAvaliacao $request, $id)
     {
-        $turma = $this->repositorio->where('id_turma', $id)->first();
+        $avaliacao = $this->repositorio->where('id_avaliacao', $id)->first();
 
-        if (!$turma)
+        if (!$avaliacao)
             return redirect()->back();
         
-        $sit = $this->verificarSituacao($request->all());
-        
-        $request->merge($sit);
+        $avaliacao->where('id_avaliacao', $id)->update($request->except('_token', '_method'));
 
-        $turma->where('id_turma', $id)->update($request->except('_token', '_method'));
-
-        return redirect()->route('turmas.index');
+        return redirect()->route( 'tiposturmas.avaliacoes', $avaliacao->fk_id_tipo_turma) ;
     }
 
-    /**
-     * Verifica se a situação foi ativada
-     */
-    public function verificarSituacao(array $dados)
-    {
-        if (!array_key_exists('situacao_turma', $dados))
-            return ['situacao_turma' => '0'];
-        else
-             return ['situacao_turma' => '1'];            
-    }
 }

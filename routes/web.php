@@ -10,21 +10,24 @@ Route::prefix('pedagogico')
         ->middleware('auth')
         ->group(function(){
         
-            /**
+           /**
          * Rotas Tipos turmas pedagógico
          */
-        Route::resource('tiposturmas/avaliacoes', 'PedagogicoTipoTurmaController');
+        Route::resource('tiposturmas', 'PedagogicoTipoTurmaController');
+        
         /**
          * Rotas Frequências
          */        
-        Route::get('tiposturmas/{id_tipo_turma}/avaliacao/create', 'AvaliacaoController@create')->name('tiposturmas.avaliacao.create');
-        route::get('tiposturmas/avaliacao/{id_avaliacao}', 'AvaliacaoController@remover')->name('tiposturmas.avaliacoes.remover');            
-        route::put('tiposturmas/avaliacao/{id_avaliacao}', 'AvaliacaoController@update')->name('tiposturmas.avaliacoes.update');                    
-        Route::get('tiposturmas/avaliacao/{id_avaliacao}/edit', 'AvaliacaoController@edit')->name('tiposturmas.frequencia.edit');
-        Route::get('tiposturmas/{id_tipo_turma}/avaliacao/{id_matricula}/showaluno', 'AvaliacaoController@frequenciaShowAluno')->name('tiposturmas.avaliacoes.showaluno');
-        route::put('tiposturmas/avaliacao/{id_avaliacao}', 'AvaliacaoController@update')->name('tiposturmas.frequencia.update'); 
+        Route::get('tiposturmas/{id_tipo_turma}/avaliacoes/create', 'AvaliacaoController@create')->name('tiposturmas.avaliacao.create');
+        route::get('tiposturmas/avaliacoes/{id_avaliacao}', 'AvaliacaoController@remover')->name('tiposturmas.avaliacoes.remover');                    
+        Route::get('tiposturmas/avaliacoes/{id_avaliacao}/edit', 'AvaliacaoController@edit')->name('tiposturmas.avaliacoes.edit');        
+        route::put('tiposturmas/avaliacoes/{id_avaliacao}', 'AvaliacaoController@update')->name('tiposturmas.avaliacoes.update');                    
+        Route::delete('tiposturmas/avaliacoes/{id_avaliacao}', 'AvaliacaoController@destroy')->name('tiposturmas.avaliacoes.destroy');
+        Route::get('tiposturmas/avaliacoes/{id_avaliacao}', 'AvaliacaoController@show')->name('tiposturmas.avaliacoes.show');
         Route::post('tiposturmas/avaliacoes', 'AvaliacaoController@store')->name('tiposturmas.avaliacoes.store'); 
         route::any('tiposturmas/{id}/avaliacoes', 'AvaliacaoController@index')->name('tiposturmas.avaliacoes');
+
+         
 
         /**
          * Rotas Tipos Frequencia

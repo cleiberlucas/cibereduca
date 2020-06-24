@@ -1,19 +1,24 @@
 @extends('adminlte::page')
 
-@section('title_postfix', ' Turma')
+@section('title_postfix', ' Avaliação')
 
 @section('content_header')
-<ol class="breadcrumb">
-    <li class="breadcrumb-item active" >
-        <a href="{{ route('turmas.index') }} " class="">Turmas</a>
-    </li>
-    <li class="breadcrumb-item active" >
-        <a href="#" class="">Dados da Turma</a>
-    </li>
-</ol>
-
-    <h1><strong>{{$turma->tipoTurma->anoLetivo->unidadeEnsino->nome_fantasia}}</strong></h1>
-    <h1><b>{{$turma->tipoTurma->anoLetivo->ano}} - {{ $turma->nome_turma}} - {{$turma->turno->descricao_turno}}</b></h1>
+    <ol class="breadcrumb"> 
+        <li class="breadcrumb-item active" >
+            <a href="#" class="">Pedagógico</a>
+        </li>       
+        <li class="breadcrumb-item active" >
+            <a href="{{ url('pedagogico/tiposturmas') }} " class="">Padrões de Turmas</a>
+        </li>
+        <li class="breadcrumb-item active" >
+            <a href="{{ route('tiposturmas.avaliacoes', $avaliacao->fk_id_tipo_turma) }}" class="">Avaliações</a>
+        </li>
+        <li class="breadcrumb-item active" >
+            <a href="#" class="">Ver</a>
+        </li>
+    </ol>
+    <br>
+    <h3><strong>Avaliação {{$avaliacao->tipoTurma->tipo_turma}}</strong></h3>
 @stop
 
 @section('content')
@@ -21,30 +26,22 @@
         <div class="card-header">
             <ul>
                 <li>
-                    <strong>Ano:</strong> {{$turma->tipoTurma->anoLetivo->ano}}
+                    <strong>Período Letivo:</strong> {{$avaliacao->periodoLetivo->periodo_letivo}}
                 </li>
                 <li>
-                    <strong>Turma:</strong> {{ $turma->nome_turma}} - {{$turma->turno->descricao_turno}}
+                    <strong>Disciplina:</strong> {{ $avaliacao->disciplina->disciplina}}
                 </li>
                 <li>
-                    <strong>Localização:</strong>  {{ $turma->localizacao}}
+                    <strong>Tipo Avaliação:</strong>  {{ $avaliacao->tipoAvaliacao->tipo_avaliacao}}
                 </li>
                 <li>
-                    <strong>Limite alunos:</strong> {{ $turma->limite_alunos}}
+                    <strong>Valor:</strong> {{ $avaliacao->valor_avaliacao}}
                 </li>                                
-                <li><strong>Situação: </strong>
-                    @if ($turma->situacao_turma == 1)
-                        Aberta
-                    @else
-                        Encerrada
-                    @endif
+                <li><strong>Conteúdo: </strong><br>
+                    {{$avaliacao->conteudo}}
                 </li>
-                <li>
-                    <strong>Cadastrado por:</strong> {{$turma->usuario->name}}
-                </li>
-                
             </ul>
-            <form action="{{ route('turmas.destroy', $turma->id_turma) }}" method="POST">
+            <form action="{{ route('tiposturmas.avaliacoes.destroy', $avaliacao->id_avaliacao) }}" method="POST">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="btn btn-danger"> <i class="fas fa-trash"></i> Apagar</button>

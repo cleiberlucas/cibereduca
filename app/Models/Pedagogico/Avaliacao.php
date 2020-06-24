@@ -16,7 +16,7 @@ class Avaliacao extends Model
     
     public $timestamps = false;
         
-    protected $fillable = ['fk_id_tipo_turma', 'fk_id_periodo_letivo', 'fk_id_disciplina', 'fk_id_tipo_avaliacao', 'valor_avaliacao'];
+    protected $fillable = ['fk_id_tipo_turma', 'fk_id_periodo_letivo', 'fk_id_disciplina', 'fk_id_tipo_avaliacao', 'valor_avaliacao', 'conteudo'];
    
     public function search($filtro = null)
     {

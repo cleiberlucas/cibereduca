@@ -12,7 +12,7 @@
             <a href="#" class="">Pedagógico</a>
         </li>       
         <li class="breadcrumb-item active" >
-            <a href="{{ url('pedagogico/tiposturmas/avaliacoes') }} " class="">Padrões de Turmas</a>
+            <a href="{{ url('pedagogico/tiposturmas') }} " class="">Padrões de Turmas</a>
         </li>
         <li class="breadcrumb-item active" >
             <a href="#" class="">Avaliações</a>
@@ -63,9 +63,8 @@
                                 </td> 
                                      
                                 <td style="width=10px;">
-                                    {{-- <a href="{{ route('matriculas.index', $avaliacao->id_turma) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-users"></i></a>
-                                    <a href="{{ route('turmas.edit', $avaliacao->id_turma) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>
-                                    <a href="{{ route('turmas.show', $avaliacao->id_turma) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-eye"></i></a> --}}
+                                    <a href="{{ route('tiposturmas.avaliacoes.edit', $avaliacao->id_avaliacao) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>                                    
+                                    <a href="{{ route('tiposturmas.avaliacoes.show', $avaliacao->id_avaliacao) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-eye"></i></a>
                                 </td>
                                 
                             </tr>
