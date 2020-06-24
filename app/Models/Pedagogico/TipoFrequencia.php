@@ -11,7 +11,7 @@ class TipoFrequencia extends Model
     
     public $timestamps = false;
         
-    protected $fillable = ['tipo_frequencia'];
+    protected $fillable = ['tipo_frequencia', 'sigla_frequencia', 'reprova', 'padrao', 'situacao'];
    
     public function search($filtro = null)
     {

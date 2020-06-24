@@ -41,13 +41,13 @@
             @foreach ($turmaPeriodosLetivos as $index => $turmaPeriodoLetivo)                
                 <li role="presentation" class="nav-item">
                     <a class="nav-link " href="#{{$turmaPeriodoLetivo->id_periodo_letivo}}" aria-controls="{{$turmaPeriodoLetivo->id_periodo_letivo}}" role="tab" data-toggle="tab">{{$turmaPeriodoLetivo->periodo_letivo}}
-                    @if ($turmaPeriodoLetivo->situacao == 0)
-                        <i class="fas fa-ban"></i>
-                    @else
-                        <i class="fas fa-pencil-alt"></i>
-                    @endif
-                    </a>
-                    
+                        {{-- Informação se o período está aberto ou fechado --}}
+                        @if ($turmaPeriodoLetivo->situacao == 0)
+                            <i class="fas fa-ban"></i>
+                        @else
+                            <i class="fas fa-pencil-alt"></i>
+                        @endif
+                    </a>                    
                 </li>                        
             @endforeach
         </ul>

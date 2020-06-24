@@ -41,4 +41,17 @@ class GradeCurricular extends Model
                 ->orderBy('disciplina')
                 ->get();
     }
+
+    /**
+     * Retorna as disciplinas de um Tipo turma
+     */
+    public function disciplinasTipoTurma($id_tipo_turma)
+    {
+        return $this::select('*')
+                ->join('tb_tipos_turmas', 'tb_grades_curriculares.fk_id_tipo_turma', 'id_tipo_turma')                
+                ->join('tb_disciplinas', 'fk_id_disciplina', 'id_disciplina')
+                ->where('id_tipo_turma', '=', $id_tipo_turma)
+                ->orderBy('disciplina')
+                ->get();
+    }
 }

@@ -261,8 +261,9 @@ return [
                 ],
                 [
                     'text' => 'Avaliações',
-                    'url'  => '#',
+                    'url'  => 'pedagogico/tiposturmas/avaliacoes',
                     'icon_color' => 'yellow',
+                    'can'  => 'Avaliação Ver',
                 ],
                 [
                     'text' => 'Boletins',
@@ -321,6 +322,11 @@ return [
                         [
                             'text' => 'Atendimentos Especializados',
                             'url'  => 'admin/atendimentosespecializados',
+                            'icon_color' => 'red',
+                        ],
+                        [
+                            'text' => 'Tipos Frequências',
+                            'url'  => 'pedagogico/tiposfrequencias',
                             'icon_color' => 'red',
                         ],
                         [

@@ -24,6 +24,7 @@
         @if ($index == 0)
             <h2>Aluno(a): {{$frequenciaAlunoPeriodo->nome}}</h2>
             <h3>Frequências {{$frequenciaAlunoPeriodo->periodo_letivo}} - {{$frequenciaAlunoPeriodo->nome_turma}} {{$frequenciaAlunoPeriodo->sub_nivel_ensino}} - {{$frequenciaAlunoPeriodo->descricao_turno}} </h3>
+            Clique na célula da informação da frequência para alterá-la.
             @break
         @endif
     @endforeach
@@ -86,7 +87,7 @@
                                                                 and date('n', strtotime($frequenciaAlunoDatasPeriodo->data_aula)) == $frequenciasAlunoMesPeriodo->mes)
                                                             
                                                             {{-- Mostrando a frequencia do aluno --}}
-                                                            <a href="{{route('turmas.frequencia.edit', $frequenciaAlunoPeriodo->id_frequencia)}}" >{{$frequenciaAlunoPeriodo->sigla_frequencia}}</a>
+                                                            <a href="{{route('turmas.frequencia.edit', $frequenciaAlunoPeriodo->id_frequencia)}}" class="btn btn-link" >{{$frequenciaAlunoPeriodo->sigla_frequencia}}</a>
                                                                                                                         
                                                             @break;
 

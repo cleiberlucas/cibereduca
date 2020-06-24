@@ -25,6 +25,14 @@ class PeriodoLetivo extends Model
         return $resultado;
     }
 
+    public function getPeriodosLetivos($situacao)
+    {
+        return $this->join('tb_anos_letivos', 'fk_id_ano_letivo', 'id_ano_letivo')
+                    ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())
+                    ->where('tb_periodos_letivos.situacao', $situacao)
+                    ->orderBy('periodo_letivo')->get();
+    }
+
     public function anoLetivo()
     {       
         return $this->belongsTo(AnoLetivo::class, 'fk_id_ano_letivo', 'id_ano_letivo');

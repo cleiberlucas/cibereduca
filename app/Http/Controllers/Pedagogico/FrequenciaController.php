@@ -9,17 +9,15 @@ use App\Models\Pedagogico\Frequencia;
 use App\Models\Pedagogico\TurmaPeriodoLetivo;
 use App\Models\Secretaria\Matricula;
 use App\Models\Pedagogico\TipoFrequencia;
-use App\Models\Secretaria\Disciplina;
 use Illuminate\Http\Request;
 
 class FrequenciaController extends Controller
 {
-    private $repositorio, $disciplina;
+    private $repositorio;
         
     public function __construct(Frequencia $frequencia)
     {
-        $this->repositorio = $frequencia;
-        $this->disciplina = new Disciplina;
+        $this->repositorio = $frequencia;        
         
     }
 
@@ -55,6 +53,22 @@ class FrequenciaController extends Controller
             'frequenciaAluno' => $frequencia,
             'tiposFrequencia' => $tiposFrequencia,
         ]);
+    }
+
+    public function update(StoreUpdateFrequencia $request, $id)
+    {        
+        $this->authorize('Frequência Alterar');
+
+        $frequencia = $this->repositorio->where('id_frequencia', $id)->first();
+        
+        if (!$frequencia)
+            return redirect()->back();
+      
+        $frequencia->where('id_frequencia', $id)->update($request->except('_token', '_method'));
+
+        $frequenciaAluno = $this->repositorio->where('id_frequencia', $id)->first();
+
+        return $this->frequenciaShowAluno($frequenciaAluno->fk_id_turma_periodo_letivo, $frequenciaAluno->fk_id_matricula);
     }
 
     public function store(StoreUpdateFrequencia $request)
@@ -120,45 +134,6 @@ class FrequenciaController extends Controller
             'frequenciasAlunoMesesPeriodo'  => $frequenciasAlunoMesesPeriodo,
         ]);
     }
-
-    public function update(StoreUpdateFrequencia $request, $id)
-    {        
-        $this->authorize('Frequência Alterar');
-
-        $frequencia = $this->repositorio->where('id_frequencia', $id)->first();
-        
-        if (!$frequencia)
-            return redirect()->back();
-      
-        $frequencia->where('id_frequencia', $id)->update($request->except('_token', '_method'));
-
-        $frequenciaAluno = $this->repositorio->where('id_frequencia', $id)->get();
-
-        $tiposFrequencia = new TipoFrequencia;
-        $tiposFrequencia = $tiposFrequencia->getTiposFrequencia();
-        //dd($frequencia);
-        return view('pedagogico.paginas.turmas.frequencias.edit', [
-            'frequenciaAluno' => $frequenciaAluno,
-            'tiposFrequencia' => $tiposFrequencia,
-        ]);
-        
-        /* $dados = $request->all();
-        $id_turma = $dados['fk_id_turma'];
-
-        $disciplinasTurma = new GradeCurricular;
-        $disciplinasTurma = $disciplinasTurma->disciplinasTurma($id_turma);
-        $turmaPeriodoLetivo = new TurmaPeriodoLetivo; */
-
-        //return redirect()->back();
-       /* return view('pedagogico.paginas.turmas.frequencias.index', [
-                    'id_turma' => $id_turma,
-                    'disciplinasTurma'     => $disciplinasTurma,
-                    'turmaPeriodosLetivos' => $turmaPeriodoLetivo->getTurmaPeriodosLetivos($id_turma),     
-                    'frequencias' => $this->repositorio->getFrequencias($id_turma),
-                    'selectPeriodoLetivo'  => $dados['id_periodo_letivo'],
-                    'selectDisciplina'     => $dados['fk_id_disciplina'],
-        ]); */
-    } 
 
     /**
      * Remover conteúdo lecionado

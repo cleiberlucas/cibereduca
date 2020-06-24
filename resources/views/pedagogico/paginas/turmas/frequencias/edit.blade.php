@@ -14,21 +14,20 @@
                 <a href="{{url('pedagogico/turmas')}} " class="">Diários</a>
             </li>
             <li class="breadcrumb-item active" >
-            <a href="{{route('turmas.frequencias', $frequencia->turmaPeriodoLetivo->fk_id_turma)}}" class="">Frequências</a>
+                <a href="{{route('turmas.frequencias', $frequencia->turmaPeriodoLetivo->fk_id_turma)}}" class="">Frequências</a>
             </li>
             <li class="breadcrumb-item active" >
-                <a href="{{route('turmas.frequencias.showaluno', [$frequencia->fk_id_turma_periodo_letivo, $frequencia->fk_id_matricula])}}" class="">Aluno</a>
-                
+                <a href="{{route('turmas.frequencias.showaluno', [$frequencia->fk_id_turma_periodo_letivo, $frequencia->fk_id_matricula])}}" class="">Aluno</a>                
             </li>
             <li class="breadcrumb-item active" >
                 <a href="#" class="">Alterar</a>
             </li>
         </ol>
           
-        <h2>Alterar frequência do Aluno(a): <strong>{{$frequencia->matricula->aluno->nome}}</strong></h2>            
-        <h3>{{$frequencia->turmaPeriodoLetivo->periodoLetivo->periodo_letivo}} - {{$frequencia->turmaPeriodoLetivo->turma->nome_turma}} {{$frequencia->turmaPeriodoLetivo->turma->tipoTurma->sub_nivel_ensino}} - {{$frequencia->turmaPeriodoLetivo->turma->turno->descricao_turno}} </h3>
-        <h3>Disciplina: <strong>{{$frequencia->disciplina->disciplina}}</strong></h3>
-        <h4>Data da aula: <strong>{{date('d/m/Y', strtotime($frequencia->data_aula))}}</strong></h4>
+        <h3>Alterar frequência do Aluno(a): <strong>{{$frequencia->matricula->aluno->nome}}</strong></h3>            
+        <h4>{{$frequencia->turmaPeriodoLetivo->periodoLetivo->periodo_letivo}} - {{$frequencia->turmaPeriodoLetivo->turma->nome_turma}} {{$frequencia->turmaPeriodoLetivo->turma->tipoTurma->sub_nivel_ensino}} - {{$frequencia->turmaPeriodoLetivo->turma->turno->descricao_turno}} </h4>
+        <h5>Disciplina: <strong>{{$frequencia->disciplina->disciplina}}</strong></h5>
+        <h5>Data da aula: <strong>{{date('d/m/Y', strtotime($frequencia->data_aula))}}</strong></h5>
                 
     @endforeach
 @stop

@@ -11,15 +11,41 @@ Route::prefix('pedagogico')
         ->group(function(){
         
             /**
+         * Rotas Tipos turmas pedagógico
+         */
+        Route::resource('tiposturmas/avaliacoes', 'PedagogicoTipoTurmaController');
+        /**
+         * Rotas Frequências
+         */        
+        Route::get('tiposturmas/{id_tipo_turma}/avaliacao/create', 'AvaliacaoController@create')->name('tiposturmas.avaliacao.create');
+        route::get('tiposturmas/avaliacao/{id_avaliacao}', 'AvaliacaoController@remover')->name('tiposturmas.avaliacoes.remover');            
+        route::put('tiposturmas/avaliacao/{id_avaliacao}', 'AvaliacaoController@update')->name('tiposturmas.avaliacoes.update');                    
+        Route::get('tiposturmas/avaliacao/{id_avaliacao}/edit', 'AvaliacaoController@edit')->name('tiposturmas.frequencia.edit');
+        Route::get('tiposturmas/{id_tipo_turma}/avaliacao/{id_matricula}/showaluno', 'AvaliacaoController@frequenciaShowAluno')->name('tiposturmas.avaliacoes.showaluno');
+        route::put('tiposturmas/avaliacao/{id_avaliacao}', 'AvaliacaoController@update')->name('tiposturmas.frequencia.update'); 
+        Route::post('tiposturmas/avaliacoes', 'AvaliacaoController@store')->name('tiposturmas.avaliacoes.store'); 
+        route::any('tiposturmas/{id}/avaliacoes', 'AvaliacaoController@index')->name('tiposturmas.avaliacoes');
+
+        /**
+         * Rotas Tipos Frequencia
+         */
+        Route::any('tiposfrequencias/search', 'TipoFrequenciaController@search')->name('tiposfrequencias.search');
+        Route::resource('tiposfrequencias', 'TipoFrequenciaController');
+
+        
+
+        /**
          * Rotas turmas pedagógico
          */
-        Route::any('turmas', 'PedagogicoTurmaController@index')->name('turmas.diarios')->middleware('can:Turma Ver');
+        Route::any('turmas/search', 'PedagogicoTurmaController@search')->name('turmas.diarios.search')->middleware('can:Turma Ver');
+        /* Route::any('turmas', 'PedagogicoTurmaController@index')->name('turmas.diarios')->middleware('can:Turma Ver'); */
+        Route::resource('turmas', 'PedagogicoTurmaController');
 
         /**
          * Rotas Contéudos Lecionados
          */        
         route::get('turmas/conteudolecionado/{id_conteudo_lecionado}', 'ConteudoLecionadoController@remover')->name('turmas.conteudoslecionados.remover');            
-        route::put('turmas/conteudolecionado/{id_conteudo_lecionado}', 'ConteudoLecionadoController@update')->name('turmas.conteudoslecionados.update');                    
+        route::put('turmas/conteudolecionado/{id_conteudo_lecionado}', 'ConteudoLecionadoController@update')->name('turmas.conteudoslecionados.update');                            
         Route::post('turmas/conteudoslecionados', 'ConteudoLecionadoController@store')->name('turmas.conteudoslecionados.store'); 
         route::any('turmas/{id}/conteudoslecionados', 'ConteudoLecionadoController@index')->name('turmas.conteudoslecionados');
         
@@ -34,7 +60,7 @@ Route::prefix('pedagogico')
         Route::post('turmas/frequencias', 'FrequenciaController@store')->name('turmas.frequencias.store'); 
         route::any('turmas/{id}/frequencias', 'FrequenciaController@index')->name('turmas.frequencias');
               
-        });
+});
 
         /**
          * Rotas Turmas X Período Letivo

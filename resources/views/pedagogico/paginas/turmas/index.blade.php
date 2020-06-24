@@ -15,13 +15,16 @@
             <a href="{{url('pedagogico/turmas')}} " class="">Diários</a>
         </li>
     </ol>
-    <h4>Lançamentos no Diário:&nbsp&nbsp&nbsp <i class="fas fa-chalkboard"></i> Conteúdos Lecionados &nbsp&nbsp&nbsp&nbsp&nbsp  <i class="fas fa-user-check"></i> Frequências</h4>
+    <h4>Lançamentos no Diário</h4>
+    <h6><i class="fas fa-chalkboard"></i> Conteúdos Lecionados &nbsp&nbsp&nbsp&nbsp&nbsp  <i class="fas fa-user-check"></i> Frequências</h6>
+    <h6><i class="fas fa-key"></i> Abrir ou fechar período letivo de uma turma.</h6>
+    
 @stop
 
 @section('content')
     <div class="container-fluid">
         <div class="card-header">
-            <form action="{{ route('turmas.search') }}" method="POST" class="form form-inline">
+            <form action="{{ route('turmas.diarios.search') }}" method="POST" class="form form-inline">
                 @csrf
                 <input type="text" name="filtro" placeholder="Turma" class="form-control" value="{{ $filtros['filtro'] ?? '' }}">
                 <button type="submit" class="btn btn-outline-secondary"><i class="fas fa-filter"></i></button>
