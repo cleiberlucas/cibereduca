@@ -32,6 +32,11 @@ class Avaliacao extends Model
         return $resultado;
     }
 
+    public function getAvaliacoesTipoTurma($id_tipo_turma)
+    {
+        return $this->where('fk_id_tipo_turma', $id_tipo_turma)->get();
+    }
+
     public function tipoTurma()
     {       
         return $this->belongsTo(TipoTurma::class, 'fk_id_tipo_turma', 'id_tipo_turma');

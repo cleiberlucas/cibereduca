@@ -16,6 +16,9 @@ class PedagogicoTurmaController extends Controller
         $this->repositorio = $turma;
     }
 
+    /**
+     * Lista Turmas para lançamento de conteúdo lecionado e frequência
+     */
     public function index()
     {
         $turmas = Turma::select ('*')

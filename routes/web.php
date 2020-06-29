@@ -16,7 +16,7 @@ Route::prefix('pedagogico')
         Route::resource('tiposturmas', 'PedagogicoTipoTurmaController');
         
         /**
-         * Rotas Frequências
+         * Rotas Avaliações
          */        
         Route::get('tiposturmas/{id_tipo_turma}/avaliacoes/create', 'AvaliacaoController@create')->name('tiposturmas.avaliacao.create');
         route::get('tiposturmas/avaliacoes/{id_avaliacao}', 'AvaliacaoController@remover')->name('tiposturmas.avaliacoes.remover');                    
@@ -33,16 +33,14 @@ Route::prefix('pedagogico')
          * Rotas Tipos Frequencia
          */
         Route::any('tiposfrequencias/search', 'TipoFrequenciaController@search')->name('tiposfrequencias.search');
-        Route::resource('tiposfrequencias', 'TipoFrequenciaController');
-
-        
+        Route::resource('tiposfrequencias', 'TipoFrequenciaController');        
 
         /**
          * Rotas turmas pedagógico
-         */
-        Route::any('turmas/search', 'PedagogicoTurmaController@search')->name('turmas.diarios.search')->middleware('can:Turma Ver');
-        /* Route::any('turmas', 'PedagogicoTurmaController@index')->name('turmas.diarios')->middleware('can:Turma Ver'); */
-        Route::resource('turmas', 'PedagogicoTurmaController');
+         */           
+        //Diário - conteúdo lecionado e frequencia
+        Route::any('turmas/search', 'PedagogicoTurmaController@search')->name('turmas.diarios.search')->middleware('can:Diário Ver');        
+        route::get('turmas', 'PedagogicoTurmaController@index')->name('turmas.diarios.index');
 
         /**
          * Rotas Contéudos Lecionados
@@ -62,7 +60,21 @@ Route::prefix('pedagogico')
         route::put('turmas/frequencia/{id_frequencia}', 'FrequenciaController@update')->name('turmas.frequencia.update'); 
         Route::post('turmas/frequencias', 'FrequenciaController@store')->name('turmas.frequencias.store'); 
         route::any('turmas/{id}/frequencias', 'FrequenciaController@index')->name('turmas.frequencias');
-              
+
+        /**
+         * Rotas Notas
+         */        
+        
+        route::get('turmas/nota/{id_nota_avaliacao}', 'NotaController@remover')->name('turmas.notas.remover');            
+        route::put('turmas/nota/{id_nota_avaliacao}', 'NotaController@update')->name('turmas.notas.update');                    
+        Route::get('turmas/nota/{id_nota_avaliacao}/edit', 'NotaController@edit')->name('turmas.nota.edit');
+        Route::any('turmas/nota/search', 'NotaController@search')->name('turmas.notas.search');
+        Route::get('turmas/nota/{id_matricula}/showaluno', 'NotaController@notaShowAluno')->name('turmas.notas.showaluno');
+        route::put('turmas/nota/{id_nota_avaliacao}', 'NotaController@update')->name('turmas.nota.update'); 
+        Route::post('turmas/notas', 'NotaController@store')->name('turmas.notas.store'); 
+        route::any('turmas/{id}/notas', 'NotaController@index')->name('turmas.notas');
+        route::get('turmas/notas', 'NotaController@indexNotas')->name('turmas.index.notas');
+          
 });
 
         /**

@@ -15,8 +15,7 @@
             <a href="{{ url('pedagogico/tiposturmas/avaliacoes') }} " class="">Padrões de Turmas</a>
         </li>
     </ol>
-    
-    {{-- <h1>Avaliações <a href="{{ route('avaliacoes.create') }}" class="btn btn-success"><i class="fas fa-plus-square"></i> Cadastrar</a></h1>     --}}
+    <h3>Avaliações</h3>
 @stop
 
 @section('content')
@@ -27,7 +26,7 @@
                     <th>Ano</th>
                     <th>Padrão de Turma</th>
                     <th>Nível de Ensino</th>                        
-                    <th width="270">Ações</th>
+                    <th width="270">Avaliações</th>
                 </thead>
                 <tbody>                        
                     @foreach ($tiposTurmas as $tipoTurma)
@@ -42,7 +41,7 @@
                                 {{$tipoTurma->subNivelEnsino->sub_nivel_ensino}}
                             </td>                                                   
                             <td style="width=10px;">
-                                 <a href="{{route('tiposturmas.avaliacoes', $tipoTurma->id_tipo_turma)}}" class="btn btn-sm btn-info"><i class="far fa-file-alt"></i></a>
+                                 <a href="{{route('tiposturmas.avaliacoes', $tipoTurma->id_tipo_turma)}}" class="btn btn-sm btn-success"><i class="fas fa-file-alt"></i></a>
                             </td>
                             
                         </tr>
