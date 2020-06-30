@@ -19,7 +19,7 @@
     </ol>
     @foreach ($turmaPeriodosLetivos as $index => $turma)
         @if ($index == 0)
-            <h3>Notas - {{$turma->nome_turma}} {{$turma->sub_nivel_ensino}} - {{$turma->descricao_turno}} </h3>    
+            <h3>Lançamento de Notas - {{$turma->nome_turma}} {{$turma->sub_nivel_ensino}} - {{$turma->descricao_turno}} </h3>    
             @break            
         @endif
     @endforeach
@@ -29,13 +29,14 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <div class="container-fluid">
         <div class="card-header">          
             <i class="fas fa-pencil-alt"></i> - Período aberto &nbsp&nbsp&nbsp 
             <i class="fas fa-ban"></i> - Período fechado
         </div>
-       
+        @include('admin.includes.alerts')
         {{-- Abas de Períodos --}}
         <ul class="nav nav-tabs nav-pills nav-fill justify-content-center" role="tablist">
             @foreach ($turmaPeriodosLetivos as $index => $turmaPeriodoLetivo)                
@@ -113,6 +114,7 @@
                                                             {{-- Mostra avaliações somente do período e da disciplina selecionada --}}
                                                             @if ($turmaPeriodoLetivo->id_periodo_letivo == $avaliacao->periodoLetivo->id_periodo_letivo && 
                                                                 $disciplinaTurma->fk_id_disciplina == $avaliacao->fk_id_disciplina)
+                                                                
                                                                 <option value="{{$avaliacao->id_avaliacao }}">{{$avaliacao->tipoAvaliacao->tipo_avaliacao}} - Valor {{$avaliacao->valor_avaliacao}}</option>
                                                             @endif
                                                         @endforeach
@@ -169,16 +171,17 @@
                                                     </div>  
                                                 @endif     
 
-                                            </div>  
-                                        
+                                            </div>
                                         @endforeach {{-- fim listagem alunos --}}
+
+                                        
+
                                         {{-- Libera lançamento de notas somente se o período estiver aberto --}}
-                                        @if ($turmaPeriodoLetivo->situacao == 1)                                                                                                                       
-                                                        
-                                        <div class="form-group col-sm-2 col-xs-2">
-                                            <button type="submit" class="btn btn-success"><i class="fas fa-forward"></i> Enviar</button>
-                                        </div>
-                                    @endif
+                                        @if ($turmaPeriodoLetivo->situacao == 1)                                                                                                                                                                                   
+                                            <div class="form-group col-sm-2 col-xs-2">
+                                                <button type="submit" class="btn btn-success"><i class="fas fa-forward"></i> Enviar</button>
+                                            </div>
+                                        @endif
                                     </form>                                            
                                 </div>                                    
                             </div>
@@ -198,7 +201,13 @@
                 </div> --}}
        {{--  </div> --}}
     </div>
+
+
     <script>
+        $(document).ready(function(){
+              $(".alert").slideDown(300).delay(5000).slideUp(300);
+        });    
+   
         document.getElementById("nota[]").addEventListener("change", function(){
             this.value = parseFloat(this.value).toFixed(2);
         });

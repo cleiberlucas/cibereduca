@@ -21,16 +21,11 @@
         </li>
         
     </ol>
-
-    @foreach ($notasAluno as $index => $notaAluno)
-        @if ($index == 0)
-            {{-- <h2>Aluno(a): {{$notaAluno->matricula->aluno->nome}}</h2> --}}
-            {{-- <h3>Notas {{$frequenciaAlunoPeriodo->periodo_letivo}} - {{$frequenciaAlunoPeriodo->nome_turma}} {{$frequenciaAlunoPeriodo->sub_nivel_ensino}} - {{$frequenciaAlunoPeriodo->descricao_turno}} </h3> --}}
-            Clique na nota para alterá-la.
-            @break
-        @endif
-    @endforeach
-@stop
+    
+    <h3>Aluno(a): {{$dadosAluno->aluno->nome}}</h3>
+    <h4>{{$dadosAluno->turma->tipoTurma->anoLetivo->ano}} - {{$dadosAluno->turma->nome_turma}} - {{$dadosAluno->turma->tipoTurma->subNivelEnsino->sub_nivel_ensino}} - {{$dadosAluno->turma->turno->descricao_turno}} </h3>
+    Clique na nota para alterá-la, ou no ícone <i class="far fa-trash-alt"></i> para excluir.
+    @stop
 
 @section('content')
 
@@ -62,7 +57,7 @@
                                     {{-- Listando todas avaliacoes da turma em um periodo letivo --}}
                                      @if ($avaliacaoTurma->periodo_letivo == $periodoTurma->periodo_letivo)
                                         <th>
-                                            {{$avaliacaoTurma->tipo_avaliacao}}   
+                                            {{$avaliacaoTurma->tipo_avaliacao}}                                            
                                         </th>
                                     @endif
                                 @endforeach {{-- fim colunas avaliações --}}    
@@ -85,8 +80,10 @@
                                                     @if ($notaAluno->fk_id_periodo_letivo == $periodoTurma->id_periodo_letivo
                                                         and $notaAluno->tipo_avaliacao == $avaliacaoTurma->tipo_avaliacao
                                                         and $notaAluno->fk_id_disciplina == $disciplina->fk_id_disciplina)
-
-                                                        {{$notaAluno->nota}}
+                                                        <a class="btn btn-sm btn-outline-danger" href="{{route('turmas.nota.remover', $notaAluno->id_nota_avaliacao)}}"><i class="far fa-trash-alt"></i></a>
+                                                        &nbsp&nbsp&nbsp&nbsp&nbsp
+                                                        <a href="{{route('turmas.nota.edit', $notaAluno->id_nota_avaliacao)}}">{{number_format($notaAluno->nota, 2, ',', '.')}}</a>
+                                                        
                                                         @break                                                        
                                                     @endif                                                    
                                                 @endforeach                                            

@@ -11,6 +11,8 @@ use App\Models\Pedagogico\TurmaPeriodoLetivo;
 use App\Models\Secretaria\Matricula;
 use App\Models\Secretaria\Turma;
 use App\Models\User;
+use Illuminate\Cache\RedisTaggedCache;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
 class NotaController extends Controller
@@ -48,16 +50,24 @@ class NotaController extends Controller
     /**
      * Gera abas de períodos letivos e disciplinas para lançamento de notas
      */
-    public function index($id_turma, $id_periodo_letivo = null, $id_disciplina = null)
+    public function index($id_turma)
     {
         $this->authorize('Frequência Ver');   
+
+       /*  $notasAlunos = $this->repositorio
+                        ->join('tb_avaliacoes', 'fk_id_avaliaca', 'id_avaliacao')                    
+                        ->join('tb_tipos_turmas', 'tb_avaliacoes.fk_id_tipo_turma', 'id_tipo_turma')                                                        
+                        ->join('tb_turmas', 'tb_turmas.fk_id_tipo_turma', 'id_tipo_turma')
+                        ->where('id_turma', $id_turma); */
+
 
         $turma = Turma::where('id_turma', $id_turma)->first();
 
         $idTipoTurma = $turma->fk_id_tipo_turma;
 
         //Somente disciplinas vinculadas à grade curricular da turma
-        $disciplinasTurma = new GradeCurricular;        
+        $disciplinasTurma = new GradeCurricular;   
+
         $turmaPeriodoLetivo = new TurmaPeriodoLetivo;
         $avaliacoes = new Avaliacao;        
                 
@@ -67,14 +77,14 @@ class NotaController extends Controller
             'turmaPeriodosLetivos' => $turmaPeriodoLetivo->getTurmaPeriodosLetivos($id_turma),     
             'turmaMatriculas'      => $this->getTurmaMatriculas($id_turma),
             'avaliacoes'           => $avaliacoes->getAvaliacoesTipoTurma($idTipoTurma),
-            
+            /* 'notasAlunos'          => $notasAlunos, */
         ]); 
     }
 
     public function edit($id_nota)
     {
-        $nota = $this->repositorio->where('id_nota', $id_nota)                                    
-                                    ->get();
+        $nota = $this->repositorio->where('id_nota_avaliacao', $id_nota)                                    
+                                    ->first();
         
         //dd($nota);
         return view('pedagogico.paginas.turmas.notas.edit', [
@@ -87,16 +97,16 @@ class NotaController extends Controller
     {        
         $this->authorize('Nota Alterar');
 
-        $nota = $this->repositorio->where('id_nota', $id)->first();
+        $nota = $this->repositorio->where('id_nota_avaliacao', $id)->first();
         
         if (!$nota)
             return redirect()->back();
       
-        $nota->where('id_nota', $id)->update($request->except('_token', '_method'));
+        $nota->where('id_nota_avaliacao', $id)->update($request->except('_token', '_method'));
 
-        $notaAluno = $this->repositorio->where('id_nota', $id)->first();
+        $notaAluno = $this->repositorio->where('id_nota_avaliacao', $id)->first();
 
-        return $this->frequenciaShowAluno($notaAluno->fk_id_turma_periodo_letivo, $notaAluno->fk_id_matricula);
+        return $this->notaShowAluno($notaAluno->fk_id_matricula);
     }
 
     public function store(StoreUpdateNota $request)
@@ -105,9 +115,8 @@ class NotaController extends Controller
 
         $dados = $request->all();
         $id_turma = $dados['fk_id_turma'];
-        //dd($dados);
-        //dd($dados['nota']);
-        
+       
+                
         foreach($dados['nota'] as $index => $nota){ 
             /* Preparando array p gravar notas 
                Só envia p gravar se a nota for preenchida
@@ -124,29 +133,17 @@ class NotaController extends Controller
             }
             
             if (count($notas) > 0)
-                $this->repositorio->create($notas);    
+            {
+                try {
+                    $this->repositorio->create($notas);    
+                } catch (QueryException $qe) {
+                    $notaAluno = $this->repositorio->where('fk_id_matricula', $notas['fk_id_matricula'])->first();
+                    return redirect()->route('turmas.notas', $id_turma)->with('error', 'Lançamento de Notas abortado. A nota do(a) aluno(a) '.$notaAluno->matricula->aluno->nome.' já foi lançada anteriormente.');
+                }
+            }
         }
-        
-        $disciplinasTurma = new GradeCurricular;
-        $disciplinasTurma = $disciplinasTurma->disciplinasTurma($id_turma);
-        
-        $turmaPeriodoLetivo = new TurmaPeriodoLetivo;
-
-        $avaliacoes = new Avaliacao;
-
-        $turma = Turma::where('id_turma', $id_turma)->first();
-
-        $idTipoTurma = $turma->fk_id_tipo_turma;
-
-        return view('pedagogico.paginas.turmas.notas.index', [
-                        'id_turma' => $id_turma,
-                        'disciplinasTurma'     => $disciplinasTurma,
-                        'turmaPeriodosLetivos' => $turmaPeriodoLetivo->getTurmaPeriodosLetivos($id_turma),  
-                        'turmaMatriculas'      => $this->getTurmaMatriculas($id_turma),   
-                        'selectPeriodoLetivo'  => $dados['id_periodo_letivo'],
-                        'selectDisciplina'     =>  $dados['fk_id_disciplina'],
-                        'avaliacoes'           => $avaliacoes->getAvaliacoesTipoTurma($idTipoTurma),
-        ]);         
+       
+        return redirect()->route('turmas.notas', $id_turma)->with('success', 'Notas lançadas com sucesso.');        
     }
     
     public function notaShowAluno($id_matricula)
@@ -167,6 +164,9 @@ class NotaController extends Controller
         $gradeCurricular = $gradeCurricular->disciplinasTurma($id_turma);        
         
         $notasAluno = $this->repositorio->getNotasAluno($id_matricula);
+
+        $dadosAluno = new Matricula;
+        $dadosAluno = $dadosAluno->where('id_matricula', $id_matricula)->first();
         
         return view('pedagogico.paginas.turmas.notas.showaluno', [
                     'id_turma'              => $id_turma,
@@ -174,6 +174,7 @@ class NotaController extends Controller
                     'gradeCurricular'       => $gradeCurricular,
                     'avaliacoesTurma'       => $avaliacoesTurma,
                     'notasAluno'            => $notasAluno,
+                    'dadosAluno'            => $dadosAluno,
 
         ]);
     } 
@@ -181,34 +182,19 @@ class NotaController extends Controller
     /**
      * Remover nota
      */
-    /* public function remover($id_nota)
+    public function remover($id_nota)
     {
-        $this->authorize('Frequência Remover');   
+        $this->authorize('Nota Remover');   
         
-        $nota = $this->repositorio->where('id_nota', $id_nota, )->first();
+        $notaAluno = $this->repositorio->where('id_nota_avaliacao', $id_nota, )->first();
         
-        if (!$nota)
+        if (!$notaAluno)
             return redirect()->back();
 
-        $id_turma = $nota->turmaPeriodoLetivo->fk_id_turma;
-        $id_periodo_letivo = $nota->turmaPeriodoLetivo->fk_id_periodo_letivo;
-        $id_disciplina = $nota->fk_id_disciplina;
-
-        $nota->where('id_nota', $id_nota, )->delete();
-
-        $disciplinasTurma = new GradeCurricular;
-        $disciplinasTurma = $disciplinasTurma->disciplinasTurma($id_turma);
-        $turmaPeriodoLetivo = new TurmaPeriodoLetivo;
+        $notaAluno->where('id_nota_avaliacao', $id_nota, )->delete();
         
-        return view('pedagogico.paginas.turmas.notas.index', [
-                    'id_turma' => $id_turma,
-                    'disciplinasTurma'     => $disciplinasTurma,
-                    'turmaPeriodosLetivos' => $turmaPeriodoLetivo->getTurmaPeriodosLetivos($id_turma),     
-                    'frequencias' => $this->repositorio->getFrequencias($id_turma),
-                    'selectPeriodoLetivo'  => $id_periodo_letivo,
-                    'selectDisciplina'     => $id_disciplina,
-        ]); 
-    } */
+        return $this->notaShowAluno($notaAluno->fk_id_matricula);
+    } 
 
     /**
      * Retorna todas as matrículas de uma turma
