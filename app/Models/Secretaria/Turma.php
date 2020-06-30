@@ -32,6 +32,24 @@ class Turma extends Model
         return $resultado;
     }
 
+    public function searchTurmaNotas($filtro = null)
+    {
+        $resultado = $this->select ('*')
+                        ->join('tb_tipos_turmas', 'tb_turmas.fk_id_tipo_turma', '=', 'tb_tipos_turmas.id_tipo_turma' )
+                        ->join('tb_sub_niveis_ensino', 'tb_tipos_turmas.fk_id_sub_nivel_ensino', '=', 'tb_sub_niveis_ensino.id_sub_nivel_ensino')
+                        ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')
+                        ->join('tb_turnos', 'tb_turmas.fk_id_turno', '=', 'tb_turnos.id_turno')                                                            
+                        ->where('tb_anos_letivos.fk_id_unidade_ensino', '=', User::getUnidadeEnsinoSelecionada()) 
+                        ->where('nome_turma', 'like', "%{$filtro}%") 
+                        ->orderBy('tb_anos_letivos.ano', 'desc')
+                        ->orderBy('tb_turnos.descricao_turno', 'asc')
+                        ->orderBy('tb_sub_niveis_ensino.sub_nivel_ensino', 'asc')
+                        ->orderBy('nome_turma', 'asc')
+                        ->paginate();
+
+        return $resultado;
+    }
+
     public function quantLimiteAlunos($idTurma)
     {
         $quant = $this->select('limite_alunos')

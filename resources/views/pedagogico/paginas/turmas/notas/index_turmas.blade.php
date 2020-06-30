@@ -20,6 +20,7 @@
             <form action="{{ route('turmas.notas.search') }}" method="POST" class="form form-inline">
                 @csrf
                 <input type="text" name="filtro" placeholder="Turma" class="form-control" value="{{ $filtros['filtro'] ?? '' }}">
+                
                 <button type="submit" class="btn btn-outline-secondary"><i class="fas fa-filter"></i></button>
             </form>
         </div>
@@ -56,9 +57,9 @@
                     @endforeach
                 </tbody>
             </table>
-            <div class="card-footer">
+            <div class="card-footer"> 
                 @if (isset($filtros))
-                {!! $turmas->appends($filtros)->links()!!}
+                    {!! $turmas->appends($filtros)->links()!!}
                 @else
                     {!! $turmas->links()!!}    
                 @endif

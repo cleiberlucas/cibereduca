@@ -94,9 +94,9 @@
                 </table>
                 <div class="card-footer">
                     @if (isset($filtros))
-                    {!! $pessoas->appends($filtros)->links()!!}
+                        {!! $pessoas->appends($filtros)->links()!!}
                     @else
-                        {!! $pessoas->links()!!}    
+                        {!! $pessoas->links()!!}     
                     @endif
                     
                 </div>

@@ -68,7 +68,7 @@ Route::prefix('pedagogico')
         route::get('turmas/nota/{id_nota_avaliacao}', 'NotaController@remover')->name('turmas.nota.remover');            
         route::put('turmas/nota/{id_nota_avaliacao}', 'NotaController@update')->name('turmas.notas.update');                    
         Route::get('turmas/nota/{id_nota_avaliacao}/edit', 'NotaController@edit')->name('turmas.nota.edit');
-        Route::any('turmas/nota/search', 'NotaController@search')->name('turmas.notas.search');
+        Route::any('turmas/notas/search', 'NotaController@search')->name('turmas.notas.search');
         Route::get('turmas/nota/{id_matricula}/showaluno', 'NotaController@notaShowAluno')->name('turmas.notas.showaluno');
         route::put('turmas/nota/{id_nota_avaliacao}', 'NotaController@update')->name('turmas.nota.update'); 
         Route::post('turmas/notas', 'NotaController@store')->name('turmas.notas.store'); 

@@ -11,7 +11,6 @@ use App\Models\Pedagogico\TurmaPeriodoLetivo;
 use App\Models\Secretaria\Matricula;
 use App\Models\Secretaria\Turma;
 use App\Models\User;
-use Illuminate\Cache\RedisTaggedCache;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
@@ -30,6 +29,8 @@ class NotaController extends Controller
      */
     public function indexNotas()
     {
+        $this->authorize('Nota Ver');   
+
         $turmas = Turma::select ('*')
                             ->join('tb_tipos_turmas', 'tb_turmas.fk_id_tipo_turma', '=', 'tb_tipos_turmas.id_tipo_turma' )
                             ->join('tb_sub_niveis_ensino', 'tb_tipos_turmas.fk_id_sub_nivel_ensino', '=', 'tb_sub_niveis_ensino.id_sub_nivel_ensino')
@@ -52,14 +53,7 @@ class NotaController extends Controller
      */
     public function index($id_turma)
     {
-        $this->authorize('Frequência Ver');   
-
-       /*  $notasAlunos = $this->repositorio
-                        ->join('tb_avaliacoes', 'fk_id_avaliaca', 'id_avaliacao')                    
-                        ->join('tb_tipos_turmas', 'tb_avaliacoes.fk_id_tipo_turma', 'id_tipo_turma')                                                        
-                        ->join('tb_turmas', 'tb_turmas.fk_id_tipo_turma', 'id_tipo_turma')
-                        ->where('id_turma', $id_turma); */
-
+        $this->authorize('Nota Cadastrar');   
 
         $turma = Turma::where('id_turma', $id_turma)->first();
 
@@ -77,7 +71,7 @@ class NotaController extends Controller
             'turmaPeriodosLetivos' => $turmaPeriodoLetivo->getTurmaPeriodosLetivos($id_turma),     
             'turmaMatriculas'      => $this->getTurmaMatriculas($id_turma),
             'avaliacoes'           => $avaliacoes->getAvaliacoesTipoTurma($idTipoTurma),
-            /* 'notasAlunos'          => $notasAlunos, */
+           
         ]); 
     }
 
@@ -115,8 +109,19 @@ class NotaController extends Controller
 
         $dados = $request->all();
         $id_turma = $dados['fk_id_turma'];
+
+        $valorAvaliacao = new Avaliacao;
+        $valorAvaliacao = $valorAvaliacao->where('id_avaliacao', $dados['fk_id_avaliacao'][0])->first();
        
-                
+        //Verificando se foi informado nota maior que o valor da avaliação aplicada
+        foreach($dados['nota'] as $index => $nota){
+            if ($nota != null && $nota > $valorAvaliacao->valor_avaliacao){
+                return redirect()->back()->with('info', 'Lançamento de notas abortado. A nota para esta avaliação deve ser, no máximo, '.$valorAvaliacao->valor_avaliacao.'
+                                                        Nota lançada para um aluno: '.$nota.'.');
+            }
+
+        }
+
         foreach($dados['nota'] as $index => $nota){ 
             /* Preparando array p gravar notas 
                Só envia p gravar se a nota for preenchida
@@ -135,7 +140,8 @@ class NotaController extends Controller
             if (count($notas) > 0)
             {
                 try {
-                    $this->repositorio->create($notas);    
+                    $this->repositorio->create($notas); 
+
                 } catch (QueryException $qe) {
                     $notaAluno = $this->repositorio->where('fk_id_matricula', $notas['fk_id_matricula'])->first();
                     return redirect()->route('turmas.notas', $id_turma)->with('error', 'Lançamento de Notas abortado. A nota do(a) aluno(a) '.$notaAluno->matricula->aluno->nome.' já foi lançada anteriormente.');
@@ -195,6 +201,19 @@ class NotaController extends Controller
         
         return $this->notaShowAluno($notaAluno->fk_id_matricula);
     } 
+
+    public function search(Request $request)
+    {
+        $filtros = $request->except('_token');
+
+        $turmas = new Turma;
+        $turmas = $turmas->searchTurmaNotas($request->filtro);
+        
+        return view('pedagogico.paginas.turmas.notas.index_turmas', [
+            'turmas' => $turmas,       
+            'filtros' => $filtros,
+        ]);
+    }
 
     /**
      * Retorna todas as matrículas de uma turma

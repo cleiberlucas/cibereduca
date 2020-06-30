@@ -167,14 +167,12 @@
                                                 {{-- Libera lançamento de notas somente se o período estiver aberto --}}
                                                 @if ($turmaPeriodoLetivo->situacao == 1)   
                                                     <div class="form-group col-sm-2 col-xs-2">
-                                                        <input type="number" name="nota[]" id="nota[]" step="0.010" min=0 max=100 id="" class="form-control">
+                                                        <input type="number" name="nota[]" id="nota[{{$turmaPeriodoLetivo->id_periodo_letivo}}{{$disciplinaTurma->fk_id_disciplina}}{{$turmaMatricula->id_matricula}}]" step="0.010" min=0 max=100 class="form-control">
                                                     </div>  
                                                 @endif     
 
                                             </div>
                                         @endforeach {{-- fim listagem alunos --}}
-
-                                        
 
                                         {{-- Libera lançamento de notas somente se o período estiver aberto --}}
                                         @if ($turmaPeriodoLetivo->situacao == 1)                                                                                                                                                                                   
@@ -202,13 +200,12 @@
        {{--  </div> --}}
     </div>
 
-
     <script>
         $(document).ready(function(){
               $(".alert").slideDown(300).delay(5000).slideUp(300);
         });    
    
-        document.getElementById("nota[]").addEventListener("change", function(){
+        document.getElementsByName("nota").addEventListener("change", function(){
             this.value = parseFloat(this.value).toFixed(2);
         });
     </script>

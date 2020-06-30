@@ -21,7 +21,7 @@
         </li>
         
     </ol>
-    
+    <h3>Alteração e exclusão de notas</h3>
     <h3>Aluno(a): {{$dadosAluno->aluno->nome}}</h3>
     <h4>{{$dadosAluno->turma->tipoTurma->anoLetivo->ano}} - {{$dadosAluno->turma->nome_turma}} - {{$dadosAluno->turma->tipoTurma->subNivelEnsino->sub_nivel_ensino}} - {{$dadosAluno->turma->turno->descricao_turno}} </h3>
     Clique na nota para alterá-la, ou no ícone <i class="far fa-trash-alt"></i> para excluir.

@@ -44,7 +44,7 @@ class Pessoa extends Model
         $resultado = $this->where('nome', 'LIKE', "%{$filtro}%")
                             ->where('fk_id_tipo_pessoa', '=', "{$tipo_pessoa}")
                             ->orderBy('nome') 
-                            ->paginate();
+                            ->paginate(20); 
         
         return $resultado;
     }
