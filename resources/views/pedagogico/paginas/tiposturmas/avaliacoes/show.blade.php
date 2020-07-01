@@ -2,7 +2,8 @@
 
 @section('title_postfix', ' Avaliação')
 
-@section('content_header')
+@section('content_header')    
+    
     <ol class="breadcrumb"> 
         <li class="breadcrumb-item active" >
             <a href="#" class="">Pedagógico</a>
@@ -23,6 +24,7 @@
 
 @section('content')
     <div class="container-fluid">
+        @include('admin.includes.alerts')
         <div class="card-header">
             <ul>
                 <li>
@@ -41,6 +43,8 @@
                     {{$avaliacao->conteudo}}
                 </li>
             </ul>
+            
+            
             <form action="{{ route('tiposturmas.avaliacoes.destroy', $avaliacao->id_avaliacao) }}" method="POST">
                 @csrf
                 @method('DELETE')
@@ -48,4 +52,11 @@
             </form>
         </div>
     </div>
+
+    <script>
+        $(document).ready(function(){
+              $(".alert").slideDown(300).delay(5000).slideUp(300);
+        });       
+    </script>
+
 @endsection

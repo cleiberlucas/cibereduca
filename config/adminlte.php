@@ -271,11 +271,10 @@ return [
                                 'can'  => 'Avaliação Ver',
                             ],
                             [
-                                'text' => 'Lançar Notas',
-                                /* 'url'  => 'pedagogico/paginas/turmas/notas_index', */
+                                'text' => 'Lançar Notas',                                
                                 'route' => 'turmas.index.notas',
                                 'icon_color' => 'yellow',
-                                'can'  => 'Avaliação Ver',
+                                'can'  => 'Nota Ver',
                             ],
                         ],
                     ],

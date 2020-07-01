@@ -7,6 +7,7 @@
 @section('title_postfix', ' Avaliações')
 
 @section('content_header')
+
     <ol class="breadcrumb"> 
         <li class="breadcrumb-item active" >
             <a href="#" class="">Pedagógico</a>
@@ -18,24 +19,31 @@
             <a href="#" class="">Avaliações</a>
         </li>
     </ol>
-    
-    <h1>Avaliações <a href="{{ route('tiposturmas.avaliacao.create', $tipoTurma) }}" class="btn btn-success"> <i class="fas fa-plus-square"></i> Cadastrar</a></h1>    
+    @foreach ($avaliacoes as $index => $avaliacao)
+        @if ($index == 0)
+            <h3>{{$avaliacao->tipo_turma}} {{$avaliacao->sub_nivel_ensino}}</h3>
+            @break;
+        @endif        
+    @endforeach
+    <h3>Avaliações <a href="{{ route('tiposturmas.avaliacao.create', $tipoTurma) }}" class="btn btn-success"> <i class="fas fa-plus-square"></i> Cadastrar</a></h3>    
 @stop
 
 @section('content')
     <div class="container-fluid">
+        @include('admin.includes.alerts')
         <div class="card-header">
-            {{-- <form action="{{ route('turmas.search') }}" method="POST" class="form form-inline">
+            <form action="{{ route('tiposturmas.avaliacoes.search') }}" method="POST" class="form form-inline">
                 @csrf
-                <input type="text" name="filtro" placeholder="Turma" class="form-control" value="{{ $filtros['filtro'] ?? '' }}">
+                <input type="hidden" name="id_tipo_turma" value="{{$tipoTurma}}">
+                <input type="text" name="filtro" placeholder="Disciplina" class="form-control" value="{{ $filtros['filtro'] ?? '' }}">
                 <button type="submit" class="btn btn-outline-secondary"><i class="fas fa-filter"></i></button>
-            </form> --}}
+            </form>
         </div>
+       
         <div class="table-responsive">
                 <table class="table table-hover">
                     <thead>
-                        <th>#</th>                        
-                        <th>Padrão Turma</th>
+                        <th>#</th>                                                
                         <th>Período Letivo</th>                        
                         <th>Disciplina</th>
                         <th>Avaliação</th>
@@ -45,18 +53,15 @@
                     <tbody>                        
                         @foreach ($avaliacoes as $index => $avaliacao)
                             <tr>
-                                <th scope="row">{{$index+1}}</th>                                
+                                <th scope="row">{{$index+1}}</th>                                                                
                                 <td>
-                                    {{$avaliacao->tipoTurma->tipo_turma}} {{$avaliacao->tipoTurma->subNivelEnsino->sub_nivel_ensino}}
-                                </td>
-                                <td>
-                                    {{$avaliacao->periodoLetivo->periodo_letivo}}
+                                    {{$avaliacao->periodo_letivo}}
                                 </td> 
                                 <td>
-                                    {{$avaliacao->disciplina->disciplina}}
+                                    {{$avaliacao->disciplina}}
                                 </td>                                  
                                 <td>
-                                    {{$avaliacao->tipoAvaliacao->tipo_avaliacao}}
+                                    {{$avaliacao->tipo_avaliacao}}
                                 </td>
                                 <td>
                                     {{$avaliacao->valor_avaliacao}}
@@ -81,4 +86,10 @@
                 </div>
         </div>
     </div>
+
+    <script>
+        $(document).ready(function(){
+              $(".alert").slideDown(300).delay(5000).slideUp(300);
+        });       
+    </script>
 @stop

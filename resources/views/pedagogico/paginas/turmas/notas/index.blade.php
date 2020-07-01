@@ -26,17 +26,13 @@
 @stop
 
 @section('content')
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
+    
     <div class="container-fluid">
         <div class="card-header">          
             <i class="fas fa-pencil-alt"></i> - Período aberto &nbsp&nbsp&nbsp 
             <i class="fas fa-ban"></i> - Período fechado
         </div>
-        @include('admin.includes.alerts')
+        <div>@include('admin.includes.alerts')</div>
         {{-- Abas de Períodos --}}
         <ul class="nav nav-tabs nav-pills nav-fill justify-content-center" role="tablist">
             @foreach ($turmaPeriodosLetivos as $index => $turmaPeriodoLetivo)                

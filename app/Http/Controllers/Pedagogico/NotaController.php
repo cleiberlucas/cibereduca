@@ -77,6 +77,8 @@ class NotaController extends Controller
 
     public function edit($id_nota)
     {
+        $this->authorize('Nota Alterar');
+
         $nota = $this->repositorio->where('id_nota_avaliacao', $id_nota)                                    
                                     ->first();
         
@@ -89,8 +91,7 @@ class NotaController extends Controller
 
     public function update(StoreUpdateNota $request, $id)
     {        
-        $this->authorize('Nota Alterar');
-
+       
         $nota = $this->repositorio->where('id_nota_avaliacao', $id)->first();
         
         if (!$nota)
@@ -154,6 +155,7 @@ class NotaController extends Controller
     
     public function notaShowAluno($id_matricula)
     {        
+        $this->authorize('Nota Alterar');
         $notasAluno = $this->repositorio->getNotasAluno($id_matricula)->first();
 
         $id_turma = $notasAluno->matricula->fk_id_turma;

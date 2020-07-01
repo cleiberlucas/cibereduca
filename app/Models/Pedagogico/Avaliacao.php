@@ -18,15 +18,24 @@ class Avaliacao extends Model
         
     protected $fillable = ['fk_id_tipo_turma', 'fk_id_periodo_letivo', 'fk_id_disciplina', 'fk_id_tipo_avaliacao', 'valor_avaliacao', 'conteudo'];
    
-    public function search($filtro = null)
+    /**
+     * Filtra avaliações por DISCIPLINA
+     */
+    public function searchAvaliacaoDisciplina($filtro = null, $id_tipo_turma)
     {
-        $resultado = $this->join('tb_turnos', 'fk_id_turno', 'id_turno')
-                            ->join('tb_tipos_turmas', 'fk_id_tipo_turma', 'id_tipo_turma')
-                            ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')                                       
-                            ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())                                    
-                            ->where('nome_turma', 'like', "%{$filtro}%")
-                            ->orderBy('descricao_turno')
-                            ->orderBy('nome_turma')
+        $resultado = $this->select('*')
+                            ->join('tb_tipos_avaliacao', 'fk_id_tipo_avaliacao', 'id_tipo_avaliacao')
+                            ->join('tb_tipos_turmas', 'fk_id_tipo_turma', 'id_tipo_turma')           
+                            ->join('tb_sub_niveis_ensino', 'fk_id_sub_nivel_ensino', 'id_sub_nivel_ensino')                 
+                            ->join('tb_periodos_letivos', 'tb_avaliacoes.fk_id_periodo_letivo', 'id_periodo_letivo')
+                            ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', 'tb_anos_letivos.id_ano_letivo')                                       
+                            ->join('tb_disciplinas', 'fk_id_disciplina', 'id_disciplina')
+                            ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())   
+                            ->where('id_tipo_turma', $id_tipo_turma) 
+                            ->where('disciplina', 'like', "%{$filtro}%")                                                                        
+                            ->orderBy('periodo_letivo')
+                            ->orderBy('disciplina')
+                            ->orderBy('tipo_avaliacao')
                             ->paginate();
         
         return $resultado;

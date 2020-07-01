@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Secretaria\Disciplina;
+use App\Models\Secretaria\Turma;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 
@@ -53,6 +54,11 @@ class TipoTurma extends Model
             ->paginate();
         //dd($disciplinas);
         return $disciplinas;
+    }
+
+    public function turma()
+    {
+        return $this->hasMany(Turma::class, 'fk_id_tipo_turma', 'id_tipo_turma');
     }
 
     public function anoLetivo()

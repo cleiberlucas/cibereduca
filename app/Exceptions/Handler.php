@@ -51,13 +51,13 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
-        if($exception instanceof QueryException)
+        /* if($exception instanceof QueryException)
         {
             dd($exception);
             if ($exception->getCode() == 23000)
                 return response()->view('errors.custom', [], 404);
 
-        }
+        } */
         return parent::render($request, $exception);
     }
 }

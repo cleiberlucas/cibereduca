@@ -20,7 +20,8 @@ Route::prefix('pedagogico')
          */        
         Route::get('tiposturmas/{id_tipo_turma}/avaliacoes/create', 'AvaliacaoController@create')->name('tiposturmas.avaliacao.create');
         route::get('tiposturmas/avaliacoes/{id_avaliacao}', 'AvaliacaoController@remover')->name('tiposturmas.avaliacoes.remover');                    
-        Route::get('tiposturmas/avaliacoes/{id_avaliacao}/edit', 'AvaliacaoController@edit')->name('tiposturmas.avaliacoes.edit');        
+        Route::get('tiposturmas/avaliacoes/{id_avaliacao}/edit', 'AvaliacaoController@edit')->name('tiposturmas.avaliacoes.edit'); 
+        Route::any('tiposturmas/avaliacoes/search', 'AvaliacaoController@search')->name('tiposturmas.avaliacoes.search');       
         route::put('tiposturmas/avaliacoes/{id_avaliacao}', 'AvaliacaoController@update')->name('tiposturmas.avaliacoes.update');                    
         Route::delete('tiposturmas/avaliacoes/{id_avaliacao}', 'AvaliacaoController@destroy')->name('tiposturmas.avaliacoes.destroy');
         Route::get('tiposturmas/avaliacoes/{id_avaliacao}', 'AvaliacaoController@show')->name('tiposturmas.avaliacoes.show');
