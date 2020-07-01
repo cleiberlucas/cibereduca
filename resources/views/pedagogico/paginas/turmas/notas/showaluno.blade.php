@@ -1,11 +1,11 @@
 @extends('adminlte::page')
 
-<section></section>
-
 @section('title_postfix', ' Notas')
 
 @section('content_header')
-    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
     <ol class="breadcrumb">        
         <li class="breadcrumb-item active" >
             <a href="#" class="">Pedagógico</a>
@@ -24,21 +24,38 @@
     <h3>Alteração e exclusão de notas</h3>
     <h3>Aluno(a): {{$dadosAluno->aluno->nome}}</h3>
     <h4>{{$dadosAluno->turma->tipoTurma->anoLetivo->ano}} - {{$dadosAluno->turma->nome_turma}} - {{$dadosAluno->turma->tipoTurma->subNivelEnsino->sub_nivel_ensino}} - {{$dadosAluno->turma->turno->descricao_turno}} </h3>
+    <br>
     Clique na nota para alterá-la, ou no ícone <i class="far fa-trash-alt"></i> para excluir.
     @stop
 
 @section('content')
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
     <div class="container-fluid">
+        <div>@include('admin.includes.alerts')</div>
         
+        <div class="card-header">          
+            <i class="fas fa-pencil-alt"></i> - Período aberto &nbsp&nbsp&nbsp 
+            <i class="fas fa-ban"></i> - Período fechado
+        </div>
+
         {{-- Separando as notas em abas de períodos letivos --}}
-        <ul class="nav nav-tabs " role="tablist">
+        <ul class="nav nav-tabs nav-pills" role="tablist">
             @foreach ($periodosTurma as $periodoTurma)
                 <li role="presentation" class="nav-item ">
-                    <a class="nav-link" href="#{{$periodoTurma->id_periodo_letivo}}" aria-controls="{{$periodoTurma->id_periodo_letivo}}" role="tab" data-toggle="tab">{{$periodoTurma->periodo_letivo}}</a>
+                    <a class="nav-link" href="#{{$periodoTurma->id_periodo_letivo}}" aria-controls="{{$periodoTurma->id_periodo_letivo}}" role="tab" data-toggle="tab">{{$periodoTurma->periodo_letivo}}
+                        {{-- Informação se o período está aberto ou fechado --}}
+                        @foreach ($turmaPeriodosLetivos as $turmaPeriodoLetivo)
+                            @if ($turmaPeriodoLetivo->id_periodo_letivo == $periodoTurma->id_periodo_letivo)
+                                @if ($turmaPeriodoLetivo->situacao == 0)
+                                    <i class="fas fa-ban"></i>
+                                @else
+                                    <i class="fas fa-pencil-alt"></i>
+                                @endif 
+                                @break;
+                            @endif
+                            
+                        @endforeach
+                    </a>
                 </li>
             @endforeach
         </ul>
@@ -80,10 +97,25 @@
                                                     @if ($notaAluno->fk_id_periodo_letivo == $periodoTurma->id_periodo_letivo
                                                         and $notaAluno->tipo_avaliacao == $avaliacaoTurma->tipo_avaliacao
                                                         and $notaAluno->fk_id_disciplina == $disciplina->fk_id_disciplina)
-                                                        <a class="btn btn-sm btn-outline-danger" href="{{route('turmas.nota.remover', $notaAluno->id_nota_avaliacao)}}"><i class="far fa-trash-alt"></i></a>
-                                                        &nbsp&nbsp&nbsp&nbsp&nbsp
-                                                        <a href="{{route('turmas.nota.edit', $notaAluno->id_nota_avaliacao)}}">{{number_format($notaAluno->nota, 2, ',', '.')}}</a>
                                                         
+                                                        {{-- Verificando se o período está aberto ou fechado --}}
+                                                        @foreach ($turmaPeriodosLetivos as $turmaPeriodoLetivo)
+                                                            @if ($turmaPeriodoLetivo->id_periodo_letivo == $periodoTurma->id_periodo_letivo)
+                                                                @if ($turmaPeriodoLetivo->situacao == 0)
+                                                                    {{number_format($notaAluno->nota, 2, ',', '.')}}
+                                                                    
+                                                                    {{-- <a href="{{route('turmas.nota.edit', $notaAluno->id_nota_avaliacao)}}">{{number_format($notaAluno->nota, 2, ',', '.')}}</a>                                                             --}}
+                                                                @else
+                                                                    <a class="btn btn-sm btn-outline-danger" href="{{route('turmas.nota.remover', $notaAluno->id_nota_avaliacao)}}"><i class="far fa-trash-alt"></i></a>
+                                                                    &nbsp&nbsp&nbsp&nbsp&nbsp
+                                                                    <a href="{{route('turmas.nota.edit', $notaAluno->id_nota_avaliacao)}}">{{number_format($notaAluno->nota, 2, ',', '.')}}</a>
+                                                                
+                                                                @endif 
+                                                                @break;
+                                                            @endif
+                                                        
+                                                        @endforeach
+                                                       
                                                         @break                                                        
                                                     @endif                                                    
                                                 @endforeach                                            

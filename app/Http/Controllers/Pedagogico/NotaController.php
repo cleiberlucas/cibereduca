@@ -117,10 +117,9 @@ class NotaController extends Controller
         //Verificando se foi informado nota maior que o valor da avaliação aplicada
         foreach($dados['nota'] as $index => $nota){
             if ($nota != null && $nota > $valorAvaliacao->valor_avaliacao){
-                return redirect()->back()->with('info', 'Lançamento de notas abortado. A nota para esta avaliação deve ser, no máximo, '.$valorAvaliacao->valor_avaliacao.'
+                return redirect()->back()->with('info', 'Lançamento de notas abortado. A nota para esta avaliação deve ser, no máximo, '.$valorAvaliacao->valor_avaliacao.'.
                                                         Nota lançada para um aluno: '.$nota.'.');
             }
-
         }
 
         foreach($dados['nota'] as $index => $nota){ 
@@ -175,10 +174,13 @@ class NotaController extends Controller
 
         $dadosAluno = new Matricula;
         $dadosAluno = $dadosAluno->where('id_matricula', $id_matricula)->first();
+
+        $turmaPeriodoLetivo = new TurmaPeriodoLetivo;
         
         return view('pedagogico.paginas.turmas.notas.showaluno', [
                     'id_turma'              => $id_turma,
                     'periodosTurma'         => $periodosTurma,
+                    'turmaPeriodosLetivos' => $turmaPeriodoLetivo->getTurmaPeriodosLetivos($id_turma), 
                     'gradeCurricular'       => $gradeCurricular,
                     'avaliacoesTurma'       => $avaliacoesTurma,
                     'notasAluno'            => $notasAluno,
@@ -201,7 +203,7 @@ class NotaController extends Controller
 
         $notaAluno->where('id_nota_avaliacao', $id_nota, )->delete();
         
-        return $this->notaShowAluno($notaAluno->fk_id_matricula);
+        return $this->notaShowAluno($notaAluno->fk_id_matricula)->with('success', 'Nota apagada com sucesso.');
     } 
 
     public function search(Request $request)
