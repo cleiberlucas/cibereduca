@@ -6,6 +6,9 @@
 
 @section('content_header')
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
     <ol class="breadcrumb">        
         <li class="breadcrumb-item active" >
             <a href="#" class="">Pedagógico</a>
@@ -27,10 +30,10 @@
 
 @section('content')
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
     <div class="container-fluid">
+        
+        @include('admin.includes.alerts')
+
         <div class="card-header">          
             <i class="fas fa-pencil-alt"></i> - Período aberto &nbsp&nbsp&nbsp 
             <i class="fas fa-ban"></i> - Período fechado
@@ -181,4 +184,10 @@
                 </div> --}}
        {{--  </div> --}}
     </div>
+
+    <script>
+        $(document).ready(function(){
+              $(".alert").slideDown(300).delay(5000).slideUp(300);
+        });    
+    </script>
 @stop

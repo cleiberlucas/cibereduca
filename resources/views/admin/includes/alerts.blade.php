@@ -6,20 +6,27 @@
     </div>
 @endif
 
-@if (session('success'))
+@if (session('sucesso'))
     <div class="alert alert-success" role="alert">
-        {{ session('success') }}
+        {{ session('sucesso') }}
     </div>
 @endif
 
-@if (session('error'))
+@if (session('erro'))
     <div class="alert alert-danger" role="alert">
-        {{ session('error') }}
+        {{ session('erro') }}
     </div>
 @endif
+
+@if (session('atencao'))
+    <div class="alert alert-warning" role="alert">
+        <strong>{{ session('atencao') }}</strong>
+    </div>
+@endif
+
 
 @if (session('info'))
-    <div class="alert alert-warning" role="alert">
+    <div class="alert alert-info" role="alert">
         <strong>{{ session('info') }}</strong>
     </div>
 @endif

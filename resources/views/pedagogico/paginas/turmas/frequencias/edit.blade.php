@@ -29,6 +29,7 @@
         <h5>Disciplina: <strong>{{$frequencia->disciplina->disciplina}}</strong></h5>
         <h5>Data da aula: <strong>{{date('d/m/Y', strtotime($frequencia->data_aula))}}</strong></h5>
                 
+        @include('admin.includes.alerts')
     @endforeach
 @stop
 
@@ -58,5 +59,11 @@
             </div>
         </div>
     </form>
+
+    <script>
+        $(document).ready(function(){
+              $(".alert").slideDown(300).delay(5000).slideUp(900);
+        });    
+    </script>
 
 @stop

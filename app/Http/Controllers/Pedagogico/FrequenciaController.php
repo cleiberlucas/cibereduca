@@ -48,10 +48,14 @@ class FrequenciaController extends Controller
         
         $tiposFrequencia = new TipoFrequencia;
         $tiposFrequencia = $tiposFrequencia->getTiposFrequencia();
+
+        $turmaPeriodoLetivo = new TurmaPeriodoLetivo;
+        $turmaPeriodoLetivo->getTurmaPeriodosLetivos($frequencia);
+        
         //dd($frequencia);
         return view('pedagogico.paginas.turmas.frequencias.edit', [
             'frequenciaAluno' => $frequencia,
-            'tiposFrequencia' => $tiposFrequencia,
+            'tiposFrequencia' => $tiposFrequencia,            
         ]);
     }
 
@@ -60,6 +64,9 @@ class FrequenciaController extends Controller
         $this->authorize('Frequência Alterar');
 
         $frequencia = $this->repositorio->where('id_frequencia', $id)->first();
+       // dd($frequencia->turmaPeriodoLetivo->situacao);
+        if ($frequencia->turmaPeriodoLetivo->situacao == 0 )
+            return redirect()->back()->with('erro', 'Período letivo fechado. Não é possível alterar a frequência.');
         
         if (!$frequencia)
             return redirect()->back();
@@ -123,8 +130,12 @@ class FrequenciaController extends Controller
                                     ->join('tb_matriculas', 'fk_id_matricula', 'id_matricula')
                                     ->where('fk_id_matricula', '=', $id_matricula)
                                     ->first();
+        
+        if (!$frequencia)
+            return redirect()->back()->with('atencao', 'Não há frequência lançada para este aluno.');
 
         $id_turma = $frequencia->fk_id_turma;
+
         //dd($id_turma);
         return view('pedagogico.paginas.turmas.frequencias.showaluno', [
             'id_turma'                  => $id_turma,

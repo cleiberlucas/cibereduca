@@ -117,7 +117,7 @@ class NotaController extends Controller
         //Verificando se foi informado nota maior que o valor da avaliação aplicada
         foreach($dados['nota'] as $index => $nota){
             if ($nota != null && $nota > $valorAvaliacao->valor_avaliacao){
-                return redirect()->back()->with('info', 'Lançamento de notas abortado. A nota para esta avaliação deve ser, no máximo, '.$valorAvaliacao->valor_avaliacao.'.
+                return redirect()->back()->with('atencao', 'Lançamento de notas abortado. A nota para esta avaliação deve ser, no máximo, '.$valorAvaliacao->valor_avaliacao.'.
                                                         Nota lançada para um aluno: '.$nota.'.');
             }
         }
@@ -144,12 +144,12 @@ class NotaController extends Controller
 
                 } catch (QueryException $qe) {
                     $notaAluno = $this->repositorio->where('fk_id_matricula', $notas['fk_id_matricula'])->first();
-                    return redirect()->route('turmas.notas', $id_turma)->with('error', 'Lançamento de Notas abortado. A nota do(a) aluno(a) '.$notaAluno->matricula->aluno->nome.' já foi lançada anteriormente.');
+                    return redirect()->route('turmas.notas', $id_turma)->with('erro', 'Lançamento de Notas abortado. A nota do(a) aluno(a) '.$notaAluno->matricula->aluno->nome.' já foi lançada anteriormente.');
                 }
             }
         }
        
-        return redirect()->route('turmas.notas', $id_turma)->with('success', 'Notas lançadas com sucesso.');        
+        return redirect()->route('turmas.notas', $id_turma)->with('sucesso', 'Notas lançadas com sucesso.');        
     }
     
     public function notaShowAluno($id_matricula)
@@ -203,7 +203,7 @@ class NotaController extends Controller
 
         $notaAluno->where('id_nota_avaliacao', $id_nota, )->delete();
         
-        return $this->notaShowAluno($notaAluno->fk_id_matricula)->with('success', 'Nota apagada com sucesso.');
+        return $this->notaShowAluno($notaAluno->fk_id_matricula)->with('sucesso', 'Nota apagada com sucesso.');
     } 
 
     public function search(Request $request)

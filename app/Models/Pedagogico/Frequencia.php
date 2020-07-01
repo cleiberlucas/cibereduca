@@ -85,6 +85,7 @@ class Frequencia extends Model
                                                 'periodo_letivo',
                                                 'nome',
                                                 'sigla_frequencia',
+                                                'tb_turmas_periodos_letivos.situacao'
                                                 )
                                         ->join('tb_turmas_periodos_letivos', 'fk_id_turma_periodo_letivo', 'id_turma_periodo_letivo')
                                         ->join('tb_turmas', 'fk_id_turma', 'id_turma')

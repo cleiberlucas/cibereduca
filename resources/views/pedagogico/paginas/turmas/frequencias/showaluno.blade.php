@@ -1,11 +1,11 @@
 @extends('adminlte::page')
 
-<section></section>
-
 @section('title_postfix', ' Frequências')
 
 @section('content_header')
-    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
     <ol class="breadcrumb">        
         <li class="breadcrumb-item active" >
             <a href="#" class="">Pedagógico</a>
@@ -24,7 +24,13 @@
         @if ($index == 0)
             <h2>Aluno(a): {{$frequenciaAlunoPeriodo->nome}}</h2>
             <h3>Frequências {{$frequenciaAlunoPeriodo->periodo_letivo}} - {{$frequenciaAlunoPeriodo->nome_turma}} {{$frequenciaAlunoPeriodo->sub_nivel_ensino}} - {{$frequenciaAlunoPeriodo->descricao_turno}} </h3>
-            Clique na célula da informação da frequência para alterá-la.
+            
+            <?php $situacaoPeriodo = $frequenciaAlunoPeriodo->situacao;?>
+            
+            @if ($situacaoPeriodo == 1)
+                Clique na célula da informação da frequência para alterá-la.    
+            @endif
+            
             @break
         @endif
     @endforeach
@@ -32,10 +38,9 @@
 
 @section('content')
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
     <div class="container-fluid">
+
+        @include('admin.includes.alerts')
         
         {{-- Separando as frequencias em abas de meses --}}
         <ul class="nav nav-tabs " role="tablist">
@@ -87,7 +92,11 @@
                                                                 and date('n', strtotime($frequenciaAlunoDatasPeriodo->data_aula)) == $frequenciasAlunoMesPeriodo->mes)
                                                             
                                                             {{-- Mostrando a frequencia do aluno --}}
-                                                            <a href="{{route('turmas.frequencia.edit', $frequenciaAlunoPeriodo->id_frequencia)}}" class="btn btn-link" >{{$frequenciaAlunoPeriodo->sigla_frequencia}}</a>
+                                                            @if ($situacaoPeriodo == 1)
+                                                                <a href="{{route('turmas.frequencia.edit', $frequenciaAlunoPeriodo->id_frequencia)}}" class="btn btn-link" >{{$frequenciaAlunoPeriodo->sigla_frequencia}}</a>                                                                                                                           
+                                                            @else
+                                                                {{$frequenciaAlunoPeriodo->sigla_frequencia}}
+                                                            @endif
                                                                                                                         
                                                             @break;
 
@@ -110,4 +119,5 @@
         </div>
     </div
 
+    
 @stop
