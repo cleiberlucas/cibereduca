@@ -66,7 +66,7 @@
                 <div role="tabpanel" class="tab-pane" id="{{$periodoTurma->id_periodo_letivo}}">
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover">
-                            <thead>
+                            <thead class="table-success">
                                 <th>#</th>
                                 <th>Disciplina</th> 
                                 {{-- Criando cabeçalho colunas com as avaliações --}}

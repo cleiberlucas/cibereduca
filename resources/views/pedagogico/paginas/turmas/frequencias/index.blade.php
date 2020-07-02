@@ -97,11 +97,23 @@
                                         <input type="hidden" name="fk_id_user" value={{Auth::id()}}>
                                         <input type="hidden" name="fk_id_turma" value={{$turmaPeriodoLetivo->fk_id_turma}}>
                                         <input type="hidden" name="id_periodo_letivo" value={{$turmaPeriodoLetivo->id_periodo_letivo}}>
-
+                                        <br>
                                         <div class="row">
-                                            <div class="form-group col-sm-12 col-xs-1" align="center">
+                                            <div class="form-group col-sm-7 col-xs-1" align="center">
                                                 <h5><strong>Lançar Frequências <font color="blue">{{$turmaPeriodoLetivo->periodo_letivo}} - {{$disciplinaTurma->disciplina}}</font></strong></h5>
                                             </div>
+
+                                            {{-- permite apagar frequência somente se o período estiver aberto --}}
+                                            @if ($turmaPeriodoLetivo->situacao == 1)
+                                                <div class="form-group col-sm-5 col-xs-1" align="center">
+                                                    <h5>
+                                                    <a href="{{route('turmas.frequencias.delete', [$turmaPeriodoLetivo->fk_id_turma, $turmaPeriodoLetivo->id_periodo_letivo, $disciplinaTurma->fk_id_disciplina])}}" class="btn btn-outline-danger"> <i class="fas fa-trash"></i>
+                                                       Apagar Frequências {{$turmaPeriodoLetivo->periodo_letivo}} - {{$disciplinaTurma->disciplina}}   
+                                                    </a>
+                                                    
+                                                    </h5>
+                                                </div>
+                                            @endif
                                         </div>
                                         <div class="row">
                                             <div class="form-group col-sm-12 col-xs-1" align="left">
@@ -126,10 +138,7 @@
                                                     @if ($turmaPeriodoLetivo->situacao == 1)                                                                                                                       
                                                         <div class="form-group col-sm-2 col-xs-2">
                                                             <input type="date" name="data_aula" autofocus min="{{$turmaPeriodoLetivo->data_inicio}}" max="{{$turmaPeriodoLetivo->data_fim}}" class="form-control" required>
-                                                        </div>
-                                                        <div class="form-group col-sm-2 col-xs-2">
-                                                            <button type="submit" class="btn btn-sm btn-outline-success"><i class="fas fa-forward"></i> Enviar</button>
-                                                        </div>
+                                                        </div>                                                        
                                                     @endif
                                                 </div>  
                                             @endif {{-- fim cabeçalho tabela --}}
@@ -165,6 +174,11 @@
                                             </div>  
                                         
                                         @endforeach {{-- fim listagem alunos --}}
+                                        @if ($turmaPeriodoLetivo->situacao == 1)                                                                                                                                                                   
+                                            <div class="form-group col-sm-2 col-xs-2">
+                                                <button type="submit" class="btn btn-sm btn-outline-success"><i class="fas fa-forward"></i> Enviar</button>
+                                            </div>
+                                        @endif
                                     </form>                                            
                                 </div>                                    
                             </div>

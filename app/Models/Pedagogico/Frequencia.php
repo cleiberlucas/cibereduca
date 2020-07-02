@@ -52,7 +52,7 @@ class Frequencia extends Model
     {
         $frequenciasAlunoDatasPeriodo = $this->select('data_aula')                                                    
                                                     ->where('fk_id_turma_periodo_letivo', '=', $id_turma_periodo_letivo)
-                                                    ->where('fk_id_matricula', '=', $id_matricula)
+                                                    ->where('fk_id_matricula', '=', $id_matricula)                                                    
                                                     ->groupBy('data_aula')
                                                     ->get();
         return $frequenciasAlunoDatasPeriodo;

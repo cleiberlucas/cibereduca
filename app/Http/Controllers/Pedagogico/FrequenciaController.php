@@ -33,11 +33,11 @@ class FrequenciaController extends Controller
         $tiposFrequencia = $tiposFrequencia->getTiposFrequencia();
         
         return view('pedagogico.paginas.turmas.frequencias.index', [
-            'id_turma' => $id_turma,
-            'disciplinasTurma' => $disciplinasTurma,
-            'turmaPeriodosLetivos' => $turmaPeriodoLetivo->getTurmaPeriodosLetivos($id_turma),     
-            'turmaMatriculas'      => $this->getTurmaMatriculas($id_turma),
-            'tiposFrequencia'      => $tiposFrequencia,            
+                    'id_turma' => $id_turma,
+                    'disciplinasTurma' => $disciplinasTurma,
+                    'turmaPeriodosLetivos' => $turmaPeriodoLetivo->getTurmaPeriodosLetivos($id_turma),     
+                    'turmaMatriculas'      => $this->getTurmaMatriculas($id_turma),
+                    'tiposFrequencia'      => $tiposFrequencia,            
         ]); 
     }
 
@@ -127,9 +127,9 @@ class FrequenciaController extends Controller
         $frequenciasAlunoPeriodo = $this->repositorio->getFrequenciasAlunoPeriodo($id_turma_periodo_letivo, $id_matricula);
 
         $frequencia = $this->repositorio->select('fk_id_turma')
-                                    ->join('tb_matriculas', 'fk_id_matricula', 'id_matricula')
-                                    ->where('fk_id_matricula', '=', $id_matricula)
-                                    ->first();
+                                        ->join('tb_matriculas', 'fk_id_matricula', 'id_matricula')
+                                        ->where('fk_id_matricula', '=', $id_matricula)
+                                        ->first();
         
         if (!$frequencia)
             return redirect()->back()->with('atencao', 'Não há frequência lançada para este aluno.');
@@ -138,8 +138,8 @@ class FrequenciaController extends Controller
 
         //dd($id_turma);
         return view('pedagogico.paginas.turmas.frequencias.showaluno', [
-            'id_turma'                  => $id_turma,
-            'frequenciasAlunoPeriodo' => $frequenciasAlunoPeriodo,
+            'id_turma'                      => $id_turma,
+            'frequenciasAlunoPeriodo'       => $frequenciasAlunoPeriodo,
             'frequenciasAlunoDisciplinasPeriodo' => $frequenciasAlunoDisciplinasPeriodo,
             'frequenciasAlunoDatasPeriodo'  => $frequenciasAlunoDatasPeriodo,
             'frequenciasAlunoMesesPeriodo'  => $frequenciasAlunoMesesPeriodo,
@@ -147,35 +147,74 @@ class FrequenciaController extends Controller
     }
 
     /**
-     * Remover conteúdo lecionado
+     * Abrir view p remover frequência
      */
-    public function remover($id_frequencia)
+    public function delete($id_turma, $id_periodo_letivo, $id_disciplina)
+    {
+        $frequencias = $this->repositorio
+                            ->select('tb_frequencias.fk_id_disciplina',
+                                    'tb_frequencias.fk_id_turma_periodo_letivo',
+                                    'data_aula',
+                                    'periodo_letivo',
+                                    'nome_turma',
+                                    'sub_nivel_ensino',
+                                    'descricao_turno',                                    
+                                    'disciplina',
+                                    'tb_turmas_periodos_letivos.situacao',
+                                    'id_turma')
+                            ->join('tb_turmas_periodos_letivos', 'fk_id_turma_periodo_letivo', 'id_turma_periodo_letivo')
+                            ->join('tb_periodos_letivos', 'fk_id_periodo_letivo', 'id_periodo_letivo')
+                            ->join('tb_turmas', 'fk_id_turma', 'id_turma')
+                            ->join('tb_tipos_turmas', 'fk_id_tipo_turma', 'id_tipo_turma')
+                            ->join('tb_sub_niveis_ensino', 'fk_id_sub_nivel_ensino', 'id_sub_nivel_ensino')
+                            ->join('tb_turnos', 'fk_id_turno', 'id_turno')
+                            ->join('tb_disciplinas', 'fk_id_disciplina', 'id_disciplina')
+                            ->where('tb_turmas_periodos_letivos.fk_id_turma', $id_turma)
+                            ->where('fk_id_periodo_letivo', $id_periodo_letivo)
+                            ->where('fk_id_disciplina', $id_disciplina)                            
+                            ->get();
+        
+        if(count($frequencias) == 0)
+            return redirect()->back()->with('atencao', 'Não há frequência lançada para esta disciplina, neste período letivo.');
+
+
+        $frequenciasDatas = $this->repositorio
+                                    ->select('data_aula')
+                                    ->join('tb_turmas_periodos_letivos', 'fk_id_turma_periodo_letivo', 'id_turma_periodo_letivo')
+                                    ->where('fk_id_turma', $id_turma)
+                                    ->where('fk_id_periodo_letivo', $id_periodo_letivo)
+                                    ->where('fk_id_disciplina', $id_disciplina)
+                                    ->groupBy('data_aula')
+                                    ->paginate();
+       
+        //dd($frequencias);
+        return view('pedagogico.paginas.turmas.frequencias.delete', [
+                    'frequencias'   => $frequencias,
+                    'frequenciasDatas' => $frequenciasDatas,
+                ]);
+    }
+
+    /**
+     * Remover frequencia
+     */
+    public function remover($id_turma, $data_aula, $id_disciplina)
     {
         $this->authorize('Frequência Remover');   
         
-        $frequencia = $this->repositorio->where('id_frequencia', $id_frequencia, )->first();
+        $frequencia = $this->repositorio->where('fk_id_turma_periodo_letivo', $id_turma)
+                                        ->where('fk_id_disciplina', $id_disciplina)
+                                        ->where('data_aula', $data_aula)
+                                        ->first();
         
         if (!$frequencia)
-            return redirect()->back();
+            return redirect()->back()->with('atencao', 'Não há frequência lançada para os dados informados.');
 
-        $id_turma = $frequencia->turmaPeriodoLetivo->fk_id_turma;
-        $id_periodo_letivo = $frequencia->turmaPeriodoLetivo->fk_id_periodo_letivo;
-        $id_disciplina = $frequencia->fk_id_disciplina;
+        $frequencia->where('fk_id_turma_periodo_letivo', $id_turma)
+                    ->where('fk_id_disciplina', $id_disciplina)
+                    ->where('data_aula', $data_aula)
+                    ->delete();
 
-        $frequencia->where('id_frequencia', $id_frequencia, )->delete();
-
-        $disciplinasTurma = new GradeCurricular;
-        $disciplinasTurma = $disciplinasTurma->disciplinasTurma($id_turma);
-        $turmaPeriodoLetivo = new TurmaPeriodoLetivo;
-        
-        return view('pedagogico.paginas.turmas.frequencias.index', [
-                    'id_turma' => $id_turma,
-                    'disciplinasTurma'     => $disciplinasTurma,
-                    'turmaPeriodosLetivos' => $turmaPeriodoLetivo->getTurmaPeriodosLetivos($id_turma),     
-                    'frequencias' => $this->repositorio->getFrequencias($id_turma),
-                    'selectPeriodoLetivo'  => $id_periodo_letivo,
-                    'selectDisciplina'     => $id_disciplina,
-        ]); 
+        return redirect()->back()->with('sucesso', 'Frequências excluídas com sucesso.');
     }
 
     /**

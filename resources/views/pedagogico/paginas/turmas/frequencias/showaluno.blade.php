@@ -57,10 +57,10 @@
                 <div role="tabpanel" class="tab-pane" id="{{nomeMes($frequenciasAlunoMesPeriodo->mes)}}">
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover">
-                            <thead>
+                            <thead class="table-info">
                                 <th>#</th>
                                 <th>Disciplina</th> 
-                                {{-- Criando cabeçalho colunas com as datas de frequencia --}}
+                                {{-- Criando cabeçalho colunas com os DIAS de frequencia --}}
                                 @foreach ($frequenciasAlunoDatasPeriodo as $frequenciaAlunoDatasPeriodo)
                                     {{-- Listando somente aos dias de frequencias de um mês --}}
                                     @if (date('n', strtotime($frequenciaAlunoDatasPeriodo->data_aula)) == $frequenciasAlunoMesPeriodo->mes)
@@ -80,7 +80,7 @@
                                             <td>{{$ind+1}}</td>
                                             <td>{{$frequenciaAlunoDisciplinasPeriodo->sigla_disciplina}}</td>
 
-                                            {{-- criando as colunas de datas p receber informação da frequencia --}}
+                                            {{-- criando as colunas de DIAS p receber informação da frequencia --}}
                                             @foreach ($frequenciasAlunoDatasPeriodo as $ind => $frequenciaAlunoDatasPeriodo)     
                                                 @if (date('n', strtotime($frequenciaAlunoDatasPeriodo->data_aula)) == $frequenciasAlunoMesPeriodo->mes)
                                                     <td>                                        
@@ -98,7 +98,7 @@
                                                                 {{$frequenciaAlunoPeriodo->sigla_frequencia}}
                                                             @endif
                                                                                                                         
-                                                            @break;
+                                                            {{-- @break; --}}
 
                                                         @endif
                                                     @endforeach

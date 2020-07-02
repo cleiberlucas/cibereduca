@@ -53,12 +53,14 @@ Route::prefix('pedagogico')
         
         /**
          * Rotas Frequências
-         */        
-        route::get('turmas/frequencia/{id_frequencia}', 'FrequenciaController@remover')->name('turmas.frequencias.remover');            
+         */                            
+        /* route::get('perfis/{id}/permissao/{id_permissao}/remove', 'ACL\PerfilPermissaoController@removerPermissoesPerfil')->name('perfis.permissoes.remover');             */
+
         route::put('turmas/frequencia/{id_frequencia}', 'FrequenciaController@update')->name('turmas.frequencias.update');                    
         Route::get('turmas/frequencia/{id_frequencia}/edit', 'FrequenciaController@edit')->name('turmas.frequencia.edit');
+        Route::get('turmas/{id_turma}/periodo/{id_periodo_letivo}/disciplina/{id_disciplina}/delete', 'FrequenciaController@delete')->name('turmas.frequencias.delete');
+        Route::get('turmas/{id_turma}/data/{data_aula}/disciplina/{id_disciplina}/remove', 'FrequenciaController@remover')->name('turmas.frequencias.remover');
         Route::get('turmas/{id_turma_periodo_letivo}/frequencia/{id_matricula}/showaluno', 'FrequenciaController@frequenciaShowAluno')->name('turmas.frequencias.showaluno');
-        route::put('turmas/frequencia/{id_frequencia}', 'FrequenciaController@update')->name('turmas.frequencia.update'); 
         Route::post('turmas/frequencias', 'FrequenciaController@store')->name('turmas.frequencias.store'); 
         route::any('turmas/{id}/frequencias', 'FrequenciaController@index')->name('turmas.frequencias');
 
@@ -70,8 +72,7 @@ Route::prefix('pedagogico')
         route::put('turmas/nota/{id_nota_avaliacao}', 'NotaController@update')->name('turmas.notas.update');                    
         Route::get('turmas/nota/{id_nota_avaliacao}/edit', 'NotaController@edit')->name('turmas.nota.edit');
         Route::any('turmas/notas/search', 'NotaController@search')->name('turmas.notas.search');
-        Route::get('turmas/nota/{id_matricula}/showaluno', 'NotaController@notaShowAluno')->name('turmas.notas.showaluno');
-        route::put('turmas/nota/{id_nota_avaliacao}', 'NotaController@update')->name('turmas.nota.update'); 
+        Route::get('turmas/nota/{id_matricula}/showaluno', 'NotaController@notaShowAluno')->name('turmas.notas.showaluno');         
         Route::post('turmas/notas', 'NotaController@store')->name('turmas.notas.store'); 
         route::any('turmas/{id}/notas', 'NotaController@index')->name('turmas.notas');
         route::get('turmas/notas', 'NotaController@indexNotas')->name('turmas.index.notas');
