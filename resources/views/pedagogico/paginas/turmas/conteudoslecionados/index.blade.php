@@ -8,7 +8,14 @@
 
 @section('content_header')
 
-    
+    <style>
+        textarea {
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            width: 100%;
+        }
+    </style>    
 
     <ol class="breadcrumb">        
         <li class="breadcrumb-item active" >
@@ -111,7 +118,7 @@
                                                     </div>
                                                     <div class="form-group col-sm-9 col-xs-2">
                                                         <label>Lançar Conteúdo Lecionado - <font color="blue">{{$turmaPeriodoLetivo->periodo_letivo}} - {{$disciplinaTurma->disciplina}}:</font></label><br>            
-                                                        <textarea name="conteudo_lecionado" id="" cols="110" rows="2">{{old('conteudo_lecionado')}}</textarea>
+                                                        <textarea name="conteudo_lecionado" id="" rows="2">{{old('conteudo_lecionado')}}</textarea>
                                                     </div>
                                                     <div class="form-group col-sm-1 col-xs-2 ">   
                                                         <br><br><br>                                             
@@ -123,58 +130,56 @@
                                     
                                     @endif
                                 
-                                    {{-- Listando conteúdos lançados de uma disciplina --}}
-                                    <div class="table-responsive">
-
-                                        <table class="table table-hover">
-                                            <thead>                                              
-                                                <th style="width=5px;">Dias</th>                        
-                                                <th>Conteúdos Lecionados</th>                        
-                                                <th >Ações</th>
-                                            </thead>
-                                            <tbody>                        
+                                    {{-- Listando conteúdos lançados de uma disciplina --}}                                    
+                                    <div class="row">
+                                        <div class="form-group col-sm-1 col-xs-2 ">   
+                                            Dias
+                                        </div>
+                                        <div class="form-group col-sm-9 col-xs-2 ">   
+                                            Conteúdos Lecionados
+                                        </div>
+                                        <div class="form-group col-sm-2 col-xs-2 ">   
+                                            Ações
+                                        </div>                                            
+                                    </div>                                             
                                                 
-                                                @foreach ($conteudosLecionados as $index => $conteudoLecionado)
-                                                    {{-- Listar conteúdo somente da aba/disciplina selecionada --}}
-                                                    @if ($turmaPeriodoLetivo->id_turma_periodo_letivo == $conteudoLecionado->fk_id_turma_periodo_letivo && $conteudoLecionado->fk_id_disciplina == $disciplinaTurma->fk_id_disciplina)
-                                                        <form action="{{ route('turmas.conteudoslecionados.update', $conteudoLecionado->id_conteudo_lecionado)}}" method="POST">
-                                                            @csrf 
-                                                            @method('PUT')
-                                                            <input type="hidden" name="fk_id_turma_periodo_letivo" value={{$turmaPeriodoLetivo->id_turma_periodo_letivo}}>
-                                                            <input type="hidden" name="fk_id_disciplina" value={{$disciplinaTurma->fk_id_disciplina}}>
-                                                            <input type="hidden" name="fk_id_user" value={{Auth::id()}}>
-                                                            <input type="hidden" name="fk_id_turma" value={{$turmaPeriodoLetivo->fk_id_turma}}>
-                                                            <input type="hidden" name="id_periodo_letivo" value={{$turmaPeriodoLetivo->id_periodo_letivo}}>
+                                    @foreach ($conteudosLecionados as $index => $conteudoLecionado)
+                                        {{-- Listar conteúdo somente da aba/disciplina selecionada --}}
+                                        @if ($turmaPeriodoLetivo->id_turma_periodo_letivo == $conteudoLecionado->fk_id_turma_periodo_letivo && $conteudoLecionado->fk_id_disciplina == $disciplinaTurma->fk_id_disciplina)
+                                            <form action="{{ route('turmas.conteudoslecionados.update', $conteudoLecionado->id_conteudo_lecionado)}}" method="POST">
+                                                @csrf 
+                                                @method('PUT')
+                                                <input type="hidden" name="fk_id_turma_periodo_letivo" value={{$turmaPeriodoLetivo->id_turma_periodo_letivo}}>
+                                                <input type="hidden" name="fk_id_disciplina" value={{$disciplinaTurma->fk_id_disciplina}}>
+                                                <input type="hidden" name="fk_id_user" value={{Auth::id()}}>
+                                                <input type="hidden" name="fk_id_turma" value={{$turmaPeriodoLetivo->fk_id_turma}}>
+                                                <input type="hidden" name="id_periodo_letivo" value={{$turmaPeriodoLetivo->id_periodo_letivo}}>
 
-                                                            <tr>                                                   
-                                                                <td>
-                                                                    {{date('d/m', strtotime($conteudoLecionado->data_aula))}}
-                                                                </td>
-                                                                <td>
-                                                                    @if ($turmaPeriodoLetivo->situacao == 1)                                                                    
-                                                                        <textarea name="conteudo_lecionado" id="" cols="130" rows="1">{{$conteudoLecionado->conteudo_lecionado ?? old('conteudo_lecionado')}}</textarea>                                                                      
-                                                                    @else
-                                                                        {{$conteudoLecionado->conteudo_lecionado}}
-                                                                    @endif
-                                                                </td> 
-                                                                
-                                                                <td style="width=10px;">   
-                                                                    @if ($turmaPeriodoLetivo->situacao == 1)                                                                 
-                                                                        <button type="submit" class="btn btn-sm btn-outline-success"><i class="fas fa-save"></i></button> &nbsp&nbsp&nbsp
-                                                                        <a href="{{ route('turmas.conteudoslecionados.remover', [$conteudoLecionado->id_conteudo_lecionado]) }}" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></a> 
-                                                                        {{-- <a href="{{ route('turmas.conteudoslecionados.update', $conteudoLecionado->id_conteudo_lecionado) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-save"></i></a> --}}
-                                                                        {{-- <a href="{{ route('conteudoslecionados.store') }}" class="btn btn-sm btn-outline-success"><i class="fas fa-save"></i></a> --}}
-                                                                    @endif
-                                                                    
-                                                                </td>
-                                                                
-                                                            </tr>
-                                                        </form>
-                                                    @endif
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                                <div class="row">
+                                                    <div class="form-group col-sm-1 col-xs-2 ">   
+                                                        {{date('d/m', strtotime($conteudoLecionado->data_aula))}}
+                                                    </div>
+                                                    <div class="form-group col-sm-9 col-xs-2 ">   
+                                                        @if ($turmaPeriodoLetivo->situacao == 1)                                                                    
+                                                            <textarea name="conteudo_lecionado" id="" rows="1">{{$conteudoLecionado->conteudo_lecionado ?? old('conteudo_lecionado')}}</textarea>                                                                      
+                                                        @else
+                                                            {{$conteudoLecionado->conteudo_lecionado}}
+                                                        @endif
+                                                    </div>
+                                                    <div class="form-group col-sm-2 col-xs-2 ">   
+                                                        @if ($turmaPeriodoLetivo->situacao == 1)                                                                 
+                                                            <button type="submit" class="btn btn-sm btn-outline-success"><i class="fas fa-save"></i></button> &nbsp&nbsp&nbsp
+                                                            <a href="{{ route('turmas.conteudoslecionados.remover', [$conteudoLecionado->id_conteudo_lecionado]) }}" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></a> 
+                                                            {{-- <a href="{{ route('turmas.conteudoslecionados.update', $conteudoLecionado->id_conteudo_lecionado) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-save"></i></a> --}}
+                                                            {{-- <a href="{{ route('conteudoslecionados.store') }}" class="btn btn-sm btn-outline-success"><i class="fas fa-save"></i></a> --}}
+                                                        @endif
+                                                    </div>                                                    
+                                                        
+                                                </div>       
+                                                
+                                            </form>
+                                        @endif
+                                    @endforeach                                            
                                 </div>
                             @endforeach
                         </div>
