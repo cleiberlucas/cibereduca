@@ -6,6 +6,7 @@ use App\Models\PeriodoLetivo;
 use App\Models\Secretaria\Disciplina;
 use App\Models\Secretaria\Matricula;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Nota extends Model
 {
@@ -68,6 +69,32 @@ class Nota extends Model
                             ->where('fk_id_matricula', $id_matricula)
                             ->get();
 
+    }
+
+    /**
+     * Retorna a soma das avaliações de um aluno X período X disciplina
+     */
+    public function getNotasAlunoPeriodoDisciplina($id_matricula, $id_periodo_letivo, $id_disciplina)
+    {
+        return $this
+                    ->join('tb_avaliacoes', 'fk_id_avaliacao', 'id_avaliacao')                    
+                    ->where('fk_id_matricula', $id_matricula)
+                    ->where('fk_id_periodo_letivo', $id_periodo_letivo)
+                    ->where('fk_id_disciplina', $id_disciplina)
+                    ->sum('nota');
+    }
+
+    public function getTurmaPeriodoLetivo($id_nota_avaliacao, $id_matricula, $id_turma, $id_periodo_letivo)
+    {
+        return $this->select('tb_turmas_periodos_letivos.id_turma_periodo_letivo')
+                    ->join('tb_matriculas', 'fk_id_matricula', 'id_matricula')
+                    ->join('tb_avaliacoes', 'fk_id_avaliacao', 'id_avaliacao')
+                    ->join('tb_turmas_periodos_letivos', 'tb_turmas_periodos_letivos.fk_id_periodo_letivo', 'tb_avaliacoes.fk_id_periodo_letivo')                    
+                    ->where("id_nota_avaliacao", $id_nota_avaliacao)
+                    ->where("tb_matriculas.id_matricula", '=', $id_matricula)
+                    ->where("tb_turmas_periodos_letivos.fk_id_turma", '=', $id_turma)
+                    ->where("tb_turmas_periodos_letivos.fk_id_periodo_letivo", '=', $id_periodo_letivo)
+                    ->first();
     }
 
     public function matricula()

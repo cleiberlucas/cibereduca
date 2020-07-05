@@ -104,6 +104,19 @@ class Frequencia extends Model
         
     }
 
+    /**
+     * Retorna a quantidade de faltas de um aluno X período X disciplina
+     */
+    public function getFaltasAlunoPeriodoDisciplina($id_matricula, $id_turma_periodo_letivo, $id_disciplina)
+    {
+        return $this->join('tb_tipos_frequencia', 'fk_id_tipo_frequencia', 'id_tipo_frequencia')
+                    ->where('reprova', '1')
+                    ->where('fk_id_matricula', $id_matricula)
+                    ->where('fk_id_turma_periodo_letivo', $id_turma_periodo_letivo)
+                    ->where('fk_id_disciplina', $id_disciplina)
+                    ->count();
+    }
+
     public function turmaPeriodoLetivo()
     {
         return $this->belongsTo(TurmaPeriodoLetivo::class, 'fk_id_turma_periodo_letivo', 'id_turma_periodo_letivo');

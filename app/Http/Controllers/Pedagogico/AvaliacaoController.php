@@ -8,25 +8,26 @@ use App\Models\GradeCurricular;
 use App\Models\Pedagogico\Avaliacao;
 use App\Models\Pedagogico\TipoAvaliacao;
 use App\Models\PeriodoLetivo;
-use App\Models\Secretaria\Disciplina;
-use App\Models\TipoTurma;
 use App\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
+/**
+ * Avaliações dos alunos
+ */
 class AvaliacaoController extends Controller
 {
     private $repositorio;
     
     public function __construct(Avaliacao $avaliacao)
     {
-        $this->repositorio = $avaliacao;
+        $this->repositorio = $avaliacao;        
     }
 
     public function index($id_tipo_turma)
     {
         $this->authorize('Avaliação Ver');
-        
+         
         $avaliacoes = $this->repositorio->select('*')
                                         ->join('tb_tipos_avaliacao', 'fk_id_tipo_avaliacao', 'id_tipo_avaliacao')
                                         ->join('tb_tipos_turmas', 'fk_id_tipo_turma', 'id_tipo_turma')           
@@ -68,7 +69,8 @@ class AvaliacaoController extends Controller
         $periodosLetivos = $periodosLetivos->join('tb_tipos_turmas', 'tb_tipos_turmas.fk_id_ano_letivo', 'tb_periodos_letivos.fk_id_ano_letivo')                                            
                                             ->where('id_tipo_turma', $id_tipo_turma)
                                             ->where('tb_periodos_letivos.situacao', '1')
-                                            ->orderBy('periodo_letivo')->get();
+                                            ->orderBy('periodo_letivo')
+                                            ->get();
 
         $gradeCurricular = new GradeCurricular();
         $gradeCurricular = $gradeCurricular->disciplinasTipoTurma($id_tipo_turma);
@@ -88,8 +90,7 @@ class AvaliacaoController extends Controller
     public function store(StoreUpdateAvaliacao $request )
     {
         $dados = $request->all();
-       
-        // dd($dados);
+               
         $this->repositorio->create($dados);
  
         return redirect()->route('tiposturmas.avaliacoes', $dados['fk_id_tipo_turma']);

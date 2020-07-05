@@ -32,7 +32,7 @@
 @stop
 
 @section('content')
-    <form action="{{ route('turmas.nota.update', $notaAluno->id_nota_avaliacao)}}" class="form" method="POST">
+    <form action="{{ route('turmas.notas.update', $notaAluno->id_nota_avaliacao)}}" class="form" method="POST">
         @csrf
         @method('PUT')
         <div class="row">

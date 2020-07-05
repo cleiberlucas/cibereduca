@@ -34,7 +34,7 @@
 @stop
 
 @section('content')
-    <form action="{{ route('turmas.frequencia.update', $frequencia->id_frequencia)}}" class="form" method="POST">
+    <form action="{{ route('turmas.frequencias.update', $frequencia->id_frequencia)}}" class="form" method="POST">
         @csrf
         @method('PUT')
         <div class="row">

@@ -7,6 +7,7 @@ use App\Http\Requests\StoreUpdateNota;
 use App\Models\GradeCurricular;
 use App\Models\Pedagogico\Avaliacao;
 use App\Models\Pedagogico\Nota;
+use App\Models\Pedagogico\ResultadoAlunoPeriodo;
 use App\Models\Pedagogico\TurmaPeriodoLetivo;
 use App\Models\Secretaria\Matricula;
 use App\Models\Secretaria\Turma;
@@ -16,12 +17,12 @@ use Illuminate\Http\Request;
 
 class NotaController extends Controller
 {
-    private $repositorio;
+    private $repositorio, $resultadoAlunoPeriodo;
         
     public function __construct(Nota $nota)
     {
         $this->repositorio = $nota;        
-        
+        $this->resultadoAlunoPeriodo = new ResultadoAlunoPeriodo;
     }
 
     /**
@@ -99,9 +100,19 @@ class NotaController extends Controller
       
         $nota->where('id_nota_avaliacao', $id)->update($request->except('_token', '_method'));
 
-        $notaAluno = $this->repositorio->where('id_nota_avaliacao', $id)->first();
+        $turmaPeriodoLetivo = $this->repositorio->getTurmaPeriodoLetivo($id, $nota->fk_id_matricula, $nota->matricula->fk_id_turma, $nota->avaliacao->fk_id_periodo_letivo);
 
-        return $this->notaShowAluno($notaAluno->fk_id_matricula);
+        /**Preparando array p atualizar a nota média do aluno */
+        $dadosNota = array(['fk_id_turma_periodo_letivo' => $turmaPeriodoLetivo->id_turma_periodo_letivo, 
+                                'fk_id_periodo_letivo' => $nota->avaliacao->fk_id_periodo_letivo, 
+                                'fk_id_matricula' => $nota->fk_id_matricula,
+                                'fk_id_disciplina' => $nota->avaliacao->fk_id_disciplina
+        ]);
+        
+        //Atualizar a nota média do aluno X período X disciplina
+        $this->gravarNotasAlunoPeriodoDisciplina($dadosNota);
+
+        return $this->notaShowAluno($nota->fk_id_matricula);
     }
 
     public function store(StoreUpdateNota $request)
@@ -121,13 +132,17 @@ class NotaController extends Controller
                                                         Nota lançada para um aluno: '.$nota.'.');
             }
         }
+        
+       $notasResultados = [];
 
         foreach($dados['nota'] as $index => $nota){ 
+            $notas = [];
+            
+           // dd($dados);
             /* Preparando array p gravar notas 
                Só envia p gravar se a nota for preenchida
                pq o aluno pode faltar a prova
-            */                
-            $notas = [];
+            */                            
             if ($nota != null)          
             {                   
                 $notas['fk_id_matricula'] = $dados['fk_id_matricula'][$index];
@@ -135,6 +150,14 @@ class NotaController extends Controller
                 $notas['data_avaliacao']  = $dados['data_avaliacao'];
                 $notas['nota']            = $nota;                    
                 $notas['fk_id_user']      = $dados['fk_id_user'];
+
+                /**Gerando novo array p gravar a nota média do resultado aluno X período X disciplina */
+                $notasMedias['fk_id_turma_periodo_letivo'] = $dados['fk_id_turma_periodo_letivo'];
+                $notasMedias['fk_id_periodo_letivo'] = $dados['id_periodo_letivo'];
+                $notasMedias['fk_id_matricula'] = $dados['fk_id_matricula'][$index];
+                $notasMedias['fk_id_disciplina'] = $dados['fk_id_disciplina'];                
+                
+                $notasResultados[$index] = $notasMedias;
             }
             
             if (count($notas) > 0)
@@ -148,15 +171,88 @@ class NotaController extends Controller
                 }
             }
         }
+
+        //Gravar a nota média do aluno no resultado do período
+         $this->gravarNotasAlunoPeriodoDisciplina($notasResultados);
        
         return redirect()->route('turmas.notas', $id_turma)->with('sucesso', 'Notas lançadas com sucesso.');        
     }
+    
+    /**
+     * Gravar soma das notas no período todas as vezes que:
+     * Incluir
+     * Alterar
+     * Excluir     
+     */
+    public function gravarNotasAlunoPeriodoDisciplina(array $notas)
+    {
+        /**percorrendo a lista de aluno do form */
+        foreach ($notas as $key => $nota) {
+           
+            /*Ler a soma de notas do aluno X periodo X disciplina */
+            $nota_media = $this->repositorio->getNotasAlunoPeriodoDisciplina($nota['fk_id_matricula'], $nota['fk_id_periodo_letivo'], $nota['fk_id_disciplina']);
+            
+            /*Incluindo o total de faltas no array */
+            $nota = array_merge($nota, ['nota_media' => $nota_media]);
+
+            //dd($this->repositorio->getFaltasAlunoPeriodoDisciplina($fk_id_matricula, $fk_id_turma_periodo_letivo, $fk_id_disciplina));    
+
+            //Verificar se já foi lançado resultado para um período
+            $existeResultado = $this->resultadoAlunoPeriodo->getResultadoAlunoPeriodoDisciplina($nota['fk_id_matricula'], $nota['fk_id_turma_periodo_letivo'], $nota['fk_id_disciplina']);
+
+            //Existe resultado lançado
+            //ALTERAR SOMA NOTA NO RESULTADO DO PERIODO
+            if ($existeResultado == 1)
+                $this->alterarNotasResultadoAluno($nota);
+            
+            //Não existe resultado lançado
+            //INSERIR SOMA NOTAS NO RESULTADO DO PERIODO
+            else
+                $this->inserirNotasResultadoAluno($nota);
+        }
+    }
+
+    /**
+     * Inserir nota média no resultado do aluno X periodo X disciplina
+     * o array deve conter
+     * ['fk_id_matricula'], 
+     * ['fk_id_turma_periodo_letivo'], 
+     * ['fk_id_disciplina']
+     * ['nota_media']
+     */
+    public function inserirNotasResultadoAluno(array $nota)
+    {
+        $this->resultadoAlunoPeriodo->create($nota);
+    }
+
+    /**
+     * Alterar nota média no resultado do aluno X periodo X disciplina
+     * o array deve conter
+     * ['fk_id_matricula'], 
+     * ['fk_id_turma_periodo_letivo'], 
+     * ['fk_id_disciplina']
+     * ['nota_media']
+     */
+    public function alterarNotasResultadoAluno(array $nota)
+    {
+        try {
+            $this->resultadoAlunoPeriodo->where('fk_id_matricula', $nota['fk_id_matricula'])
+                                    ->where('fk_id_turma_periodo_letivo', $nota['fk_id_turma_periodo_letivo'])
+                                    ->where('fk_id_disciplina', $nota['fk_id_disciplina'])
+                                    ->update(array('nota_media' => $nota['nota_media']));
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('erro', 'ATENÇÃO: houve erro ao calcular a média do aluno. FAVOR CONTATAR O SUPORTE TÉCNICO.');
+        }
+    }
+
     
     public function notaShowAluno($id_matricula)
     {        
         $this->authorize('Nota Alterar');
         $notasAluno = $this->repositorio->getNotasAluno($id_matricula)->first();
-
+        if (!$notasAluno)
+            return redirect()->back()->with('info', 'Não há nota lançada para este aluno.');
+        
         $id_turma = $notasAluno->matricula->fk_id_turma;
         $id_tipo_turma = $notasAluno->matricula->turma->fk_id_tipo_turma;
 
@@ -197,11 +293,23 @@ class NotaController extends Controller
         $this->authorize('Nota Remover');   
         
         $notaAluno = $this->repositorio->where('id_nota_avaliacao', $id_nota, )->first();
+
+        $turmaPeriodoLetivo = $this->repositorio->getTurmaPeriodoLetivo($id_nota, $notaAluno->fk_id_matricula, $notaAluno->matricula->fk_id_turma, $notaAluno->avaliacao->fk_id_periodo_letivo);
         
         if (!$notaAluno)
             return redirect()->back();
 
         $notaAluno->where('id_nota_avaliacao', $id_nota, )->delete();
+
+       /**Preparando array p atualizar a nota média do aluno */
+        $dadosNota = array(['fk_id_turma_periodo_letivo' => $turmaPeriodoLetivo->id_turma_periodo_letivo, 
+                                'fk_id_periodo_letivo' => $notaAluno->avaliacao->fk_id_periodo_letivo, 
+                                'fk_id_matricula' => $notaAluno->fk_id_matricula,
+                                'fk_id_disciplina' => $notaAluno->avaliacao->fk_id_disciplina
+        ]);
+        
+        //Atualizar a nota média do aluno X período X disciplina
+        $this->gravarNotasAlunoPeriodoDisciplina($dadosNota);
         
         return $this->notaShowAluno($notaAluno->fk_id_matricula)->with('sucesso', 'Nota apagada com sucesso.');
     } 

@@ -6,19 +6,21 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateFrequencia;
 use App\Models\GradeCurricular;
 use App\Models\Pedagogico\Frequencia;
+use App\Models\Pedagogico\ResultadoAlunoPeriodo;
 use App\Models\Pedagogico\TurmaPeriodoLetivo;
 use App\Models\Secretaria\Matricula;
 use App\Models\Pedagogico\TipoFrequencia;
 use Illuminate\Http\Request;
+use PhpParser\Node\Stmt\TryCatch;
 
 class FrequenciaController extends Controller
 {
-    private $repositorio;
+    private $repositorio, $resultadoAlunoPeriodo;
         
     public function __construct(Frequencia $frequencia)
     {
         $this->repositorio = $frequencia;        
-        
+        $this->resultadoAlunoPeriodo = new ResultadoAlunoPeriodo;        
     }
 
     public function index($id_turma, $id_periodo_letivo = null, $id_disciplina = null)
@@ -65,17 +67,24 @@ class FrequenciaController extends Controller
 
         $frequencia = $this->repositorio->where('id_frequencia', $id)->first();
        // dd($frequencia->turmaPeriodoLetivo->situacao);
-        if ($frequencia->turmaPeriodoLetivo->situacao == 0 )
-            return redirect()->back()->with('erro', 'Período letivo fechado. Não é possível alterar a frequência.');
         
         if (!$frequencia)
             return redirect()->back();
       
+        if ($frequencia->turmaPeriodoLetivo->situacao == 0 )
+            return redirect()->back()->with('erro', 'Período letivo fechado. Não é possível alterar a frequência.');
+
         $frequencia->where('id_frequencia', $id)->update($request->except('_token', '_method'));
+        
+        $dadosFrequencia = array(['fk_id_turma_periodo_letivo' => $frequencia->fk_id_turma_periodo_letivo, 
+                                    'fk_id_matricula' => $frequencia->fk_id_matricula,
+                                    'fk_id_disciplina' => $frequencia->fk_id_disciplina
+                            ]);
 
-        $frequenciaAluno = $this->repositorio->where('id_frequencia', $id)->first();
+        //Atualizar o total de faltas dos aluno X período X disciplina
+        $this->gravarFaltasAlunoPeriodoDisciplina($dadosFrequencia);
 
-        return $this->frequenciaShowAluno($frequenciaAluno->fk_id_turma_periodo_letivo, $frequenciaAluno->fk_id_matricula);
+        return $this->frequenciaShowAluno($frequencia->fk_id_turma_periodo_letivo, $frequencia->fk_id_matricula);
     }
 
     public function store(StoreUpdateFrequencia $request)
@@ -84,39 +93,96 @@ class FrequenciaController extends Controller
 
         $dados = $request->all();
         $id_turma = $dados['fk_id_turma'];
-        //dd($dados);
-        //dd($dados['fk_id_matricula']);
+
+        $frequencia = [];
         $frequencias = [];
+        /* Lendo os dados de cada aluno p gravar a frequencia */
         foreach($dados['fk_id_matricula'] as $index => $matricula){            
-            $frequencias['fk_id_turma_periodo_letivo'] = $dados['fk_id_turma_periodo_letivo'];
-            $frequencias['fk_id_matricula'] = $matricula;
-            $frequencias['fk_id_disciplina'] = $dados['fk_id_disciplina'];
-            $frequencias['data_aula'] = $dados['data_aula'];
-            $frequencias['fk_id_tipo_frequencia'] = $dados['fk_id_tipo_frequencia'][$index];
-            $frequencias['fk_id_user'] = $dados['fk_id_user'];
-            //dd($frequencias);
+            $frequencia['fk_id_turma_periodo_letivo'] = $dados['fk_id_turma_periodo_letivo'];
+            $frequencia['fk_id_matricula'] = $matricula;
+            $frequencia['fk_id_disciplina'] = $dados['fk_id_disciplina'];
+            $frequencia['data_aula'] = $dados['data_aula'];
+            $frequencia['fk_id_tipo_frequencia'] = $dados['fk_id_tipo_frequencia'][$index];
+            $frequencia['fk_id_user'] = $dados['fk_id_user'];
 
-            $this->repositorio->create($frequencias);    
+            /* gravando a frequencia de um aluno */
+            $this->repositorio->create($frequencia);    
+
+            /*gerando novo array com todos os alunos p gravar resultado aluno X PERIODO X DISCIPLINA*/
+            $frequencias[$index] = $frequencia;
         }
-        
-        $disciplinasTurma = new GradeCurricular;
-        $disciplinasTurma = $disciplinasTurma->disciplinasTurma($id_turma);
-        
-        $turmaPeriodoLetivo = new TurmaPeriodoLetivo;
 
-        $tiposFrequencia = new TipoFrequencia;
-        $tiposFrequencia = $tiposFrequencia->getTiposFrequencia();
+        //Gravar o total de faltas do aluno no resultado do período
+        $this->gravarFaltasAlunoPeriodoDisciplina($frequencias);
 
-        return view('pedagogico.paginas.turmas.frequencias.index', [
-                        'id_turma' => $id_turma,
-                        'disciplinasTurma'     => $disciplinasTurma,
-                        'turmaPeriodosLetivos' => $turmaPeriodoLetivo->getTurmaPeriodosLetivos($id_turma),  
-                        'turmaMatriculas'      => $this->getTurmaMatriculas($id_turma),   
-            /*             'frequencias' => $this->repositorio->getFrequencias($id_turma), */
-                        'tiposFrequencia'      => $tiposFrequencia,
-                        'selectPeriodoLetivo'  => $dados['id_periodo_letivo'],
-                        'selectDisciplina'     =>  $dados['fk_id_disciplina'],
-        ]);         
+        return $this->index($id_turma);               
+    }
+
+    /**
+     * Gravar quantidade de faltas no período todas as vezes que:
+     * Incluir
+     * Alterar
+     * Excluir
+     * Quaisquer tipos de frequências
+     */
+    public function gravarFaltasAlunoPeriodoDisciplina(array $frequencias)
+    {
+        foreach ($frequencias as $key => $frequencia) {
+           
+            /*Ler a quantidade de faltas do aluno X periodo X disciplina */
+            $total_faltas = $this->repositorio->getFaltasAlunoPeriodoDisciplina($frequencia['fk_id_matricula'], $frequencia['fk_id_turma_periodo_letivo'], $frequencia['fk_id_disciplina']);
+            
+            /*Incluindo o total de faltas no array */
+            $frequencia = array_merge($frequencia, ['total_faltas' => $total_faltas]);
+
+            //dd($this->repositorio->getFaltasAlunoPeriodoDisciplina($fk_id_matricula, $fk_id_turma_periodo_letivo, $fk_id_disciplina));    
+
+            //Verificar se já foi lançado resultado para um período
+            $existeResultado = $this->resultadoAlunoPeriodo->getResultadoAlunoPeriodoDisciplina($frequencia['fk_id_matricula'], $frequencia['fk_id_turma_periodo_letivo'], $frequencia['fk_id_disciplina']);
+
+            //Existe resultado lançado
+            //ALTERAR QUANTIDADE DE FALTAS NO RESULTADO DO PERIODO
+            if ($existeResultado == 1)
+                $this->alterarFaltasResultadoAluno($frequencia);
+            
+            //Não existe resultado lançado
+            //INSERIR QUANTIDADE DE FALTAS NO RESULTADO DO PERIODO
+            else
+                $this->inserirFaltasResultadoAluno($frequencia);
+        }
+    }
+
+    /**
+     * Inserir quantidade de faltas no resultado do aluno X periodo X disciplina
+     * o array deve conter
+     * ['fk_id_matricula'], 
+     * ['fk_id_turma_periodo_letivo'], 
+     * ['fk_id_disciplina']
+     * ['total_faltas']
+     */
+    public function inserirFaltasResultadoAluno(array $frequencia)
+    {
+        $this->resultadoAlunoPeriodo->create($frequencia);
+    }
+
+    /**
+     * Alterar quantidade de faltas no resultado do aluno X periodo X disciplina
+     * o array deve conter
+     * ['fk_id_matricula'], 
+     * ['fk_id_turma_periodo_letivo'], 
+     * ['fk_id_disciplina']
+     * ['total_faltas']
+     */
+    public function alterarFaltasResultadoAluno(array $frequencia)
+    {
+        try {
+            $this->resultadoAlunoPeriodo->where('fk_id_matricula', $frequencia['fk_id_matricula'])
+                                    ->where('fk_id_turma_periodo_letivo', $frequencia['fk_id_turma_periodo_letivo'])
+                                    ->where('fk_id_disciplina', $frequencia['fk_id_disciplina'])
+                                    ->update(array('total_faltas' => $frequencia['total_faltas']));
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('erro', 'ATENÇÃO: houve erro ao calcular o total de faltas do aluno. FAVOR CONTATAR O SUPORTE TÉCNICO.');
+        }
     }
     
     public function frequenciaShowAluno($id_turma_periodo_letivo, $id_matricula)
@@ -205,6 +271,11 @@ class FrequenciaController extends Controller
                                         ->where('fk_id_disciplina', $id_disciplina)
                                         ->where('data_aula', $data_aula)
                                         ->first();
+
+        $dadosFrequencia = array(['fk_id_turma_periodo_letivo' => $frequencia->fk_id_turma_periodo_letivo, 
+                                    'fk_id_matricula' => $frequencia->fk_id_matricula,
+                                    'fk_id_disciplina' => $frequencia->fk_id_disciplina
+                                ]);     
         
         if (!$frequencia)
             return redirect()->back()->with('atencao', 'Não há frequência lançada para os dados informados.');
@@ -213,6 +284,9 @@ class FrequenciaController extends Controller
                     ->where('fk_id_disciplina', $id_disciplina)
                     ->where('data_aula', $data_aula)
                     ->delete();
+        
+        //Atualizar o total de faltas dos alunos X período X disciplina
+        $this->gravarFaltasAlunoPeriodoDisciplina($dadosFrequencia);
 
         return redirect()->back()->with('sucesso', 'Frequências excluídas com sucesso.');
     }
