@@ -63,7 +63,7 @@
         {{-- Abas Períodos --}}
         <div class="tab-content">
             @foreach ($periodosTurma as $periodoTurma)
-                <div role="tabpanel" class="tab-pane" id="{{$periodoTurma->id_periodo_letivo}}">
+                <div role="tabpanel" class="tab-pane active" id="{{$periodoTurma->id_periodo_letivo}}">
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover">
                             <thead class="table-success">
@@ -74,7 +74,7 @@
                                     {{-- Listando todas avaliacoes da turma em um periodo letivo --}}
                                      @if ($avaliacaoTurma->periodo_letivo == $periodoTurma->periodo_letivo)
                                         <th>
-                                            {{$avaliacaoTurma->tipo_avaliacao}}                                            
+                                            {{$avaliacaoTurma->tipo_avaliacao}}
                                         </th>
                                     @endif
                                 @endforeach {{-- fim colunas avaliações --}}    

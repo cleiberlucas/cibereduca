@@ -22,13 +22,15 @@
     </ol>
     @foreach ($frequenciasAlunoPeriodo as $index => $frequenciaAlunoPeriodo)
         @if ($index == 0)
-            <h2>Aluno(a): {{$frequenciaAlunoPeriodo->nome}}</h2>
-            <h3>Frequências {{$frequenciaAlunoPeriodo->periodo_letivo}} - {{$frequenciaAlunoPeriodo->nome_turma}} {{$frequenciaAlunoPeriodo->sub_nivel_ensino}} - {{$frequenciaAlunoPeriodo->descricao_turno}} </h3>
+            <h3>Aluno(a): {{$frequenciaAlunoPeriodo->nome}}</h3>
+            <h4>Frequências {{$frequenciaAlunoPeriodo->periodo_letivo}} - {{$frequenciaAlunoPeriodo->nome_turma}} {{$frequenciaAlunoPeriodo->sub_nivel_ensino}} - {{$frequenciaAlunoPeriodo->descricao_turno}} </h4>
             
             <?php $situacaoPeriodo = $frequenciaAlunoPeriodo->situacao;?>
-            
+            <br>
             @if ($situacaoPeriodo == 1)
-                Clique na célula da informação da frequência para alterá-la.    
+            &nbsp&nbsp-» Clique na informação da frequência para alterá-la.    
+            @else
+                &nbsp&nbsp-» {{$frequenciaAlunoPeriodo->periodo_letivo}} fechado, não é possível alterar.    
             @endif
             
             @break
@@ -43,7 +45,7 @@
         @include('admin.includes.alerts')
         
         {{-- Separando as frequencias em abas de meses --}}
-        <ul class="nav nav-tabs " role="tablist">
+        <ul class="nav nav-tabs nav-pills " role="tablist">
             @foreach ($frequenciasAlunoMesesPeriodo as $frequenciasAlunoMesPeriodo)
                 <li role="presentation" class="nav-item ">
                     <a class="nav-link" href="#{{nomeMes($frequenciasAlunoMesPeriodo->mes)}}" aria-controls="{{nomeMes($frequenciasAlunoMesPeriodo->mes)}}" role="tab" data-toggle="tab">{{nomeMes($frequenciasAlunoMesPeriodo->mes)}}</a>
@@ -54,7 +56,7 @@
         {{-- Abas Meses --}}
         <div class="tab-content">
             @foreach ($frequenciasAlunoMesesPeriodo as $frequenciasAlunoMesPeriodo)
-                <div role="tabpanel" class="tab-pane" id="{{nomeMes($frequenciasAlunoMesPeriodo->mes)}}">
+                <div role="tabpanel" class="tab-pane active" id="{{nomeMes($frequenciasAlunoMesPeriodo->mes)}}">
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover">
                             <thead class="table-info">
