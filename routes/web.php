@@ -52,10 +52,13 @@ Route::prefix('pedagogico')
         /**
          * Rotas Contéudos Lecionados
          */        
+        route::get('turmas/conteudoslecionados/fichabranco', 'ConteudoLecionadoController@pdfFichaBranco')->name('turmas.conteudoslecionados.fichabranco');            
+        route::get('turmas/conteudolecionado/mensal', 'ConteudoLecionadoController@pdfMensal')->name('turmas.conteudoslecionados.mensal');            
         route::get('turmas/conteudolecionado/{id_conteudo_lecionado}', 'ConteudoLecionadoController@remover')->name('turmas.conteudoslecionados.remover');            
         route::put('turmas/conteudolecionado/{id_conteudo_lecionado}', 'ConteudoLecionadoController@update')->name('turmas.conteudoslecionados.update');                            
         Route::post('turmas/conteudoslecionados', 'ConteudoLecionadoController@store')->name('turmas.conteudoslecionados.store'); 
         route::any('turmas/{id}/conteudoslecionados', 'ConteudoLecionadoController@index')->name('turmas.conteudoslecionados');
+        
         
         /**
          * Rotas Frequências
@@ -270,6 +273,11 @@ Route::prefix('admin')
 Route::get('/', function () {
     return view('welcome');
 });
+
+/**
+ * Geração de PDF
+ */
+Route::get('pdf', 'PdfController@gerarPdf');
 
 /**
  * Principal

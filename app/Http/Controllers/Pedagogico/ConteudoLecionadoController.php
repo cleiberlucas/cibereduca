@@ -7,7 +7,8 @@ use App\Http\Requests\StoreUpdateConteudoLecionado;
 use App\Models\GradeCurricular;
 use App\Models\Pedagogico\ConteudoLecionado;
 use App\Models\Pedagogico\TurmaPeriodoLetivo;
-
+use App\Models\Secretaria\Turma;
+use PDF;
 use Illuminate\Http\Request;
 
 class ConteudoLecionadoController extends Controller
@@ -119,6 +120,14 @@ class ConteudoLecionadoController extends Controller
                     'selectPeriodoLetivo'  => $id_periodo_letivo,
                     'selectDisciplina'     => $id_disciplina,
         ]); 
+    } 
+
+    public function pdfFichaBranco(){
+        $turma = Turma::where('id_turma', '1')->first();
+
+        $pdf = PDF::loadView('pedagogico.paginas.turmas.conteudoslecionados.fichabranco', compact('turma'));
+
+        return $pdf->setPaper('a4')->stream('ficha_branco.pdf');
     }
 
 }
