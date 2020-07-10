@@ -34,7 +34,13 @@ Route::prefix('pedagogico')
          * Rotas Tipos Frequencia
          */
         Route::any('tiposfrequencias/search', 'TipoFrequenciaController@search')->name('tiposfrequencias.search');
-        Route::resource('tiposfrequencias', 'TipoFrequenciaController');        
+        Route::resource('tiposfrequencias', 'TipoFrequenciaController'); 
+        
+        /**
+         * Rotas Tipos Avaliação
+         */
+        Route::any('tiposavaliacoes/search', 'TipoAvaliacaoController@search')->name('tiposavaliacoes.search');
+        Route::resource('tiposavaliacoes', 'TipoAvaliacaoController'); 
 
         /**
          * Rotas turmas pedagógico

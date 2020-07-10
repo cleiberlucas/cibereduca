@@ -323,6 +323,11 @@ return [
                     'icon_color' => 'red',
                     'submenu' => [
                         [
+                            'text' => 'Atendimentos Especializados',
+                            'url'  => 'admin/atendimentosespecializados',
+                            'icon_color' => 'red',
+                        ],
+                        [
                             'text' => 'Disciplinas',
                             'url'  => 'secretaria/disciplinas',
                             'icon_color' => 'red',                            
@@ -333,8 +338,8 @@ return [
                             'icon_color' => 'red',
                         ],
                         [
-                            'text' => 'Atendimentos Especializados',
-                            'url'  => 'admin/atendimentosespecializados',
+                            'text' => 'Tipos Avaliações',
+                            'url'  => 'pedagogico/tiposavaliacoes',
                             'icon_color' => 'red',
                         ],
                         [
@@ -343,15 +348,16 @@ return [
                             'icon_color' => 'red',
                         ],
                         [
-                            'text' => 'Tipos Docs Identidade',
-                            'url'  => 'admin/tiposdocidentidade',
-                            'icon_color' => 'red',
-                        ],
-                        [
                             'text' => 'Tipos Desconto Curso',
                             'url'  => 'admin/descontoscursos',
                             'icon_color' => 'red',
                         ],
+                        [
+                            'text' => 'Tipos Docs Identidade',
+                            'url'  => 'admin/tiposdocidentidade',
+                            'icon_color' => 'red',
+                        ],
+                        
                     ],
                 ],
                
