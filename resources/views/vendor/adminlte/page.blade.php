@@ -1,6 +1,8 @@
 @extends('adminlte::master')
 
-@if(config('adminlte.layout_topnav') || View::getSection('layout_topnav'))
+@inject('layoutHelper', \JeroenNoten\LaravelAdminLte\Helpers\LayoutHelper)
+
+@if($layoutHelper->isLayoutTopnavEnabled())
     @php( $def_container_class = 'container' )
 @else
     @php( $def_container_class = 'container-fluid' )
@@ -11,34 +13,32 @@
     @yield('css')
 @stop
 
-@section('classes_body', $adminlte->getBodyClasses())
+@section('classes_body', $layoutHelper->makeBodyClasses())
 
-@section('body_data', $adminlte->getBodyData())
+@section('body_data', $layoutHelper->makeBodyData())
 
 @section('body')
     <div class="wrapper">
 
         {{-- Top Navbar --}}
-        @if(config('adminlte.layout_topnav') || View::getSection('layout_topnav'))
+        @if($layoutHelper->isLayoutTopnavEnabled())
             @include('adminlte::partials.navbar.navbar-layout-topnav')
         @else
             @include('adminlte::partials.navbar.navbar')
         @endif
 
         {{-- Left Main Sidebar --}}
-        @if(!config('adminlte.layout_topnav') && !View::getSection('layout_topnav'))
+        @if(!$layoutHelper->isLayoutTopnavEnabled())
             @include('adminlte::partials.sidebar.left-sidebar')
         @endif
 
         {{-- Content Wrapper --}}
-        <div class="content-wrapper">
+        <div class="content-wrapper {{ config('adminlte.classes_content_wrapper') ?? '' }}">
 
             {{-- Content Header --}}
             <div class="content-header">
                 <div class="{{ config('adminlte.classes_content_header') ?: $def_container_class }}">
                     @yield('content_header')
-                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> 
-                    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
                 </div>
             </div>
 
@@ -65,7 +65,6 @@
 @stop
 
 @section('adminlte_js')
-    <script src="{{ asset('vendor/adminlte/dist/js/adminlte.min.js') }}"></script>
     @stack('js')
     @yield('js')
 @stop
