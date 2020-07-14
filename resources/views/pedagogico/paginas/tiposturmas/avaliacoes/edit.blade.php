@@ -18,7 +18,7 @@
         </li>
     </ol>
 
-    <h1>Editar Avaliação {{$avaliacao->tipoTurma->tipo_turma}} - {{$avaliacao->tipoTurma->subNivelEnsino->sub_nivel_ensino}}</h1>
+    <h2>Editar Avaliação {{$avaliacao->tipoTurma->tipo_turma}} - {{$avaliacao->tipoTurma->subNivelEnsino->sub_nivel_ensino}}</h2>
 @stop
 
 @section('content')

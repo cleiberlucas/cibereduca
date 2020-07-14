@@ -62,8 +62,16 @@
     
         {{-- Abas Períodos --}}
         <div class="tab-content">
-            @foreach ($periodosTurma as $periodoTurma)
-                <div role="tabpanel" class="tab-pane active" id="{{$periodoTurma->id_periodo_letivo}}">
+            @foreach ($periodosTurma as $index => $periodoTurma)
+                <div role="tabpanel" 
+                    @if ($index == 0)
+                    class="tab-pane active" 
+                    @else
+                        class="tab-pane "     
+                    @endif
+                    
+                    id="{{$periodoTurma->id_periodo_letivo}}">
+                    
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover">
                             <thead class="table-success">

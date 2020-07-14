@@ -63,8 +63,6 @@ Route::prefix('pedagogico')
         /**
          * Rotas Frequências
          */                            
-        /* route::get('perfis/{id}/permissao/{id_permissao}/remove', 'ACL\PerfilPermissaoController@removerPermissoesPerfil')->name('perfis.permissoes.remover');             */
-
         route::put('turmas/frequencia/{id_frequencia}', 'FrequenciaController@update')->name('turmas.frequencias.update');                    
         Route::get('turmas/frequencia/{id_frequencia}/edit', 'FrequenciaController@edit')->name('turmas.frequencia.edit');
         Route::get('turmas/{id_turma}/periodo/{id_periodo_letivo}/disciplina/{id_disciplina}/delete', 'FrequenciaController@delete')->name('turmas.frequencias.delete');
@@ -85,6 +83,11 @@ Route::prefix('pedagogico')
         Route::post('turmas/notas', 'NotaController@store')->name('turmas.notas.store'); 
         route::any('turmas/{id}/notas', 'NotaController@index')->name('turmas.notas');
         route::get('turmas/notas', 'NotaController@indexNotas')->name('turmas.index.notas');
+
+        /**
+         * Rotas relatórios diários
+         */
+        Route::get('turmas/relatorios/diario', 'Relatorio\DiarioController@diario')->name('turmas.relatorios.diarios');
           
 });
 
@@ -133,8 +136,20 @@ Route::prefix('secretaria')
         /**
          * Rotas Turmas
          */
+        /**
+         * Rotas Matrículas
+         */
+        Route::get('turmas/getTurmas/{id}', 'TurmaController@getTurmas')->name('turmas.getTurmas');
+        Route::get('turmas/create', 'TurmaController@create')->name('turmas.create');
+        Route::put('turmas/{id_turma}', 'TurmaController@update')->name('turmas.update');
+        Route::get('turmas/{id_turma}/edit', 'TurmaController@edit')->name('turmas.edit');
         Route::any('turmas/search', 'TurmaController@search')->name('turmas.search');
-        Route::resource('turmas', 'TurmaController')->middleware('can:Turma Ver');
+        Route::delete('turmas/{id_turma}', 'TurmaController@destroy')->name('turmas.destroy');
+        Route::get('turmas/{id_turma}', 'TurmaController@show')->name('turmas.show');
+        Route::post('turmas', 'TurmaController@store')->name('turmas.store');
+        Route::any('turmas', 'TurmaController@index')->name('turmas.index');
+        
+        
 
         /*
         *Rotas Pessoas

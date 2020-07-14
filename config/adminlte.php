@@ -277,37 +277,50 @@ return [
             'icon'    => 'fas fa-chalkboard-teacher',
             'icon_color' => 'yellow',
             'submenu' => [
-                            [
-                        'text' => 'Diários',
-                        'url'  => 'pedagogico/turmas',
-                        'icon_color' => 'yellow',
+                [
+                    'text'    => 'Diários',
+                    'icon'    => 'fas fa-book',
+                    'icon_color' => 'yellow',
+                    'submenu' => [
+                        [
+                            'text' => 'Lançar',
+                            'url'  => 'pedagogico/turmas',
+                            'icon_color' => 'yellow',
+                        ],
+                        [
+                            'text' => 'Relatórios',
+                            'route'  => 'turmas.relatorios.diarios',
+                            'icon_color' => 'yellow',
+                        ],
+
                     ],
-                    [
-                        'text'    => 'Avaliações',
-                        'icon'    => 'fas fa-file-alt',
-                        'icon_color' => 'yellow',
-                        'submenu' => [
-                            [
-                                'text' => 'Cadastrar Avaliação',                                
-                                'url'  => 'pedagogico/tiposturmas',
-                                'icon_color' => 'yellow',
-                                'can'  => 'Avaliação Ver',
-                            ],
-                            [
-                                'text' => 'Lançar Notas',                                
-                                'route' => 'turmas.index.notas',
-                                'icon_color' => 'yellow',
-                                'can'  => 'Nota Ver',
-                            ],
+                ],               
+                [
+                    'text'    => 'Avaliações',
+                    'icon'    => 'fas fa-file-alt',
+                    'icon_color' => 'yellow',
+                    'submenu' => [
+                        [
+                            'text' => 'Cadastrar Avaliação',                                
+                            'url'  => 'pedagogico/tiposturmas',
+                            'icon_color' => 'yellow',
+                            'can'  => 'Avaliação Ver',
+                        ],
+                        [
+                            'text' => 'Lançar Notas',                                
+                            'route' => 'turmas.index.notas',
+                            'icon_color' => 'yellow',
+                            'can'  => 'Nota Ver',
                         ],
                     ],
-                    [
-                        'text' => 'Boletins',
-                        'url'  => '#',
-                        'icon_color' => 'yellow',
-                    ],
+                ],
+                [
+                    'text' => 'Boletins',
+                    'url'  => '#',
+                    'icon_color' => 'yellow',
                 ],
             ],
+        ],
         [
             'text'    => 'Configurações',
             'icon'    => 'fas fa-fw fa-cogs',

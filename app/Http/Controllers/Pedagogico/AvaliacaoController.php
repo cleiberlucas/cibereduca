@@ -8,6 +8,7 @@ use App\Models\GradeCurricular;
 use App\Models\Pedagogico\Avaliacao;
 use App\Models\Pedagogico\TipoAvaliacao;
 use App\Models\PeriodoLetivo;
+use App\Models\TipoTurma;
 use App\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -77,12 +78,13 @@ class AvaliacaoController extends Controller
         //dd($gradeCurricular);
         $tiposAvaliacao = new TipoAvaliacao;
         $tiposAvaliacao = $tiposAvaliacao->getTiposAvaliacao(1);
+        $tipoTurma = TipoTurma::where('id_tipo_turma', $id_tipo_turma)->first();
        
         return view('pedagogico.paginas.tiposturmas.avaliacoes.create', [            
             'periodosLetivos' => $periodosLetivos,
             'gradeCurricular' => $gradeCurricular,
             'tiposAvaliacao'  => $tiposAvaliacao,
-            'tipoTurma'       => $id_tipo_turma,
+            'tipoTurma'       => $tipoTurma,
             
         ]);
     }
@@ -152,10 +154,11 @@ class AvaliacaoController extends Controller
         //dd($gradeCurricular);
         $tiposAvaliacao = new TipoAvaliacao;
         $tiposAvaliacao = $tiposAvaliacao->getTiposAvaliacao(1);
+        $tipoTurma = TipoTurma::where('id_tipo_turma', $id_tipo_turma)->first();
         
         return view('pedagogico.paginas.tiposturmas.avaliacoes.edit',[
                     'avaliacao' => $avaliacao,    
-                    'tipoTurma' => $id_tipo_turma,
+                    'tipoTurma' => $tipoTurma,
                     'periodosLetivos' => $periodosLetivos,
                     'gradeCurricular' => $gradeCurricular,
                     'tiposAvaliacao'  => $tiposAvaliacao,

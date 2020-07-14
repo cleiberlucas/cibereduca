@@ -114,14 +114,7 @@
                                                     </h5>
                                                 </div>
                                             @endif
-                                        </div>
-                                        <div class="row">
-                                            <div class="form-group col-sm-12 col-xs-1" align="left">
-                                                <font color='#0080FF'>
-                                                    Utilize os ícones <i class="fas fa-edit"></i> para alterar as frequências de um aluno.
-                                                </font>
-                                            </div>
-                                        </div>
+                                        </div>                                        
                                         
                                         @foreach ($turmaMatriculas as $index => $turmaMatricula)
 
@@ -174,9 +167,18 @@
                                             </div>  
                                         
                                         @endforeach {{-- fim listagem alunos --}}
+                                        
+                                        <div class="row">
+                                            <div class="form-group col-sm-12 col-xs-1" align="left">
+                                                <font color='#0080FF'>
+                                                    Utilize os ícones <i class="fas fa-edit"></i> para alterar as frequências de um aluno.
+                                                </font>
+                                            </div>
+                                        </div>
+
                                         @if ($turmaPeriodoLetivo->situacao == 1)                                                                                                                                                                   
                                             <div class="form-group col-sm-2 col-xs-2">
-                                                <button type="submit" class="btn btn-sm btn-outline-success"><i class="fas fa-forward"></i> Enviar</button>
+                                                <button type="submit" class="btn btn-success"><i class="fas fa-forward"></i> Enviar</button>
                                             </div>
                                         @endif
                                     </form>                                            

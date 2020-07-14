@@ -5,7 +5,14 @@
     
     <div class="row">
         <div class="form-group col-sm-3 col-xs-2">
-            <input type="hidden" name="fk_id_tipo_turma" value="{{$tipoTurma}}">            
+            <input type="hidden" name="fk_id_tipo_turma" 
+                value="
+                    @if( isset($tipoTurma))
+                        {{$tipoTurma->id_tipo_turma}}
+
+                    @endif
+                
+                ">            
             <label>* Período Letivo:</label>
             
             <select name="fk_id_periodo_letivo" id="fk_id_periodo_letivo" required class="form-control">

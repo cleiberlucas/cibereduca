@@ -10,6 +10,7 @@ use App\Models\TipoTurma;
 use App\Models\Turno;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TurmaController extends Controller
 {
@@ -192,5 +193,28 @@ class TurmaController extends Controller
             return ['situacao_turma' => '0'];
         else
              return ['situacao_turma' => '1'];            
+    }
+
+    /**
+     * Turmas de um ano letivo
+     * Popular COMBOBOX
+     * @param int id_ano_letivo
+     * @return array turmas
+     */
+    public function getTurmas($anoLetivo = 0)
+    {
+        $turma['data'] = DB::table('tb_turmas')->select('id_turma', DB::raw("CONCAT(nome_turma,' ',sub_nivel_ensino,' ', descricao_turno) AS nomeTurma"))
+                            ->join('tb_tipos_turmas', 'tb_turmas.fk_id_tipo_turma', '=', 'tb_tipos_turmas.id_tipo_turma' )
+                            ->join('tb_sub_niveis_ensino', 'tb_tipos_turmas.fk_id_sub_nivel_ensino', '=', 'tb_sub_niveis_ensino.id_sub_nivel_ensino')
+                            ->join('tb_turnos', 'tb_turmas.fk_id_turno', '=', 'tb_turnos.id_turno') 
+                            ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')
+                            ->where('tb_tipos_turmas.fk_id_ano_letivo', $anoLetivo)
+                            ->orderBy('descricao_turno')
+                            ->orderBy('sub_nivel_ensino')
+                            ->orderBy('nome_turma', 'asc')
+                            ->get();
+
+        echo json_encode($turma);
+        exit;                            
     }
 }

@@ -124,14 +124,7 @@
                                                 </div>
 
                                             @endif
-                                        </div>
-                                        <div class="row">
-                                            <div class="form-group col-sm-12 col-xs-1" align="left">
-                                                <font color='green'>
-                                                    Utilize os ícones <i class="fas fa-edit"></i> para alterar as notas de um aluno.
-                                                </font>
-                                            </div>
-                                        </div>
+                                        </div>                                        
                                         
                                         @foreach ($turmaMatriculas as $index => $turmaMatricula)
 
@@ -169,7 +162,14 @@
 
                                             </div>
                                         @endforeach {{-- fim listagem alunos --}}
-
+                                        <div class="row">
+                                            <div class="form-group col-sm-12 col-xs-1" align="left">
+                                                <font color='green'>
+                                                    Utilize os ícones <i class="fas fa-edit"></i> para alterar as notas de um aluno.
+                                                </font>
+                                            </div>
+                                        </div>
+                                        
                                         {{-- Libera lançamento de notas somente se o período estiver aberto --}}
                                         @if ($turmaPeriodoLetivo->situacao == 1)                                                                                                                                                                                   
                                             <div class="form-group col-sm-2 col-xs-2">

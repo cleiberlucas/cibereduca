@@ -17,7 +17,7 @@
             <a href="#" class="">Cadastrar</a>
         </li>
     </ol>
-    <h1>Cadastrar Avaliação</h1>
+    <h2>Cadastrar Avaliação {{$tipoTurma->tipo_turma}} - {{$tipoTurma->subNivelEnsino->sub_nivel_ensino}}</h2>
 @stop
 
 @section('content')
