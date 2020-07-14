@@ -55,8 +55,16 @@
     
         {{-- Abas Meses --}}
         <div class="tab-content">
-            @foreach ($frequenciasAlunoMesesPeriodo as $frequenciasAlunoMesPeriodo)
-                <div role="tabpanel" class="tab-pane active" id="{{nomeMes($frequenciasAlunoMesPeriodo->mes)}}">
+            @foreach ($frequenciasAlunoMesesPeriodo as $index => $frequenciasAlunoMesPeriodo)
+                <div role="tabpanel" 
+                    @if ($index == 0)
+                        class="tab-pane active"     
+                    @else
+                    class="tab-pane" 
+                    @endif
+                    
+                    id="{{nomeMes($frequenciasAlunoMesPeriodo->mes)}}">
+
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover">
                             <thead class="table-info">

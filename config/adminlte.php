@@ -283,7 +283,7 @@ return [
                     'icon_color' => 'yellow',
                     'submenu' => [
                         [
-                            'text' => 'Lançar',
+                            'text' => 'Lançamentos',
                             'url'  => 'pedagogico/turmas',
                             'icon_color' => 'yellow',
                         ],

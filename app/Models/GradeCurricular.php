@@ -54,4 +54,5 @@ class GradeCurricular extends Model
                 ->orderBy('disciplina')
                 ->get();
     }
+
 }

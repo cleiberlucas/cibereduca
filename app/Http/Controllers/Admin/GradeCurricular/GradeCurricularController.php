@@ -120,4 +120,25 @@ class GradeCurricularController extends Controller
 
         return redirect()->route('tiposturmas.disciplinas', $tipoTurma->id_tipo_turma);
     }
+
+    
+    /**
+     * Disciplinas de uma Turmas
+     * Popular COMBOBOX
+     * @param int id_turma
+     * @return array disciplinas
+     */
+    public function getDisciplinas($id_turma = 0)
+    {
+        $disciplina['data'] = GradeCurricular::select('id_disciplina', 'disciplina')
+                ->join('tb_tipos_turmas', 'tb_grades_curriculares.fk_id_tipo_turma', 'id_tipo_turma')
+                ->join('tb_turmas', 'tb_turmas.fk_id_tipo_turma', 'id_tipo_turma')
+                ->join('tb_disciplinas', 'fk_id_disciplina', 'id_disciplina')
+                ->where('tb_turmas.id_turma', '=', $id_turma)
+                ->orderBy('disciplina')
+                ->get();
+
+        echo json_encode($disciplina);
+        exit;
+    }
 }

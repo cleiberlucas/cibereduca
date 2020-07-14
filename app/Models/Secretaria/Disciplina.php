@@ -23,4 +23,16 @@ class Disciplina extends Model
         
         return $resultado;
     }
+
+    /**
+     * Retorna dados de uma disciplina
+     * @param int id_disciplina
+     * @return array dados
+     */
+    public function getDisciplina(int $id_disciplina)
+    {
+        $disciplina = $this->where('id_disciplina', $id_disciplina)->first();
+
+        return $disciplina;
+    }
 }

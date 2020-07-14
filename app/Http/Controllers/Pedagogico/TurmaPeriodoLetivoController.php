@@ -8,6 +8,8 @@ use App\Models\Pedagogico\TurmaPeriodoLetivo;
 use App\Models\PeriodoLetivo;
 use App\Models\Secretaria\Turma;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 /* use App\User; */
 
 class TurmaPeriodoLetivoController extends Controller
@@ -101,19 +103,6 @@ class TurmaPeriodoLetivoController extends Controller
         return redirect()->route('turmas.periodosletivos', $turmaPeriodoLetivo->fk_id_turma);
     }
 
-   /*  public function removerUnidadesUser($id, $id_unidade_ensino)
-    {
-        $turma = $this->turma->where('id', $id)->first();
-        $periodoLetivo = $this->periodosLetivos->where('id_unidade_ensino', $id_unidade_ensino)->first();
-
-        if (!$turma || !$periodoLetivo)
-            return redirect()->back();
-
-        $turma->unidadesEnsino()->detach($periodoLetivo);
-
-        return redirect()->route('users.unidadesensino', $turma->id);
-    } */
-
     /**
      * Verifica se a situação foi ativada
      */
@@ -123,6 +112,24 @@ class TurmaPeriodoLetivoController extends Controller
             return ['situacao' => '0'];
         else
              return ['situacao' => '1'];            
+    }
+
+    /**
+     * períodos letivos de uma turma
+     * Popular COMBOBOX
+     * @param int id_turma
+     * @return array periodosletivos
+     */
+    public function getPeriodosLetivos($turma = 0)
+    {
+        $periodosLetivos['data'] = TurmaPeriodoLetivo::select('id_periodo_letivo', 'periodo_letivo')  
+                                ->join('tb_periodos_letivos', 'fk_id_periodo_letivo', 'id_periodo_letivo')                                
+                                ->where('fk_id_turma', $turma)
+                                ->orderBy('periodo_letivo')
+                                ->get();
+
+        echo json_encode($periodosLetivos);
+        exit;
     }
 
 }

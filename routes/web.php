@@ -28,8 +28,6 @@ Route::prefix('pedagogico')
         Route::post('tiposturmas/avaliacoes', 'AvaliacaoController@store')->name('tiposturmas.avaliacoes.store'); 
         route::any('tiposturmas/{id}/avaliacoes', 'AvaliacaoController@index')->name('tiposturmas.avaliacoes');
 
-         
-
         /**
          * Rotas Tipos Frequencia
          */
@@ -88,13 +86,15 @@ Route::prefix('pedagogico')
          * Rotas relatórios diários
          */
         Route::get('turmas/relatorios/diario', 'Relatorio\DiarioController@diario')->name('turmas.relatorios.diarios');
+        Route::post('turmas/relatorios/diario/filtros', 'Relatorio\DiarioController@filtros')->name('turmas.relatorios.diarios.filtros');
+        Route::post('turmas/relatorios/diario/frequencia_branco', 'Relatorio\DiarioController@frequenciaFichaBranco')->name('turmas.relatorios.diarios.frequencia_branco');
           
 });
 
         /**
          * Rotas Turmas X Período Letivo
          */
-        /* route::get('turmas/{id}/periodoletivo/{id_periodo_letivo}/remove', 'Pedagogico\TurmaPeriodoLetivoController@removerPeriodosTurma')->name('turmas.periodosletivos.remover');             */
+        Route::get('turmas/periodosletivos/getPeriodosLetivos/{id}', 'Pedagogico\TurmaPeriodoLetivoController@getPeriodosLetivos')->name('turmas.periodosletivos.getPeriodosLetivos');
         route::post('turmas/periodoletivo/{id_turma_periodo_letivo}/update', 'Pedagogico\TurmaPeriodoLetivoController@update')->name('turmas.periodosletivos.update');            
         route::post('turmas/{id}/periodosletivos', 'Pedagogico\TurmaPeriodoLetivoController@vincularPeriodosTurma')->name('turmas.periodoletivo.vincular');            
         route::any('turmas/{id}/periodosletivos/add', 'Pedagogico\TurmaPeriodoLetivoController@periodosLetivosAdd')->name('turmas.periodosletivos.add');
@@ -135,12 +135,12 @@ Route::prefix('secretaria')
         
         /**
          * Rotas Turmas
-         */
-        /**
-         * Rotas Matrículas
-         */
+         */    
         Route::get('turmas/getTurmas/{id}', 'TurmaController@getTurmas')->name('turmas.getTurmas');
-        Route::get('turmas/create', 'TurmaController@create')->name('turmas.create');
+        Route::any('turmas/search', 'TurmaController@search')->name('turmas.search');
+        Route::resource('turmas', 'TurmaController');   
+        
+       /* Route::get('turmas/create', 'TurmaController@create')->name('turmas.create');
         Route::put('turmas/{id_turma}', 'TurmaController@update')->name('turmas.update');
         Route::get('turmas/{id_turma}/edit', 'TurmaController@edit')->name('turmas.edit');
         Route::any('turmas/search', 'TurmaController@search')->name('turmas.search');
@@ -148,9 +148,7 @@ Route::prefix('secretaria')
         Route::get('turmas/{id_turma}', 'TurmaController@show')->name('turmas.show');
         Route::post('turmas', 'TurmaController@store')->name('turmas.store');
         Route::any('turmas', 'TurmaController@index')->name('turmas.index');
-        
-        
-
+         */
         /*
         *Rotas Pessoas
         */
@@ -204,6 +202,7 @@ Route::prefix('admin')
              * Rotas Grade curricular
              * Turmas X Disciplinas
              */
+            Route::get('tiposturmas/getDisciplinas/{id}', 'GradeCurricular\GradeCurricularController@getDisciplinas')->name('tiposturmas.getdisciplinas');
             route::get('tiposturmas/{id}/disciplina/{id_disciplina}/remove', 'GradeCurricular\GradeCurricularController@removerDisciplinasTurma')->name('tiposturmas.disciplinas.remover');            
             route::post('tiposturmas/{id}/disciplinas', 'GradeCurricular\GradeCurricularController@vincularDisciplinasTurma')->name('tiposturmas.disciplinas.vincular');            
             route::any('tiposturmas/{id}/disciplinas/add', 'GradeCurricular\GradeCurricularController@disciplinasAdd')->name('tiposturmas.disciplinas.add');
@@ -221,13 +220,13 @@ Route::prefix('admin')
             Route::any('tiposdocumentos/search', 'TipoDocumentoController@search')->name('tiposdocumentos.search');
             Route::resource('tiposdocumentos', 'TipoDocumentoController');
 
-        /**
+            /**
              * Rotas períodos letivos
-             */
+             */            
             Route::any('periodosletivos/search', 'PeriodoLetivoController@search')->name('periodosletivos.search');
             Route::resource('periodosletivos', 'PeriodoLetivoController')->middleware('can:Período Letivo Ver');
 
-        /**
+            /**
              * Rotas anos letivos
              */
             Route::any('anosletivos/search', 'AnoLetivoController@search')->name('anosletivos.search');

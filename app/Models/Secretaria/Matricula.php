@@ -62,6 +62,19 @@ class Matricula extends Model
     }
 
     /**
+     * Retorna a lista de alunos de uma turma
+     */
+    public function getAlunosTurma($id_turma)
+    {
+        $alunos = $this->select('*')
+                        ->join('tb_pessoas', 'fk_id_aluno', 'id_pessoa')
+                        ->where('fk_id_turma', $id_turma)                        
+                        ->orderBy('nome')
+                        ->get();
+        return $alunos;
+    }
+
+    /**
      * Retorna aluno MatrículaXAluno
      */
     public function aluno()
