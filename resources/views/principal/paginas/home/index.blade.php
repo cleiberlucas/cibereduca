@@ -11,7 +11,7 @@
 @section('content')
     <div class="container">
         <div class="row">
-            <div class="form-group col-sm-4 col-xs-2"> 
+            <div class="form-group col-sm-6 col-xs-2"> 
                 <h2>Colégio Rede Educa Goiás</h2>
             </div>
         </div>
@@ -36,7 +36,7 @@
                         ?>
                     @endif
                   
-                    {{-- Caso tenha mais de uma, o usuário deve selecionar --}}
+                    {{-- Caso tenha mais de uma unidade, o usuário deve selecionar --}}
                     @if (count($unidadesEnsino) > 0)        
                         <select name="unidadeensino" id="unidadeensino" class="form-control">
                             @foreach ($unidadesEnsino as $unidadeEnsino)
