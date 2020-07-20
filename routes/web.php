@@ -55,7 +55,7 @@ Route::prefix('pedagogico')
         route::get('turmas/conteudolecionado/{id_conteudo_lecionado}', 'ConteudoLecionadoController@remover')->name('turmas.conteudoslecionados.remover');            
         route::put('turmas/conteudolecionado/{id_conteudo_lecionado}', 'ConteudoLecionadoController@update')->name('turmas.conteudoslecionados.update');                            
         Route::post('turmas/conteudoslecionados', 'ConteudoLecionadoController@store')->name('turmas.conteudoslecionados.store'); 
-        route::any('turmas/{id}/conteudoslecionados', 'ConteudoLecionadoController@index')->name('turmas.conteudoslecionados');
+        route::any('turmas/{id}/conteudoslecionados', 'ConteudoLecionadoController@index')->name('turmas.conteudoslecionados')->middleware('can:Conteúdo Lecionado Ver');
         
         
         /**
@@ -67,7 +67,7 @@ Route::prefix('pedagogico')
         Route::get('turmas/{id_turma}/data/{data_aula}/disciplina/{id_disciplina}/remove', 'FrequenciaController@remover')->name('turmas.frequencias.remover');
         Route::get('turmas/{id_turma_periodo_letivo}/frequencia/{id_matricula}/showaluno', 'FrequenciaController@frequenciaShowAluno')->name('turmas.frequencias.showaluno');
         Route::post('turmas/frequencias', 'FrequenciaController@store')->name('turmas.frequencias.store'); 
-        route::any('turmas/{id}/frequencias', 'FrequenciaController@index')->name('turmas.frequencias');
+        route::any('turmas/{id}/frequencias', 'FrequenciaController@index')->name('turmas.frequencias')->middleware('can:Frequencia Ver');
 
         /**
          * Rotas Notas
@@ -80,7 +80,7 @@ Route::prefix('pedagogico')
         Route::get('turmas/nota/{id_matricula}/showaluno', 'NotaController@notaShowAluno')->name('turmas.notas.showaluno');         
         Route::post('turmas/notas', 'NotaController@store')->name('turmas.notas.store'); 
         route::any('turmas/{id}/notas', 'NotaController@index')->name('turmas.notas');
-        route::get('turmas/notas', 'NotaController@indexNotas')->name('turmas.index.notas');
+        route::get('turmas/notas', 'NotaController@indexNotas')->name('turmas.index.notas')->middleware('can:Nota Ver');
 
         /**
          * Rotas relatórios diários
@@ -98,7 +98,7 @@ Route::prefix('pedagogico')
         route::post('turmas/periodoletivo/{id_turma_periodo_letivo}/update', 'Pedagogico\TurmaPeriodoLetivoController@update')->name('turmas.periodosletivos.update');            
         route::post('turmas/{id}/periodosletivos', 'Pedagogico\TurmaPeriodoLetivoController@vincularPeriodosTurma')->name('turmas.periodoletivo.vincular');            
         route::any('turmas/{id}/periodosletivos/add', 'Pedagogico\TurmaPeriodoLetivoController@periodosLetivosAdd')->name('turmas.periodosletivos.add');
-        route::get('turmas/{id}/periodosletivos', 'Pedagogico\TurmaPeriodoLetivoController@periodosLetivos')->name('turmas.periodosletivos');
+        route::get('turmas/{id}/periodosletivos', 'Pedagogico\TurmaPeriodoLetivoController@periodosLetivos')->name('turmas.periodosletivos')->middleware('can:Período Letivo Ver');
 
 /**
  * Rotas Secretaria
@@ -131,7 +131,7 @@ Route::prefix('secretaria')
         Route::delete('matriculas/{id_turma}', 'MatriculaController@destroy')->name('matriculas.destroy');
         Route::get('matriculas/{id_turma}', 'MatriculaController@show')->name('matriculas.show');
         Route::post('matriculas', 'MatriculaController@store')->name('matriculas.store');
-        Route::any('{id_turma}/matriculas', 'MatriculaController@index')->name('matriculas.index');
+        Route::any('{id_turma}/matriculas', 'MatriculaController@index')->name('matriculas.index')->middleware('can:Matrícula Ver');
         
         /**
          * Rotas Turmas

@@ -19,6 +19,8 @@ class TipoAvaliacaoController extends Controller
 
     public function index()
     {
+        $this->authorize('Tipo Avaliação Ver');   
+        
         $tiposAvaliacoes = $this->repositorio
                                 ->orderBy('tipo_avaliacao')
                                 ->paginate();      
@@ -36,6 +38,8 @@ class TipoAvaliacaoController extends Controller
 
     public function store(StoreUpdateTipoAvaliacao $request)
     {
+        $this->authorize('Tipo Avaliação Cadastrar');   
+
         $dados = $request->all();        
         $dados = array_merge($dados);
        //dd($this->usuario);
@@ -46,6 +50,8 @@ class TipoAvaliacaoController extends Controller
 
     public function destroy($id)
     {
+        $this->authorize('Tipo Avaliação Remover');   
+
         $tipoAvaliacao = $this->repositorio->where('id_tipo_avaliacao', $id)->first();
 
         if (!$tipoAvaliacao)
@@ -69,7 +75,9 @@ class TipoAvaliacaoController extends Controller
     }
 
     public function update(StoreUpdateTipoAvaliacao $request, $id)
-    {        
+    {      
+        $this->authorize('Tipo Avaliação Alterar');   
+
         $tipoAvaliacao = $this->repositorio->where('id_tipo_avaliacao', $id)->first();     
         if (!$tipoAvaliacao)
             return redirect()->back();

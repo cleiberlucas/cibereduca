@@ -48,7 +48,7 @@ class DiarioController extends Controller
              ]); 
         }
         else{
-            return redirect()->back();
+            return redirect()->back()->with('atencao', 'Escolha um tipo de relatório.');
         }
     }
 }

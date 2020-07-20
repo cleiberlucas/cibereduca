@@ -2,9 +2,9 @@
 
 namespace App;
 
+use App\Models\Secretaria\UserUnidadeEnsino;
 use App\Models\Traits\UserACLTrait;
 use App\Models\UnidadeEnsino;
-use App\Models\UserUnidadeEnsino;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -94,7 +94,7 @@ class User extends Authenticatable
 
     public function getPermissoesUsuario()
     {
-        $userUnidadeEnsinoPermissoes = new UserUnidadeEnsino();
+        $userUnidadeEnsinoPermissoes = new UserUnidadeEnsino;
         $userUnidadeEnsinoPermissoes = $userUnidadeEnsinoPermissoes->select('tb_permissoes.*')                        
                                     ->where('tb_usuarios_unidade_ensino.fk_id_user', '=', Auth::id()) 
                                     ->where('tb_usuarios_unidade_ensino.fk_id_unidade_ensino', '=', session()->get('id_unidade_ensino'))                               

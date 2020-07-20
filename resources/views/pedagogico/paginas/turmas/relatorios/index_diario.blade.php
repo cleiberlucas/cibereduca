@@ -4,8 +4,7 @@
 @section('title_postfix', ' Turmas')
 
 @section('content_header')
-    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"> </script>
-
+    
     <ol class="breadcrumb">        
         <li class="breadcrumb-item active" >
             <a href="#" class="">Pedagógico</a>
@@ -19,6 +18,9 @@
 
 @section('content')
     <div class="container-fluid">
+
+        @include('admin.includes.alerts')
+
         <form action="{{ route('turmas.relatorios.diarios.filtros')}}" class="form" method="POST">
             @csrf            
             <div class="row">
@@ -90,5 +92,10 @@
     {{-- <script type="text/javascript" src="{!!asset('/js/populaPeriodos.js')!!}"></script> --}}
     <script type="text/javascript" src="{!!asset('/js/populaDisciplinas.js')!!}"></script>
     
+    <script>
+        $(document).ready(function(){
+              $(".alert").slideDown(300).delay(5000).slideUp(300);
+        });    
+    </script>
     
 @stop
