@@ -44,10 +44,21 @@
                  {{$aluno->nome}}
             </td> 
             @for ($i = 0; $i < 25; $i++)
-            <td></td>
-        @endfor
+                <td></td>
+            @endfor
         </tr>
     @endforeach
+    @for ($i = 0; $i < 5; $i++)
+        <tr>
+            <td><br></td>
+            <td></td>
+            @for ($j = 0; $j < 25; $j++)
+                <td></td>
+            @endfor
+            
+        </tr>    
+    
+    @endfor
 
 </table>{{-- fim tabela --}}
 </body>
