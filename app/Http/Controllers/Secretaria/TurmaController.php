@@ -41,10 +41,11 @@ class TurmaController extends Controller
                             ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())                        
                             ->where('tb_anos_letivos.fk_id_unidade_ensino', '=', session()->get('id_unidade_ensino'))                             
                             ->orderBy('tb_anos_letivos.ano', 'desc')
-                            ->orderBy('tb_turnos.descricao_turno', 'asc')
-                            ->orderBy('tb_sub_niveis_ensino.sub_nivel_ensino', 'asc')
                             ->orderBy('nome_turma', 'asc')
+                            ->orderBy('tb_sub_niveis_ensino.sub_nivel_ensino', 'asc')
+                            ->orderBy('tb_turnos.descricao_turno', 'asc')
                             ->paginate();
+                            
         $matriculas = new Matricula;
         $quantVagas = [];
         foreach ($turmas as $turma)
@@ -209,9 +210,9 @@ class TurmaController extends Controller
                             ->join('tb_turnos', 'tb_turmas.fk_id_turno', '=', 'tb_turnos.id_turno') 
                             ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')
                             ->where('tb_tipos_turmas.fk_id_ano_letivo', $anoLetivo)
-                            ->orderBy('descricao_turno')
+                            ->orderBy('nome_turma', 'asc')                            
                             ->orderBy('sub_nivel_ensino')
-                            ->orderBy('nome_turma', 'asc')
+                            ->orderBy('descricao_turno')
                             ->get();
 
         echo json_encode($turma);
