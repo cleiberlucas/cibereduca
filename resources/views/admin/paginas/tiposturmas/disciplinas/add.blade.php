@@ -33,8 +33,8 @@
                     <thead>
                         <th width="50px">#</th>
                         <th width="200">Disciplinas disponíveis</th> 
-                        <th>Carga Horária Anual</th>                                               
-                        <th width="870"></th>
+                        <th width="150px">Carga Horária Anual</th>                                               
+                        <th width="670"></th>
                     </thead>
                     <tbody>                        
                         <form action="{{ route('tiposturmas.disciplinas.vincular', $tipoTurma->id_tipo_turma) }}" method="POST">
