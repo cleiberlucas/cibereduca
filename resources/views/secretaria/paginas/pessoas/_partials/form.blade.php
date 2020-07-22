@@ -14,7 +14,7 @@
         <label>* Nome:</label>
         <input type="text" name="nome" class="form-control" placeholder="Nome" required value="{{ $pessoa->nome ?? old('nome') }}">
     </div>
-    <div class="form-group col-sm-3 col-xs-12">
+    <div class="form-group col-sm-4 col-xs-12">
         <label>Foto:</label>
         <input type="file" name="foto" class="form-control">
     </div>
@@ -36,7 +36,7 @@
         </select>
     </div> 
 
-    <div class="form-group col-sm-5 col-xs-12">
+    <div class="form-group col-sm-6 col-xs-12">
         <label>Identidade:</label>
         <input type="text" name="doc_identidade" class="form-control" placeholder="Documento de Identidade" value="{{ $pessoa->doc_identidade ?? old('doc_identidade') }}">
     </div>
