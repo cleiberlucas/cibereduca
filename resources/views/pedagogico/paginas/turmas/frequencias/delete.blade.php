@@ -65,12 +65,13 @@
                 <div class="form-group col-sm-1 col-xs-2">
                     {{$index+1}}
                 </div>
-                <div class="form-group col-sm-2 col-xs-2">
+                <div class="form-group col-sm-4 col-xs-2">
+                    {{date('d/m/Y', strtotime($frequencia->data_aula))}}
                     {{-- Permite exclusão somente se o período estiver aberto --}}
                     @if ($situacaoPeriodo == 1)
                         <a href="{{route('turmas.frequencias.remover', [$idTurmaPeriodoLetivo, $frequencia->data_aula, $idDisciplina])}}" class="btn btn-sm btn-outline-danger"> <i class="fas fa-trash"></i> Apagar</a> 
                     @endif
-                    {{date('d/m/Y', strtotime($frequencia->data_aula))}}
+                
                 </div>
             </div>
      
