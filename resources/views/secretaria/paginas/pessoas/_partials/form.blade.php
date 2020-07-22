@@ -48,7 +48,7 @@
         <input type="text" name="cpf" id="cpf" class="form-control" placeholder="CPF" value="{{ $pessoa->cpf ?? old('cpf') }}">
     </div>    
     
-    <div class="form-group col-sm-2 col-xs-10">
+    <div class="form-group col-sm-3 col-xs-10">
         <label>Data Nascimento:</label>
         <input type="date" name="data_nascimento" class="form-control" placeholder="Data de Nascimento" value="{{ $pessoa->data_nascimento ?? old('data_nascimento') }}">
         <div class="input-group-addon" >

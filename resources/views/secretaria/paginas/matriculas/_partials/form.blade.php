@@ -50,23 +50,31 @@
 
     <h3>Matrícula</h3>
     <div class="row">
-        <div class="form-group col-sm-2 col-xs-2">            
-            <label>* Valor Matrícula</label>
-            <input type="number"  name="valor_matricula" id="valor_matricula" step="0.010" class="form-control"  required value="{{ $matricula->valor_matricula ?? old('valor_matricula') }}">
-        </div>  
-        <div class="form-group col-sm-2 col-xs-2">            
+          
+        <div class="form-group col-sm-3 col-xs-2">            
             <label>* Matrícula</label>
             <input type="date" name="data_matricula" class="form-control"  required value="{{ $matricula->data_matricula ?? old('data_matricula') }}">
         </div>  
-        <div class="form-group col-sm-2 col-xs-2">            
-            <label>Pagamento Matrícula</label>
-            <input type="date" name="data_pagto_matricula" class="form-control"  value="{{ $matricula->data_pagto_matricula ?? old('data_pagto_matricula') }}">
-        </div>  
-        <div class="form-group col-sm-2 col-xs-2">            
+        
+        <div class="form-group col-sm-3 col-xs-2">            
             <label>* Limite desistência</label>
             <input type="date" name="data_limite_desistencia" class="form-control"  required value="{{ $matricula->data_limite_desistencia ?? old('data_limite_desistencia') }}">
-        </div>  
-        <div class="form-group col-sm-2 col-xs-4">            
+        </div> 
+              
+    </div>
+
+    <div class="row">
+        <div class="form-group col-sm-3 col-xs-2">            
+            <label>* Valor Matrícula</label>
+            <input type="number"  name="valor_matricula" id="valor_matricula" step="0.010" class="form-control"  required value="{{ $matricula->valor_matricula ?? old('valor_matricula') }}">
+        </div>
+
+        <div class="form-group col-sm-3 col-xs-2">            
+            <label>Pagamento Matrícula</label>
+            <input type="date" name="data_pagto_matricula" class="form-control"  value="{{ $matricula->data_pagto_matricula ?? old('data_pagto_matricula') }}">
+        </div> 
+
+        <div class="form-group col-sm-3 col-xs-4">            
             <label>Forma de pagamento</label>
             <select name="fk_id_forma_pagto_matricula" id="fk_id_forma_pagto_matricula" class="form-control">
                 <option value=""></option>
@@ -79,16 +87,17 @@
                         {{$formaPagto->forma_pagamento}}</option>
                 @endforeach
             </select>
-        </div>        
+        </div> 
+
     </div>
 
     <h3>Curso</h3>
     <div class="row">        
-        <div class="form-group col-sm-2 col-xs-2">            
+        <div class="form-group col-sm-3 col-xs-2">            
             <label>Valor Desconto</label>
             <input type="number" name="valor_desconto" id="valor_desconto" step="0.010" class="form-control"  value="{{ $matricula->valor_desconto ?? old('valor_desconto') }}">
         </div>  
-        <div class="form-group col-sm-2 col-xs-2">            
+        <div class="form-group col-sm-3 col-xs-2">            
             <label>Tipo Desconto Curso</label>
             <select name="fk_id_tipo_desconto_curso" id="fk_id_tipo_desconto_curso" class="form-control">
                 <option value=""></option>
@@ -105,15 +114,15 @@
     </div>
 
     <div class="row">
-        <div class="form-group col-sm-2 col-xs-2">            
+        <div class="form-group col-sm-3 col-xs-2">            
             <label>* Quantidade parcelas</label>
             <input type="number" name="qt_parcelas_curso" class="form-control" required value="{{ $matricula->qt_parcelas_curso ?? old('qt_parcelas_curso') }}">
         </div>   
-        <div class="form-group col-sm-2 col-xs-2">            
+        <div class="form-group col-sm-3 col-xs-2">            
             <label>* Vencimento 1ª parcela</label>
             <input type="date" name="data_venc_parcela_um" class="form-control" required value="{{ $matricula->data_venc_parcela_um ?? old('data_venc_parcela_um') }}">
         </div> 
-        <div class="form-group col-sm-2 col-xs-2">            
+        <div class="form-group col-sm-3 col-xs-2">            
             <label>* Forma de Pagamento</label>
             <select name="fk_id_forma_pagto_curso" id="fk_id_forma_pagto_curso" class="form-control" required>
                 <option value=""></option>
@@ -131,19 +140,19 @@
 
     <h3>Material Didático</h3>
     <div class="row">
-        <div class="form-group col-sm-2 col-xs-2">            
+        <div class="form-group col-sm-3 col-xs-2">            
             <label>Valor Material Didático</label>
             <input type="number" name="valor_material_didatico" id="valor_material_didatico" step="0.010" class="form-control"  value="{{ $matricula->valor_material_didatico ?? old('valor_material_didatico') }}">
         </div>   
-        <div class="form-group col-sm-2 col-xs-2">            
+        <div class="form-group col-sm-3 col-xs-2">            
             <label>Quantidade parcelas</label>
             <input type="number" name="qt_parcelas_mat_didatico" class="form-control"  value="{{ $matricula->qt_parcelas_mat_didatico ?? old('qt_parcelas_mat_didatico') }}">
         </div>
-        <div class="form-group col-sm-2 col-xs-2">            
+        <div class="form-group col-sm-3 col-xs-2">            
             <label>Pagto Material Didático</label>
             <input type="date" name="data_pagto_mat_didatico" class="form-control"  value="{{ $matricula->data_pagto_mat_didatico ?? old('data_pagto_mat_didatico') }}">
         </div> 
-        <div class="form-group col-sm-2 col-xs-2">            
+        <div class="form-group col-sm-3 col-xs-2">            
             <label>Forma de Pagamento</label>
             <select name="fk_id_forma_pagto_mat_didatico" id="fk_id_forma_pagto_mat_didatico" class="form-control">
                 <option value=""></option>
@@ -177,7 +186,7 @@
     </div>
 
     <div class="row">
-        <div class="form-group col-sm-2 col-xs-2">            
+        <div class="form-group col-sm-3 col-xs-2">            
             <label>* Situação Matrícula</label>
             <select name="fk_id_situacao_matricula" id="fk_id_situacao_matricula" class="form-control" required>
                 <option value=""></option>
@@ -201,7 +210,7 @@
     </div>
 
     <div class="row">
-        <div class="form-group col-sm-2 col-xs-2">  
+        <div class="form-group col-sm-4 col-xs-2">  
             * Campos obrigatórios.<br>          
             <button type="submit" class="btn btn-success"><i class="fas fa-forward"></i> Enviar</button>
         </div>
