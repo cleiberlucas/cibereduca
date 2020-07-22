@@ -13,7 +13,7 @@
                     disabled
                 @endif
             >
-            <div class="form-group">
+            <div class="form-group col-sm-4 col-xs-2">
                 <input type="hidden" name="fk_id_turma" value="{{$matricula->fk_id_turma ?? $turma->id_turma}}">
                 <label>* Aluno:</label>
                 <select name="fk_id_aluno" class="form-control" required>
@@ -32,7 +32,7 @@
     </div>
 
     <div class="row">
-        <div class="form-group col-sm-3 col-xs-2">
+        <div class="form-group col-sm-4 col-xs-2">
             <label>* Responsável:</label>
             <select name="fk_id_responsavel" id="fk_id_responsavel" class="form-control" required>
                 <option value=""></option>
@@ -94,7 +94,7 @@
     <h3>Curso</h3>
     <div class="row">        
         <div class="form-group col-sm-3 col-xs-2">            
-            <label>Valor Desconto</label>
+            <label>Valor Total Desconto</label>
             <input type="number" name="valor_desconto" id="valor_desconto" step="0.010" class="form-control"  value="{{ $matricula->valor_desconto ?? old('valor_desconto') }}">
         </div>  
         <div class="form-group col-sm-3 col-xs-2">            

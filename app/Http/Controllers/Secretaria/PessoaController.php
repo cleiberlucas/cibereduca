@@ -39,8 +39,7 @@ class PessoaController extends Controller
     {   
         /* Alunos 
             Mostra somente unidades de ensino vinculadas ao usuário logado
-        */
-        
+        */        
         if ($request->segment(2) == '1'){
             $pessoas = $this->repositorio
                                         ->join('tb_unidades_ensino', 'fk_id_unidade_ensino', 'id_unidade_ensino')
@@ -79,6 +78,7 @@ class PessoaController extends Controller
         $request['cpf'] = somenteNumeros($request['cpf']); 
         $request['telefone_1'] = somenteNumeros($request['telefone_1']); 
         $request['telefone_2'] = somenteNumeros($request['telefone_2']); 
+        $request['cep'] = somenteNumeros($request['cep']);
 
         $dados = $request->all();
         $sit = $this->verificarSituacao($dados);
@@ -98,9 +98,34 @@ class PessoaController extends Controller
         //Gravando endereço
         //Somente para Responsável
         if ($dados['fk_id_tipo_pessoa'] == 2)
-            $insertPessoa->endereco()->create($dados);
+            $insertPessoa->endereco()->create($request->except('pai', 'mae'));
         
-        return redirect()->back();
+        /* Alunos 
+            Mostra somente unidades de ensino vinculadas ao usuário logado
+        */        
+        if ($dados['fk_id_tipo_pessoa'] == 1){
+            $pessoas = $this->repositorio
+                                        ->join('tb_unidades_ensino', 'fk_id_unidade_ensino', 'id_unidade_ensino')
+                                        ->where('fk_id_tipo_pessoa', $dados['fk_id_tipo_pessoa'])
+                                        ->where('id_unidade_ensino', '=', User::getUnidadeEnsinoSelecionada())
+                                        ->orderBy('nome', 'asc')
+                                        ->paginate(20);
+        }
+        /* Responsável 
+            Não mostra unidade ensino
+        */
+        else
+            $pessoas = $this->repositorio->where('fk_id_tipo_pessoa', $dados['fk_id_tipo_pessoa'])
+                                        ->orderBy('nome', 'asc')
+                                        ->paginate(20); 
+        
+        return redirect()->back()->with('sucesso', 'Cadastro realizado com sucesso.');
+
+       /*  return view('secretaria.paginas.pessoas.index', [
+                    'pessoas' => $pessoas,
+                    'tipo_pessoa' =>  $dados['fk_id_tipo_pessoa'],
+        ])->with('sucesso', 'Cadastro realizado com sucesso.'); */
+    
     }
 
     public function show($id)
@@ -124,7 +149,14 @@ class PessoaController extends Controller
         if (!$pessoa)
             return redirect()->back();
 
-        $pessoa->where('id_pessoa', $id)->delete();
+            try {
+                //code...
+                $pessoa->where('id_pessoa', $id)->delete();
+            } catch (\Throwable $th) {
+                //throw $th;
+                return redirect()->back()->with('atencao', 'Não é possível excluir este cadastro. Alguma informação pode estar vinculada a registros anteriores.');
+            }
+        
         return redirect()->route('pessoas.index', $tipoPessoa);
     }
 
@@ -172,6 +204,7 @@ class PessoaController extends Controller
         $request['cpf'] = somenteNumeros($request['cpf']);     
         $request['telefone_1'] = somenteNumeros($request['telefone_1']); 
         $request['telefone_2'] = somenteNumeros($request['telefone_2']);    
+        $request['cep'] = somenteNumeros($request['cep']);
 
         $request->merge($sit);
         $dados = $request->except('_token', '_method', 'endereco', 'complemento', 'numero', 'bairro', 'fk_id_cidade', 'cep', 'estado');
@@ -193,7 +226,7 @@ class PessoaController extends Controller
                             ->update($request
                                         ->except('_token', '_method', 
                                                     'nome', 'cpf', 'doc_identidade', 'data_nascimento', 'foto', 'fk_id_tipo_doc_identidade', 
-                                                    'obs_pessoa',
+                                                    'obs_pessoa', 'pai', 'mae',
                                                     'telefone_1', 'telefone_2', 'email_1', 'email_2', 'fk_id_tipo_pessoa', 
                                                     'fk_id_user', 'situacao_pessoa', 'estado', 'fk_id_user_alteracao'));
 

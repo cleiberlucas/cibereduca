@@ -31,7 +31,9 @@
 
 @section('content')
     <div class="container-fluid">
+        @include('admin.includes.alerts')
         <div class="card-header">
+           
             <form action="{{ route('pessoas.search') }}" method="POST" class="form form-inline">
                 @csrf
                 <input type="text" name="filtro" placeholder="Nome" class="form-control" value="{{ $filtros['filtro'] ?? '' }}">
@@ -102,4 +104,11 @@
                 </div>
         </div>
     </div>
+
+    <script>
+        $(document).ready(function(){
+              $(".alert").slideDown(300).delay(5000).slideUp(300);
+        });    
+    </script>
+    
 @stop

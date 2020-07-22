@@ -129,7 +129,7 @@
                                                     </div>     
                                                     {{-- Libera lançamento de frequencia somente se o período estiver aberto --}}
                                                     @if ($turmaPeriodoLetivo->situacao == 1)                                                                                                                       
-                                                        <div class="form-group col-sm-2 col-xs-2">
+                                                        <div class="form-group col-sm-3 col-xs-2">
                                                             <input type="date" name="data_aula" autofocus min="{{$turmaPeriodoLetivo->data_inicio}}" max="{{$turmaPeriodoLetivo->data_fim}}" class="form-control" required>
                                                         </div>                                                        
                                                     @endif

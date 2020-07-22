@@ -111,12 +111,13 @@
                                             <input type="hidden" name="fk_id_turma" value={{$turmaPeriodoLetivo->fk_id_turma}}>
                                             <input type="hidden" name="id_periodo_letivo" value={{$turmaPeriodoLetivo->id_periodo_letivo}}>
                                             <div class="container-fluid">
+                                                <br>
                                                 <div class="row">
-                                                    <div class="form-group col-sm-2 col-xs-2">
+                                                    <div class="form-group col-sm-3 col-xs-2">
                                                         <label>Data aula:</label>
                                                         <input type="date" name="data_aula" min="{{$turmaPeriodoLetivo->data_inicio}}" max="{{$turmaPeriodoLetivo->data_fim}}"  class="form-control" required>
                                                     </div>
-                                                    <div class="form-group col-sm-9 col-xs-2">
+                                                    <div class="form-group col-sm-8 col-xs-2">
                                                         <label>Lançar Conteúdo Lecionado - <font color="blue">{{$turmaPeriodoLetivo->periodo_letivo}} - {{$disciplinaTurma->disciplina}}:</font></label><br>            
                                                         <textarea name="conteudo_lecionado" id="" rows="2">{{old('conteudo_lecionado')}}</textarea>
                                                     </div>

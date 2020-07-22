@@ -90,3 +90,9 @@
         this.value = parseFloat(this.value).toFixed(2);
     });
 </script>
+
+<script>
+    $(document).ready(function(){
+          $(".alert").slideDown(300).delay(5000).slideUp(300);
+    });    
+</script>

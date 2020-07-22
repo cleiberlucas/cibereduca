@@ -200,7 +200,7 @@ class TurmaController extends Controller
      * Turmas de um ano letivo
      * Popular COMBOBOX
      * @param int id_ano_letivo
-     * @return array turmas
+     * @return array turmas 
      */
     public function getTurmas($anoLetivo = 0)
     {

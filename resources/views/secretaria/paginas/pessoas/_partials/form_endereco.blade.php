@@ -22,7 +22,7 @@
         <label>Bairro:</label>
         <input type="text" name="bairro" class="form-control" placeholder="Bairro" value="{{ $pessoa->endereco->bairro ?? old('bairro') }}">
     </div>
-    <div class="form-group col-sm-1 col-xs-10">
+    <div class="form-group col-sm-2 col-xs-10">
         <label>Estado: </label>
         <select name="estado" id="estado" class="form-control">
             <option value=""></option>
@@ -52,6 +52,7 @@
     </div>
     <div class="form-group col-sm-2 col-xs-10">
         <label>CEP:</label>
-        <input type="text" name="cep" class="form-control" placeholder="CEP" value="{{ $pessoa->endereco->cep ?? old('cep') }}">
+        <input type="text" name="cep" maxlength="8" class="form-control" placeholder="CEP" value="{{ $pessoa->endereco->cep ?? old('cep') }}">
+        <small class="form-text text-muted">Somente números</small>
     </div>
 </div>

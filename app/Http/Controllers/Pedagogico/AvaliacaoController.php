@@ -92,8 +92,15 @@ class AvaliacaoController extends Controller
     public function store(StoreUpdateAvaliacao $request )
     {
         $dados = $request->all();
-               
-        $this->repositorio->create($dados);
+        
+        try {
+            //code...
+            $this->repositorio->create($dados);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('atencao', 'Esta avaliação já foi cadastrada para esta turma, neste período letivo.');
+        }
+        
  
         return redirect()->route('tiposturmas.avaliacoes', $dados['fk_id_tipo_turma']);
     }

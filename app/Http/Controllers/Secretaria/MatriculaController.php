@@ -95,7 +95,7 @@ class MatriculaController extends Controller
         //dd($request->fk_id_turma);
         $this->repositorio->create($dados);
 
-        return redirect()->route('matriculas.index', $request->fk_id_turma);
+        return redirect()->route('matriculas.index', $request->fk_id_turma)->with('sucesso', 'Matrícula efetuada com sucesso.');
     }
 
     public function show($id)

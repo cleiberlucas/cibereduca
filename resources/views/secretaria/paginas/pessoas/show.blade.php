@@ -29,6 +29,7 @@
 
 @section('content')
     <div class="card">
+        @include('admin.includes.alerts')
         <div class="card-header">
             <ul>                
                 <li>
@@ -94,5 +95,11 @@
             </form>
         </div>
     </div>
+    
+    <script>
+        $(document).ready(function(){
+              $(".alert").slideDown(300).delay(5000).slideUp(300);
+        });    
+    </script>
     
 @endsection

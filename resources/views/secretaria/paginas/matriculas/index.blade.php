@@ -14,6 +14,7 @@
         </li>
     </ol>
     <div class="row">
+       
         <div class="col-sm-8 col-xs-6">
             <h1>Ano Letivo - {{$turma->ano}}</h1>
             <h1>Alunos Matriculados - {{$turma->nome_turma}} - {{$turma->descricao_turno}}</h1>
@@ -42,6 +43,7 @@
 
 @section('content')
     <div class="container-fluid">
+        @include('admin.includes.alerts')
         <div class="card-header">
             <form action="{{ route('matriculas.search') }}" method="POST" class="form form-inline">
                 @csrf
@@ -90,4 +92,11 @@
                 </div>
         </div>
     </div>
+
+    <script>
+        $(document).ready(function(){
+              $(".alert").slideDown(300).delay(5000).slideUp(300);
+        });    
+    </script>
+
 @stop
