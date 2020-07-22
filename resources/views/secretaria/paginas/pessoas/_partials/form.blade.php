@@ -21,10 +21,6 @@
 </div>
 
 <div class="row">
-    <div class="form-group col-sm-2 col-xs-12">
-        <label>CPF:</label>
-        <input type="text" name="cpf" id="cpf" class="form-control" placeholder="CPF" value="{{ $pessoa->cpf ?? old('cpf') }}">
-    </div>    
     <div class="form-group col-sm-2 col-xs-2">            
         <label>Tipo Identidade</label>
         <select name="fk_id_tipo_doc_identidade" id="fk_id_tipo_doc_identidade" class="form-control">
@@ -40,10 +36,18 @@
         </select>
     </div> 
 
-    <div class="form-group col-sm-2 col-xs-12">
+    <div class="form-group col-sm-5 col-xs-12">
         <label>Identidade:</label>
         <input type="text" name="doc_identidade" class="form-control" placeholder="Documento de Identidade" value="{{ $pessoa->doc_identidade ?? old('doc_identidade') }}">
     </div>
+</div>
+
+<div class="row">
+    <div class="form-group col-sm-2 col-xs-12">
+        <label>CPF:</label>
+        <input type="text" name="cpf" id="cpf" class="form-control" placeholder="CPF" value="{{ $pessoa->cpf ?? old('cpf') }}">
+    </div>    
+    
     <div class="form-group col-sm-2 col-xs-10">
         <label>Data Nascimento:</label>
         <input type="date" name="data_nascimento" class="form-control" placeholder="Data de Nascimento" value="{{ $pessoa->data_nascimento ?? old('data_nascimento') }}">
