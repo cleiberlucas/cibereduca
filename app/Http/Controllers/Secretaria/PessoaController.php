@@ -119,12 +119,13 @@ class PessoaController extends Controller
     public function destroy($id)
     {
         $pessoa = $this->repositorio->where('id_pessoa', $id)->first();
+        $tipoPessoa = $pessoa->fk_id_tipo_pessoa;
 
         if (!$pessoa)
             return redirect()->back();
 
         $pessoa->where('id_pessoa', $id)->delete();
-        return redirect()->route('pessoas.index');
+        return redirect()->route('pessoas.index', $tipoPessoa);
     }
 
     public function search(Request $request)
