@@ -67,7 +67,7 @@ Route::prefix('pedagogico')
         Route::get('turmas/{id_turma}/data/{data_aula}/disciplina/{id_disciplina}/remove', 'FrequenciaController@remover')->name('turmas.frequencias.remover');
         Route::get('turmas/{id_turma_periodo_letivo}/frequencia/{id_matricula}/showaluno', 'FrequenciaController@frequenciaShowAluno')->name('turmas.frequencias.showaluno');
         Route::post('turmas/frequencias', 'FrequenciaController@store')->name('turmas.frequencias.store'); 
-        route::any('turmas/{id}/frequencias', 'FrequenciaController@index')->name('turmas.frequencias')->middleware('can:Frequencia Ver');
+        route::any('turmas/{id}/frequencias', 'FrequenciaController@index')->name('turmas.frequencias')->middleware('can:Frequência Ver');
 
         /**
          * Rotas Notas
