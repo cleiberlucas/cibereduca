@@ -30,17 +30,40 @@ class DiarioController extends Controller
     {
         //dd($request);
         $turma = Turma::where('id_turma', $request->turma)->first();
-        $disciplina = new Disciplina;
-        $disciplina = $disciplina->getDisciplina($request->disciplina);        
+        
         $alunos = new Matricula;
         $alunos = $alunos->getAlunosTurma($request->turma);
         //dd($alunos);
+
         /* Imprime ficha de frequência em branco sem dados das frequencias 
-            Somente dados da turma e disciplina e aluno
+            Somente dados da turma, disciplina e aluno
         */
-        if ($request->frequencia == 'freq_branco'){
-            
-             return view('pedagogico.paginas.turmas.relatorios.frequencia_branco', [
+        if ($request->frequencia == 'freq_mensal_branco'){
+            if ($request->disciplina == null)
+                return redirect()->back()->with('atencao', 'Escolha uma disciplina.');
+
+            $disciplina = new Disciplina;
+            $disciplina = $disciplina->getDisciplina($request->disciplina);       
+
+             return view('pedagogico.paginas.turmas.relatorios.frequencia_mensal_branco', [
+                        'turma' => $turma,
+                        'mes'   => $request->mes,
+                        'disciplina' => $disciplina,
+                        'alunos'    => $alunos,
+             ]); 
+        }
+
+        /* Imprime ficha de frequência COM dados das frequencias 
+            Somente dados da turma, disciplina e aluno
+        */
+        else if ($request->frequencia == 'freq_mensal_disciplina'){
+            if ($request->disciplina == null)
+                return redirect()->back()->with('atencao', 'Escolha uma disciplina.');
+
+            $disciplina = new Disciplina;
+            $disciplina = $disciplina->getDisciplina($request->disciplina);       
+             
+             return view('pedagogico.paginas.turmas.relatorios.frequencia_mensal_disciplina', [
                         'turma' => $turma,
                         'mes'   => $request->mes,
                         'disciplina' => $disciplina,

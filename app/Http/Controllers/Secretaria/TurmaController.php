@@ -204,7 +204,7 @@ class TurmaController extends Controller
      */
     public function getTurmas($anoLetivo = 0)
     {
-        $turma['data'] = DB::table('tb_turmas')->select('id_turma', DB::raw("CONCAT(nome_turma,' ',sub_nivel_ensino,' ', descricao_turno) AS nomeTurma"))
+        $turma['data'] = DB::table('tb_turmas')->select('id_turma', DB::raw("CONCAT(nome_turma,' - ',sub_nivel_ensino,' - ', descricao_turno) AS nomeTurma"))
                             ->join('tb_tipos_turmas', 'tb_turmas.fk_id_tipo_turma', '=', 'tb_tipos_turmas.id_tipo_turma' )
                             ->join('tb_sub_niveis_ensino', 'tb_tipos_turmas.fk_id_sub_nivel_ensino', '=', 'tb_sub_niveis_ensino.id_sub_nivel_ensino')
                             ->join('tb_turnos', 'tb_turmas.fk_id_turno', '=', 'tb_turnos.id_turno') 

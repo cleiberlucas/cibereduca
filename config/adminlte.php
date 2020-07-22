@@ -349,7 +349,7 @@ return [
                     'text' => 'Padrões de Turmas',
                     'url'  => 'admin/tiposturmas',
                     'icon_color' => 'red',
-                    'can'  => 'Padrao Turma Ver',
+                    'can'  => 'Padrão Turma Ver',
                 ],              
                 
                 [

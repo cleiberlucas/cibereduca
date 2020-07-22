@@ -25,12 +25,12 @@
             <strong>{{$disciplina->disciplina}}</strong>
         </td>
         <td colspan=25 align="center">
-            <strong>Frequência às aulas dadas</strong>
+            <strong>FREQUÊNCIA ÀS AULAS DADAS</strong>
         </td>
     </tr>
     <tr>
         <td><strong>N°</strong></td>
-        <td align="center"><strong>Aluno(a)</strong></td>
+        <td align="center"><strong>NOME DO ALUNO(A)</strong></td>
         @for ($i = 0; $i < 25; $i++)
             <td width=10px></td>
         @endfor
