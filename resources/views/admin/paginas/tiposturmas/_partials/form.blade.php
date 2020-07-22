@@ -6,7 +6,7 @@
 
     <div class="row">
         <input type="hidden" name="fk_id_user" value="{{Auth::id()}}">
-        <div class="form-group col-sm-1 col-xs-2">            
+        <div class="form-group col-sm-2 col-xs-2">            
             <label>Ano letivo:</label>
             <select name="fk_id_ano_letivo" id="" class="form-control" required>
                 <option value=""></option>
