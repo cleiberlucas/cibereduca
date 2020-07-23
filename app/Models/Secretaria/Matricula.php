@@ -83,6 +83,14 @@ class Matricula extends Model
     }
 
     /**
+     * Retorna responsavel MatrículaXAluno
+     */
+    public function responsavel()
+    {       
+        return $this->belongsTo(Pessoa::class, 'fk_id_responsavel', 'id_pessoa');
+    }
+
+    /**
      * Retorna forma pagamento matricula
      */
     public function formaPagamentoMatricula()

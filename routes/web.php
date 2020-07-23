@@ -109,9 +109,12 @@ Route::prefix('secretaria')
         ->group(function(){
 
         /**
-         * Rotas pasta do aluno
+         * Rotas pasta de matrículas
          */
-        Route::any('matriculas/{id_turma}/pasta', 'MatriculaPastaController@pasta')->name('matriculas.pasta');
+        //Pasta de Matrículas do aluno
+        Route::any('matriculas/{id}/pasta', 'MatriculaPastaController@pasta')->name('matriculas.pasta');
+        //Arquivo de matrículas do responsável
+        Route::any('matriculas/{id}/arquivo', 'MatriculaPastaController@arquivo')->name('matriculas.arquivo');
 
         /**
          * Rotas Check List Matrículas X Documentos

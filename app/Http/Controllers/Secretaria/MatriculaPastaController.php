@@ -16,9 +16,21 @@ class MatriculaPastaController extends Controller
         $this->repositorio = $matricula;
     }
 
+    /**
+     * Listagem de todas as matrículas de um aluno
+     */
     public function pasta($id_aluno){
         $this->authorize('Pasta Aluno Ver');   
         $matriculas = $this->repositorio->where('fk_id_aluno', $id_aluno)->get();
+
+        return view('secretaria.paginas.pessoas.pasta.pasta', [
+        'matriculas' => $matriculas,        
+        ]);
+    }
+
+    public function arquivo($id_responsavel){
+        $this->authorize('Arquivo Responsável Ver');   
+        $matriculas = $this->repositorio->where('fk_id_responsavel', $id_responsavel)->get();
 
        /*  $turma = Turma::select('tb_turmas.nome_turma', 'tb_turmas.id_turma', 'tb_turmas.limite_alunos', 'tb_anos_letivos.ano', 'tb_turnos.descricao_turno', 'tb_sub_niveis_ensino.sub_nivel_ensino')                            
         ->join('tb_tipos_turmas', 'tb_turmas.fk_id_tipo_turma', '=', 'tb_tipos_turmas.id_tipo_turma' )
@@ -28,7 +40,7 @@ class MatriculaPastaController extends Controller
         ->where('tb_turmas.id_turma', '=', $request->segment(2))                         
         ->first();  */         
 
-        return view('secretaria.paginas.pessoas.pasta.pasta', [
+        return view('secretaria.paginas.pessoas.pasta.arquivo', [
         'matriculas' => $matriculas,        
         ]);
     }
