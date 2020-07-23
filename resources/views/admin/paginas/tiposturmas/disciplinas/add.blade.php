@@ -29,6 +29,7 @@
             </form>
         </div>
         <div class="form-group">
+            @include('admin.includes.alerts')
                 <table class="table table-condensed">
                     <thead>
                         <th width="50px">#</th>
@@ -49,13 +50,12 @@
                                         {{$disciplina->disciplina}}
                                     </td>                                
                                     <td>
-                                        <input class="form-control" type="number" name="cargas_horarias[]" placeholder="250">
+                                        <input class="form-control" type="number" name="cargas_horarias[]">
                                     </td>
                                 </tr>
                             @endforeach
                             <tr>
                                 <td colspan=500>
-                                    @include('admin.includes.alerts')
 
                                     <button type="submit" class="btn btn-success"><i class="fas fa-forward"></i> Adicionar</button>
                                 </td>

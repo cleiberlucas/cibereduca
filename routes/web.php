@@ -203,10 +203,13 @@ Route::prefix('admin')
              * Turmas X Disciplinas
              */
             Route::get('tiposturmas/getDisciplinas/{id}', 'GradeCurricular\GradeCurricularController@getDisciplinas')->name('tiposturmas.getdisciplinas');
-            route::get('tiposturmas/{id}/disciplina/{id_disciplina}/remove', 'GradeCurricular\GradeCurricularController@removerDisciplinasTurma')->name('tiposturmas.disciplinas.remover');            
-            route::post('tiposturmas/{id}/disciplinas', 'GradeCurricular\GradeCurricularController@vincularDisciplinasTurma')->name('tiposturmas.disciplinas.vincular');            
-            route::any('tiposturmas/{id}/disciplinas/add', 'GradeCurricular\GradeCurricularController@disciplinasAdd')->name('tiposturmas.disciplinas.add');
-            route::get('tiposturmas/{id}/disciplinas', 'GradeCurricular\GradeCurricularController@disciplinas')->name('tiposturmas.disciplinas');
+            
+            Route::get('tiposturmas/{id}/disciplina/{id_disciplina}/remove', 'GradeCurricular\GradeCurricularController@removerDisciplinasTurma')->name('tiposturmas.disciplinas.remover');                        
+            Route::post('tiposturmas/disciplinas/{id}/update', 'GradeCurricular\GradeCurricularController@updateCargaHoraria')->name('tiposturmas.disciplinas.update');
+            Route::post('tiposturmas/{id}/disciplinas', 'GradeCurricular\GradeCurricularController@vincularDisciplinasTurma')->name('tiposturmas.disciplinas.vincular');            
+            
+            Route::any('tiposturmas/{id}/disciplinas/add', 'GradeCurricular\GradeCurricularController@disciplinasAdd')->name('tiposturmas.disciplinas.add');
+            Route::get('tiposturmas/{id}/disciplinas', 'GradeCurricular\GradeCurricularController@disciplinas')->name('tiposturmas.disciplinas');
 
             /**
              * Rotas Tipos Turmas

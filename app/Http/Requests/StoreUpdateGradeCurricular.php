@@ -27,8 +27,8 @@ class StoreUpdateGradeCurricular extends FormRequest
         $id = $this->segment(3);
     
         return [
-            'fk_id_tipo_turma'    => "required",
-            'fk_id_disciplina'    => "required",   
+            'fk_id_tipo_turma'    => "",
+            'fk_id_disciplina'    => "",   
             'carga_horaria_anual' => "required",
             
         ];    

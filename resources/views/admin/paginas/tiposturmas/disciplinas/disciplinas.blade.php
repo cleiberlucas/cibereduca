@@ -31,12 +31,13 @@
             </form> --}}
         </div>
         <div class="card-body">
+            @include('admin.includes.alerts')
                 <table class="table table-condensed">
                     <thead>
                         <th>#</th>
-                        <th>Disciplina</th>
-                        <th>Carga horária anual</th>                        
-                        <th width="570">Ações</th>
+                        <th width="300px">Disciplina</th>
+                        <th width="250px">Carga horária anual</th>                        
+                        <th width="550px" >Ações</th>
                     </thead>
                     <tbody>                        
                         @foreach ($disciplinas as $index => $disciplina)
@@ -45,11 +46,18 @@
                                 <td>
                                     {{$disciplina->disciplina}}
                                 </td> 
-                                <td>
-                                    {{$disciplina->carga_horaria_anual}}
-                                </td>                                                                 
-                                <td style="width=10px;">                                    
-                                    <a href="{{ route('tiposturmas.disciplinas.remover', [$tipoTurma->id_tipo_turma, $disciplina->id_disciplina]) }}" class="btn btn-sm btn-outline-danger"><i class="far fa-trash-alt"></i></a>
+                                <form action="{{ route('tiposturmas.disciplinas.update', $disciplina->id_grade_curricular)}}" class="form" method="POST">
+                                    @csrf
+                                    <td>
+                                        <input type="number" name="carga_horaria_anual" required class="form-control" value="{{$disciplina->carga_horaria_anual ?? old('carga_horaria_anual') }}">                                                                         
+                                    </td>                                                                 
+                                    <td>                                    
+                                        <button type="submit" class="btn btn-outline-success"><i class="fas fa-save"></i></button>
+                                    
+                                </form>
+                                    &nbsp&nbsp&nbsp&nbsp
+
+                                    <a href="{{ route('tiposturmas.disciplinas.remover', [$tipoTurma->id_tipo_turma, $disciplina->id_disciplina]) }}" class="btn btn-outline-danger"><i class="far fa-trash-alt"></i></a>
                                 </td>
                                 
                             </tr>
@@ -66,4 +74,10 @@
                 </div>
         </div>
     </div>
+
+    <script>
+        $(document).ready(function(){
+              $(".alert").slideDown(300).delay(5000).slideUp(300);
+        });    
+    </script>
 @stop

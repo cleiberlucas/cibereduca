@@ -101,7 +101,7 @@ class GradeCurricularController extends Controller
         if ($ch_preenchidas != count($request->disciplinas))
             return redirect()
                     ->back()
-                    ->with('info', 'Informe a carga horária para a(s) disciplina(s) escolhida(s).');
+                    ->with('atencao', 'Informe a carga horária para a(s) disciplina(s) escolhida(s).');
 
         $tipoTurma->disciplinas()->attach($gradeCurricular);
 
@@ -118,10 +118,23 @@ class GradeCurricularController extends Controller
 
         $tipoTurma->disciplinas()->detach($disciplina);
 
-        return redirect()->route('tiposturmas.disciplinas', $tipoTurma->id_tipo_turma);
+        return redirect()->route('tiposturmas.disciplinas', $tipoTurma->id_tipo_turma)->with('sucesso', 'Carga horária removida com sucesso.');
     }
 
-    
+    public function updateCargaHoraria(StoreUpdateGradeCurricular $request, $id)
+    {
+        //dd($request);
+        $gradeCurricular = new GradeCurricular;
+        $gradeCurricular = $gradeCurricular->where('id_grade_curricular', $id)->first();
+
+        if (!$gradeCurricular)
+            return redirect()->back();        
+
+        $gradeCurricular->where('id_grade_curricular', $id)->update($request->except('_token', '_method'));
+
+        return redirect()->back()->with('sucesso', 'Carga horária alterada com sucesso.');
+    }
+
     /**
      * Disciplinas de uma Turmas
      * Popular COMBOBOX
