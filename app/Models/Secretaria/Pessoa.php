@@ -3,6 +3,7 @@
 namespace App\Models\Secretaria;
 
 use App\Models\Endereco;
+use App\Models\Sexo;
 use App\Models\TipoDocIdentidade;
 use App\Models\UnidadeEnsino;
 use App\User;
@@ -25,6 +26,7 @@ class Pessoa extends Model
                             'fk_id_tipo_doc_identidade', 
                             'doc_identidade', 
                             'data_nascimento', 
+                            'fk_id_sexo',
                             'telefone_1', 
                             'telefone_2', 
                             'email_1', 
@@ -102,6 +104,11 @@ class Pessoa extends Model
     public function tipoDocIdentidade()
     {       
         return $this->belongsTo(TipoDocIdentidade::class, 'fk_id_tipo_doc_identidade', 'id_tipo_doc_identidade');
+    }
+
+    public function sexo()
+    {       
+        return $this->belongsTo(Sexo::class, 'fk_id_sexo', 'id_sexo');
     }
 
     public function unidadeEnsino()

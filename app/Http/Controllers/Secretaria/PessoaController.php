@@ -8,6 +8,7 @@ use App\Models\Cidade;
 use App\Models\Endereco;
 use App\Models\Estado;
 use App\Models\Secretaria\Pessoa;
+use App\Models\Sexo;
 use App\Models\TipoDocIdentidade;
 use App\Models\UnidadeEnsino;
 use App\User;
@@ -16,7 +17,7 @@ use Illuminate\Support\Facades\Storage;
 
 class PessoaController extends Controller
 {
-    private $repositorio, $estados, $cidades, $tiposDocIdentidade, $unidadesEnsino;
+    private $repositorio, $estados, $cidades, $tiposDocIdentidade, $unidadesEnsino, $sexos;
     
     public function __construct(Pessoa $pessoa)
     {
@@ -33,6 +34,9 @@ class PessoaController extends Controller
         
          $this->unidadesEnsino = new UnidadeEnsino;
         /*$this->unidadesEnsino = $this->unidadesEnsino->all()->sortBy('nome_fantasia'); */
+
+        $this->sexos = new Sexo;
+        $this->sexos = $this->sexos->all()->sortBy('sexo');
     }
 
     public function index(Request $request)
@@ -70,6 +74,7 @@ class PessoaController extends Controller
                     'cidades' => $this->cidades,
                     'tiposDocIdentidade' => $this->tiposDocIdentidade,
                     'unidadesEnsino'     => $unidadesEnsino,
+                    'sexos'  => $this->sexos,
          ]);
     }
 
@@ -98,7 +103,7 @@ class PessoaController extends Controller
         //Gravando endereço
         //Somente para Responsável
         if ($dados['fk_id_tipo_pessoa'] == 2)
-            $insertPessoa->endereco()->create($request->except('pai', 'mae'));
+            $insertPessoa->endereco()->create($request->except('pai', 'mae', 'fk_id_sexo'));
         
         /* Alunos 
             Mostra somente unidades de ensino vinculadas ao usuário logado
@@ -190,6 +195,7 @@ class PessoaController extends Controller
             'cidades' => $this->cidades,
             'tiposDocIdentidade' => $this->tiposDocIdentidade,
             'unidadesEnsino'    => $unidadesEnsino,
+            'sexos'  => $this->sexos,
         ]);
     }
 

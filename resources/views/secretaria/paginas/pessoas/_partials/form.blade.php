@@ -55,6 +55,20 @@
             <span class="glyphicon glyphicon-th"></span>
         </div>            
     </div>
+
+    <div class="form-group col-sm-2 col-xs-2">            
+        <label>Sexo</label>
+        <select name="fk_id_sexo" id="fk_id_sexo" class="form-control">            
+            @foreach ($sexos as $sexo)
+                <option value="{{$sexo->id_sexo }}"
+                    @if (isset($pessoa) && $sexo->id_sexo == $pessoa->fk_id_sexo)
+                        selected="selected"
+                    @endif
+                    >                    
+                    {{$sexo->sexo}}</option>
+            @endforeach
+        </select>
+    </div> 
 </div>
 
 <div class="row">
