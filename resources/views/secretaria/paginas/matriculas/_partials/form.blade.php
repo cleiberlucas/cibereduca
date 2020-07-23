@@ -4,31 +4,27 @@
     @csrf
     
     <div class="row">
-       
-            <fieldset  
-                {{-- Desabilitando a escolha de aluno no caso de edição 
-                    Evitar problema com troca de aluno em uma matrícula
-                    --}}
+    
+        <div class="form-group col-sm-4 col-xs-2">
+            <input type="hidden" name="fk_id_turma" value="{{$matricula->fk_id_turma ?? $turma->id_turma}}">
+            <label>* Aluno:</label>
+            <select name="fk_id_aluno" class="form-control" required 
                 @if (isset($matricula))
                     disabled
                 @endif
             >
-            <div class="form-group col-sm-4 col-xs-2">
-                <input type="hidden" name="fk_id_turma" value="{{$matricula->fk_id_turma ?? $turma->id_turma}}">
-                <label>* Aluno:</label>
-                <select name="fk_id_aluno" class="form-control" required>
-                    <option value=""></option>
-                    @foreach ($alunos as $aluno)
-                        <option value="{{$aluno->id_pessoa }}"
-                            @if (isset($matricula) && $aluno->id_pessoa == $matricula->fk_id_aluno)
-                                selected="selected" 
-                            @endif
-                            >                    
-                            {{$aluno->nome}}</option>
-                    @endforeach
-                </select>
-            </div>
-        </fieldset>
+                <option value=""></option>
+                @foreach ($alunos as $aluno)
+                    <option value="{{$aluno->id_pessoa }}"
+                        @if (isset($matricula) && $aluno->id_pessoa == $matricula->fk_id_aluno)
+                            selected="selected" 
+                        @endif
+                        >                    
+                        {{$aluno->nome}}</option>
+                @endforeach
+            </select>
+        </div>
+        
     </div>
 
     <div class="row">
