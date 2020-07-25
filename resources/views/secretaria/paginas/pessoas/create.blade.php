@@ -19,7 +19,14 @@
         </li>
     </ol>
 
-    <h1>Cadastrar {{$tipo_pessoa}}</h1>
+    <h1>Cadastrar 
+        @if ($tipo_pessoa == 'aluno')
+            Aluno
+        @else
+            Responsável
+        @endif
+        
+    </h1>
 @stop
 
 @section('content')

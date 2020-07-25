@@ -5,12 +5,14 @@ namespace App\Http\Controllers\Secretaria;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateMatricula;
 use App\Models\FormaPagamento;
+use App\Models\Secretaria\CorpoContrato;
 use App\Models\Secretaria\Matricula;
 use App\Models\Secretaria\Pessoa;
 use App\Models\Secretaria\Turma;
 use App\Models\TipoDescontoCurso;
 use App\Models\SituacaoMatricula;
 use App\Models\TipoAtendimentoEspecializado;
+use App\Models\UnidadeEnsino;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -235,6 +237,22 @@ class MatriculaController extends Controller
         $matricula->where('id_matricula', $id)->update($request->except('_token', '_method'));
 
         return redirect()->route('matriculas.index', $matricula->fk_id_turma);
+    }
+
+    public function imprimirContrato($id_matricula)
+    {
+        $matricula = $this->repositorio->where('id_matricula', $id_matricula)->first();
+        $corpoContrato = new CorpoContrato;
+        $corpoContrato = $corpoContrato->where('fk_id_unidade_ensino', $matricula->turma->tipoTurma->anoLetivo->fk_id_unidade_ensino)->first();
+
+        $unidadeEnsino = new UnidadeEnsino;
+        $unidadeEnsino = $unidadeEnsino->where('id_unidade_ensino', $matricula->turma->tipoTurma->anoLetivo->fk_id_unidade_ensino)->first();
+
+        return view('secretaria.paginas.matriculas.contrato', [
+            'matricula' => $matricula,
+            'corpoContrato' => $corpoContrato,
+            'unidadeEnsino' =>$unidadeEnsino,
+        ]);
     }
 
     /**

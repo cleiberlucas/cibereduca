@@ -28,6 +28,24 @@
     }
 
     /*
+    *Aplica máscara no campo telefone para mostrar em relatórios ou listagem
+    */
+    function mascaraCEP($mask,$str){
+        if (strlen($str) == 0)
+            return '';
+
+        $str = str_replace(" ", "", $str);
+        
+        for($i=0; $i<strlen($str); $i++){
+            $mask[strpos($mask,"#")] = $str[$i];
+        }
+
+        $mask = str_replace('#', '', $mask);
+    
+        return $mask;    
+    }
+
+    /*
     *Aplica máscara no campo CPF OU CNPJ para mostrar em relatórios ou listagem
     */
     function mascaraCpfCnpj($mask, $str){

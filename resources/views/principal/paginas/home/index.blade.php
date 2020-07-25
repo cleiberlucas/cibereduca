@@ -23,7 +23,7 @@
 
                     {{-- Se o login cair, mostra link p login --}}
                     @if ( Auth::id() == null)
-                        <a href="/login" class="">Faça Login</a>                        
+                        <a href="/login" class="btn btn-primary">Faça Login</a>                        
                     @endif
                   
                     {{-- Caso tenha só uma unidade de ensino, seta p sessão automaticamente --}}

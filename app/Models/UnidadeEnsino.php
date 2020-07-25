@@ -21,11 +21,11 @@ class UnidadeEnsino extends Model
         
         return $resultado;
     }
-
+/* 
     public function Endereco()
     {
-        return $this->hasMany(EnderecosUnidadeEnsino::class);
-    }
+        return $this->hasOne(EnderecosUnidadeEnsino::class);
+    } */
 
     public function unidadesEnsino($id_unidade_ensino)
     {

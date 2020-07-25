@@ -98,31 +98,44 @@ class PessoaController extends Controller
             $dados['foto'] = $request->file('foto')->store('pessoas');
         }
         //Gravando pessoa
-        $insertPessoa = Pessoa::create($dados);
+        try {
+            //code...
+            $insertPessoa = Pessoa::create($dados);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return back()->withInput()->with('atencao', 'Erro ao gravar. Verifique se já existe o cadastro desta pessoa.');
+        }
+        
 
         //Gravando endereço
         //Somente para Responsável
-        if ($dados['fk_id_tipo_pessoa'] == 2)
-            $insertPessoa->endereco()->create($request->except('pai', 'mae', 'fk_id_sexo'));
+        if ($dados['fk_id_tipo_pessoa'] == 2){
+            try {
+                $insertPessoa->endereco()->create($request->except('pai', 'mae', 'fk_id_sexo'));
+            } catch (\Throwable $th) {
+                //throw $th;
+            }
+
+        }
         
         /* Alunos 
             Mostra somente unidades de ensino vinculadas ao usuário logado
         */        
-        if ($dados['fk_id_tipo_pessoa'] == 1){
+       /*  if ($dados['fk_id_tipo_pessoa'] == 1){
             $pessoas = $this->repositorio
                                         ->join('tb_unidades_ensino', 'fk_id_unidade_ensino', 'id_unidade_ensino')
                                         ->where('fk_id_tipo_pessoa', $dados['fk_id_tipo_pessoa'])
                                         ->where('id_unidade_ensino', '=', User::getUnidadeEnsinoSelecionada())
                                         ->orderBy('nome', 'asc')
                                         ->paginate(20);
-        }
+        } */
         /* Responsável 
             Não mostra unidade ensino
         */
-        else
+       /*  else
             $pessoas = $this->repositorio->where('fk_id_tipo_pessoa', $dados['fk_id_tipo_pessoa'])
                                         ->orderBy('nome', 'asc')
-                                        ->paginate(20); 
+                                        ->paginate(20); */ 
         
         return redirect()->back()->with('sucesso', 'Cadastro realizado com sucesso.');
 
@@ -232,7 +245,7 @@ class PessoaController extends Controller
                             ->update($request
                                         ->except('_token', '_method', 
                                                     'nome', 'cpf', 'doc_identidade', 'data_nascimento', 'foto', 'fk_id_tipo_doc_identidade', 
-                                                    'obs_pessoa', 'pai', 'mae',
+                                                    'obs_pessoa', 'pai', 'mae', 'fk_id_sexo',
                                                     'telefone_1', 'telefone_2', 'email_1', 'email_2', 'fk_id_tipo_pessoa', 
                                                     'fk_id_user', 'situacao_pessoa', 'estado', 'fk_id_user_alteracao'));
 

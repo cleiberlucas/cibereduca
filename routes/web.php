@@ -135,6 +135,7 @@ Route::prefix('secretaria')
         Route::get('matriculas/{id_turma}', 'MatriculaController@show')->name('matriculas.show');
         Route::post('matriculas', 'MatriculaController@store')->name('matriculas.store');
         Route::any('{id_turma}/matriculas', 'MatriculaController@index')->name('matriculas.index')->middleware('can:Matrícula Ver');
+        Route::get('matriculas/contrato/{id_matricula}', 'MatriculaController@imprimirContrato')->name('matriculas.contrato')->middleware('can:Matrícula Contrato Ver');
         
         /**
          * Rotas Turmas
