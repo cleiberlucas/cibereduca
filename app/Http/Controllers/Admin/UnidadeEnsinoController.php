@@ -129,7 +129,7 @@ class UnidadeEnsinoController extends Controller
 
         $unidadeEnsino->where('id_unidade_ensino', $id)->update($request->except('_token', '_method'));
 
-        return redirect()->route('unidadesensino.index')->with('info', 'Unidade de Ensino alterada com sucesso.');
+        return redirect()->route('unidadesensino.index')->with('sucesso', 'Unidade de Ensino alterada com sucesso.');
     }
 
     /**

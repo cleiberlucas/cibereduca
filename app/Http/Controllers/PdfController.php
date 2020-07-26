@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Secretaria\Pessoa;
 use Illuminate\Http\Request;
-use PDF;
+use PDF; 
 
 class PdfController extends Controller
 {

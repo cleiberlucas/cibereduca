@@ -14,6 +14,7 @@ use App\Models\SituacaoMatricula;
 use App\Models\TipoAtendimentoEspecializado;
 use App\Models\UnidadeEnsino;
 use App\User;
+use PDF;
 use Illuminate\Http\Request;
 
 class MatriculaController extends Controller
@@ -247,7 +248,11 @@ class MatriculaController extends Controller
 
         $unidadeEnsino = new UnidadeEnsino;
         $unidadeEnsino = $unidadeEnsino->where('id_unidade_ensino', $matricula->turma->tipoTurma->anoLetivo->fk_id_unidade_ensino)->first();
+        
+       /*  $pdf = PDF::loadView('secretaria.paginas.matriculas.contrato', compact('matricula', 'corpoContrato', 'unidadeEnsino')); */
+        //$pdf = PDF
 
+        /* return $pdf->setPaper('a4')->stream('contrato.pdf'); */
         return view('secretaria.paginas.matriculas.contrato', [
             'matricula' => $matricula,
             'corpoContrato' => $corpoContrato,
