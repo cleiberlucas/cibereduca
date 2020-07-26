@@ -56,7 +56,7 @@
             <tr>
                 <td colspan=2>
                     <br>
-                    <center><strong> CONTRATO DE PRESTAÇÃO DE SERVIÇOS EDUCACIONAIS E COMPRA DE MATERIAL DIDÁTICO ENSINO FUNDAMENTAL E MÉDIO</strong></center>                    
+                    <center><strong> <mark>CONTRATO DE PRESTAÇÃO DE SERVIÇOS EDUCACIONAIS E COMPRA DE MATERIAL DIDÁTICO ENSINO FUNDAMENTAL E MÉDIO</mark></strong></center>                    
                 </td>
             </tr>
             <tr>
