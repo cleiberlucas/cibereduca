@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Rede Educa Contrato {{$matricula->aluno->nome}}</title>
+    <title>Rede Educa-Contrato {{$matricula->aluno->nome}}</title>
 </head>
 <style>
     table.report-container {
@@ -36,7 +36,7 @@
                </td>
                <td class="report-header-cell" align="center">
                     <div class="header-info">
-                        <font size="4"> <b>{{strToUpper($unidadeEnsino->razao_social)}} </b> </font>
+                        <font size="4"> <b>{{mb_strToUpper($unidadeEnsino->razao_social)}} </b> </font>
                         <br>
                         <font size="2"> CNPJ: {{mascaraCpfCnpj('##.###.###/####-##', $unidadeEnsino->cnpj)}}
                         <br>
@@ -102,7 +102,7 @@
             <tr>
                 <td colspan=2>
                     <br><br>
-                    <strong>QUADRO 04: CURSO {{strtoupper($matricula->turma->tipoTurma->subNivelEnsino->sub_nivel_ensino) ?? ''}} E MATERIAL DIDÁTICO DO SISTEMA DE ENSINO DOM BOSCO</strong>                    
+                    <strong>QUADRO 04: CURSO {{mb_strtoupper($matricula->turma->tipoTurma->subNivelEnsino->sub_nivel_ensino) ?? ''}} E MATERIAL DIDÁTICO DO SISTEMA DE ENSINO DOM BOSCO</strong>                    
                 </td>
             </tr>
             <tr>
