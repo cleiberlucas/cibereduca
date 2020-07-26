@@ -243,8 +243,8 @@ class MatriculaController extends Controller
     public function imprimirContrato($id_matricula)
     {
         $matricula = $this->repositorio->where('id_matricula', $id_matricula)->first();
-        $corpoContrato = new CorpoContrato;
-        $corpoContrato = $corpoContrato->where('fk_id_unidade_ensino', $matricula->turma->tipoTurma->anoLetivo->fk_id_unidade_ensino)->first();
+        /* $corpoContrato = new CorpoContrato;
+        $corpoContrato = $corpoContrato->where('fk_id_unidade_ensino', $matricula->turma->tipoTurma->anoLetivo->fk_id_unidade_ensino)->first(); */
 
         $unidadeEnsino = new UnidadeEnsino;
         $unidadeEnsino = $unidadeEnsino->where('id_unidade_ensino', $matricula->turma->tipoTurma->anoLetivo->fk_id_unidade_ensino)->first();
@@ -255,7 +255,7 @@ class MatriculaController extends Controller
         /* return $pdf->setPaper('a4')->stream('contrato.pdf'); */
         return view('secretaria.paginas.matriculas.contrato', [
             'matricula' => $matricula,
-            'corpoContrato' => $corpoContrato,
+            /* 'corpoContrato' => $corpoContrato, */
             'unidadeEnsino' =>$unidadeEnsino,
         ]);
     }
