@@ -69,7 +69,10 @@
                     Endereço: {{$matricula->responsavel->endereco->endereco ?? ''}} - {{$matricula->responsavel->endereco->complemento ?? ''}} &nbsp&nbsp&nbsp Nº {{$matricula->responsavel->endereco->numero ?? ''}}
                     <br>
                     Bairro: {{$matricula->responsavel->endereco->bairro ?? ''}} &nbsp&nbsp&nbspCidade: {{$matricula->responsavel->endereco->cidade->cidade ?? ''}}/{{$matricula->responsavel->endereco->cidade->estado->sigla ?? ''}}    
-                    &nbsp&nbsp&nbsp CEP: {{mascaraCEP('##.###-###', $matricula->responsavel->endereco->cep) ?? ''}}
+                    &nbsp&nbsp&nbsp CEP: 
+                    @if (isset($matricula->responsavel->endereco->cep)) 
+                        {{mascaraCEP('##.###-###', $matricula->responsavel->endereco->cep) ?? ''}}
+                    @endif
                     <br>
                     Fones: {{mascaraTelefone("(##) #####-####",$matricula->responsavel->telefone_1)}}  e {{mascaraTelefone("(##) #####-####",$matricula->responsavel->telefone_2)}}   &nbsp&nbsp&nbsp E-mail: {{$matricula->responsavel->email_1}}
                  
