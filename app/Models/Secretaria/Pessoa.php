@@ -72,6 +72,9 @@ class Pessoa extends Model
         return $alunos;
     }
 
+    /**
+     * Consulta todos os responsáveis cadastrados
+     */
     public function getResponsaveis()
     {
         return Pessoa::select('*')

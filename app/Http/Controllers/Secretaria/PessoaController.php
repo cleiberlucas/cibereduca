@@ -258,6 +258,22 @@ class PessoaController extends Controller
     }
 
     /**
+     * Consulta uma pessoa pelo nome
+     * Quaisquer unidade de ensino / não filtra unidade de ensino
+     * @param string nome
+     * @return boolean
+     */
+    public function getPessoa(string $nome )
+    {
+        $pessoa['data'] =  $this->repositorio->select('nome', 'data_nascimento')                  
+                                ->where('nome', $nome)
+                                ->get();
+        echo json_encode($pessoa);
+        exit;
+       // dd($pessoa);
+    }
+
+    /**
      * Verifica se a situação foi ativada
      */
     public function verificarSituacao(array $dados)

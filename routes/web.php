@@ -166,6 +166,8 @@ Route::prefix('secretaria')
         Route::post('pessoas', 'PessoaController@store')->name('pessoas.store');
         Route::any('{id_tipo_pessoa}/pessoas', 'PessoaController@index')->name('pessoas.index')->middleware('can:Pessoa Ver');
 
+        Route::get('pessoas/getPessoa/{nome}', 'PessoaController@getPessoa')->name('pessoas.getPessoa');
+
         /**
          * Rotas disciplinas
          */

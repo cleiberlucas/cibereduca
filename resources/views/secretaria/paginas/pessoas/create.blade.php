@@ -33,10 +33,35 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.js"></script>
 
+<script src="/js/utils.js"></script>
+
     <div class="container-fluid">
         <form action="{{ route('pessoas.store')}}" class="form" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="container-fluid">
+
+                @include('admin.includes.alerts')
+
+                <div class="row">    
+                    <div class="form-group col-sm-4 col-xs-12">
+                        {{-- TIPO PESSOA {{$pessoa->tipoPessoa->tipo_pessoa}} --}}
+                        
+                        @if (isset($tipo_pessoa) &&  $tipo_pessoa == 'aluno')
+                            <input type="hidden" name="fk_id_tipo_pessoa" value="1">
+                        @elseif (isset($tipo_pessoa) &&  $tipo_pessoa == 'responsavel')
+                            <input type="hidden" name="fk_id_tipo_pessoa" value="2"> 
+                        @endif
+                        
+                        <input type="hidden" name="fk_id_user_alteracao" value="{{Auth::id()}}">
+                        <label>* Nome:</label>
+                        <input type="text" name="nome" class="form-control" placeholder="Nome" required value="{{ $pessoa->nome ?? old('nome') }}" onblur="getPessoa(this.value);">
+                    </div>
+                    <div class="form-group col-sm-4 col-xs-12">
+                        <label>Foto:</label>
+                        <input type="file" name="foto" class="form-control">
+                    </div>
+                </div>
+
                 @include('secretaria.paginas.pessoas._partials.form')
                 <input type="hidden" name="fk_id_user_cadastro" value="{{Auth::id()}}">
                 {{-- Endereço apenas para responsáveis --}}
