@@ -260,6 +260,44 @@ class MatriculaController extends Controller
         ]);
     }
 
+    public function imprimirFichaMatricula($id_aluno)
+    {
+        $matricula = $this->repositorio->where('fk_id_aluno', $id_aluno)->first();  
+
+        $matriculas = $this->repositorio
+                                ->select('tb_matriculas.*', 
+                                        'tb_turmas.nome_turma', 
+                                        'tb_anos_letivos.ano', 
+                                        'tb_turnos.descricao_turno', 
+                                        'tb_sub_niveis_ensino.sub_nivel_ensino',
+                                        'aluno.nome as nome_aluno', 'aluno.id_pessoa as id_aluno', 'aluno.foto',
+                                        'responsavel.nome as nome_responsavel', 'responsavel.id_pessoa as id_responsavel',                                        
+                                        'tb_situacoes_matricula.*',
+                                        'tb_tipos_turmas.valor_curso') 
+                                ->join('tb_pessoas as aluno', 'aluno.id_pessoa', 'tb_matriculas.fk_id_aluno')
+                                ->join('tb_pessoas as responsavel', 'responsavel.id_pessoa', 'tb_matriculas.fk_id_responsavel')
+                                ->join('tb_situacoes_matricula', 'tb_situacoes_matricula.id_situacao_matricula', 'tb_matriculas.fk_id_situacao_matricula')                                
+                                ->join('tb_turmas', 'tb_turmas.id_turma', 'tb_matriculas.fk_id_turma')                               
+                                ->join('tb_tipos_turmas', 'tb_turmas.fk_id_tipo_turma', '=', 'tb_tipos_turmas.id_tipo_turma' )
+                                ->join('tb_sub_niveis_ensino', 'tb_tipos_turmas.fk_id_sub_nivel_ensino', '=', 'tb_sub_niveis_ensino.id_sub_nivel_ensino')
+                                ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')
+                                ->join('tb_turnos', 'tb_turmas.fk_id_turno', '=', 'tb_turnos.id_turno')                                 
+                                ->where('fk_id_aluno', $id_aluno)->get();
+
+        //dd($matriculas);
+        $unidadeEnsino = new UnidadeEnsino;
+        $unidadeEnsino = $unidadeEnsino->where('id_unidade_ensino', $matricula->turma->tipoTurma->anoLetivo->fk_id_unidade_ensino)->first();
+        
+       /*  $pdf = PDF::loadView('secretaria.paginas.matriculas.contrato', compact('matricula', 'corpoContrato', 'unidadeEnsino')); */
+        //$pdf = PDF
+
+        /* return $pdf->setPaper('a4')->stream('contrato.pdf'); */
+        return view('secretaria.paginas.matriculas.ficha_matricula', [
+            'matriculas' => $matriculas,            
+            'unidadeEnsino' =>$unidadeEnsino,
+        ]);
+    }
+
     /**
      * Verifica se a situação foi ativada
      */

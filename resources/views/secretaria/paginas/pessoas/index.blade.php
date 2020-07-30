@@ -85,6 +85,7 @@
                                     @if ($tipo_pessoa == 1)
                                         <a href="{{ route('matriculas.pasta', $pessoa->id_pessoa) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-archive"></i></a>    
                                     @else
+                                        {{-- link para arquivo do responsável --}}
                                         <a href="{{ route('matriculas.arquivo', $pessoa->id_pessoa) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-archive"></i></a>    
                                     @endif 
                                     
