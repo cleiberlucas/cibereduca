@@ -105,6 +105,8 @@ Route::prefix('pedagogico')
  * Autenticidade de documentos * 
  */
 Route::get('secretaria/matriculas/documentos_escola/autenticidade', 'Secretaria\DocumentoEscolaController@autenticidade')->name('matriculas.documentos_escola.autenticidade');
+Route::post('secretaria/matriculas/documentos_escola/verifica_autenticidade', 'Secretaria\DocumentoEscolaController@verificarAutenticidade')->name('matriculas.documentos_escola.verifica_autenticidade');
+
 
 /**
  * Rotas Secretaria
