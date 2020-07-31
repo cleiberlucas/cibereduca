@@ -6,7 +6,7 @@ $(document).ready(function(){
       
     // Ano selecionado
     $('#anoLetivo').change(function(){
-        console.log('clicou ano');
+        //console.log('clicou ano');
         // Ano id
         var id = $(this).val();
 
@@ -19,19 +19,19 @@ $(document).ready(function(){
           type: 'get',
           dataType: 'json',
           success: function(response){
-            console.log('procurando alunos');
+            //console.log('procurando alunos');
             var len = 0;
             if(response['data'] != null){
               len = response['data'].length;
             }
-            console.log('qtd alunos '+len);
+           // console.log('qtd alunos '+len);
 
             if(len > 0){
               // Read data and create <option >
               for(var i=0; i<len; i++){
 
                 var id = response['data'][i].id_matricula;
-                var nome = response['data'][i].nome_aluno;
+                var nome = response['data'][i].nome;
 
                 var option = "<option value='"+id+"'>"+nome+"</option>"; 
 

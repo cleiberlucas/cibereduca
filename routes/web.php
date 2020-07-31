@@ -100,6 +100,12 @@ Route::prefix('pedagogico')
         route::any('turmas/{id}/periodosletivos/add', 'Pedagogico\TurmaPeriodoLetivoController@periodosLetivosAdd')->name('turmas.periodosletivos.add');
         route::get('turmas/{id}/periodosletivos', 'Pedagogico\TurmaPeriodoLetivoController@periodosLetivos')->name('turmas.periodosletivos')->middleware('can:Período Letivo Ver');
 
+        
+/**
+ * Autenticidade de documentos * 
+ */
+Route::get('secretaria/matriculas/documentos_escola/autenticidade', 'Secretaria\DocumentoEscolaController@autenticidade')->name('matriculas.documentos_escola.autenticidade');
+
 /**
  * Rotas Secretaria
  */
@@ -129,8 +135,9 @@ Route::prefix('secretaria')
          * Declarações, etc
          */
         Route::get('matriculas/documentos_escola', 'DocumentoEscolaController@create')->name('matriculas.documentos_escola.create');
-        route::get('matriculas/documentos_escola/{id_documento}', 'DocumentoEscolaController@show')->name('matriculas.documentos_escola.show');
-        route::get('matriculas/{id_aluno}/documentos_escola', 'DocumentoEscolaController@index')->name('matriculas.documentos_escola');        
+        Route::get('matriculas/documentos_escola/{id_documento}', 'DocumentoEscolaController@show')->name('matriculas.documentos_escola.show');
+        Route::get('matriculas/{id_aluno}/documentos_escola', 'DocumentoEscolaController@index')->name('matriculas.documentos_escola');       
+        Route::post('matriculas/documentos_escola', 'DocumentoEscolaController@gerar')->name('matriculas.documentos_escola.gerar');
 
          /**
          * Rotas Matrículas
@@ -143,6 +150,7 @@ Route::prefix('secretaria')
         Route::get('matriculas/{id_turma}', 'MatriculaController@show')->name('matriculas.show');
         Route::post('matriculas', 'MatriculaController@store')->name('matriculas.store');
         Route::any('{id_turma}/matriculas', 'MatriculaController@index')->name('matriculas.index')->middleware('can:Matrícula Ver');
+
         Route::get('matriculas/contrato/{id_matricula}', 'MatriculaController@imprimirContrato')->name('matriculas.contrato')->middleware('can:Matrícula Contrato Ver');
         Route::get('matriculas/ficha/{id_aluno}', 'MatriculaController@imprimirFichaMatricula')->name('matriculas.ficha')->middleware('can:Matrícula Ficha Ver');
         Route::get('matriculas/getAlunos/{id_ano_letivo}', 'MatriculaController@getAlunos')->name('matriculas.getAlunos');

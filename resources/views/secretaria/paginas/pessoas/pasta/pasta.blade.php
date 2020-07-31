@@ -34,7 +34,8 @@
         </div>
             
         <div class="table-responsive">
-                
+           
+
                 @foreach ($matriculas as $index => $matricula)
                     @if ($index == 0)
                         <div class="d-flex justify-content-between">
@@ -47,6 +48,7 @@
                             </div>
                             <div class="p-2"> </div>
                         </div>
+                        @include('admin.includes.alerts')
                         <hr>
                         <div class="row">
                             <div class="form-group col-sm-3">
@@ -100,4 +102,10 @@
                 
         </div>
     </div>
+    
+    <script>
+        $(document).ready(function(){
+              $(".alert").slideDown(300).delay(5000).slideUp(300);
+        });    
+    </script>
 @stop

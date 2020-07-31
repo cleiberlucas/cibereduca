@@ -74,7 +74,7 @@
                                     
                                 </td>                                
                                 <td>
-                                    {{date('d/m/Y', strtotime($documento->data_geracao))}}
+                                    {{date('d/m/Y H:m:i', strtotime($documento->data_geracao))}}
                                 </td>
                                 <td>
                                     {{$documento->matricula->turma->nome_turma}}

@@ -21,7 +21,7 @@
 
         @include('admin.includes.alerts')
 
-        <form action="{{ route('turmas.relatorios.diarios.filtros')}}" class="form" method="POST">
+        <form action="{{ route('matriculas.documentos_escola.gerar')}}" class="form" method="POST">
             @csrf            
             <input type="hidden" name="fk_id_user" value={{Auth::id()}}>
 
@@ -39,7 +39,7 @@
 
                 <div class="form-group col-sm-3 col-xs-2">
                     Aluno
-                    <select name="fk_id_matricula" id="fk_id_matricuula" class="form-control" required > 
+                    <select name="fk_id_matricula" id="fk_id_matricula" class="form-control" required > 
                         <option value=""></option>
                     </select>
                 </div>            

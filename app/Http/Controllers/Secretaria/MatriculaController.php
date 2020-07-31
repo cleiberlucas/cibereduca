@@ -33,7 +33,7 @@ class MatriculaController extends Controller
     public function index(Request $request)
     {       
         $matriculas = $this->repositorio->where('fk_id_turma', $request->segment(2))
-                                        ->paginate();
+                                        ->paginate(25);
         
          $turma = Turma::select('tb_turmas.nome_turma', 'tb_turmas.id_turma', 'tb_turmas.limite_alunos', 'tb_anos_letivos.ano', 'tb_turnos.descricao_turno', 'tb_sub_niveis_ensino.sub_nivel_ensino')                            
                             ->join('tb_tipos_turmas', 'tb_turmas.fk_id_tipo_turma', '=', 'tb_tipos_turmas.id_tipo_turma' )
@@ -300,30 +300,21 @@ class MatriculaController extends Controller
 
     /*
     *Lista de todos alunos matriculados em um ano letivo
+    *somente para popular combo
     */
     public function getAlunos($id_ano_letivo)
     {
-        $alunos = $this->repositorio->select('tb_matriculas.*', 
-                                            'tb_turmas.nome_turma', 
-                                            'tb_anos_letivos.ano', 
-                                            'tb_turnos.descricao_turno', 
-                                            'tb_sub_niveis_ensino.sub_nivel_ensino',
-                                            'aluno.nome as nome_aluno', 'aluno.id_pessoa as id_aluno', 'aluno.foto',
-                                            'responsavel.nome as nome_responsavel', 'responsavel.id_pessoa as id_responsavel',                                        
-                                            'tb_situacoes_matricula.*',
-                                            'tb_tipos_turmas.valor_curso')
-                                ->join('tb_pessoas as aluno', 'aluno.id_pessoa', 'tb_matriculas.fk_id_aluno')
-                                ->join('tb_pessoas as responsavel', 'responsavel.id_pessoa', 'tb_matriculas.fk_id_responsavel')
-                                ->join('tb_situacoes_matricula', 'tb_situacoes_matricula.id_situacao_matricula', 'tb_matriculas.fk_id_situacao_matricula')                                
+        $alunos['data'] = $this->repositorio->select('id_matricula', 
+                                            'nome')
+                                ->join('tb_pessoas', 'id_pessoa', 'tb_matriculas.fk_id_aluno')                                                                
                                 ->join('tb_turmas', 'tb_turmas.id_turma', 'tb_matriculas.fk_id_turma')                               
-                                ->join('tb_tipos_turmas', 'tb_turmas.fk_id_tipo_turma', '=', 'tb_tipos_turmas.id_tipo_turma' )
-                                ->join('tb_sub_niveis_ensino', 'tb_tipos_turmas.fk_id_sub_nivel_ensino', '=', 'tb_sub_niveis_ensino.id_sub_nivel_ensino')
-                                ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')
-                                ->join('tb_turnos', 'tb_turmas.fk_id_turno', '=', 'tb_turnos.id_turno')                            
+                                ->join('tb_tipos_turmas', 'tb_turmas.fk_id_tipo_turma', '=', 'tb_tipos_turmas.id_tipo_turma' )                                
+                                ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')                                     
                                 ->where('id_ano_letivo', $id_ano_letivo)
                                 ->where('tb_anos_letivos.fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())
-                                ->orderBy('aluno.nome')
+                                ->orderBy('nome')
                                 ->get();
+
         echo json_encode($alunos);
         exit;
     }
