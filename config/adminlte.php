@@ -262,7 +262,7 @@ return [
                 ],
                 [
                     'text' => 'Declarações',
-                    'url'  => '#',
+                    'route'  => 'matriculas.documentos_escola.create',
                     'icon_color' => 'green',
                 ],
                 [

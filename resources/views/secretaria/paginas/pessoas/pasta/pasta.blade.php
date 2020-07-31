@@ -2,7 +2,7 @@
 
 <section></section>
 
-@section('title_postfix', ' Pasta do Aluno')
+@section('title_postfix', ' Arquivo do Aluno')
 
 @section('content_header')
 <ol class="breadcrumb">        
@@ -47,8 +47,14 @@
                             </div>
                             <div class="p-2"> </div>
                         </div>
-                        <div>
-                            <a href="{{route('matriculas.ficha', $matricula->fk_id_aluno)}}" class="btn btn-outline-primary"><i class="fas fa-address-book"></i></i> Ficha de Matrícula</a>
+                        <hr>
+                        <div class="row">
+                            <div class="form-group col-sm-3">
+                                <a href="{{route('matriculas.ficha', $matricula->fk_id_aluno)}}" class="btn btn-outline-primary"><i class="fas fa-print"></i> Ficha de Matrícula</a>
+                            </div>
+                            <div class="form-group col-sm-3">
+                                <a href="{{route('matriculas.documentos_escola', $matricula->fk_id_aluno)}}" class="btn btn-outline-primary"><i class="far fa-folder-open"></i> Declarações</a>
+                            </div>
                         </div>
 
                         <table class="table table-hover">
@@ -70,10 +76,10 @@
                         <tr>
                             <th scope="row">{{$index+1}}</th>
                             <td>
-                                {{$matricula->turma->tipoTurma->anoLetivo->ano}}
+                                <i class="fas fa-address-book"> </i> {{$matricula->turma->tipoTurma->anoLetivo->ano}}
                             </td>
                             <td>
-                                <a href="{{ route('matriculas.edit', $matricula->id_matricula) }}" class="btn btn-link">{{$matricula->turma->nome_turma}} - {{$matricula->turma->turno->descricao_turno}}</a>                                    
+                                <a href="{{ route('matriculas.edit', $matricula->id_matricula) }}" class="btn btn-link">  {{$matricula->turma->nome_turma}} - {{$matricula->turma->turno->descricao_turno}} </a>                                    
                             </td> 
                             <td>
                                 {{$matricula->situacaoMatricula->situacao_matricula}}                                        

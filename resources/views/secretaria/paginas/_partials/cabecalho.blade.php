@@ -8,10 +8,10 @@
                     <font size="4"> <b>{{mb_strToUpper($unidadeEnsino->razao_social)}} </b> </font>
                 </div>
             </div>
-        
+            <font size="2">
             <div class="row mx-auto">        
                 <div class="col-sm-12 col-xs-2 my-0 py-0 mx-auto" align="center"> 
-                    <font size="2"> CNPJ: {{mascaraCpfCnpj('##.###.###/####-##', $unidadeEnsino->cnpj)}}
+                     CNPJ: {{mascaraCpfCnpj('##.###.###/####-##', $unidadeEnsino->cnpj)}}
                 </div>
             </div>
             <div class="row mx-auto">
@@ -22,9 +22,15 @@
                     @else
                         {{mascaraTelefone('(##) #####-####', $unidadeEnsino->telefone)}} - E-mail: {{$unidadeEnsino->email}}    
                     @endif
-                    
-                    </font>
+                   
                 </div>
             </div>
+            <div class="row mx-auto">        
+                <div class="col-sm-12 col-xs-2 my-0 py-0 mx-auto" align="center"> 
+                    Rua Cinco, nº 190, Setor Primavera, CEP 73.805-175, Formosa-GO
+                </div>
+            </div>
+            
+            </font>
         </div>        
     </div>

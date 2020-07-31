@@ -124,6 +124,14 @@ Route::prefix('secretaria')
         route::any('matriculas/{id}/documentos/add', 'MatriculaDocumentoController@documentosAdd')->name('matriculas.documentos.add');
         route::get('matriculas/{id}/documentos', 'MatriculaDocumentoController@documentos')->name('matriculas.documentos');
 
+        /**
+         * Rotas geração documentos escola
+         * Declarações, etc
+         */
+        Route::get('matriculas/documentos_escola', 'DocumentoEscolaController@create')->name('matriculas.documentos_escola.create');
+        route::get('matriculas/documentos_escola/{id_documento}', 'DocumentoEscolaController@show')->name('matriculas.documentos_escola.show');
+        route::get('matriculas/{id_aluno}/documentos_escola', 'DocumentoEscolaController@index')->name('matriculas.documentos_escola');        
+
          /**
          * Rotas Matrículas
          */
@@ -137,6 +145,7 @@ Route::prefix('secretaria')
         Route::any('{id_turma}/matriculas', 'MatriculaController@index')->name('matriculas.index')->middleware('can:Matrícula Ver');
         Route::get('matriculas/contrato/{id_matricula}', 'MatriculaController@imprimirContrato')->name('matriculas.contrato')->middleware('can:Matrícula Contrato Ver');
         Route::get('matriculas/ficha/{id_aluno}', 'MatriculaController@imprimirFichaMatricula')->name('matriculas.ficha')->middleware('can:Matrícula Ficha Ver');
+        Route::get('matriculas/getAlunos/{id_ano_letivo}', 'MatriculaController@getAlunos')->name('matriculas.getAlunos');
         
         /**
          * Rotas Turmas

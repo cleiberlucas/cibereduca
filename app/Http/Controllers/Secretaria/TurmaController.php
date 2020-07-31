@@ -44,7 +44,7 @@ class TurmaController extends Controller
                             ->orderBy('tb_sub_niveis_ensino.sub_nivel_ensino', 'asc')
                             ->orderBy('nome_turma', 'asc')                            
                             ->orderBy('tb_turnos.descricao_turno', 'asc')
-                            ->paginate();
+                            ->paginate(25);
                             
         $matriculas = new Matricula;
         $quantVagas = [];
