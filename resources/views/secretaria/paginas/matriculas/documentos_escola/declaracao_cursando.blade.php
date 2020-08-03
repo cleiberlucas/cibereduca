@@ -12,13 +12,13 @@
         
 </head>
 <style>
-    html {
+    /* html {
         height: 100%;
     }
 
     body, .container {
         height: 100%;
-    }
+    } */
 
     .row {    
         margin-top: -0.25rem !important;
@@ -31,12 +31,20 @@
     p{
         font-size: 20px;
     }
-    
+    html {
+  height: 100%;
+}
 
-    .footer {
-    position:absolute;
-    bottom:0;
-    width:100%;
+body {
+  min-height: 100%;
+  display: grid;
+  grid-template-rows: 1fr auto;
+}
+
+.footer {
+  grid-row-start: 2;
+  grid-row-end: 3;
+}
 }
    /*  table.report-container {
     page-break-after:always;
@@ -57,9 +65,9 @@
 </style>
 
 <body>
-    <div class="container-fluid">        
+    <div class="container-fluid ">        
         @include('secretaria.paginas._partials.cabecalho')
-                
+                <div class="content">
         <div class="row">
             <div class="form-group col-sm-11 col-xs-2 my-5 py-0" >  
                 <br><br><br>                                                          
@@ -102,7 +110,7 @@
             </div>                    
         </div>
         <div class="row">
-            <div class=" col-sm-3 col-xs-2 my-5" align="justify">
+            <div class="form-group  col-sm-3 col-xs-2 mt-5" align="justify">
                 <div class="visible-print text-center">
                     {!! QrCode::size(100)->color(11,85,11)->generate($url_qrcode); !!}                    
                 </div>                
@@ -110,7 +118,7 @@
         </div>
         
             <div class="row">
-                <div class=" col-sm-10 col-xs-2 ml-5">
+                <div class="form-group  col-sm-10 col-xs-2 ml-5">
                     <font size="2px">            
                     Verifique a autenticidade deste documento em {{$url_texto}}
                     <br>
@@ -118,30 +126,27 @@
                 </font>
                 </div>
             </div>
+       
+    </div>
+    </div>
         
-        
-        
-      
-        <div class="footer">
-            <div class="row">
+        <footer class="footer">
+            {{-- CiberEduca - Plataforma de Gestão Escolar
+            <br>
+            CiberSys - Sistemas Inteligentes --}}
+            <div class="row mx-auto">
                 
-                <div class=" col-sm-10 col-xs-2 ml-5" align="center">
-                    <font size="1px">
-                    CiberEduca - Plataforma de Gestão Escolar   
-                </font>
+                <div class="col-sm-12 col-xs-2 ml-5 my-py-0 mx-auto" align="center">
+                    <font size="1px">CiberEduca - Plataforma de Gestão Escolar</font>
                 </div>         
             </div>
-            <div class="row">
-                <div class=" col-sm-10 col-xs-2 ml-5" align="center">
-                    <font size="1px">
-                    CiberSys - Sistemas Inteligentes
-                </font>
-                </div>
-            
+            <div class="row mx-auto">
+                <div class="col-sm-12 col-xs-2 ml-5 my-py-0 mx-auto" align="center">
+                    <font size="1px">CiberSys - Sistemas Inteligentes</font>
+                </div>            
             </div>
-        </div>
+        </footer>
     
-    </div>
     
 </body>
 </html>
