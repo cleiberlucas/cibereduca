@@ -27,7 +27,7 @@
             </div>
             <div class="row mx-auto">        
                 <div class="col-sm-12 col-xs-2 my-0 py-0 mx-auto" align="center"> 
-                    Rua Cinco, nº 190, Setor Primavera, CEP 73.805-175, Formosa-GO
+                    {{$unidadeEnsino->endereco}}
                 </div>
             </div>
             

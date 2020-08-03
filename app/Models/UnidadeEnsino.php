@@ -11,7 +11,7 @@ class UnidadeEnsino extends Model
 
     public $timestamps = false;
     
-    protected $fillable = ['razao_social', 'nome_fantasia', 'cnpj', 'telefone', 'email', 'nome_assinatura', 'cargo_assinatura', 'url_site', 'situacao'];
+    protected $fillable = ['razao_social', 'nome_fantasia', 'cnpj', 'telefone', 'endereco', 'email', 'nome_assinatura', 'cargo_assinatura', 'url_site', 'situacao'];
       
     public function search($filtro = null)
     {

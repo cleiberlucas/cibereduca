@@ -11,15 +11,16 @@ use App\Models\Secretaria\Matricula;
 use App\Models\TipoDocumentoEscola;
 use App\Models\UnidadeEnsino;
 use App\User;
+use LaravelQRCode\Facades\QRCode;
 use PDF;
 use PhpParser\Node\Stmt\TryCatch;
 
 class DocumentoEscolaController extends Controller
 {
     protected $repositorio, $matricula;
-    
+
     public function __construct(DocumentoEscola $documentoEscola)
-    {        
+    {
         $this->repositorio = $documentoEscola;
         $this->matricula = new Matricula;
     }
@@ -28,71 +29,70 @@ class DocumentoEscolaController extends Controller
     {
         $anosLetivos = new AnoLetivo;
         $anosLetivos = $anosLetivos->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())
-                                    ->orderBy('ano', 'desc')
-                                    ->get();
+            ->orderBy('ano', 'desc')
+            ->get();
 
 
         return view('secretaria.paginas.matriculas.documentos_escola.declaracao', [
-                    'anosLetivos' => $anosLetivos,
+            'anosLetivos' => $anosLetivos,
         ]);
     }
 
-    public function gerar(Request $request )
+    public function gerar(Request $request)
     {
-        $codigo = sprintf('%07X', mt_rand(0, 0xFFFFFFF));
-        //dd($codigo);
-        $request->merge(['codigo_validacao' => $codigo]);
-        //$request->merge();
-       // dd($request);
+        $codigoValidacao = sprintf('%07X', mt_rand(0, 0xFFFFFFF));
+        
+        $request->merge(['codigo_validacao' => $codigoValidacao]);
+
+        $hoje = date('Ymd');
+
+        $url_texto = route('matriculas.documentos_escola.autenticidade');
+
+        $url_qrcode = route('matriculas.documentos_escola.verifica_autenticidade').'?data_geracao='.$hoje.'&codigo_validacao='.$codigoValidacao;
+              
         $matricula = new Matricula;
         $matricula = $matricula->where('id_matricula', $request['fk_id_matricula'])->first();
 
         $unidadeEnsino = new UnidadeEnsino;
         $unidadeEnsino = $unidadeEnsino->where('id_unidade_ensino', user::getUnidadeEnsinoSelecionada())->first();
-        //dd($matricula);
-
-        if($request['declaracao'] == 'declaracao_cursando'){
-            
-            //dd($request);
-
-           /*  return view('secretaria.paginas.matriculas.documentos_escola.declaracao_cursando', [
-                'matricula' => $matricula,
-                'unidadeEnsino' => $unidadeEnsino,
-            ]); */
-            
-           try {
-                $conteudo = view('secretaria.paginas.matriculas.documentos_escola.declaracao_cursando', 
-                compact('matricula','unidadeEnsino'));
+       
+        if ($request['declaracao'] == 'declaracao_cursando') {
+            try {
+                //lendo conteúdo da view para armazenar do BD
+                $conteudo = view(
+                    'secretaria.paginas.matriculas.documentos_escola.declaracao_cursando',
+                    compact('matricula', 'unidadeEnsino', 'codigoValidacao', 'url_texto', 'url_qrcode')
+                );
                 
                 $request->merge(['fk_id_tipo_documento' => 1]);
                 $request->merge(['corpo_documento' => $conteudo]);
-           } catch (\Throwable $th) {
-               //throw $th;
-               return redirect()->back()->with('erro', 'Houve erro ao gerar a Declaração.');
-           }
-
+            } catch (\Throwable $th) {                
+                return redirect()->back()->with('erro', 'Houve erro ao gerar a Declaração.');
+            }
 
             try {
+                //Solicitando gravação da declaração no BD
                 $this->store($request);
             } catch (\Throwable $th) {
                 return redirect()->back()->with('erro', 'Houve erro ao gravar a Declaração.');
-            }
-           // dd($conteudo);
-           /*  $pdf = PDF::loadView('secretaria.paginas.matriculas.documentos_escola.declaracao_cursando', 
-                compact('matricula','unidadeEnsino')); */
-
-            return view('secretaria.paginas.matriculas.documentos_escola.declaracao_cursando', 
-            compact('matricula','unidadeEnsino'));
-        }
-        else
+            }           
+            
+            //Visualizando a declaração
+            return view(
+                'secretaria.paginas.matriculas.documentos_escola.declaracao_cursando',
+                compact('matricula', 'unidadeEnsino', 'codigoValidacao', 'url_texto', 'url_qrcode')
+            );
+        } else
             return redirect()->back()->withInput()->with('atencao', 'Escolha um tipo de declaração.');
-
     }
 
-    public function store(Request $request )
+    /**
+     * Gravar a declaração no BD
+     */
+    public function store(Request $request)
     {
         $dados = $request->all();
-        
+
         $this->repositorio->create($dados);
 
         return redirect()->back()->with('sucesso', 'Declaração gerada com sucesso.');
@@ -102,30 +102,31 @@ class DocumentoEscolaController extends Controller
     public function index($id_aluno)
     {
         $documentosEscola = $this->repositorio
-                                        ->join('tb_matriculas', 'id_matricula', '=', 'tb_documentos_escola.fk_id_matricula')
-                                        ->join('tb_turmas', 'id_turma', '=', 'tb_matriculas.fk_id_turma')
-                                        ->join('tb_tipos_turmas', 'id_tipo_turma', '=', 'tb_turmas.fk_id_tipo_turma')
-                                        ->join('tb_anos_letivos', 'id_ano_letivo', '=', 'tb_tipos_turmas.fk_id_ano_letivo')                                        
-                                        ->where('fk_id_aluno', $id_aluno)
-                                        ->where('tb_anos_letivos.fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())
-                                        ->orderBy('ano', 'desc')
-                                        ->orderBy('data_geracao', 'desc')
-                                        ->paginate();
+            ->join('tb_matriculas', 'id_matricula', '=', 'tb_documentos_escola.fk_id_matricula')
+            ->join('tb_turmas', 'id_turma', '=', 'tb_matriculas.fk_id_turma')
+            ->join('tb_tipos_turmas', 'id_tipo_turma', '=', 'tb_turmas.fk_id_tipo_turma')
+            ->join('tb_anos_letivos', 'id_ano_letivo', '=', 'tb_tipos_turmas.fk_id_ano_letivo')
+            ->where('fk_id_aluno', $id_aluno)
+            ->where('tb_anos_letivos.fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())
+            ->orderBy('ano', 'desc')
+            ->orderBy('data_geracao', 'desc')
+            ->paginate();
 
         if (count($documentosEscola) == 0)
-            return redirect()->back()->with('info', 'Nenhum documento gerado para este aluno.');        
-       
+            return redirect()->back()->with('info', 'Nenhum documento gerado para este aluno.');
+
 
         return view('secretaria.paginas.matriculas.documentos_escola.index', [
-                    'documentosEscola' => $documentosEscola,          
-                    
+            'documentosEscola' => $documentosEscola,
+
         ]);
     }
 
     /**
      * Imprimir documento gravado anteriormente.
      */
-    public function show($id_documento){
+    public function show($id_documento)
+    {
         $documentoEscola = $this->repositorio->where('id_documento_escola', $id_documento)->first();
 
         return view('secretaria.paginas.matriculas.documentos_escola.show', [
@@ -148,18 +149,16 @@ class DocumentoEscolaController extends Controller
     public function verificarAutenticidade(Request $request)
     {
         $documentoEscola = $this->repositorio->whereDate('data_geracao', '=', $request['data_geracao'])
-                                            ->where('codigo_validacao', $request['codigo_validacao'])                                            
-                                            ->first();
+            ->where('codigo_validacao', $request['codigo_validacao'])
+            ->first();
 
         if (!$documentoEscola)
             return redirect()->back()->withInput()->with('atencao', 'Documento não encontrado, verifique os dados informados.');
-        
-        else if($documentoEscola->situacao_documento == 0)
-            return redirect()->back()->withInput()->with('erro', 'DOCUMENTO INVÁLIDO. Favor contatar a Instituição de Ensino.');
-        
-        else
-            return redirect()->back()->withInput()->with('sucesso', 'Documento válido - ' .$documentoEscola->tipoDocumentoEscola->tipo_documento.' emitido para '.$documentoEscola->matricula->aluno->nome.'.');
-        
-    }
 
+        else if ($documentoEscola->situacao_documento == 0)
+            return redirect()->back()->withInput()->with('erro', 'DOCUMENTO INVÁLIDO. Favor contatar a Instituição de Ensino.');
+
+        else
+            return redirect()->back()->withInput()->with('sucesso', 'Documento válido - ' . $documentoEscola->tipoDocumentoEscola->tipo_documento . ' emitido para ' . $documentoEscola->matricula->aluno->nome . '.');
+    }
 }

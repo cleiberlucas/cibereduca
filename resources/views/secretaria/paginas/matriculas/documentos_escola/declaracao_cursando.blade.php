@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{$unidadeEnsino->nome_fantasia}}-Declaração Cursando - {{$matricula->aluno->nome_aluno}}     
+    <title>{{$unidadeEnsino->nome_fantasia}}-Declaração Cursando   
     </title> 
     
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
@@ -94,6 +94,23 @@
                 {{$unidadeEnsino->cargo_assinatura}}
                 </p>
             </div>                    
+        </div>
+        <div class="row">
+            <div class=" col-sm-3 col-xs-2 my-5" align="justify">
+                <div class="visible-print text-center">
+                    {!! QrCode::size(100)->color(11,85,11)->generate($url_qrcode); !!}                    
+                </div>                
+            </div>
+
+        </div>
+        <div class="row">
+            <div class=" col-sm-10 col-xs-2 ml-5">
+                <font size="2px">
+                Verifique a autenticidade deste documento em {{$url_texto}}
+                <br>
+                Documento gerado em {{date('d/m/Y H:m:i')}} - Código de Validação: {{$codigoValidacao}}
+                </font>
+            </div>
         </div>
     
     </div>

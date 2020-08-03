@@ -28,6 +28,13 @@
     </div>
 
     <div class="row">
+        <div class="form-group col-sm-12 col-xs-12">        
+            <label>Endereço:</label>
+            <input type="text" maxlength="255" name="endereco" class="form-control" placeholder="Endereço" value="{{ $unidadeensino->endereco ?? old('endereco') }}">
+        </div>
+    </div>
+
+    <div class="row">
         <div class="form-group col-sm-6 col-xs-12">        
             <label>Email:</label>
             <input type="email" name="email" class="form-control" placeholder="Email" value="{{ $unidadeensino->email ?? old('email') }}">

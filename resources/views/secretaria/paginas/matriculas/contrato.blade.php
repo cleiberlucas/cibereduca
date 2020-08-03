@@ -46,6 +46,8 @@
                         @else
                             {{mascaraTelefone('(##) #####-####', $unidadeEnsino->telefone)}} - E-mail: {{$unidadeEnsino->email}}    
                         @endif
+                        <br>
+                        {{$unidadeEnsino->endereco}}
                         
                         </font>
                     </div>
@@ -94,8 +96,7 @@
                     <br><br>
                     <strong>QUADRO 03: CONTRATADA</strong>
                     <br>
-                    {{$unidadeEnsino->razao_social}}, inscrita no CNPJ sob o n° {{mascaraCpfCnpj('##.###.###/####-##', $unidadeEnsino->cnpj)}}, Matriz, sediada à Rua Cinco, nº 190,
-                    Setor Primavera, CEP 73.805-175, Formosa(GO).
+                    {{$unidadeEnsino->razao_social}}, inscrita no CNPJ sob o n° {{mascaraCpfCnpj('##.###.###/####-##', $unidadeEnsino->cnpj)}}, Matriz, sediada à {{$unidadeEnsino->endereco}}.
                     
                 </td>
             </tr>

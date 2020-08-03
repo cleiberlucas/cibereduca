@@ -53,7 +53,7 @@
             
             <div class="row">
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="declaracao" id="declaracao_cursando" value="declaracao_cursando">
+                    <input class="form-check-input" type="radio" name="declaracao" id="declaracao_cursando" value="declaracao_cursando" required>
                     <label for="declaracao_cursando" class="form-check-label">Cursando</label>
                 </div>
             </div>
