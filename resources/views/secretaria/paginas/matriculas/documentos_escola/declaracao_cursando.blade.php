@@ -31,7 +31,13 @@
     p{
         font-size: 20px;
     }
+    
 
+    .footer {
+    position:absolute;
+    bottom:0;
+    width:100%;
+}
    /*  table.report-container {
     page-break-after:always;
     }
@@ -101,27 +107,39 @@
                     {!! QrCode::size(100)->color(11,85,11)->generate($url_qrcode); !!}                    
                 </div>                
             </div>
-
         </div>
-        <font size="2px">
+        
             <div class="row">
                 <div class=" col-sm-10 col-xs-2 ml-5">
-                    
+                    <font size="2px">            
                     Verifique a autenticidade deste documento em {{$url_texto}}
                     <br>
                     Documento gerado em {{date('d/m/Y H:m:i')}} - Código de Validação: {{$codigoValidacao}}
-        
+                </font>
                 </div>
             </div>
-        </font>
-        <font size=1px>
-            <div class="row justify-content-center">            
-                CiberEduca - Plataforma de Gestão Escolar            
+        
+        
+        
+      
+        <div class="footer">
+            <div class="row">
+                
+                <div class=" col-sm-10 col-xs-2 ml-5" align="center">
+                    <font size="1px">
+                    CiberEduca - Plataforma de Gestão Escolar   
+                </font>
+                </div>         
             </div>
-            <div>
-                CiberSys - Sistemas Inteligentes
+            <div class="row">
+                <div class=" col-sm-10 col-xs-2 ml-5" align="center">
+                    <font size="1px">
+                    CiberSys - Sistemas Inteligentes
+                </font>
+                </div>
+            
             </div>
-        </font>            
+        </div>
     
     </div>
     
