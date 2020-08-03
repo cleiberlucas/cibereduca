@@ -158,7 +158,13 @@ class DocumentoEscolaController extends Controller
         else if ($documentoEscola->situacao_documento == 0)
             return redirect()->back()->withInput()->with('erro', 'DOCUMENTO INVÁLIDO. Favor contatar a Instituição de Ensino.');
 
-        else
-            return redirect()->back()->withInput()->with('sucesso', 'Documento válido - ' . $documentoEscola->tipoDocumentoEscola->tipo_documento . ' emitido para ' . $documentoEscola->matricula->aluno->nome . '.');
+        else            
+            return view('secretaria.paginas.matriculas.documentos_escola.autenticidade', 
+                ['sucesso' => 'Documento válido - ' . $documentoEscola->tipoDocumentoEscola->tipo_documento . ' emitido para ' . $documentoEscola->matricula->aluno->nome . '.',
+                'dados' => 'Emitido em '.date('d/m/Y H:m:i', strtotime($documentoEscola->data_geracao)).' - Código de Validação: '.$documentoEscola->codigo_validacao
+                ])
+                ->withInput('');            
+            
+           // return redirect()->back()->withInput()->with('sucesso', 'Documento válido - ' . $documentoEscola->tipoDocumentoEscola->tipo_documento . ' emitido para ' . $documentoEscola->matricula->aluno->nome . '.');
     }
 }

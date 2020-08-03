@@ -103,15 +103,25 @@
             </div>
 
         </div>
-        <div class="row">
-            <div class=" col-sm-10 col-xs-2 ml-5">
-                <font size="2px">
-                Verifique a autenticidade deste documento em {{$url_texto}}
-                <br>
-                Documento gerado em {{date('d/m/Y H:m:i')}} - Código de Validação: {{$codigoValidacao}}
-                </font>
+        <font size="2px">
+            <div class="row">
+                <div class=" col-sm-10 col-xs-2 ml-5">
+                    
+                    Verifique a autenticidade deste documento em {{$url_texto}}
+                    <br>
+                    Documento gerado em {{date('d/m/Y H:m:i')}} - Código de Validação: {{$codigoValidacao}}
+        
+                </div>
             </div>
-        </div>
+        </font>
+        <font size=1px>
+            <div class="row justify-content-center">            
+                CiberEduca - Plataforma de Gestão Escolar            
+            </div>
+            <div>
+                CiberSys - Sistemas Inteligentes
+            </div>
+        </font>            
     
     </div>
     

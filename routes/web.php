@@ -99,20 +99,11 @@ route::post('turmas/{id}/periodosletivos', 'Pedagogico\TurmaPeriodoLetivoControl
 route::any('turmas/{id}/periodosletivos/add', 'Pedagogico\TurmaPeriodoLetivoController@periodosLetivosAdd')->name('turmas.periodosletivos.add');
 route::get('turmas/{id}/periodosletivos', 'Pedagogico\TurmaPeriodoLetivoController@periodosLetivos')->name('turmas.periodosletivos')->middleware('can:Período Letivo Ver');
 
-
 /**
  * Autenticidade de documentos * 
  */
 Route::get('autenticidade', 'Secretaria\DocumentoEscolaController@autenticidade')->name('matriculas.documentos_escola.autenticidade');
 Route::any('verifica_autenticidade', 'Secretaria\DocumentoEscolaController@verificarAutenticidade')->name('matriculas.documentos_escola.verifica_autenticidade');
-
-/* Route::get('qr-code-g', function () {
-        \QrCode::size(500)
-                  ->format('png')
-                  ->generate('ItSolutionStuff.com', public_path('images/qrcode.png'));
-          
-        return view('qrCode');
- */
 
 /**
  * Rotas Secretaria

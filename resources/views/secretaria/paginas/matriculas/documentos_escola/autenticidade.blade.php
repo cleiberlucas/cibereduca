@@ -23,8 +23,44 @@
        </div>
 
         <hr>
+       {{--  
+        @include('admin.includes.alerts') --}}
+
         
-        @include('admin.includes.alerts')
+        @if (!empty($sucesso))
+            <div class="alert alert-success"> 
+                <b>{{$sucesso}}</b>
+                <br>
+                {{$dados}}
+            </div>                        
+        @endif
+
+                
+        @if (session('sucesso'))
+        <div class="alert alert-success" role="alert">
+            {{ session('sucesso') }}
+        </div>
+        @endif
+
+        @if (session('erro'))
+        <div class="alert alert-danger" role="alert">
+            {{ session('erro') }}
+        </div>
+        @endif
+
+        @if (session('atencao'))
+        <div class="alert alert-warning" role="alert">
+            <strong>{{ session('atencao') }}</strong>
+        </div>
+        @endif
+
+
+        @if (session('info'))
+        <div class="alert alert-info" role="alert">
+            <strong>{{ session('info') }}</strong>
+        </div>
+        @endif
+
 
         <form action="{{ route('matriculas.documentos_escola.verifica_autenticidade')}}" class="form" method="POST" >
             @csrf
@@ -35,7 +71,7 @@
                 </div>
                 <div class="form-group col-sm-3 col-xs-2">
                     <label>Código de Verificação</label>
-                    <input type="text" name="codigo_validacao" class="form-control" maxlength="7" required value="{{old('codigo_validacao')}}">
+                    <input type="text" name="codigo_validacao" class="form-control" maxlength="255" required value="{{old('codigo_validacao')}}">
                 </div>
             </div>
 
@@ -57,6 +93,12 @@
         <img width="3%" src="/vendor/cibersys/img/cubo_magico.gif"  alt="">            
     </div>
     
+    <div class="row justify-content-center">
+        <div class="">
+            CiberEduca - Plataforma de Gestão Escolar            
+          
+        </div>
+    </div>
     <div class="row justify-content-center">
         <div class="">
             <a href="http://www.cibersys.com.br">CiberSys - Sistemas Inteligentes </a>
