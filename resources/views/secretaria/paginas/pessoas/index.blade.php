@@ -31,7 +31,9 @@
             </h3>
         </div>
         <div class="form-group col-sm-3 col-xs-12">
-            Total Ativos: {{$qtdPessoas}}
+            @if (isset($qtdPessoas))
+                Total Ativos: {{$qtdPessoas}} 
+            @endif
         </div>
     </div>
     

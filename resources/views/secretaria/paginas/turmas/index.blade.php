@@ -18,7 +18,9 @@
             <h3>Turmas <a href="{{ route('turmas.create') }}" class="btn btn-success"> <i class="fas fa-plus-square"></i> Cadastrar</a></h3>    
         </div>
         <div class="form-group col-sm-3 col-sx-2">
-            <b>Total matrículas <?php echo date('Y');?>: {{ $totalMatriculas}}</b>
+            @if (isset($totalMatriculas))
+                <b>Total matrículas <?php echo date('Y');?>: {{ $totalMatriculas}}</b>    
+            @endif            
         </div>
     </div>
 @stop
