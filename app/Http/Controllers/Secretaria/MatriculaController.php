@@ -84,7 +84,7 @@ class MatriculaController extends Controller
                     'formasPagto'           => $formasPagto->getFormasPagamento(),
                     'tiposDesconto'         => $tiposDesconto->getTiposDescontoCurso(),
                     'situacoesMatricula'    => $situacoesMatricula->getSituacoesMatricula(),
-                    'quantMatriculas'       => $this->repositorio->quantMatriculas($turma->id_turma),
+                    'quantMatriculas'       => $this->repositorio->quantMatriculasTurma($turma->id_turma),
                     'quantVagasDisponiveis' => $this->repositorio->quantVagasDisponiveis($turma->id_turma),
                     'tiposAtendimentoEspecializado' => $tiposAtendimentoEspecializado->getTiposAtendimentoEspecializado(),
         ]);
