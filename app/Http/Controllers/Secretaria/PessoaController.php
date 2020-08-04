@@ -18,21 +18,21 @@ use Illuminate\Support\Facades\Storage;
 class PessoaController extends Controller
 {
     private $repositorio, $estados, $cidades, $tiposDocIdentidade, $unidadesEnsino, $sexos;
-    
+
     public function __construct(Pessoa $pessoa)
     {
         $this->repositorio = $pessoa;
-        
+
         $this->estados = new Estado;
         $this->estados = $this->estados->all()->sortBy('sigla');
-        
+
         $this->cidades = new Cidade;
         $this->cidades = $this->cidades->all()->sortBy('cidade');
-        
+
         $this->tiposDocIdentidade = new TipoDocIdentidade;
-        $this->tiposDocIdentidade = $this->tiposDocIdentidade->all()->sortBy('tipo_doc_identidade');   
-        
-         $this->unidadesEnsino = new UnidadeEnsino;
+        $this->tiposDocIdentidade = $this->tiposDocIdentidade->all()->sortBy('tipo_doc_identidade');
+
+        $this->unidadesEnsino = new UnidadeEnsino;
         /*$this->unidadesEnsino = $this->unidadesEnsino->all()->sortBy('nome_fantasia'); */
 
         $this->sexos = new Sexo;
@@ -40,49 +40,66 @@ class PessoaController extends Controller
     }
 
     public function index(Request $request)
-    {   
+    {
         /* Alunos 
             Mostra somente unidades de ensino vinculadas ao usuário logado
-        */        
-        if ($request->segment(2) == '1'){
+        */
+        if ($request->segment(2) == '1') {
+
+            /* Quantidade alunos cadastrados ativos */
+            $qtdPessoas = $this->repositorio
+                ->join('tb_unidades_ensino', 'fk_id_unidade_ensino', 'id_unidade_ensino')
+                ->where('fk_id_tipo_pessoa', $request->segment(2))
+                ->where('id_unidade_ensino', '=', User::getUnidadeEnsinoSelecionada())
+                ->where('situacao_pessoa', 1)                
+                ->count();
+
             $pessoas = $this->repositorio
-                                        ->join('tb_unidades_ensino', 'fk_id_unidade_ensino', 'id_unidade_ensino')
-                                        ->where('fk_id_tipo_pessoa', $request->segment(2))->orderBy('nome', 'asc')
-                                        ->where('id_unidade_ensino', '=', User::getUnidadeEnsinoSelecionada())
-                                        ->paginate(20);
+                ->join('tb_unidades_ensino', 'fk_id_unidade_ensino', 'id_unidade_ensino')
+                ->where('fk_id_tipo_pessoa', $request->segment(2))
+                ->where('id_unidade_ensino', '=', User::getUnidadeEnsinoSelecionada())
+                ->orderBy('nome', 'asc')
+                ->paginate(20);
         }
         /* Responsável 
             Não mostra unidade ensino
-        */
-        else
-            $pessoas = $this->repositorio->where('fk_id_tipo_pessoa', $request->segment(2))->orderBy('nome', 'asc')->paginate(20); 
-        
+        */ else{
+            $qtdPessoas = $this->repositorio->where('fk_id_tipo_pessoa', $request->segment(2))   
+                ->where('situacao_pessoa', 1)                          
+                ->count();
+
+            $pessoas = $this->repositorio->where('fk_id_tipo_pessoa', $request->segment(2))
+                ->orderBy('nome', 'asc')
+                ->paginate(20);
+        }
+
         return view('secretaria.paginas.pessoas.index', [
-                    'pessoas' => $pessoas,
-                    'tipo_pessoa' => $request->segment(2),
+            'pessoas' => $pessoas,
+            'tipo_pessoa' => $request->segment(2),
+            'qtdPessoas' => $qtdPessoas,
         ]);
     }
 
     public function create(Request $request)
-    {   
-        $this->authorize('Pessoa Cadastrar');   
+    {
+        $this->authorize('Pessoa Cadastrar');
         $unidadesEnsino = $this->unidadesEnsino->where('id_unidade_ensino', User::getUnidadeEnsinoSelecionada())->get();
 
         return view('secretaria.paginas.pessoas.create', [
-                    'tipo_pessoa' => $request->segment(4),
-                    'estados' => $this->estados,
-                    'cidades' => $this->cidades,
-                    'tiposDocIdentidade' => $this->tiposDocIdentidade,
-                    'unidadesEnsino'     => $unidadesEnsino,
-                    'sexos'  => $this->sexos,
-         ]);
+            'tipo_pessoa' => $request->segment(4),
+            'estados' => $this->estados,
+            'cidades' => $this->cidades,
+            'tiposDocIdentidade' => $this->tiposDocIdentidade,
+            'unidadesEnsino'     => $unidadesEnsino,
+            'sexos'  => $this->sexos,
+        ]);
     }
 
-    public function store(StoreUpdatePessoa $request )
+    public function store(StoreUpdatePessoa $request)
     {
-        $request['cpf'] = somenteNumeros($request['cpf']); 
-        $request['telefone_1'] = somenteNumeros($request['telefone_1']); 
-        $request['telefone_2'] = somenteNumeros($request['telefone_2']); 
+        $request['cpf'] = somenteNumeros($request['cpf']);
+        $request['telefone_1'] = somenteNumeros($request['telefone_1']);
+        $request['telefone_2'] = somenteNumeros($request['telefone_2']);
         $request['cep'] = somenteNumeros($request['cep']);
 
         $dados = $request->all();
@@ -94,7 +111,7 @@ class PessoaController extends Controller
             //dd($request->foto->extension());
             $request->file('foto')->store('pessoas');
         } */
-        if ($request->hasfile('foto') && $request->foto->isValid()){
+        if ($request->hasfile('foto') && $request->foto->isValid()) {
             $dados['foto'] = $request->file('foto')->store('pessoas');
         }
         //Gravando pessoa
@@ -105,23 +122,22 @@ class PessoaController extends Controller
             //throw $th;
             return back()->withInput()->with('atencao', 'Erro ao gravar. Verifique se já existe o cadastro desta pessoa.');
         }
-        
+
 
         //Gravando endereço
         //Somente para Responsável
-        if ($dados['fk_id_tipo_pessoa'] == 2){
+        if ($dados['fk_id_tipo_pessoa'] == 2) {
             try {
                 $insertPessoa->endereco()->create($request->except('pai', 'mae', 'fk_id_sexo'));
             } catch (\Throwable $th) {
                 //throw $th;
             }
-
         }
-        
+
         /* Alunos 
             Mostra somente unidades de ensino vinculadas ao usuário logado
-        */        
-       /*  if ($dados['fk_id_tipo_pessoa'] == 1){
+        */
+        /*  if ($dados['fk_id_tipo_pessoa'] == 1){
             $pessoas = $this->repositorio
                                         ->join('tb_unidades_ensino', 'fk_id_unidade_ensino', 'id_unidade_ensino')
                                         ->where('fk_id_tipo_pessoa', $dados['fk_id_tipo_pessoa'])
@@ -132,30 +148,29 @@ class PessoaController extends Controller
         /* Responsável 
             Não mostra unidade ensino
         */
-       /*  else
+        /*  else
             $pessoas = $this->repositorio->where('fk_id_tipo_pessoa', $dados['fk_id_tipo_pessoa'])
                                         ->orderBy('nome', 'asc')
-                                        ->paginate(20); */ 
-        
+                                        ->paginate(20); */
+
         return redirect()->back()->with('sucesso', 'Cadastro realizado com sucesso.');
 
-       /*  return view('secretaria.paginas.pessoas.index', [
+        /*  return view('secretaria.paginas.pessoas.index', [
                     'pessoas' => $pessoas,
                     'tipo_pessoa' =>  $dados['fk_id_tipo_pessoa'],
         ])->with('sucesso', 'Cadastro realizado com sucesso.'); */
-    
     }
 
     public function show($id)
     {
-        $this->authorize('Pessoa Ver');   
+        $this->authorize('Pessoa Ver');
         $pessoa = $this->repositorio->where('id_pessoa', $id)->first();
-        
+
         if (!$pessoa)
             return redirect()->back();
 
         return view('secretaria.paginas.pessoas.show', [
-            'pessoa' => $pessoa,        
+            'pessoa' => $pessoa,
         ]);
     }
 
@@ -167,14 +182,14 @@ class PessoaController extends Controller
         if (!$pessoa)
             return redirect()->back();
 
-            try {
-                //code...
-                $pessoa->where('id_pessoa', $id)->delete();
-            } catch (\Throwable $th) {
-                //throw $th;
-                return redirect()->back()->with('atencao', 'Não é possível excluir este cadastro. Alguma informação pode estar vinculada a registros anteriores.');
-            }
-        
+        try {
+            //code...
+            $pessoa->where('id_pessoa', $id)->delete();
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('atencao', 'Não é possível excluir este cadastro. Alguma informação pode estar vinculada a registros anteriores.');
+        }
+
         return redirect()->route('pessoas.index', $tipoPessoa);
     }
 
@@ -192,16 +207,16 @@ class PessoaController extends Controller
 
     public function edit($id)
     {
-        $this->authorize('Pessoa Alterar');   
+        $this->authorize('Pessoa Alterar');
         $pessoa = $this->repositorio->where('id_pessoa', $id)->first();
-        $tipoPessoa = $pessoa->tipoPessoa->tipo_pessoa;             
+        $tipoPessoa = $pessoa->tipoPessoa->tipo_pessoa;
 
         if (!$pessoa)
             return redirect()->back();
-        
+
         $unidadesEnsino = $this->unidadesEnsino->where('id_unidade_ensino', User::getUnidadeEnsinoSelecionada())->get();
 
-        return view('secretaria.paginas.pessoas.edit',[
+        return view('secretaria.paginas.pessoas.edit', [
             'pessoa' => $pessoa,
             'tipoPessoa' => $tipoPessoa,
             'estados' => $this->estados,
@@ -218,42 +233,60 @@ class PessoaController extends Controller
 
         if (!$pessoa)
             return redirect()->back();
-        
+
         $sit = $this->verificarSituacao($request->all());
-        $request['cpf'] = somenteNumeros($request['cpf']);     
-        $request['telefone_1'] = somenteNumeros($request['telefone_1']); 
-        $request['telefone_2'] = somenteNumeros($request['telefone_2']);    
+        $request['cpf'] = somenteNumeros($request['cpf']);
+        $request['telefone_1'] = somenteNumeros($request['telefone_1']);
+        $request['telefone_2'] = somenteNumeros($request['telefone_2']);
         $request['cep'] = somenteNumeros($request['cep']);
 
         $request->merge($sit);
         $dados = $request->except('_token', '_method', 'endereco', 'complemento', 'numero', 'bairro', 'fk_id_cidade', 'cep', 'estado');
-        
-        if ($request->hasfile('foto') && $request->foto->isValid()){
+
+        if ($request->hasfile('foto') && $request->foto->isValid()) {
             //Removendo foto anterior
             if (Storage::exists($pessoa->foto)) {
                 Storage::delete($pessoa->foto);
             }
             $dados['foto'] = $request->file('foto')->store('pessoas');
         }
-        
+
         $pessoa->update($dados);
 
         //Gravando endereço
         //somente para responsável
         if ($pessoa->fk_id_tipo_pessoa == 2)
             Endereco::where('fk_id_pessoa', $pessoa->id_pessoa)
-                            ->update($request
-                                        ->except('_token', '_method', 
-                                                    'nome', 'cpf', 'doc_identidade', 'data_nascimento', 'foto', 'fk_id_tipo_doc_identidade', 
-                                                    'obs_pessoa', 'pai', 'mae', 'fk_id_sexo',
-                                                    'telefone_1', 'telefone_2', 'email_1', 'email_2', 'fk_id_tipo_pessoa', 
-                                                    'fk_id_user', 'situacao_pessoa', 'estado', 'fk_id_user_alteracao'));
+                ->update($request
+                    ->except(
+                        '_token',
+                        '_method',
+                        'nome',
+                        'cpf',
+                        'doc_identidade',
+                        'data_nascimento',
+                        'foto',
+                        'fk_id_tipo_doc_identidade',
+                        'obs_pessoa',
+                        'pai',
+                        'mae',
+                        'fk_id_sexo',
+                        'telefone_1',
+                        'telefone_2',
+                        'email_1',
+                        'email_2',
+                        'fk_id_tipo_pessoa',
+                        'fk_id_user',
+                        'situacao_pessoa',
+                        'estado',
+                        'fk_id_user_alteracao'
+                    ));
 
         $pessoas = $this->repositorio->where('fk_id_tipo_pessoa', $pessoa->fk_id_tipo_pessoa)->orderBy('nome', 'asc')->paginate(20);
-       
+
         return view('secretaria.paginas.pessoas.index', [
-                    'tipo_pessoa' => $pessoa->fk_id_tipo_pessoa,
-                    'pessoas'     => $pessoas,
+            'tipo_pessoa' => $pessoa->fk_id_tipo_pessoa,
+            'pessoas'     => $pessoas,
         ]);
     }
 
@@ -263,14 +296,14 @@ class PessoaController extends Controller
      * @param string nome
      * @return boolean
      */
-    public function getPessoa(string $nome )
+    public function getPessoa(string $nome)
     {
-        $pessoa['data'] =  $this->repositorio->select('nome', 'data_nascimento')                  
-                                ->where('nome', $nome)
-                                ->get();
+        $pessoa['data'] =  $this->repositorio->select('nome', 'data_nascimento')
+            ->where('nome', $nome)
+            ->get();
         echo json_encode($pessoa);
         exit;
-       // dd($pessoa);
+        // dd($pessoa);
     }
 
     /**
@@ -281,8 +314,6 @@ class PessoaController extends Controller
         if (!array_key_exists('situacao_pessoa', $dados))
             return ['situacao_pessoa' => '0'];
         else
-             return ['situacao_pessoa' => '1'];            
+            return ['situacao_pessoa' => '1'];
     }
-
-    
 }

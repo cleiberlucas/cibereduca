@@ -47,7 +47,7 @@ class MatriculaController extends Controller
         return view('secretaria.paginas.matriculas.index', [
                     'matriculas' => $matriculas,
                     'turma'      => $turma,
-                    'quantMatriculas'    => $this->repositorio->quantMatriculas($turma->id_turma),
+                    'quantMatriculas'    => $this->repositorio->quantMatriculasTurma($turma->id_turma),
                     'quantVagasDisponiveis' => $this->repositorio->quantVagasDisponiveis($turma->id_turma),
         ]);
     }

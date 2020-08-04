@@ -11,9 +11,16 @@
         <li class="breadcrumb-item active" >
             <a href="{{ route('turmas.index') }} " class="">Turmas</a>
         </li>
-    </ol> --}}
+    </ol> --}} 
     
-    <h1>Turmas <a href="{{ route('turmas.create') }}" class="btn btn-success"> <i class="fas fa-plus-square"></i> Cadastrar</a></h1>    
+    <div class="row">
+        <div class="form-group col-sm-9 col-sx-2">
+            <h3>Turmas <a href="{{ route('turmas.create') }}" class="btn btn-success"> <i class="fas fa-plus-square"></i> Cadastrar</a></h3>    
+        </div>
+        <div class="form-group col-sm-3 col-sx-2">
+            <b>Total matrículas <?php echo date('Y');?>: {{ $totalMatriculas}}</b>
+        </div>
+    </div>
 @stop
 
 @section('content')

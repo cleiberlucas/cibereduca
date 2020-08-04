@@ -28,11 +28,7 @@ class TurmaController extends Controller
 
     public function index()
     {
-       /*  $turmas = $this->repositorio
-                ->orderBy('fk_id_turno', 'asc')
-                ->orderBy('tb_sub_niveis_ensino.sub_nivel_ensino')
-                ->orderBy('nome_turma')
-                ->paginate(); */
+       
         $turmas = Turma::select ('*')
                             ->join('tb_tipos_turmas', 'tb_turmas.fk_id_tipo_turma', '=', 'tb_tipos_turmas.id_tipo_turma' )
                             ->join('tb_sub_niveis_ensino', 'tb_tipos_turmas.fk_id_sub_nivel_ensino', '=', 'tb_sub_niveis_ensino.id_sub_nivel_ensino')
@@ -45,8 +41,11 @@ class TurmaController extends Controller
                             ->orderBy('nome_turma', 'asc')                            
                             ->orderBy('tb_turnos.descricao_turno', 'asc')
                             ->paginate(25);
-                            
+        
         $matriculas = new Matricula;
+
+        $totalMatriculas = $matriculas->totalMatriculasAno(date('Y'));
+
         $quantVagas = [];
         foreach ($turmas as $turma)
         {
@@ -55,6 +54,7 @@ class TurmaController extends Controller
         return view('secretaria.paginas.turmas.index', [
                     'turmas' => $turmas,
                     'quantVagas' => $quantVagas,                    
+                    'totalMatriculas' => $totalMatriculas,
         ]);
     }
 

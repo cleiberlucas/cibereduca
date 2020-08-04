@@ -19,13 +19,21 @@
         </li>
     </ol>
     
-    <h1> @if ($tipo_pessoa == 1)
-            Alunos
-            <a href="{{ route('pessoas.create.aluno') }}" class="btn btn-success"><i class="fas fa-plus-square"></i> Cadastrar</a></h1>    
-        @else
-            Responsável
-            <a href="{{ route('pessoas.create.responsavel') }}" class="btn btn-success"><i class="fas fa-plus-square"></i> Cadastrar</a></h1>    
-        @endif
+    <div class="row">
+        <div class="form-group col-sm-9 col-xs-12">
+            <h3> @if ($tipo_pessoa == 1)
+                Alunos
+                <a href="{{ route('pessoas.create.aluno') }}" class="btn btn-success"><i class="fas fa-plus-square"></i> Cadastrar</a>    
+            @else
+                Responsável
+                <a href="{{ route('pessoas.create.responsavel') }}" class="btn btn-success"><i class="fas fa-plus-square"></i> Cadastrar</a>
+            @endif
+            </h3>
+        </div>
+        <div class="form-group col-sm-3 col-xs-12">
+            Total Ativos: {{$qtdPessoas}}
+        </div>
+    </div>
     
 @stop
 
@@ -51,7 +59,8 @@
                         <th scope="col">Situação</th>
                         <th width="270">Ações</th>
                     </thead>
-                    <tbody>                        
+                    <tbody>              
+                        
                         @foreach ($pessoas as $index => $pessoa)
                         
                             <tr>
