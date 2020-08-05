@@ -135,7 +135,7 @@ Route::prefix('secretaria')
                  */
                 Route::get('matriculas/documentos_escola', 'DocumentoEscolaController@create')->name('matriculas.documentos_escola.create');
                 Route::get('matriculas/documentos_escola/{id_documento}', 'DocumentoEscolaController@show')->name('matriculas.documentos_escola.show');
-                Route::get('matriculas/{id_aluno}/documentos_escola', 'DocumentoEscolaController@index')->name('matriculas.documentos_escola');
+                Route::get('matriculas/{id_aluno}/documentos_escola', 'DocumentoEscolaController@index')->name('matriculas.documentos_escola')->middleware('can:Matrícula Ver');
                 Route::post('matriculas/documentos_escola', 'DocumentoEscolaController@gerar')->name('matriculas.documentos_escola.gerar');
 
                 /**
@@ -192,6 +192,12 @@ Route::prefix('secretaria')
                 Route::resource('disciplinas', 'DisciplinaController');
 
                 Route::get('/', 'DisciplinaController@index')->name('secretaria.index');
+
+                /**
+                 * Rotas relatórios secretaria
+                 */
+                Route::get('secretaria/relatorios', 'Relatorio\SecretariaController@index')->name('secretaria.relatorios.index')->middleware('can:Pessoa Ver');
+                Route::post('secretaria/relatorios/filtros', 'Relatorio\SecretariaController@filtros')->name('secretaria.relatorios.filtros')->middleware('can:Pessoa Ver');
         });
 
 /**

@@ -242,6 +242,7 @@ class MatriculaController extends Controller
 
     public function imprimirContrato($id_matricula)
     {
+        $this->authorize('Matrícula Contrato Ver');  
         $matricula = $this->repositorio->where('id_matricula', $id_matricula)->first();
         /* $corpoContrato = new CorpoContrato;
         $corpoContrato = $corpoContrato->where('fk_id_unidade_ensino', $matricula->turma->tipoTurma->anoLetivo->fk_id_unidade_ensino)->first(); */
@@ -262,6 +263,8 @@ class MatriculaController extends Controller
 
     public function imprimirFichaMatricula($id_aluno)
     {
+        $this->authorize('Matrícula Ver');
+
         $matricula = $this->repositorio->where('fk_id_aluno', $id_aluno)->first();  
 
         $matriculas = $this->repositorio

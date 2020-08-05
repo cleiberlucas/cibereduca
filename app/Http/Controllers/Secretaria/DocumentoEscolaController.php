@@ -27,6 +27,8 @@ class DocumentoEscolaController extends Controller
 
     public function create()
     {
+        $this->authorize('Documento Escola Ver'); 
+
         $anosLetivos = new AnoLetivo;
         $anosLetivos = $anosLetivos->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())
             ->orderBy('ano', 'desc')
@@ -40,6 +42,8 @@ class DocumentoEscolaController extends Controller
 
     public function gerar(Request $request)
     {
+        $this->authorize('Documento Escola Cadastrar'); 
+
         $codigoValidacao = sprintf('%07X', mt_rand(0, 0xFFFFFFF));
         
         $request->merge(['codigo_validacao' => $codigoValidacao]);
@@ -101,6 +105,8 @@ class DocumentoEscolaController extends Controller
     //Documentos/declarações gerados para uma matrícula
     public function index($id_aluno)
     {
+        $this->authorize('Documento Escola Ver'); 
+
         $documentosEscola = $this->repositorio
             ->join('tb_matriculas', 'id_matricula', '=', 'tb_documentos_escola.fk_id_matricula')
             ->join('tb_turmas', 'id_turma', '=', 'tb_matriculas.fk_id_turma')
@@ -127,6 +133,8 @@ class DocumentoEscolaController extends Controller
      */
     public function show($id_documento)
     {
+        $this->authorize('Documento Escola Ver'); 
+
         $documentoEscola = $this->repositorio->where('id_documento_escola', $id_documento)->first();
 
         return view('secretaria.paginas.matriculas.documentos_escola.show', [

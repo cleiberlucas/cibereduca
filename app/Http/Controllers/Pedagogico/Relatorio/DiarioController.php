@@ -17,17 +17,21 @@ class DiarioController extends Controller
      */
     public function diario()
     {
+        $this->authorize('Frequência Ver'); 
+
         $anosLetivos = AnoLetivo::where('fk_id_unidade_ensino', '=', session()->get('id_unidade_ensino'))
                                 ->orderBy('ano', 'desc')
                                 ->get();
        
         return view('pedagogico.paginas.turmas.relatorios.index_diario', [
-            'anosLetivos' => $anosLetivos,
+            'anosLetivos' => $anosLetivos, 
         ]);
     }
 
     public function filtros(Request $request)
     {
+        $this->authorize('Frequência Ver'); 
+        
         //dd($request);
         $turma = Turma::where('id_turma', $request->turma)->first();
         

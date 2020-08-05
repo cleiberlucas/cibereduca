@@ -39,7 +39,7 @@
                                     {{$unidadeEnsino->nome_fantasia}}
                                 </td>
                                 <td>
-                                    {{$unidadeEnsino->telefone}}
+                                    {{ mascaraTelefone("(##) ####-####", $unidadeEnsino->telefone)}}
                                 </td>
                                 <td>
                                     @if ($unidadeEnsino->situacao == 1)

@@ -6,7 +6,7 @@
  */
 function somenteNumeros($campo)
 {
-    return preg_replace("/[^0-9]/", "", $campo);
+    return preg_replace('/[^0-9]/', '', $campo);
 }
 
 /*

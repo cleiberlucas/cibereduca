@@ -262,8 +262,16 @@ return [
                 ],
                 [
                     'text' => 'Declarações',
-                    /* 'route'  => 'matriculas.documentos_escola.create', */
+                    'route'  => 'matriculas.documentos_escola.create',
                     'icon_color' => 'green',
+                    'can'  => 'Matrícula Ver',
+                ],
+                [
+                    'text'    => 'Relatórios',
+                    'route'  => 'secretaria.relatorios.index',
+                    'icon' => 'far fa-file-alt',
+                    'icon_color' => 'green',  
+                    'can'  => 'Pessoa Ver',              
                 ],
                 [
                     'text' => 'Histórico',

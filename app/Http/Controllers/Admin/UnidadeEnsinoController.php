@@ -58,6 +58,9 @@ class UnidadeEnsinoController extends Controller
 
     public function store(StoreUpdateUnidadeEnsino $request )
     {
+        $request['cnpj'] = somenteNumeros($request['cnpj']);
+        $request['telefone'] = somenteNumeros($request['telefone']);
+
         $dados = $request->all();        
 
         $sit = $this->verificarSituacao($dados);
@@ -126,6 +129,8 @@ class UnidadeEnsinoController extends Controller
         $sit = $this->verificarSituacao($request->all());
         
         $request->merge($sit);
+        $request['cnpj'] = somenteNumeros($request['cnpj']);
+        $request['telefone'] = somenteNumeros($request['telefone']);
 
         $unidadeEnsino->where('id_unidade_ensino', $id)->update($request->except('_token', '_method'));
 
