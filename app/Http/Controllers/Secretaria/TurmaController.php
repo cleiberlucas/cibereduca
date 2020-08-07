@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\DB;
 class TurmaController extends Controller
 {
     private $repositorio, $turnos, $tiposTurmas;
-    
+
     public function __construct(Turma $turma)
     {
         $this->repositorio = $turma;
@@ -28,77 +28,76 @@ class TurmaController extends Controller
 
     public function index()
     {
-       
-        $turmas = Turma::select ('*')
-                            ->join('tb_tipos_turmas', 'tb_turmas.fk_id_tipo_turma', '=', 'tb_tipos_turmas.id_tipo_turma' )
-                            ->join('tb_sub_niveis_ensino', 'tb_tipos_turmas.fk_id_sub_nivel_ensino', '=', 'tb_sub_niveis_ensino.id_sub_nivel_ensino')
-                            ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')
-                            ->join('tb_turnos', 'tb_turmas.fk_id_turno', '=', 'tb_turnos.id_turno')                                
-                            ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())                        
-                            ->where('tb_anos_letivos.fk_id_unidade_ensino', '=', session()->get('id_unidade_ensino'))                                                         
-                            ->orderBy('tb_anos_letivos.ano', 'desc')
-                            ->orderBy('tb_sub_niveis_ensino.sub_nivel_ensino', 'asc')
-                            ->orderBy('nome_turma', 'asc')                            
-                            ->orderBy('tb_turnos.descricao_turno', 'asc')
-                            ->paginate(25);
-        
+
+        $turmas = Turma::select('*')
+            ->join('tb_tipos_turmas', 'tb_turmas.fk_id_tipo_turma', '=', 'tb_tipos_turmas.id_tipo_turma')
+            ->join('tb_sub_niveis_ensino', 'tb_tipos_turmas.fk_id_sub_nivel_ensino', '=', 'tb_sub_niveis_ensino.id_sub_nivel_ensino')
+            ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')
+            ->join('tb_turnos', 'tb_turmas.fk_id_turno', '=', 'tb_turnos.id_turno')
+            ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())
+            ->where('tb_anos_letivos.fk_id_unidade_ensino', '=', session()->get('id_unidade_ensino'))
+            ->orderBy('tb_anos_letivos.ano', 'desc')
+            ->orderBy('tb_sub_niveis_ensino.sub_nivel_ensino', 'asc')
+            ->orderBy('nome_turma', 'asc')
+            ->orderBy('tb_turnos.descricao_turno', 'asc')
+            ->paginate(25);
+
         $matriculas = new Matricula;
 
         $totalMatriculas = $matriculas->totalMatriculasAno(date('Y'));
 
         $quantVagas = [];
-        foreach ($turmas as $turma)
-        {
+        foreach ($turmas as $turma) {
             $quantVagas[$turma->id_turma] = $matriculas->quantVagasDisponiveis($turma->id_turma);
         }
         return view('secretaria.paginas.turmas.index', [
-                    'turmas' => $turmas,
-                    'quantVagas' => $quantVagas,                    
-                    'totalMatriculas' => $totalMatriculas,
+            'turmas' => $turmas,
+            'quantVagas' => $quantVagas,
+            'totalMatriculas' => $totalMatriculas,
         ]);
     }
 
     public function create()
-    {  
-        $this->authorize('Turma Cadastrar');   
+    {
+        $this->authorize('Turma Cadastrar');
         $tiposTurma = TipoTurma::select('*')
-                                    ->join('tb_sub_niveis_ensino', 'tb_tipos_turmas.fk_id_sub_nivel_ensino', '=', 'tb_sub_niveis_ensino.id_sub_nivel_ensino')
-                                    ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')                                       
-                                    ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())                                    
-                                    ->where('tb_anos_letivos.situacao', '=', '1')
-                                    ->orderBy('tb_anos_letivos.ano', 'desc')
-                                    ->orderBy('tb_sub_niveis_ensino.sub_nivel_ensino', 'asc')
-                                    ->orderBy('tb_tipos_turmas.tipo_turma', 'asc')
-                                    ->get();
-       
+            ->join('tb_sub_niveis_ensino', 'tb_tipos_turmas.fk_id_sub_nivel_ensino', '=', 'tb_sub_niveis_ensino.id_sub_nivel_ensino')
+            ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')
+            ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())
+            ->where('tb_anos_letivos.situacao', '=', '1')
+            ->orderBy('tb_anos_letivos.ano', 'desc')
+            ->orderBy('tb_sub_niveis_ensino.sub_nivel_ensino', 'asc')
+            ->orderBy('tb_tipos_turmas.tipo_turma', 'asc')
+            ->get();
+
         return view('secretaria.paginas.turmas.create', [
             'turnos' => $this->turnos,
             'turmas' => $this->repositorio,
-            'tiposTurmas' => $tiposTurma,     
+            'tiposTurmas' => $tiposTurma,
         ]);
     }
 
-    public function store(StoreUpdateTurma $request )
+    public function store(StoreUpdateTurma $request)
     {
         $dados = $request->all();
         $sit = $this->verificarSituacao($dados);
         $dados = array_merge($dados, $sit);
-       // dd($dados);
+        // dd($dados);
         $this->repositorio->create($dados);
- 
+
         return redirect()->route('turmas.index');
     }
 
     public function show($id)
     {
-        $this->authorize('Turma Ver');   
+        $this->authorize('Turma Ver');
         $turma = $this->repositorio
-                            ->join('tb_tipos_turmas', 'fk_id_tipo_turma', 'id_tipo_turma')
-                            ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')                                       
-                            ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())                                    
-                            ->where('id_turma', $id)
-                            ->with('tipoTurma', 'usuario')
-                            ->first();
+            ->join('tb_tipos_turmas', 'fk_id_tipo_turma', 'id_tipo_turma')
+            ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')
+            ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())
+            ->where('id_turma', $id)
+            ->with('tipoTurma', 'usuario')
+            ->first();
         //dd($turma);
 
         if (!$turma)
@@ -124,13 +123,13 @@ class TurmaController extends Controller
     {
         $filtros = $request->except('_token');
         $turmas = $this->repositorio->search($request->filtro);
-        
+
         $matriculas = new Matricula;
         $quantVagas = [];
-        
+
         foreach ($turmas as $turma)
             $quantVagas[$turma->id_turma] = $matriculas->quantVagasDisponiveis($turma->id_turma);
-        
+
         return view('secretaria.paginas.turmas.index', [
             'turmas' => $turmas,
             'filtros' => $filtros,
@@ -139,30 +138,30 @@ class TurmaController extends Controller
     }
 
     public function edit($id)
-    {       
-        $this->authorize('Turma Alterar');    
+    {
+        $this->authorize('Turma Alterar');
         $turma = $this->repositorio
-                                ->join('tb_tipos_turmas', 'tb_turmas.fk_id_tipo_turma', '=', 'tb_tipos_turmas.id_tipo_turma' )
-                                ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')                                       
-                                ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada()) 
-                                ->where('id_turma', $id)
-                                ->with('tipoTurma')
-                                ->first();
-        
+            ->join('tb_tipos_turmas', 'tb_turmas.fk_id_tipo_turma', '=', 'tb_tipos_turmas.id_tipo_turma')
+            ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')
+            ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())
+            ->where('id_turma', $id)
+            ->with('tipoTurma')
+            ->first();
+
         if (!$turma)
             return redirect()->back();
-     
-            $tiposTurmas = TipoTurma::select('*')
-                                    ->join('tb_sub_niveis_ensino', 'tb_tipos_turmas.fk_id_sub_nivel_ensino', '=', 'tb_sub_niveis_ensino.id_sub_nivel_ensino')
-                                    ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')                                       
-                                    ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())                                    
-                                    ->where('tb_anos_letivos.situacao', '=', '1')
-                                    ->orderBy('tb_anos_letivos.ano', 'desc')
-                                    ->orderBy('tb_sub_niveis_ensino.sub_nivel_ensino', 'asc')
-                                    ->orderBy('tb_tipos_turmas.tipo_turma', 'asc')
-                                    ->get();
 
-        return view('secretaria.paginas.turmas.edit',[
+        $tiposTurmas = TipoTurma::select('*')
+            ->join('tb_sub_niveis_ensino', 'tb_tipos_turmas.fk_id_sub_nivel_ensino', '=', 'tb_sub_niveis_ensino.id_sub_nivel_ensino')
+            ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')
+            ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())
+            ->where('tb_anos_letivos.situacao', '=', '1')
+            ->orderBy('tb_anos_letivos.ano', 'desc')
+            ->orderBy('tb_sub_niveis_ensino.sub_nivel_ensino', 'asc')
+            ->orderBy('tb_tipos_turmas.tipo_turma', 'asc')
+            ->get();
+
+        return view('secretaria.paginas.turmas.edit', [
             'turma'         => $turma,
             'turnos'        => $this->turnos,
             'tiposTurmas'   => $tiposTurmas,
@@ -175,9 +174,9 @@ class TurmaController extends Controller
 
         if (!$turma)
             return redirect()->back();
-        
+
         $sit = $this->verificarSituacao($request->all());
-        
+
         $request->merge($sit);
 
         $turma->where('id_turma', $id)->update($request->except('_token', '_method'));
@@ -193,7 +192,7 @@ class TurmaController extends Controller
         if (!array_key_exists('situacao_turma', $dados))
             return ['situacao_turma' => '0'];
         else
-             return ['situacao_turma' => '1'];            
+            return ['situacao_turma' => '1'];
     }
 
     /**
@@ -205,17 +204,17 @@ class TurmaController extends Controller
     public function getTurmas($anoLetivo = 0)
     {
         $turma['data'] = DB::table('tb_turmas')->select('id_turma', DB::raw("CONCAT(nome_turma,' - ',sub_nivel_ensino,' - ', descricao_turno) AS nomeTurma"))
-                            ->join('tb_tipos_turmas', 'tb_turmas.fk_id_tipo_turma', '=', 'tb_tipos_turmas.id_tipo_turma' )
-                            ->join('tb_sub_niveis_ensino', 'tb_tipos_turmas.fk_id_sub_nivel_ensino', '=', 'tb_sub_niveis_ensino.id_sub_nivel_ensino')
-                            ->join('tb_turnos', 'tb_turmas.fk_id_turno', '=', 'tb_turnos.id_turno') 
-                            ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')
-                            ->where('tb_tipos_turmas.fk_id_ano_letivo', $anoLetivo)
-                            ->orderBy('sub_nivel_ensino')
-                            ->orderBy('nome_turma', 'asc')                                                        
-                            ->orderBy('descricao_turno')
-                            ->get();
+            ->join('tb_tipos_turmas', 'tb_turmas.fk_id_tipo_turma', '=', 'tb_tipos_turmas.id_tipo_turma')
+            ->join('tb_sub_niveis_ensino', 'tb_tipos_turmas.fk_id_sub_nivel_ensino', '=', 'tb_sub_niveis_ensino.id_sub_nivel_ensino')
+            ->join('tb_turnos', 'tb_turmas.fk_id_turno', '=', 'tb_turnos.id_turno')
+            ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')
+            ->where('tb_tipos_turmas.fk_id_ano_letivo', $anoLetivo)
+            ->orderBy('sub_nivel_ensino')
+            ->orderBy('nome_turma', 'asc')
+            ->orderBy('descricao_turno')
+            ->get();
 
         echo json_encode($turma);
-        exit;                            
+        exit;
     }
 }

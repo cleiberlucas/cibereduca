@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Ficha Frequência Mensal</title>
 </head>
 <style>   
     .row {    
@@ -39,37 +39,47 @@
 <body>
     {{-- início tabela --}}
     <table border=1 cellspacing=0 cellpadding=2 >
-    {{-- cabecalho ficha de frequencia mensal --}}
-    @include('pedagogico.paginas.turmas.relatorios._partials.frequencia_mensal')
+        {{-- cabecalho ficha de frequencia mensal --}}
+        @include('pedagogico.paginas.turmas.relatorios._partials.frequencia_mensal')
 
-    @foreach ($alunos as $index => $aluno)
-        <tr> 
-            <td>
-                 {{$index+1}}
-            </td>
-            <td>
-                 {{$aluno->nome}}
-            </td> 
+        <tr>
+            <td><strong>N°</strong></td>
+            <td align="center"><strong>NOME DO ALUNO(A)</strong></td>
             @for ($i = 0; $i < $qtColunasDias; $i++)
-                <td></td>
+                <td width=11px></td>
             @endfor
         </tr>
-    @endforeach
-    @for ($i = 1; $i <= 1; $i++)
-        <tr>
-            <td><br></td>
-            <td></td>
-            @for ($j = 0; $j < $qtColunasDias; $j++)
+
+        {{-- Lista de alunos --}}
+        @foreach ($alunos as $index => $aluno)
+            <tr> 
+                <td>
+                    {{$index+1}}
+                </td>
+                <td>
+                    {{$aluno->nome}}
+                </td> 
+                @for ($i = 0; $i < $qtColunasDias; $i++)
+                    <td></td>
+                @endfor
+            </tr>
+        @endforeach
+        
+        {{-- Colunas dias --}}
+        @for ($i = 1; $i <= 1; $i++)
+            <tr>
+                <td><br></td>
                 <td></td>
-            @endfor
-            
-        </tr>    
-    
-    @endfor
+                @for ($j = 0; $j < $qtColunasDias; $j++)
+                    <td></td>
+                @endfor
+                
+            </tr>       
+        @endfor
 
-</table>{{-- fim tabela --}}
+    </table>{{-- fim tabela --}}
 
-@include('secretaria.paginas._partials.rodape_cibereduca')
+    @include('secretaria.paginas._partials.rodape_cibereduca')
 
 </body>
 </html>

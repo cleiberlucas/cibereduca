@@ -9,7 +9,7 @@ $(document).ready(function(){
 
         // Ano id
         var id = $(this).val();
-
+        console.log("id ano "+id);
         // Empty the dropdown
         $('#turma').find('option').not(':first').remove();
         $('#disciplina').find('option').not(':first').remove();

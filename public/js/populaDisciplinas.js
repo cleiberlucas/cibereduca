@@ -1,6 +1,6 @@
 /**
- * Popula combo de turmas a partir do 
- * Ano letivo escolhido
+ * Popula combo de disciplinas a partir do 
+ * Turma escolhido
  */
 $(document).ready(function(){
       

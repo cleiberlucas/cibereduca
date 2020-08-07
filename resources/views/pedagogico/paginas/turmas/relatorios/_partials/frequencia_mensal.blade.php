@@ -22,10 +22,3 @@
         <strong>FREQUÊNCIA ÀS AULAS DADAS</strong>
     </td>
 </tr>
-<tr>
-    <td><strong>N°</strong></td>
-    <td align="center"><strong>NOME DO ALUNO(A)</strong></td>
-    @for ($i = 0; $i < $qtColunasDias; $i++)
-        <td width=10px></td>
-    @endfor
-</tr>

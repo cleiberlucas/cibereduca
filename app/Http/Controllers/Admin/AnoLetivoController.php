@@ -13,48 +13,48 @@ use Illuminate\Http\Request;
 class AnoLetivoController extends Controller
 {
     private $repositorio, $unidadesEnsino;
-    
+
     public function __construct(AnoLetivo $anoLetivo)
     {
         $this->repositorio = $anoLetivo;
-        $this->unidadesEnsino = new UnidadeEnsino();   
+        $this->unidadesEnsino = new UnidadeEnsino();
     }
 
     public function index()
     {
         $anosLetivos = $this->repositorio->where('fk_id_unidade_ensino', '=', User::getUnidadeEnsinoSelecionada())->paginate();
-        
+
         return view('admin.paginas.anosletivos.index', [
-                    'anosletivos' => $anosLetivos,
+            'anosletivos' => $anosLetivos,
         ]);
     }
 
     public function create()
-    {        
+    {
         $this->authorize('Ano Letivo Cadastrar');
-       // dd(view('admin.paginas.anosletivos.create'));
+        // dd(view('admin.paginas.anosletivos.create'));
         return view('admin.paginas.anosletivos.create', [
             'unidadesEnsino' => $this->unidadesEnsino->unidadesEnsino(User::getUnidadeEnsinoSelecionada()),
         ]);
     }
 
-    public function store(StoreUpdateAnoLetivo $request )
+    public function store(StoreUpdateAnoLetivo $request)
     {
         $dados = $request->all();
         $sit = $this->verificarSituacao($dados);
         $dados = array_merge($dados, $sit);
-       // dd($dados);
+        // dd($dados);
         $this->repositorio->create($dados);
 
         return redirect()->route('anosletivos.index');
     }
 
     public function show($id)
-    {        
+    {
         $this->authorize('Ano Letivo Ver');
         $anoLetivo = $this->repositorio->where('fk_id_unidade_ensino', '=', User::getUnidadeEnsinoSelecionada())
-                                        ->where('id_ano_letivo', $id)->first();
-        
+            ->where('id_ano_letivo', $id)->first();
+
         if (!$anoLetivo)
             return redirect()->back();
 
@@ -78,7 +78,7 @@ class AnoLetivoController extends Controller
     {
         $filtros = $request->except('_token');
         $anosLetivos = $this->repositorio->search($request->filtro);
-        
+
         return view('admin.paginas.anosletivos.index', [
             'anosletivos' => $anosLetivos,
             'filtros' => $filtros,
@@ -89,12 +89,12 @@ class AnoLetivoController extends Controller
     {
         $this->authorize('Ano Letivo Alterar');
         $anoLetivo = $this->repositorio->where('fk_id_unidade_ensino', '=', User::getUnidadeEnsinoSelecionada())
-                                        ->where('id_ano_letivo', $id)->first();
-        
+            ->where('id_ano_letivo', $id)->first();
+
         if (!$anoLetivo)
             return redirect()->back();
-                
-        return view('admin.paginas.anosletivos.edit',[
+
+        return view('admin.paginas.anosletivos.edit', [
             'anoLetivo' => $anoLetivo,
             'unidadesEnsino' => $this->unidadesEnsino->unidadesEnsino(User::getUnidadeEnsinoSelecionada()),
         ]);
@@ -106,9 +106,9 @@ class AnoLetivoController extends Controller
 
         if (!$anoLetivo)
             return redirect()->back();
-        
+
         $sit = $this->verificarSituacao($request->all());
-        
+
         $request->merge($sit);
 
         $anoLetivo->where('id_ano_letivo', $id)->update($request->except('_token', '_method'));
@@ -124,6 +124,23 @@ class AnoLetivoController extends Controller
         if (!array_key_exists('situacao', $dados))
             return ['situacao' => '0'];
         else
-             return ['situacao' => '1'];            
+            return ['situacao' => '1'];
+    }
+
+    /**
+     * Anos letivos de uma unidade de ensino
+     * Popular COMBOBOX     
+     * @return array anosletivos
+     */
+    public function getAnosLetivos()
+    {
+        $anoLetivo['data'] = $this->repositorio
+            ->select('id_ano_letivo', 'ano')
+            ->where('fk_id_unidade_ensino',  User::getUnidadeEnsinoSelecionada())
+            ->orderBy('ano', 'desc')
+            ->get();
+
+        echo json_encode($anoLetivo);
+        exit;
     }
 }

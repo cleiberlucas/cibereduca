@@ -1,6 +1,5 @@
-
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -43,6 +42,21 @@
         {{-- cabecalho ficha de frequencia mensal --}}
         @include('pedagogico.paginas.turmas.relatorios._partials.frequencia_mensal')
 
+        <tr>
+            <td><strong>N°</strong></td>
+            <td align="center"><strong>NOME DO ALUNO(A)</strong></td>
+            
+            {{-- Mostrando dias que houve frequencia --}}
+            @foreach ($diasFrequencias as $diaFrequencia)
+                <td widht="10px" align="center"> {{$diaFrequencia->dia}} </td>
+             @endforeach
+            
+             {{-- Total de faltas --}}
+             <td>
+                TF
+             </td>
+        </tr>
+
         {{-- Lista de alunos e informações de frequencia --}}
         @foreach ($alunos as $index => $aluno)
             <tr> 
@@ -52,23 +66,35 @@
                 <td>
                     {{$aluno->nome}}
                 </td> 
-                @for ($i = 0; $i < $qtColunasDias; $i++)
-                    <td></td>
-                @endfor
+                <?php $totalFaltas = 0; ?>
+                @foreach ($diasFrequencias as $diaFrequencia)
+                    
+                    <td align="center">
+                        @foreach ($frequencias as $frequencia)
+                            @if ($diaFrequencia->dia == date('d', strtotime($frequencia->data_aula)) and $aluno->id_matricula == $frequencia->fk_id_matricula)
+                                {{$frequencia->sigla_frequencia}}
+                                
+                                @if ($frequencia->sigla_frequencia == 'F')
+                                    <?php $totalFaltas++; ?>
+                                @endif    
+                            @endif
+                        @endforeach                        
+                    </td>
+                @endforeach
+
+                <td>
+                    <?php echo $totalFaltas;?>
+                </td>
+                
             </tr>
         @endforeach
-        @for ($i = 1; $i <= 1; $i++)
-            <tr>
-                <td><br></td>
-                <td></td>
-                @for ($j = 0; $j < $qtColunasDias; $j++)
-                    <td></td>
-                @endfor
-                
-            </tr>    
-        
-        @endfor
 
+        <tr>
+            <td colspan=" <?php echo count($diasFrequencias) + 3?>" align="right" >
+                <font size='1px'>TF=Total de Faltas</font>
+            </td>
+        </tr>
+    
     </table>{{-- fim tabela --}}
 
     @include('secretaria.paginas._partials.rodape_cibereduca')

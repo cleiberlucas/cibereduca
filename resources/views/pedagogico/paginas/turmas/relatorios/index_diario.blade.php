@@ -14,20 +14,22 @@
         </li>
     </ol>
     <h4>Relatórios dos Diários</h4>
+
 @stop
 
 @section('content')
+
     <div class="container-fluid">
 
         @include('admin.includes.alerts')
 
-        <form action="{{ route('turmas.relatorios.diarios.filtros')}}" class="form" method="POST">
+        <form action="{{ route('turmas.relatorios.diarios.filtros')}}" id="diario" name="diario" class="form" method="POST">
             @csrf            
             <div class="row">
                 <div class="form-group col-sm-2 col-xs-1">
                     Ano Letivo
                     <select class="form-control" name="anoLetivo" id="anoLetivo" required>
-                        <option value="" selected></option>
+                        <option value="0">Selecione</option>
                         @foreach ($anosLetivos as $anoLetivo)
                             <option value="{{$anoLetivo->id_ano_letivo}}">{{$anoLetivo->ano}}</option>
                             
@@ -37,7 +39,7 @@
 
                 <div class="form-group col-sm-3 col-xs-2">
                     Turma
-                <select name="turma" id="turma" class="form-control" {{old('turma')}} required > 
+                <select name="turma" id="turma" class="form-control"  required > 
                         <option value=""></option>
                     </select>
                 </div>            
@@ -66,7 +68,7 @@
             
             <div class="row">
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="frequencia" id="freq_mensal_disciplina" value="freq_mensal_disciplina">
+                    <input class="form-check-input" type="radio" name="frequencia" id="freq_mensal_disciplina" value="freq_mensal_disciplina" required>
                     <label for="freq_mensal_disciplina" class="form-check-label">Ficha Mensal disciplina</label>
                 </div>
             </div>
@@ -75,7 +77,7 @@
 
             <div class="row">
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="frequencia" id="freq_mensal_branco" value="freq_mensal_branco">
+                    <input class="form-check-input" type="radio" name="frequencia" id="freq_mensal_branco" value="freq_mensal_branco" >
                     <label for="freq_mensal_branco" class="form-check-label">Ficha Mensal disciplina - em branco</label>
                 </div>
             </div>
@@ -104,7 +106,7 @@
             </div>
         </form>
     </div>
-    
+
     <script type="text/javascript" src="{!!asset('/js/populaTurmas.js')!!}"></script>
     <script type="text/javascript" src="{!!asset('/js/populaMeses.js')!!}"></script>
     {{-- <script type="text/javascript" src="{!!asset('/js/populaPeriodos.js')!!}"></script> --}}
@@ -113,7 +115,7 @@
     <script>
         $(document).ready(function(){
               $(".alert").slideDown(300).delay(5000).slideUp(300);
-        });    
+        });  
     </script>
     
 @stop

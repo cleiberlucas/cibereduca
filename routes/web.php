@@ -262,6 +262,7 @@ Route::prefix('admin')
                  */
                 Route::any('anosletivos/search', 'AnoLetivoController@search')->name('anosletivos.search');
                 Route::resource('anosletivos', 'AnoLetivoController')->middleware('can:Ano Letivo Ver');
+                Route::get('anosletivos/getAnosLetivos/', 'AnoLetivoController@getAnosLetivos')->name('anosletivos.getAnosLetivos');
 
                 /**
                  * Rotas users
