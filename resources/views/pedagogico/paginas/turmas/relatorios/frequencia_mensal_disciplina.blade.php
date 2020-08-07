@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Ficha Frequência Mensal</title>
 </head>
 <style>   
     .row {    
@@ -39,36 +39,11 @@
 <body>
     {{-- início tabela --}}
     <table border=1 cellspacing=0 cellpadding=2 >
-        <tr>
-            <td colspan=26 align="center">
-                <strong>{{strToUpper($unidadeEnsino->nome_fantasia)}}</strong>
-            </td>
-        </tr>
-        <tr>
-            <td colspan=2>            
-                <strong>{{$turma->tipoTurma->anoLetivo->ano}} - {{$turma->nome_turma}}</strong>
-                <br>
-                <strong>{{$turma->tipoTurma->subNivelEnsino->sub_nivel_ensino}} - {{$turma->turno->descricao_turno}}</strong>
-            </td>
-            <td colspan=24>
-                <strong>Mês: <?php echo nomeMes($mes); ?></strong>
-            </td>
-        </tr>
-        <tr>
-            <td colspan=2>
-                <strong>{{$disciplina->disciplina}}</strong>
-            </td>
-            <td colspan=24 align="center">
-                <strong>FREQUÊNCIA ÀS AULAS DADAS</strong>
-            </td>
-        </tr>
-        <tr>
-            <td><strong>N°</strong></td>
-            <td align="center"><strong>NOME DO ALUNO(A)</strong></td>
-            @for ($i = 0; $i < 24; $i++)
-                <td width=10px></td>
-            @endfor
-        </tr>
+        
+        {{-- cabecalho ficha de frequencia mensal --}}
+        @include('pedagogico.paginas.turmas.relatorios._partials.frequencia_mensal')
+
+        {{-- Lista de alunos e informações de frequencia --}}
         @foreach ($alunos as $index => $aluno)
             <tr> 
                 <td>
@@ -77,16 +52,16 @@
                 <td>
                     {{$aluno->nome}}
                 </td> 
-                @for ($i = 0; $i < 24; $i++)
+                @for ($i = 0; $i < $qtColunasDias; $i++)
                     <td></td>
                 @endfor
             </tr>
         @endforeach
-        @for ($i = 1; $i <= 3; $i++)
+        @for ($i = 1; $i <= 1; $i++)
             <tr>
                 <td><br></td>
                 <td></td>
-                @for ($j = 0; $j < 24; $j++)
+                @for ($j = 0; $j < $qtColunasDias; $j++)
                     <td></td>
                 @endfor
                 
@@ -94,9 +69,9 @@
         
         @endfor
 
-</table>{{-- fim tabela --}}
+    </table>{{-- fim tabela --}}
 
-@include('secretaria.paginas._partials.rodape_cibereduca')
+    @include('secretaria.paginas._partials.rodape_cibereduca')
 
 </body>
 </html>

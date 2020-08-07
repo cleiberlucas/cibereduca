@@ -59,6 +59,7 @@ class DiarioController extends Controller
                 'mes'   => $request->mes,
                 'disciplina' => $disciplina,
                 'alunos'    => $alunos,
+                'qtColunasDias' => 24,
             ]);
         }
 
@@ -77,6 +78,7 @@ class DiarioController extends Controller
                 'mes'   => $request->mes,
                 'disciplina' => $disciplina,
                 'alunos'    => $alunos,
+                'qtColunasDias' => 24,
             ]);
         } else {
             return redirect()->back()->with('atencao', 'Escolha um tipo de relatório.');

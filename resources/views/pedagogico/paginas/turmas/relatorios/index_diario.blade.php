@@ -27,7 +27,7 @@
                 <div class="form-group col-sm-2 col-xs-1">
                     Ano Letivo
                     <select class="form-control" name="anoLetivo" id="anoLetivo" required>
-                        <option value=""></option>
+                        <option value="" selected></option>
                         @foreach ($anosLetivos as $anoLetivo)
                             <option value="{{$anoLetivo->id_ano_letivo}}">{{$anoLetivo->ano}}</option>
                             
@@ -37,7 +37,7 @@
 
                 <div class="form-group col-sm-3 col-xs-2">
                     Turma
-                    <select name="turma" id="turma" class="form-control" required > 
+                <select name="turma" id="turma" class="form-control" {{old('turma')}} required > 
                         <option value=""></option>
                     </select>
                 </div>            
