@@ -196,8 +196,8 @@ Route::prefix('secretaria')
                 /**
                  * Rotas relatórios secretaria
                  */
-                Route::get('secretaria/relatorios', 'Relatorio\SecretariaController@index')->name('secretaria.relatorios.index')->middleware('can:Pessoa Ver');
-                Route::post('secretaria/relatorios/filtros', 'Relatorio\SecretariaController@filtros')->name('secretaria.relatorios.filtros')->middleware('can:Pessoa Ver');
+                Route::get('relatorios', 'Relatorio\SecretariaController@index')->name('secretaria.relatorios.index')->middleware('can:Pessoa Ver');
+                Route::post('relatorios/filtros', 'Relatorio\SecretariaController@filtros')->name('secretaria.relatorios.filtros')->middleware('can:Pessoa Ver');
         });
 
 /**

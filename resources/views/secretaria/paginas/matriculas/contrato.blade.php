@@ -27,6 +27,7 @@
 
 <body>
     <table class="report-container">
+        {{-- Cabeçalho repete em todas as páginas --}}
         <thead class="report-header">
             <tr>
                <td class="report-header-cell" width="15%">
@@ -146,13 +147,11 @@
                 </td>
             </tr>
             <tr>
-                <td colspan=2>
-                    {{-- usei tag php para funcionar a quebra de linha no html --}}
-                    <?php /* echo nl2br($corpoContrato->corpo_documento) */?>
+                <td colspan=2>                    
 
                     <center><b><u>CLÁUSULA PRIMEIRA – DO OBJETO DO CONTRATO</u></b></center>
-                    <p align="justify">O objeto deste contrato é a prestação de serviços educacionais e compra do material didático selecionados nas opções descritas no quadro 04.
-                    <u><b>Parágrafo Primeiro</u></b>: Caso o beneficiário do contrato venha a se enquadrar na condição de aluno com necessidades educacionais especiais, deverá o CONTRATANTE arcar com o pagamento dos respectivos custos, os quais serão discriminados em instrumento específico, sendo igualmente de responsabilidade do CONTRATANTE o pagamento dos profissionais de saúde que atendam o(a) ALUNO(A).
+                    <p align="justify">O objeto deste contrato é a prestação de serviços educacionais e compra do material didático selecionados nas opções descritas no quadro 04.</p>
+                    <p><u><b>Parágrafo Primeiro</u></b>: Caso o beneficiário do contrato venha a se enquadrar na condição de aluno com necessidades educacionais especiais, deverá o CONTRATANTE arcar com o pagamento dos respectivos custos, os quais serão discriminados em instrumento específico, sendo igualmente de responsabilidade do CONTRATANTE o pagamento dos profissionais de saúde que atendam o(a) ALUNO(A).
                     </p>
                     <center><b><u>CLÁUSULA SEGUNDA – DA MATRÍCULA</u></b></center>
                     <p align="justify">Obriga-se o CONTRATANTE, para a configuração formal do ato de matrícula, ao preenchimento dos formulários próprios fornecidos pela CONTRATADA, os quais passam a fazer parte deste instrumento. <br>

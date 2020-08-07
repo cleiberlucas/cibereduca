@@ -44,17 +44,17 @@
 @section('content')
     <div class="container-fluid">
         @include('admin.includes.alerts')
-        <div class="card-header">
+       {{--  <div class="card-header">
             <form action="{{ route('matriculas.search') }}" method="POST" class="form form-inline">
                 @csrf
                 <input type="text" name="filtro" placeholder="Aluno" class="form-control" value="{{ $filtros['filtro'] ?? '' }}">
                 <button type="submit" class="btn btn-outline-secondary"><i class="fas fa-filter"></i></button>
             </form>
-        </div>
+        </div> --}}
         <div class="table-responsive">
                 <table class="table table-hover">
                     <thead>
-                        <th>#</th>
+                        <th>N°</th>
                         <th>Aluno</th>                                                
                         <th>Situação</th>
                         <th width="270">Ações</th>

@@ -24,7 +24,7 @@
         font-size: 20px;
     }
     html {
-        height: 100%;
+        height: 96%;
     }
 
     body {
@@ -104,9 +104,12 @@
             </div>
         
         </div>
+        @include('secretaria.paginas._partials.rodape_cibereduca')
     </div>
         
-    <footer class="footer">
+   
+
+    {{-- <footer class="footer">
         
         <div class="row mx-auto">
             
@@ -119,7 +122,7 @@
                 <font size="1px">CiberSys - Sistemas Inteligentes</font>
             </div>            
         </div>
-    </footer>    
+    </footer>  --}}   
     
 </body>
 </html>
