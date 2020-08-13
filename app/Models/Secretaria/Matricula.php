@@ -89,6 +89,19 @@ class Matricula extends Model
     }
 
     /**
+     * Retorna a matrícula de um aluno
+     */
+    public function getMatriculaAluno($id_matricula)
+    {
+        $aluno = $this->select('*')
+            ->join('tb_pessoas', 'fk_id_aluno', 'id_pessoa')
+            ->where('fk_id_matricula', $id_matricula)            
+            ->get();
+
+        return $aluno;
+    }
+
+    /**
      * Retorna aluno MatrículaXAluno
      */
     public function aluno()

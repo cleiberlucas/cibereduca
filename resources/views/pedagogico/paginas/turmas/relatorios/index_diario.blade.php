@@ -47,7 +47,7 @@
             <div class="row">
                 <div class="form-group col-sm-2 col-xs-2">
                     Mês
-                    <select name="mes" id="mes" class="form-control" required>
+                    <select name="mes" id="mes" class="form-control" >
                         <option value=""></option>
                     </select>
                 </div>  
@@ -62,46 +62,146 @@
 
             <hr>
 
-            <div class="row">
-                <h5>Fichas de Frequências</h5>            
-            </div>
-            
-            <div class="row">
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="frequencia" id="freq_mensal_disciplina" value="freq_mensal_disciplina" required>
-                    <label for="freq_mensal_disciplina" class="form-check-label">Ficha Mensal disciplina</label>
+            {{-- Abas  --}}
+            <ul class="nav nav-tabs nav-pills " role="tablist">                
+                <li role="presentation" class="nav-item">
+                    <a class="nav-link " href="#frequencia" aria-controls="frequencia" role="tab" data-toggle="tab">Frequências</a>                    
+                </li> 
+
+                <li role="presentation" class="nav-item" >
+                    <a class="nav-link " href="#boletim" aria-controls="boletim" role="tab" data-toggle="tab" >Boletins</a>                    
+                </li>
+                
+                <li role="presentation" class="nav-item">
+                    <a class="nav-link " href="#bimestral" aria-controls="bimestral" role="tab" data-toggle="tab">Resultados Bimestrais</a>                    
+                </li>
+
+                <li role="presentation" class="nav-item">
+                    <a class="nav-link " href="#anual" aria-controls="anual" role="tab" data-toggle="tab">Resultados Anuais</a>                    
+                </li>
+            </ul>
+
+            <div class="tab-content">
+
+                {{-- Frequências --}}            
+                <div role="tabpanel" class="tab-pane" id="frequencia"> 
+                    <font color="blue">
+                    <div class="row my-3 ml-5">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="tipo_relatorio" id="freq_mensal_disciplina" value="freq_mensal_disciplina" >
+                            <label for="freq_mensal_disciplina" class="form-check-label">Ficha Mensal disciplina</label>
+                        </div>
+                    </div>
+
+                    <div class="row my-3 ml-5">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="tipo_relatorio" id="freq_mensal_branco" value="freq_mensal_branco" >
+                            <label for="freq_mensal_branco" class="form-check-label">Ficha Mensal disciplina - em branco</label>
+                        </div>
+                    </div>
+
+                    <div class="row my-3 ml-5">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="tipo_relatorio" id="freq_diaria" value="freq_diaria" disabled>
+                            <label for="freq_diaria" class="form-check-label">Ficha Diária - todos alunos e disciplinas</label>
+                        </div>
+                    </div>
+
+                    <div class="row my-3 ml-5">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="tipo_relatorio" id="freq_aluno" value="freq_aluno" disabled>
+                            <label for="freq_aluno" class="form-check-label">Ficha Aluno - anual</label>
+                        </div>
+                    </div>
+                    </font>
                 </div>
-            </div>
 
-            <br>
+                {{-- Boletins --}}   
+                        
+                    <div role="tabpanel" class="tab-pane active" id="boletim"> 
+                        <font color="green"> 
+                        <div class="row my-3 ml-5">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="tipo_relatorio" id="boletim_aluno" value="boletim_aluno" disabled required>
+                                <label for="boletim_aluno" class="form-check-label">Boletim Aluno</label>
+                            </div>
+                        </div>
+    
+                        <div class="row my-3 ml-5">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="tipo_relatorio" id="boletim_turma" value="boletim_turma" >
+                                <label for="boletim_turma" class="form-check-label">Boletins Turma</label>
+                            </div>
+                        </div>                    
+                    </font>
+                    </div>
+                
 
-            <div class="row">
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="frequencia" id="freq_mensal_branco" value="freq_mensal_branco" >
-                    <label for="freq_mensal_branco" class="form-check-label">Ficha Mensal disciplina - em branco</label>
+                {{-- Relatórios bimestrais --}}
+                <div role="tabpanel" class="tab-pane" id="bimestral">                     
+                    <div class="row my-3 ml-5">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="tipo_relatorio" id="aprendizagem" value="aprendizagem" >
+                            <label for="aprendizagem" class="form-check-label">Acompanhamento de Aprendizagem</label>
+                            <br>
+                            <small>(uma disciplina)</small>
+                        </div>
+                    </div>
+
+                    <div class="row my-3 ml-5">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="tipo_relatorio" id="avaliacoes_bimestre" value="avaliacoes_bimestre" disabled>
+                            <label for="avaliacoes_bimestre" class="form-check-label">Avaliações Bimestrais</label>
+                            <br>
+                            <small>(uma disciplina)</small>
+                        </div>
+                    </div>
+
+                    <div class="row my-3 ml-5">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="tipo_relatorio" id="resultado_bimestre" value="resultado_bimestre" disabled>
+                            <label for="resultado_bimestre" class="form-check-label">Resultado Bimestral</label>
+                            <br>
+                            <small>(todas disciplinas)</small>
+                        </div>
+                    </div>
+
                 </div>
-            </div>
 
-            <br>
+                {{-- Relatórios anuais --}}
+                <div role="tabpanel" class="tab-pane" id="anual">                     
+                    <div class="row my-3 ml-5">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="tipo_relatorio" id="resultado_semestre" value="resultado_semestre" disabled >
+                            <label for="resultado_semestre" class="form-check-label">Resultado Semestral</label>
+                            <br>
+                            <small>(uma disciplina)</small>
+                        </div>
+                    </div>
 
-            <div class="row">
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="frequencia" id="freq_diaria" value="freq_diaria" disabled>
-                    <label for="freq_diaria" class="form-check-label">Ficha Diária - todos alunos e disciplinas</label>
+                    <div class="row my-3 ml-5">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="tipo_relatorio" id="resultado_anual_1" value="resultado_anual_1" disabled>
+                            <label for="resultado_anual_1" class="form-check-label">Resultado Anual 1</label>
+                            <br>
+                            <small>(todas disciplinas)</small>
+                        </div>
+                    </div>
+
+                    <div class="row my-3 ml-5">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="tipo_relatorio" id="resultado_anual_2" value="resultado_anual_2" disabled>
+                            <label for="resultado_anual_2" class="form-check-label">Resultado Anual 2</label>
+                            <br>
+                            <small>(uma disciplina)</small>
+                        </div>
+                    </div>
                 </div>
-            </div>
 
-            <br>
-
-            <div class="row">
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="frequencia" id="freq_aluno" value="freq_aluno" disabled>
-                    <label for="freq_aluno" class="form-check-label">Ficha Aluno - anual</label>
-                </div>
             </div>
 
             <hr>
-            <div class="row">
+            <div class="row ml-5">
                 <button type="submit" class="btn btn-primary"><i class="fas fa-print"></i> Imprimir</button>
             </div>
         </form>
