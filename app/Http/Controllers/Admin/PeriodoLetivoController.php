@@ -8,6 +8,7 @@ use App\Models\AnoLetivo;
 use App\Models\PeriodoLetivo;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PeriodoLetivoController extends Controller
 {
@@ -127,5 +128,23 @@ class PeriodoLetivoController extends Controller
             return ['situacao' => '0'];
         else
              return ['situacao' => '1'];            
+    }
+
+    /**
+     * Periodos de um ano letivo
+     * Popular COMBOBOX
+     * @param int id_ano_letivo
+     * @return array periodos 
+     */
+    public function getPeriodos($anoLetivo = 0)
+    {
+        $periodo['data'] = $this->repositorio
+            ->select('id_periodo_letivo', 'periodo_letivo')                        
+            ->where('fk_id_ano_letivo', $anoLetivo)            
+            ->orderBy('periodo_letivo')
+            ->get();
+
+        echo json_encode($periodo);
+        exit;
     }
 }

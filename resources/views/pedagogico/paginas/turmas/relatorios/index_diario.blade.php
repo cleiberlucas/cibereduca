@@ -39,7 +39,7 @@
 
                 <div class="form-group col-sm-3 col-xs-2">
                     Turma
-                <select name="turma" id="turma" class="form-control"  required > 
+                    <select name="turma" id="turma" class="form-control"  required > 
                         <option value=""></option>
                     </select>
                 </div>            
@@ -138,7 +138,18 @@
                 
 
                 {{-- Relatórios bimestrais --}}
-                <div role="tabpanel" class="tab-pane" id="bimestral">                     
+                <div role="tabpanel" class="tab-pane" id="bimestral">   
+                    <div class="row">
+                        
+                            <div class="form-group col-sm-3 col-xs-2">
+                                Período Letivo
+                                <select name="periodo" id="periodo" class="form-control"> 
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                        
+                    </div>
+
                     <div class="row my-3 ml-5">
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="tipo_relatorio" id="aprendizagem" value="aprendizagem" >
@@ -150,8 +161,8 @@
 
                     <div class="row my-3 ml-5">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="tipo_relatorio" id="avaliacoes_bimestre" value="avaliacoes_bimestre" disabled>
-                            <label for="avaliacoes_bimestre" class="form-check-label">Avaliações Bimestrais</label>
+                            <input class="form-check-input" type="radio" name="tipo_relatorio" id="avaliacoes_bimestre" value="avaliacoes_bimestre" >
+                            <label for="avaliacoes_bimestre" class="form-check-label">Resultado Bimestral</label>
                             <br>
                             <small>(uma disciplina)</small>
                         </div>
@@ -159,12 +170,21 @@
 
                     <div class="row my-3 ml-5">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="tipo_relatorio" id="resultado_bimestre" value="resultado_bimestre" disabled>
-                            <label for="resultado_bimestre" class="form-check-label">Resultado Bimestral</label>
+                            <input class="form-check-input" type="radio" name="tipo_relatorio" id="rendimento_escolar" value="rendimento_escolar">
+                            <label for="rendimento_escolar" class="form-check-label">Rendimento Escolar</label>
                             <br>
                             <small>(todas disciplinas)</small>
                         </div>
                     </div>
+
+                    {{-- <div class="row my-3 ml-5">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="tipo_relatorio" id="resultado_bimestre_II" value="resultado_bimestre_II" disabled>
+                            <label for="resultado_bimestre_II" class="form-check-label">Resultado Bimestral II</label>
+                            <br>
+                            <small>(todas disciplinas)</small>
+                        </div>
+                    </div> --}}
 
                 </div>
 
@@ -211,6 +231,7 @@
     <script type="text/javascript" src="{!!asset('/js/populaMeses.js')!!}"></script>
     {{-- <script type="text/javascript" src="{!!asset('/js/populaPeriodos.js')!!}"></script> --}}
     <script type="text/javascript" src="{!!asset('/js/populaDisciplinas.js')!!}"></script>
+    <script type="text/javascript" src="{!!asset('/js/populaPeriodosLetivos.js')!!}"></script>
     
     <script>
         $(document).ready(function(){

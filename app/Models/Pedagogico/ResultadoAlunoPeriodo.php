@@ -39,6 +39,37 @@ class ResultadoAlunoPeriodo extends Model
             ->get();
     }
 
+    /**
+     * Consulta lançamento de resultado de FALTA E NOTA para uma turma X periodo
+     * @param $id_turma, $id_disciplina 
+     * @return array
+     */
+    public function getResultadosTurmaPeriodo($id_turma, $id_periodo)
+    {
+        return $this
+            ->join('tb_turmas_periodos_letivos', 'fk_id_turma_periodo_letivo', 'id_turma_periodo_letivo')
+            ->where('fk_id_turma', $id_turma)            
+            ->where('fk_id_periodo_letivo', $id_periodo)            
+            ->get();
+    }
+
+    /**
+     * Consulta lançamento de resultado de FALTA E NOTA para uma turma X periodo X uma disciplina
+     * @param int id_turma
+     * @param int id_periodo
+     * @param int id_disciplina 
+     * @return array
+     */
+    public function getResultadosTurmaPeriodoDisciplina($id_turma, $id_periodo, $id_disciplina)
+    {
+        return $this
+            ->join('tb_turmas_periodos_letivos', 'fk_id_turma_periodo_letivo', 'id_turma_periodo_letivo')
+            ->where('fk_id_turma', $id_turma)            
+            ->where('fk_id_periodo_letivo', $id_periodo)
+            ->where('fk_id_disciplina', $id_disciplina)
+            ->get();
+    }
+
      /**
      * Consulta lançamento de resultado de FALTA OU NOTA para um aluno em todos os periodos
      * @param $id_turma

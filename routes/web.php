@@ -254,6 +254,7 @@ Route::prefix('admin')
                 /**
                  * Rotas períodos letivos
                  */
+                Route::get('periodosletivos/getPeriodos/{id}', 'PeriodoLetivoController@getPeriodos')->name('periodos.getPeriodos');
                 Route::any('periodosletivos/search', 'PeriodoLetivoController@search')->name('periodosletivos.search');
                 Route::resource('periodosletivos', 'PeriodoLetivoController')->middleware('can:Período Letivo Ver');
 

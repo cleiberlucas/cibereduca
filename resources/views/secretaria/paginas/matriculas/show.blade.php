@@ -1,7 +1,7 @@
 @extends('adminlte::page')
 
 @section('title_postfix', ' Turma')
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
 @section('content_header')
     <div class="d-flex justify-content-between">
         <div class="p-2">
@@ -19,7 +19,7 @@
         
             <h1><b>Dados da Matrícula - {{$matricula->ano}} </b></h1>
             <h1><b>{{ $matricula->nome_aluno}} - {{$matricula->nome_turma}} - {{$matricula->descricao_turno}}</b></h1>
-            <h3>Responsável: {{$matricula->nome_responsavel}} - Fone: {{$matricula->telefone_1}}</h3>
+            <h3>Responsável: {{$matricula->nome_responsavel}} - Fone: {{mascaraTelefone("(##) #####-####", $matricula->telefone_1)}}</h3>
         </div>
         <div class="p-2">
             <img src="{{url("storage/$matricula->foto")}}" alt="" width="100" heigth="200">
