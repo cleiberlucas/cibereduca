@@ -91,10 +91,8 @@ class DiarioController extends Controller
 
             $disciplinas = new GradeCurricular;
             $disciplinas = $disciplinas->disciplinasTurma($request->turma);
-
             
             $periodosLetivos = $periodosLetivos->getPeriodosLetivosAno($request->anoLetivo);
-
 
             //dd($periodosLetivos);
             return view('pedagogico.paginas.turmas.relatorios.boletim', [

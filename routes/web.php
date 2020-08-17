@@ -57,7 +57,6 @@ Route::prefix('pedagogico')
                 Route::post('turmas/conteudoslecionados', 'ConteudoLecionadoController@store')->name('turmas.conteudoslecionados.store');
                 route::any('turmas/{id}/conteudoslecionados', 'ConteudoLecionadoController@index')->name('turmas.conteudoslecionados')->middleware('can:Conteúdo Lecionado Ver');
 
-
                 /**
                  * Rotas Frequências
                  */
@@ -161,18 +160,15 @@ Route::prefix('secretaria')
                 Route::any('turmas/search', 'TurmaController@search')->name('turmas.search');
                 Route::resource('turmas', 'TurmaController');
 
-                /* Route::get('turmas/create', 'TurmaController@create')->name('turmas.create');
-        Route::put('turmas/{id_turma}', 'TurmaController@update')->name('turmas.update');
-        Route::get('turmas/{id_turma}/edit', 'TurmaController@edit')->name('turmas.edit');
-        Route::any('turmas/search', 'TurmaController@search')->name('turmas.search');
-        Route::delete('turmas/{id_turma}', 'TurmaController@destroy')->name('turmas.destroy');
-        Route::get('turmas/{id_turma}', 'TurmaController@show')->name('turmas.show');
-        Route::post('turmas', 'TurmaController@store')->name('turmas.store');
-        Route::any('turmas', 'TurmaController@index')->name('turmas.index');
-         */
+                /**
+                 * Rotas Turmas X disciplina x professor
+                 */
+                Route::any('turmas/professor/search', 'TurmaProfessorController@search')->name('turmasprofessor.search');
+                Route::resource('turmas/professor', 'TurmaProfessorController');
+
                 /*
-        *Rotas Pessoas
-        */
+                *Rotas Pessoas
+                */
                 Route::get('pessoas/create/aluno', 'PessoaController@create')->name('pessoas.create.aluno');
                 Route::get('pessoas/create/responsavel', 'PessoaController@create')->name('pessoas.create.responsavel');
                 Route::put('pessoas/{id_pessoa}', 'PessoaController@update')->name('pessoas.update');

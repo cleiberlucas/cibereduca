@@ -164,7 +164,7 @@
                             <input class="form-check-input" type="radio" name="tipo_relatorio" id="avaliacoes_bimestre" value="avaliacoes_bimestre" >
                             <label for="avaliacoes_bimestre" class="form-check-label">Resultado Bimestral</label>
                             <br>
-                            <small>(uma disciplina)</small>
+                            <small>(avaliações de uma disciplina)</small>
                         </div>
                     </div>
 
