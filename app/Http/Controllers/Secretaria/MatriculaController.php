@@ -32,8 +32,15 @@ class MatriculaController extends Controller
      */
     public function index(Request $request)
     {       
-        $matriculas = $this->repositorio->where('fk_id_turma', $request->segment(2))
-                                        ->paginate(25);
+        /* $matriculas = $this->repositorio->where('fk_id_turma', $request->segment(2))
+                                        ->paginate(25); */
+        $matriculas = $this->repositorio
+            ->select('id_matricula', 'nome', 'situacao_matricula', 'fk_id_aluno')
+            ->join('tb_pessoas', 'fk_id_aluno', 'id_pessoa')
+            ->join('tb_situacoes_matricula', 'fk_id_situacao_matricula', 'id_situacao_matricula')
+            ->where('fk_id_turma', $request->segment(2))
+            ->orderBy('nome')
+            ->paginate(25);
         
          $turma = Turma::select('tb_turmas.nome_turma', 'tb_turmas.id_turma', 'tb_turmas.limite_alunos', 'tb_anos_letivos.ano', 'tb_turnos.descricao_turno', 'tb_sub_niveis_ensino.sub_nivel_ensino')                            
                             ->join('tb_tipos_turmas', 'tb_turmas.fk_id_tipo_turma', '=', 'tb_tipos_turmas.id_tipo_turma' )

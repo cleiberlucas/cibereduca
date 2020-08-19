@@ -153,18 +153,18 @@ Route::prefix('secretaria')
                 Route::get('matriculas/ficha/{id_aluno}', 'MatriculaController@imprimirFichaMatricula')->name('matriculas.ficha')->middleware('can:Matrícula Ficha Ver');
                 Route::get('matriculas/getAlunos/{id_ano_letivo}', 'MatriculaController@getAlunos')->name('matriculas.getAlunos');
 
+                 /**
+                 * Rotas Turmas X disciplina x professor
+                 */
+                Route::any('turmas/professor/search', 'TurmaProfessorController@search')->name('turmasprofessor.search');
+                Route::get('turmas/professor/{id_turma}', 'TurmaProfessorController@index')->name('turmasprofessor.index');                
+
                 /**
                  * Rotas Turmas
                  */
                 Route::get('turmas/getTurmas/{id}', 'TurmaController@getTurmas')->name('turmas.getTurmas');
                 Route::any('turmas/search', 'TurmaController@search')->name('turmas.search');
                 Route::resource('turmas', 'TurmaController');
-
-                /**
-                 * Rotas Turmas X disciplina x professor
-                 */
-                Route::any('turmas/professor/search', 'TurmaProfessorController@search')->name('turmasprofessor.search');
-                Route::resource('turmas/professor', 'TurmaProfessorController');
 
                 /*
                 *Rotas Pessoas

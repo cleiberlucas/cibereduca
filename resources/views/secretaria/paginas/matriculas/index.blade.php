@@ -67,7 +67,7 @@
                                     <a href="{{ route('matriculas.edit', $matricula->id_matricula) }}" class="btn btn-link"> {{$matricula->aluno->nome}}</a>
                                 </td> 
                                 <td>
-                                    {{$matricula->situacaoMatricula->situacao_matricula}}
+                                    {{$matricula->situacao_matricula}}
                                 </td>                                                   
                                                                     
                                 <td style="width=10px;">                                

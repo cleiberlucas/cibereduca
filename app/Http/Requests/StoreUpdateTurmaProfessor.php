@@ -1,0 +1,45 @@
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class StoreUpdateTurmaProfessor extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {        
+        $id = $this->segment(3);
+    
+        return [
+            'fk_id_grade_curricular' => 'required',
+            'fk_id_turma' => 'required',
+            'fk_id_professor' => 'required',
+            'situacao_disciplina_professor' => 'required',
+        ];    
+    }
+
+    public function messages()
+    {        
+        return [
+            'fk_id_grade_curricular.required'  => 'Escolha uma disciplina.',
+            'fk_id_turma.required'       => 'Escolha uma turma.',
+            'fk_id_professor.required'   => "Escolha um professor.",
+            
+        ];    
+    }
+}
