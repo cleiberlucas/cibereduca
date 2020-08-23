@@ -7,7 +7,7 @@ use App\Models\AnoLetivo;
 use App\Models\Secretaria\Matricula;
 use App\Models\Secretaria\Turma;
 use App\Models\UnidadeEnsino;
-use App\Models\User;
+use App\User;
 use Illuminate\Http\Request;
 
 class SecretariaController extends Controller

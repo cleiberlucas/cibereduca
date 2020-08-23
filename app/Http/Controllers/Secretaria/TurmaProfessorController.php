@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\Secretaria;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreUpdateTurmaProfessor;
 use App\Models\GradeCurricular;
 use App\Models\Secretaria\Turma;
 use App\Models\Secretaria\TurmaProfessor;
 use App\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class TurmaProfessorController extends Controller
 {
@@ -32,9 +31,15 @@ class TurmaProfessorController extends Controller
             ->first();
         //dd($turma);
 
+        $turmaProfessores = $this->repositorio
+            ->where('fk_id_turma', $idTurma)
+            ->get();
+
         $gradeCurricular = new GradeCurricular;
         $gradeCurricular =  $gradeCurricular
+            ->join('tb_disciplinas', 'fk_id_disciplina', 'id_disciplina')
             ->where('fk_id_tipo_turma', $turma->fk_id_tipo_turma)            
+            ->orderBy('tb_disciplinas.disciplina')
             ->get();
 
         $professores = User::select('id', 'name')
@@ -42,19 +47,22 @@ class TurmaProfessorController extends Controller
             ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())  
             ->where('fk_id_perfil', 2)
             ->where('situacao_vinculo', 1)
+            ->orderBy('name')
             ->get();
         
         return view('secretaria.paginas.turmas.professor.index', [
             'turma' => $turma,
             'gradeCurricular' => $gradeCurricular,
-            'professores' => $professores,            
+            'professores' => $professores,    
+            'turmaProfessores'    => $turmaProfessores,     
         ]);
     }
 
-   /*  public function create()
+     public function create()
     {
-        $this->authorize('Turma Cadastrar');
-        $tiposTurma = TipoTurma::select('*')
+
+       // $this->authorize('Turma Cadastrar');
+       /*  $tiposTurma = TipoTurma::select('*')
             ->join('tb_sub_niveis_ensino', 'tb_tipos_turmas.fk_id_sub_nivel_ensino', '=', 'tb_sub_niveis_ensino.id_sub_nivel_ensino')
             ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')
             ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())
@@ -62,26 +70,43 @@ class TurmaProfessorController extends Controller
             ->orderBy('tb_anos_letivos.ano', 'desc')
             ->orderBy('tb_sub_niveis_ensino.sub_nivel_ensino', 'asc')
             ->orderBy('tb_tipos_turmas.tipo_turma', 'asc')
-            ->get();
+            ->get(); */
 
-        return view('secretaria.paginas.turmas.create', [
+        /* return view('secretaria.paginas.turmas.create', [
             'turnos' => $this->turnos,
             'turmas' => $this->repositorio,
             'tiposTurmas' => $tiposTurma,
-        ]);
+        ]); */
     }
 
-    public function store(StoreUpdateTurma $request)
+    public function store(StoreUpdateTurmaProfessor $request)
     {
+        //dd($request);
         $dados = $request->all();
-        $sit = $this->verificarSituacao($dados);
-        $dados = array_merge($dados, $sit);
-        // dd($dados);
-        $this->repositorio->create($dados);
+       /*  $sit = $this->verificarSituacao($dados);
+        $dados = array_merge($dados, $sit); */
+//        dd($dados);
+        //dd($dados['fk_id_grade_curricular']);
+       /*  if (count($dados['fk_id_grade_curricular']) != count($dados['fk_id_professor']))
+            return redirect()->back()->with('atencao', 'Selecione um professor para todas as disciplinas'); */
+        //dd($dados);
+        foreach($dados['fk_id_professor'] as $index => $professor ){
+            //dd($professor);        
+            if ($professor != null){
+                $insert = array(
+                    'fk_id_turma' => $dados['fk_id_turma'],
+                    'situacao_disciplina_professor' => $dados['situacao_disciplina_professor'],
+                    'fk_id_grade_curricular' => $dados['fk_id_grade_curricular'][$index],
+                    'fk_id_professor' => $professor,
+                );
+                //dd($insert);
+                $this->repositorio->create($insert);
+            }
+        }
 
-        return redirect()->route('turmas.index');
+        return redirect()->route('turmasprofessor',$dados['fk_id_turma'] );
     }
-
+/*
     public function show($id)
     {
         $this->authorize('Turma Ver');
@@ -129,64 +154,51 @@ class TurmaProfessorController extends Controller
             'filtros' => $filtros,
             'quantVagas' => $quantVagas,
         ]);
-    }
+    }*/
 
     public function edit($id)
     {
         $this->authorize('Turma Alterar');
-        $turma = $this->repositorio
-            ->join('tb_tipos_turmas', 'tb_turmas.fk_id_tipo_turma', '=', 'tb_tipos_turmas.id_tipo_turma')
-            ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')
-            ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())
-            ->where('id_turma', $id)
-            ->with('tipoTurma')
+
+        $turmaProfessor = $this->repositorio
+            ->where('id_turma_disciplina_professor', $id)
             ->first();
 
-        if (!$turma)
-            return redirect()->back();
+        if (!$turmaProfessor)
+            return redirect()->back()->with('atencao', 'Professor não encontrado para esta disciplina.');
 
-        $tiposTurmas = TipoTurma::select('*')
-            ->join('tb_sub_niveis_ensino', 'tb_tipos_turmas.fk_id_sub_nivel_ensino', '=', 'tb_sub_niveis_ensino.id_sub_nivel_ensino')
-            ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')
-            ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())
-            ->where('tb_anos_letivos.situacao', '=', '1')
-            ->orderBy('tb_anos_letivos.ano', 'desc')
-            ->orderBy('tb_sub_niveis_ensino.sub_nivel_ensino', 'asc')
-            ->orderBy('tb_tipos_turmas.tipo_turma', 'asc')
-            ->get();
-
-        return view('secretaria.paginas.turmas.edit', [
-            'turma'         => $turma,
-            'turnos'        => $this->turnos,
-            'tiposTurmas'   => $tiposTurmas,
+        return view('secretaria.paginas.turmas.professor.edit', [
+            'turmaProfessor' => $turmaProfessor,            
         ]);
     }
 
-    public function update(StoreUpdateTurma $request, $id)
+    public function update(StoreUpdateTurmaProfessor $request, $id)
     {
-        $turma = $this->repositorio->where('id_turma', $id)->first();
+        $turmaProfessor = $this->repositorio
+            ->where('id_turma_disciplina_professor', $id)
+            ->first();
 
-        if (!$turma)
-            return redirect()->back();
+        if (!$turmaProfessor)
+            return redirect()->back()->with('atencao', 'Professor não encontrado para esta disciplina.');
 
         $sit = $this->verificarSituacao($request->all());
 
         $request->merge($sit);
 
-        $turma->where('id_turma', $id)->update($request->except('_token', '_method'));
+        $turmaProfessor->where('id_turma_disciplina_professor', $id)->update($request->except('_token', '_method'));
 
-        return redirect()->route('turmas.index');
+        return redirect()->route('turmasprofessor',$turmaProfessor->fk_id_turma);
     }
- */
+
     /**
      * Verifica se a situação foi ativada
      */
-    /* public function verificarSituacao(array $dados)
+     public function verificarSituacao(array $dados)
     {
-        if (!array_key_exists('situacao_turma', $dados))
-            return ['situacao_turma' => '0'];
+        if (!array_key_exists('situacao_disciplina_professor', $dados))
+            return ['situacao_disciplina_professor' => '0'];
         else
-            return ['situacao_turma' => '1'];
-    } */
+            return ['situacao_disciplina_professor' => '1'];
+    } 
 
 }

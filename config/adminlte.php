@@ -288,20 +288,17 @@ return [
                 [
                     'text'    => 'Diários',
                     'icon'    => 'fas fa-book',
+                    'url'  => 'pedagogico/turmas',
                     'icon_color' => 'yellow',
-                    'submenu' => [
+                    /* 'submenu' => [
                         [
                             'text' => 'Lançamentos',
                             'url'  => 'pedagogico/turmas',
                             'icon_color' => 'yellow',
                         ],
-                        [
-                            'text' => 'Relatórios',
-                            'route'  => 'turmas.relatorios.diarios',
-                            'icon_color' => 'yellow',
-                        ],
+                        
 
-                    ],
+                    ], */
                 ],               
                 [
                     'text'    => 'Avaliações',
@@ -323,10 +320,16 @@ return [
                     ],
                 ],
                 [
+                    'text' => 'Relatórios',
+                    'route'  => 'turmas.relatorios.diarios',
+                    'icon' => 'far fa-file-alt',
+                    'icon_color' => 'yellow',
+                ],
+                /* [
                     'text' => 'Boletins',
                     'url'  => '#',
                     'icon_color' => 'yellow',
-                ],
+                ], */
             ],
         ],
         [

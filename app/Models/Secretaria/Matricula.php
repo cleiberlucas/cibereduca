@@ -2,15 +2,13 @@
 
 namespace App\Models\Secretaria;
 
-use App\Models\AnoLetivo;
+
 use App\Models\FormaPagamento;
 use App\Models\Secretaria\Turma;
 use App\Models\SituacaoMatricula;
 use App\Models\TipoAtendimentoEspecializado;
-use App\Models\TipoDescontoCurso;
 use App\Models\TipoDocumento;
-use App\Models\Turno;
-use App\Models\User;
+use App\User;
 
 use Illuminate\Database\Eloquent\Model;
 

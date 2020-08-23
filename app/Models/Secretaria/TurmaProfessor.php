@@ -2,6 +2,8 @@
 
 namespace App\Models\Secretaria;
 
+use App\Models\GradeCurricular;
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 class TurmaProfessor extends Model

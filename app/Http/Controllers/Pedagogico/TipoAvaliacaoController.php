@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Pedagogico;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateTipoAvaliacao;
 use App\Models\Pedagogico\TipoAvaliacao;
-use App\Models\User;
+use App\User;
 use Illuminate\Http\Request;
 
 class TipoAvaliacaoController extends Controller

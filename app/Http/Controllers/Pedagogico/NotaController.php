@@ -11,7 +11,7 @@ use App\Models\Pedagogico\ResultadoAlunoPeriodo;
 use App\Models\Pedagogico\TurmaPeriodoLetivo;
 use App\Models\Secretaria\Matricula;
 use App\Models\Secretaria\Turma;
-use App\Models\User;
+use App\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 

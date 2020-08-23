@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Pedagogico;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateTipoFrequencia;
 use App\Models\Pedagogico\TipoFrequencia;
-use App\Models\User;
+use App\User;
 use Illuminate\Http\Request;
 
 class TipoFrequenciaController extends Controller

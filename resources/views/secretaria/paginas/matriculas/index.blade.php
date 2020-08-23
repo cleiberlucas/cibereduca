@@ -51,12 +51,12 @@
                 <button type="submit" class="btn btn-outline-secondary"><i class="fas fa-filter"></i></button>
             </form>
         </div> --}}
-        <div class="table-responsive">
-                <table class="table table-hover">
+        <div class="table-responsive ">
+                <table class="table-sm  table-hover">
                     <thead>
                         <th>N°</th>
-                        <th>Aluno</th>                                                
-                        <th>Situação</th>
+                        <th width="50%">Aluno</th>                                                
+                        <th width="15%">Situação</th>
                         <th width="270">Ações</th>
                     </thead>
                     <tbody>                        

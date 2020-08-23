@@ -29,7 +29,7 @@ class StoreUpdateTurmaProfessor extends FormRequest
             'fk_id_grade_curricular' => 'required',
             'fk_id_turma' => 'required',
             'fk_id_professor' => 'required',
-            'situacao_disciplina_professor' => 'required',
+            
         ];    
     }
 
