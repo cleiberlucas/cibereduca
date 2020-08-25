@@ -206,15 +206,16 @@ class FrequenciaController extends Controller
                                         ->join('tb_matriculas', 'fk_id_matricula', 'id_matricula')
                                         ->where('fk_id_matricula', '=', $id_matricula)
                                         ->first();
+                                        // dd($id_matricula);
+        if (!$frequencia)
+            return redirect()->back()->with('atencao', 'Não há frequência lançada para este aluno.');
 
         $frequenciasAlunoDisciplinasPeriodo = $this->repositorio->getFrequenciasAlunoDisciplinasPeriodo($id_periodo_letivo, $id_matricula);
         $frequenciasAlunoDatasPeriodo = $this->repositorio->getFrequenciasAlunoDatasPeriodo($id_periodo_letivo, $id_matricula);
         $frequenciasAlunoMesesPeriodo = $this->repositorio->getFrequenciasAlunoMesesPeriodo($id_periodo_letivo, $id_matricula);
         $frequenciasAlunoPeriodo = $this->repositorio->getFrequenciasAlunoPeriodo($id_periodo_letivo, $id_matricula, $frequencia->fk_id_turma);
 
-       // dd($id_matricula);
-        if (!$frequencia)
-            return redirect()->back()->with('atencao', 'Não há frequência lançada para este aluno.');
+       
 
         $id_turma = $frequencia->fk_id_turma;
 
