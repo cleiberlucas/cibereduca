@@ -35,7 +35,8 @@ class ResultadoAlunoPeriodo extends Model
     public function getResultadosTurma($id_turma)
     {
         return $this
-            ->join('tb_periodos_letivos', 'fk_id_periodo_letivo', 'id_periodo_letivo')
+            ->join('tb_turmas_periodos_letivos', 'tb_turmas_periodos_letivos.fk_id_periodo_letivo', 'tb_resultados_alunos_periodos.fk_id_periodo_letivo')
+            ->join('tb_periodos_letivos', 'tb_resultados_alunos_periodos.fk_id_periodo_letivo', 'id_periodo_letivo')
             ->where('fk_id_turma', $id_turma)            
             ->get();
     }
@@ -48,9 +49,9 @@ class ResultadoAlunoPeriodo extends Model
     public function getResultadosTurmaPeriodo($id_turma, $id_periodo)
     {
         return $this
-            ->join('tb_periodos_letivos', 'fk_id_periodo_letivo', 'id_periodo_letivo')
+        ->join('tb_turmas_periodos_letivos', 'tb_turmas_periodos_letivos.fk_id_periodo_letivo', 'tb_resultados_alunos_periodos.fk_id_periodo_letivo')
             ->where('fk_id_turma', $id_turma)            
-            ->where('fk_id_periodo_letivo', $id_periodo)            
+            ->where('tb_resultados_alunos_periodos.fk_id_periodo_letivo', $id_periodo)            
             ->get();
     }
 
@@ -64,9 +65,9 @@ class ResultadoAlunoPeriodo extends Model
     public function getResultadosTurmaPeriodoDisciplina($id_turma, $id_periodo, $id_disciplina)
     {
         return $this
-            ->join('tb_periodos_letivos', 'fk_id_periodo_letivo', 'id_periodo_letivo')
+            ->join('tb_turmas_periodos_letivos', 'tb_turmas_periodos_letivos.fk_id_periodo_letivo', 'tb_resultados_alunos_periodos.fk_id_periodo_letivo')
             ->where('fk_id_turma', $id_turma)            
-            ->where('fk_id_periodo_letivo', $id_periodo)
+            ->where('tb_resultados_alunos_periodos.fk_id_periodo_letivo', $id_periodo)
             ->where('fk_id_disciplina', $id_disciplina)
             ->get();
     }

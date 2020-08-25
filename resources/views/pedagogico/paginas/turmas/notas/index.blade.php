@@ -35,7 +35,7 @@
         <div>@include('admin.includes.alerts')</div>
         {{-- Abas de Períodos --}}
         <ul class="nav nav-tabs nav-pills nav-fill justify-content-center" role="tablist">
-            @foreach ($turmaPeriodosLetivos as $index => $turmaPeriodoLetivo)                
+            @foreach ($turmaPeriodosLetivos as $index => $turmaPeriodoLetivo)                 
                 <li role="presentation" class="nav-item">
                     <a class="nav-link " href="#{{$turmaPeriodoLetivo->id_periodo_letivo}}" aria-controls="{{$turmaPeriodoLetivo->id_periodo_letivo}}" role="tab" data-toggle="tab">{{$turmaPeriodoLetivo->periodo_letivo}}
                         {{-- Informação se o período está aberto ou fechado --}}
@@ -86,7 +86,7 @@
                                     {{-- Listagem de alunos e notas --}}
                                     <form action="{{ route('turmas.notas.store', 1)}}" method="POST">
                                         @csrf 
-                                        <input type="hidden" name="fk_id_turma_periodo_letivo" value={{$turmaPeriodoLetivo->id_turma_periodo_letivo}}>
+                                        <input type="hidden" name="fk_id_periodo_letivo" value={{$turmaPeriodoLetivo->id_periodo_letivo}}>
                                         <input type="hidden" name="fk_id_disciplina" value={{$disciplinaTurma->fk_id_disciplina}}>
                                         <input type="hidden" name="fk_id_user" value={{Auth::id()}}>
                                         <input type="hidden" name="fk_id_turma" value={{$turmaPeriodoLetivo->fk_id_turma}}>

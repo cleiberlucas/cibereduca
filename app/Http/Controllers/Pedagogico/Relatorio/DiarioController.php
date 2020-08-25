@@ -81,7 +81,7 @@ class DiarioController extends Controller
         } else if ($request->tipo_relatorio == 'boletim_turma') {
             //Le resultados de NOTAS E FALTAS do bimestre de 1 turma
             $resultados = new ResultadoAlunoPeriodo;
-            $resultados = $resultados->getResultadosTurma($request->turma);
+            $resultados = $resultados->getResultadosTurma($request->turma); 
             //dd($resultados);
         }
 
@@ -224,7 +224,7 @@ class DiarioController extends Controller
 
             $diasFrequencias = DB::table('tb_frequencias')
                 ->select(DB::Raw('DAY(data_aula) dia'))
-                ->join('tb_turmas_periodos_letivos', 'fk_id_turma_periodo_letivo', 'id_turma_periodo_letivo')
+                ->join('tb_turmas_periodos_letivos', 'tb_frequencias.fk_id_periodo_letivo', 'tb_turmas_periodos_letivos.fk_id_periodo_letivo')
                 ->where('fk_id_turma', $request->turma)
                 ->where('fk_id_disciplina', $request->disciplina)
                 ->whereMonth('data_aula', '=', $request->mes)
@@ -233,7 +233,7 @@ class DiarioController extends Controller
                 ->get();
 
             $frequencias = DB::table('tb_frequencias')
-                ->join('tb_turmas_periodos_letivos', 'fk_id_turma_periodo_letivo', 'id_turma_periodo_letivo')
+                ->join('tb_turmas_periodos_letivos', 'tb_frequencias.fk_id_periodo_letivo', 'tb_turmas_periodos_letivos.fk_id_periodo_letivo')
                 ->join('tb_tipos_frequencia', 'fk_id_tipo_frequencia', 'id_tipo_frequencia')
                 ->where('fk_id_turma', $request->turma)
                 ->where('fk_id_disciplina', $request->disciplina)

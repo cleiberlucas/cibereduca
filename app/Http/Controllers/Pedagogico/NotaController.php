@@ -101,11 +101,10 @@ class NotaController extends Controller
       
         $nota->where('id_nota_avaliacao', $id)->update($request->except('_token', '_method'));
 
-        $turmaPeriodoLetivo = $this->repositorio->getTurmaPeriodoLetivo($id, $nota->fk_id_matricula, $nota->matricula->fk_id_turma, $nota->avaliacao->fk_id_periodo_letivo);
+        //$periodoLetivo = $this->repositorio->getPeriodoLetivo($id, $nota->fk_id_matricula, $nota->matricula->fk_id_turma, $nota->avaliacao->fk_id_periodo_letivo);
 
         /**Preparando array p atualizar a nota média do aluno */
-        $dadosNota = array(['fk_id_turma_periodo_letivo' => $turmaPeriodoLetivo->id_turma_periodo_letivo, 
-                                'fk_id_periodo_letivo' => $nota->avaliacao->fk_id_periodo_letivo, 
+        $dadosNota = array(['fk_id_periodo_letivo' => $nota->avaliacao->fk_id_periodo_letivo,                                 
                                 'fk_id_matricula' => $nota->fk_id_matricula,
                                 'fk_id_disciplina' => $nota->avaliacao->fk_id_disciplina
         ]);
@@ -153,7 +152,7 @@ class NotaController extends Controller
                 $notas['fk_id_user']      = $dados['fk_id_user'];
 
                 /**Gerando novo array p gravar a nota média do resultado aluno X período X disciplina */
-                $notasMedias['fk_id_turma_periodo_letivo'] = $dados['fk_id_turma_periodo_letivo'];
+                $notasMedias['fk_id_periodo_letivo'] = $dados['fk_id_periodo_letivo'];
                 $notasMedias['fk_id_periodo_letivo'] = $dados['id_periodo_letivo'];
                 $notasMedias['fk_id_matricula'] = $dados['fk_id_matricula'][$index];
                 $notasMedias['fk_id_disciplina'] = $dados['fk_id_disciplina'];                
@@ -196,10 +195,10 @@ class NotaController extends Controller
             /*Incluindo o total de faltas no array */
             $nota = array_merge($nota, ['nota_media' => $nota_media]);
 
-            //dd($this->repositorio->getFaltasAlunoPeriodoDisciplina($fk_id_matricula, $fk_id_turma_periodo_letivo, $fk_id_disciplina));    
+            //dd($this->repositorio->getFaltasAlunoPeriodoDisciplina($fk_id_matricula, $fk_id_periodo_letivo, $fk_id_disciplina));    
 
             //Verificar se já foi lançado resultado para um período
-            $existeResultado = $this->resultadoAlunoPeriodo->getResultadoAlunoPeriodoDisciplina($nota['fk_id_matricula'], $nota['fk_id_turma_periodo_letivo'], $nota['fk_id_disciplina']);
+            $existeResultado = $this->resultadoAlunoPeriodo->getResultadoAlunoPeriodoDisciplina($nota['fk_id_matricula'], $nota['fk_id_periodo_letivo'], $nota['fk_id_disciplina']);
 
             //Existe resultado lançado
             //ALTERAR SOMA NOTA NO RESULTADO DO PERIODO
@@ -217,7 +216,7 @@ class NotaController extends Controller
      * Inserir nota média no resultado do aluno X periodo X disciplina
      * o array deve conter
      * ['fk_id_matricula'], 
-     * ['fk_id_turma_periodo_letivo'], 
+     * ['fk_id_periodo_letivo'], 
      * ['fk_id_disciplina']
      * ['nota_media']
      */
@@ -230,7 +229,7 @@ class NotaController extends Controller
      * Alterar nota média no resultado do aluno X periodo X disciplina
      * o array deve conter
      * ['fk_id_matricula'], 
-     * ['fk_id_turma_periodo_letivo'], 
+     * ['fk_id_periodo_letivo'], 
      * ['fk_id_disciplina']
      * ['nota_media']
      */
@@ -238,7 +237,7 @@ class NotaController extends Controller
     {
         try {
             $this->resultadoAlunoPeriodo->where('fk_id_matricula', $nota['fk_id_matricula'])
-                                    ->where('fk_id_turma_periodo_letivo', $nota['fk_id_turma_periodo_letivo'])
+                                    ->where('fk_id_periodo_letivo', $nota['fk_id_periodo_letivo'])
                                     ->where('fk_id_disciplina', $nota['fk_id_disciplina'])
                                     ->update(array('nota_media' => $nota['nota_media']));
         } catch (\Throwable $th) {
@@ -295,7 +294,7 @@ class NotaController extends Controller
         
         $notaAluno = $this->repositorio->where('id_nota_avaliacao', $id_nota, )->first();
 
-        $turmaPeriodoLetivo = $this->repositorio->getTurmaPeriodoLetivo($id_nota, $notaAluno->fk_id_matricula, $notaAluno->matricula->fk_id_turma, $notaAluno->avaliacao->fk_id_periodo_letivo);
+       // $turmaPeriodoLetivo = $this->repositorio->getTurmaPeriodoLetivo($id_nota, $notaAluno->fk_id_matricula, $notaAluno->matricula->fk_id_turma, $notaAluno->avaliacao->fk_id_periodo_letivo);
         
         if (!$notaAluno)
             return redirect()->back();
@@ -303,10 +302,10 @@ class NotaController extends Controller
         $notaAluno->where('id_nota_avaliacao', $id_nota, )->delete();
 
        /**Preparando array p atualizar a nota média do aluno */
-        $dadosNota = array(['fk_id_turma_periodo_letivo' => $turmaPeriodoLetivo->id_turma_periodo_letivo, 
-                                'fk_id_periodo_letivo' => $notaAluno->avaliacao->fk_id_periodo_letivo, 
-                                'fk_id_matricula' => $notaAluno->fk_id_matricula,
-                                'fk_id_disciplina' => $notaAluno->avaliacao->fk_id_disciplina
+        $dadosNota = array([
+                            'fk_id_periodo_letivo' => $notaAluno->avaliacao->fk_id_periodo_letivo, 
+                            'fk_id_matricula' => $notaAluno->fk_id_matricula,
+                            'fk_id_disciplina' => $notaAluno->avaliacao->fk_id_disciplina
         ]);
         
         //Atualizar a nota média do aluno X período X disciplina
