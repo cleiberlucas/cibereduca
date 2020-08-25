@@ -14,10 +14,10 @@
                 <a href="{{url('pedagogico/turmas')}} " class="">Diários</a>
             </li>
             <li class="breadcrumb-item active" >
-                <a href="{{route('turmas.frequencias', $frequencia->turmaPeriodoLetivo->fk_id_turma)}}" class="">Frequências</a>
+                <a href="{{route('turmas.frequencias', $frequencia->matricula->fk_id_turma)}}" class="">Frequências</a>
             </li>
             <li class="breadcrumb-item active" >
-                <a href="{{route('turmas.frequencias.showaluno', [$frequencia->fk_id_turma_periodo_letivo, $frequencia->fk_id_matricula])}}" class="">Aluno</a>                
+                <a href="{{route('turmas.frequencias.showaluno', [$frequencia->fk_id_periodo_letivo, $frequencia->fk_id_matricula])}}" class="">Aluno</a>                
             </li>
             <li class="breadcrumb-item active" >
                 <a href="#" class="">Alterar</a>
@@ -25,7 +25,7 @@
         </ol>
           
         <h3>Alterar frequência do Aluno(a): <strong>{{$frequencia->matricula->aluno->nome}}</strong></h3>            
-        <h4>{{$frequencia->turmaPeriodoLetivo->periodoLetivo->periodo_letivo}} - {{$frequencia->turmaPeriodoLetivo->turma->nome_turma}} {{$frequencia->turmaPeriodoLetivo->turma->tipoTurma->sub_nivel_ensino}} - {{$frequencia->turmaPeriodoLetivo->turma->turno->descricao_turno}} </h4>
+        <h4>{{$frequencia->periodoLetivo->periodo_letivo}} - {{$frequencia->matricula->turma->nome_turma}} {{$frequencia->matricula->turma->tipoTurma->sub_nivel_ensino}} - {{$frequencia->matricula->turma->turno->descricao_turno}} </h4>
         <h5>Disciplina: <strong>{{$frequencia->disciplina->disciplina}}</strong></h5>
         <h5>Data da aula: <strong>{{date('d/m/Y', strtotime($frequencia->data_aula))}}</strong></h5>
                 
@@ -37,6 +37,10 @@
     <form action="{{ route('turmas.frequencias.update', $frequencia->id_frequencia)}}" class="form" method="POST">
         @csrf
         @method('PUT')
+
+        <input type="hidden" class="" name="fk_id_turma" value="{{$frequencia->matricula->fk_id_turma}}">
+        <input type="hidden" class="" name="fk_id_periodo_letivo" value="{{$frequencia->fk_id_periodo_letivo}}">
+
         <div class="row">
             <div class="form-group col-sm-3 col-xs-2">
                 <select name="fk_id_tipo_frequencia" id="" class="form-control" required>                                                                        

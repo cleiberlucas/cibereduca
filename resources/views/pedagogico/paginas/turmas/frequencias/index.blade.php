@@ -92,7 +92,7 @@
                                     {{-- Listagem de alunos e frequencias --}}
                                     <form action="{{ route('turmas.frequencias.store', 1)}}" method="POST">
                                         @csrf 
-                                        <input type="hidden" name="fk_id_turma_periodo_letivo" value={{$turmaPeriodoLetivo->id_turma_periodo_letivo}}>
+                                        <input type="hidden" name="fk_id_periodo_letivo" value={{$turmaPeriodoLetivo->id_periodo_letivo}}>
                                         <input type="hidden" name="fk_id_disciplina" value={{$disciplinaTurma->fk_id_disciplina}}>
                                         <input type="hidden" name="fk_id_user" value={{Auth::id()}}>
                                         <input type="hidden" name="fk_id_turma" value={{$turmaPeriodoLetivo->fk_id_turma}}>
@@ -143,7 +143,7 @@
                                                     <strong>{{$index+1}}  </strong>                                                                  
                                                 </div>
                                                 <div class="form-group col-sm-4 col-xs-2">                                                    
-                                                    <a href="{{route('turmas.frequencias.showaluno', [$turmaPeriodoLetivo->id_turma_periodo_letivo, $turmaMatricula->id_matricula])}}" class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></a>
+                                                    <a href="{{route('turmas.frequencias.showaluno', [$turmaPeriodoLetivo->id_periodo_letivo, $turmaMatricula->id_matricula])}}" class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></a>
                                                     {{$turmaMatricula->nome}}
                                                 </div>                                                                
                                                 

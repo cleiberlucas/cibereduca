@@ -16,8 +16,5 @@ class ResultadoAlunoPeriodoController extends Controller
         $this->repositorio = $resultadoAlunoPeriodo;        
         $this->frequencia = new Frequencia;    
     }
-
-    
-
     
 }

@@ -27,7 +27,7 @@
             <h4>{{$frequencia->periodo_letivo}} - {{$frequencia->nome_turma}} {{$frequencia->sub_nivel_ensino}} - {{$frequencia->descricao_turno}} </h4>
             
             <?php 
-                $idTurmaPeriodoLetivo = $frequencia->fk_id_turma_periodo_letivo;                
+                $idTurma = $frequencia->id_turma;                
                 $idDisciplina = $frequencia->fk_id_disciplina;
                 $disciplina = $frequencia->disciplina;
                 $situacaoPeriodo = $frequencia->situacao;
@@ -69,7 +69,7 @@
                     {{date('d/m/Y', strtotime($frequencia->data_aula))}}
                     {{-- Permite exclusão somente se o período estiver aberto --}}
                     @if ($situacaoPeriodo == 1)
-                        <a href="{{route('turmas.frequencias.remover', [$idTurmaPeriodoLetivo, $frequencia->data_aula, $idDisciplina])}}" class="btn btn-sm btn-outline-danger"> <i class="fas fa-trash"></i> Apagar</a> 
+                        <a href="{{route('turmas.frequencias.remover', [$idTurma, $frequencia->data_aula, $idDisciplina])}}" class="btn btn-sm btn-outline-danger"> <i class="fas fa-trash"></i> Apagar</a> 
                     @endif
                 
                 </div>

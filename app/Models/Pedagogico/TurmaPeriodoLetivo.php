@@ -42,14 +42,14 @@ class TurmaPeriodoLetivo extends Model
     }
 
     /* Lista de períodos de UMA TURMA p listar no form de cadastro 
-        Somente períodos abertos
+        
     */
     public function getTurmaPeriodosLetivos($id_turma)
     {
         $turmaPeriodosLetivos = $this->select
                                         ('tb_turmas_periodos_letivos.id_turma_periodo_letivo',                                    
                                         'tb_turmas_periodos_letivos.situacao',
-                                        'tb_turmas_periodos_letivos.fk_id_turma',
+                                        'tb_turmas_periodos_letivos.fk_id_turma', 
                                         'tb_periodos_letivos.id_periodo_letivo',
                                         'tb_periodos_letivos.periodo_letivo',                                    
                                         'tb_periodos_letivos.data_inicio',   
