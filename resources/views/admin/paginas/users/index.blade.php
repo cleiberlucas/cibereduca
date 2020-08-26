@@ -44,16 +44,17 @@
                             </tr>
                         @endforeach
                     </tbody>
-                </table>
+                </table> 
+                
             
-                {{-- <div class="card-footer">
+                <div class="card-footer">
                     @if (isset($filtros))
                     {!! $users->appends($filtros)->links()!!}
                     @else
                         {!! $users->links()!!}    
                     @endif
                     
-                </div> --}}
+                </div>
         </div>
     </div>
 @stop
