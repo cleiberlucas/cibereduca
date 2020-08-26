@@ -273,11 +273,11 @@ return [
                     'icon_color' => 'green',  
                     'can'  => 'Pessoa Ver',              
                 ],
-                [
+                /* [
                     'text' => 'Histórico',
                     'url'  => '#',
                     'icon_color' => 'green',
-                ],
+                ], */
             ],
         ],
         [

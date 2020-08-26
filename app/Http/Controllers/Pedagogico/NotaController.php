@@ -14,6 +14,7 @@ use App\Models\Secretaria\Turma;
 use App\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class NotaController extends Controller
 {
@@ -60,15 +61,27 @@ class NotaController extends Controller
 
         $idTipoTurma = $turma->fk_id_tipo_turma;
 
-        //Somente disciplinas vinculadas à grade curricular da turma
-        $disciplinasTurma = new GradeCurricular;   
+        $idUnidade = User::getUnidadeEnsinoSelecionada();
+        $perfilUsuario = new User;        
+        $perfilUsuario = $perfilUsuario->getPerfilUsuarioUnidadeEnsino($idUnidade, Auth::id());
+        
+        $disciplinasTurma = new GradeCurricular;
+        /* Perfil de professor: carregar somente disciplinas vinculadas a ele */
+        if ($perfilUsuario->fk_id_perfil == 2){
+            $disciplinasTurma = $disciplinasTurma->disciplinasTurmaProfessor($id_turma, Auth::id());
+        }
+        /* para os outros perfis libera todas as disciplinas */
+        else{            
+            //Somente disciplinas vinculadas à grade curricular da turma            
+            $disciplinasTurma = $disciplinasTurma->disciplinasTurma($id_turma);            
+        }  
 
         $turmaPeriodoLetivo = new TurmaPeriodoLetivo;
         $avaliacoes = new Avaliacao;        
                 
         return view('pedagogico.paginas.turmas.notas.index', [
             'id_turma' => $id_turma,
-            'disciplinasTurma' => $disciplinasTurma->disciplinasTurma($id_turma),
+            'disciplinasTurma' => $disciplinasTurma,
             'turmaPeriodosLetivos' => $turmaPeriodoLetivo->getTurmaPeriodosLetivos($id_turma),     
             'turmaMatriculas'      => $this->getTurmaMatriculas($id_turma),
             'avaliacoes'           => $avaliacoes->getAvaliacoesTipoTurma($idTipoTurma),
@@ -261,10 +274,21 @@ class NotaController extends Controller
 
         //Todas as avaliações cadastradas para a turma
         $avaliacoesTurma = $this->repositorio->getAvaliacoesTurma($id_tipo_turma);
-
-        //Grade curricular da Turma
-        $gradeCurricular = new GradeCurricular;
-        $gradeCurricular = $gradeCurricular->disciplinasTurma($id_turma);        
+        
+        $idUnidade = User::getUnidadeEnsinoSelecionada();
+        $perfilUsuario = new User;        
+        $perfilUsuario = $perfilUsuario->getPerfilUsuarioUnidadeEnsino($idUnidade, Auth::id());
+        
+        $disciplinasTurma = new GradeCurricular;
+        /* Perfil de professor: carregar somente disciplinas vinculadas a ele */
+        if ($perfilUsuario->fk_id_perfil == 2){
+            $disciplinasTurma = $disciplinasTurma->disciplinasTurmaProfessor($id_turma, Auth::id());
+        }
+        /* para os outros perfis libera todas as disciplinas */
+        else{            
+            //Somente disciplinas vinculadas à grade curricular da turma            
+            $disciplinasTurma = $disciplinasTurma->disciplinasTurma($id_turma);            
+        }  
         
         $notasAluno = $this->repositorio->getNotasAluno($id_matricula);
 
@@ -277,7 +301,7 @@ class NotaController extends Controller
                     'id_turma'              => $id_turma,
                     'periodosTurma'         => $periodosTurma,
                     'turmaPeriodosLetivos' => $turmaPeriodoLetivo->getTurmaPeriodosLetivos($id_turma), 
-                    'gradeCurricular'       => $gradeCurricular,
+                    'gradeCurricular'       => $disciplinasTurma,
                     'avaliacoesTurma'       => $avaliacoesTurma,
                     'notasAluno'            => $notasAluno,
                     'dadosAluno'            => $dadosAluno,

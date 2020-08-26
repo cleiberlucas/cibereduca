@@ -8,8 +8,11 @@ use App\Models\GradeCurricular;
 use App\Models\Pedagogico\ConteudoLecionado;
 use App\Models\Pedagogico\TurmaPeriodoLetivo;
 use App\Models\Secretaria\Turma;
+use App\Models\Secretaria\TurmaProfessor;
+use App\User;
 use PDF;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ConteudoLecionadoController extends Controller
 {
@@ -25,9 +28,21 @@ class ConteudoLecionadoController extends Controller
     {
         $this->authorize('Conteúdo Lecionado Ver');   
 
-        //Somente disciplinas vinculadas à grade curricular da turma
+        $idUnidade = User::getUnidadeEnsinoSelecionada();
+        $perfilUsuario = new User;        
+        $perfilUsuario = $perfilUsuario->getPerfilUsuarioUnidadeEnsino($idUnidade, Auth::id());
+        
         $disciplinasTurma = new GradeCurricular;
-        $disciplinasTurma = $disciplinasTurma->disciplinasTurma($id_turma);
+        /* Perfil de professor: carregar somente disciplinas vinculadas a ele */
+        if ($perfilUsuario->fk_id_perfil == 2){
+            $disciplinasTurma = $disciplinasTurma->disciplinasTurmaProfessor($id_turma, Auth::id());
+        }
+        /* para os outros perfis libera todas as disciplinas */
+        else{            
+            //Somente disciplinas vinculadas à grade curricular da turma            
+            $disciplinasTurma = $disciplinasTurma->disciplinasTurma($id_turma);            
+        }   
+        
         $turmaPeriodoLetivo = new TurmaPeriodoLetivo;
 
         return view('pedagogico.paginas.turmas.conteudoslecionados.index', [
@@ -47,8 +62,21 @@ class ConteudoLecionadoController extends Controller
        
         $this->repositorio->create($dados);
         
+        $idUnidade = User::getUnidadeEnsinoSelecionada();
+        $perfilUsuario = new User;        
+        $perfilUsuario = $perfilUsuario->getPerfilUsuarioUnidadeEnsino($idUnidade, Auth::id());
+        
         $disciplinasTurma = new GradeCurricular;
-        $disciplinasTurma = $disciplinasTurma->disciplinasTurma($id_turma);
+        /* Perfil de professor: carregar somente disciplinas vinculadas a ele */
+        if ($perfilUsuario->fk_id_perfil == 2){
+            $disciplinasTurma = $disciplinasTurma->disciplinasTurmaProfessor($id_turma, Auth::id());
+        }
+        /* para os outros perfis libera todas as disciplinas */
+        else{            
+            //Somente disciplinas vinculadas à grade curricular da turma            
+            $disciplinasTurma = $disciplinasTurma->disciplinasTurma($id_turma);            
+        }  
+
         $turmaPeriodoLetivo = new TurmaPeriodoLetivo;
 
         return view('pedagogico.paginas.turmas.conteudoslecionados.index', [
@@ -75,8 +103,21 @@ class ConteudoLecionadoController extends Controller
         $dados = $request->all();
         $id_turma = $dados['fk_id_turma'];
 
+       $idUnidade = User::getUnidadeEnsinoSelecionada();
+        $perfilUsuario = new User;        
+        $perfilUsuario = $perfilUsuario->getPerfilUsuarioUnidadeEnsino($idUnidade, Auth::id());
+        
         $disciplinasTurma = new GradeCurricular;
-        $disciplinasTurma = $disciplinasTurma->disciplinasTurma($id_turma);
+        /* Perfil de professor: carregar somente disciplinas vinculadas a ele */
+        if ($perfilUsuario->fk_id_perfil == 2){
+            $disciplinasTurma = $disciplinasTurma->disciplinasTurmaProfessor($id_turma, Auth::id());
+        }
+        /* para os outros perfis libera todas as disciplinas */
+        else{            
+            //Somente disciplinas vinculadas à grade curricular da turma            
+            $disciplinasTurma = $disciplinasTurma->disciplinasTurma($id_turma);            
+        }  
+
         $turmaPeriodoLetivo = new TurmaPeriodoLetivo;
 
         //return redirect()->back();
@@ -106,17 +147,37 @@ class ConteudoLecionadoController extends Controller
         $id_periodo_letivo = $conteudoLecionado->turmaPeriodoLetivo->fk_id_periodo_letivo;
         $id_disciplina = $conteudoLecionado->fk_id_disciplina;
 
-        $conteudoLecionado->where('id_conteudo_lecionado', $id_conteudo_lecionado, )->delete();
+        $conteudoLecionado->where('id_conteudo_lecionado', $id_conteudo_lecionado, )->delete(); 
 
+        $idUnidade = User::getUnidadeEnsinoSelecionada();
+        $perfilUsuario = new User;        
+        $perfilUsuario = $perfilUsuario->getPerfilUsuarioUnidadeEnsino($idUnidade, Auth::id());
+        
         $disciplinasTurma = new GradeCurricular;
-        $disciplinasTurma = $disciplinasTurma->disciplinasTurma($id_turma);
+        /* Perfil de professor: carregar somente disciplinas vinculadas a ele */
+        if ($perfilUsuario->fk_id_perfil == 2){
+            $disciplinasTurma = $disciplinasTurma->disciplinasTurmaProfessor($id_turma, Auth::id());
+        }
+        /* para os outros perfis libera todas as disciplinas */
+        else{            
+            //Somente disciplinas vinculadas à grade curricular da turma            
+            $disciplinasTurma = $disciplinasTurma->disciplinasTurma($id_turma);            
+        }  
         $turmaPeriodoLetivo = new TurmaPeriodoLetivo;
+
+        $idUnidade = User::getUnidadeEnsinoSelecionada();
+
+        $perfilUsuario = new User;        
+        $perfilUsuario = $perfilUsuario->getPerfilUsuarioUnidadeEnsino($idUnidade, Auth::id());
+        $turmaDisciplinaProfessor = new TurmaProfessor;
+        $turmaDisciplinaProfessor = $turmaDisciplinaProfessor->getTurmaDisciplinaProfessor($idUnidade, Auth::id());        
         
         return view('pedagogico.paginas.turmas.conteudoslecionados.index', [
                     'id_turma' => $id_turma,
                     'disciplinasTurma'     => $disciplinasTurma,
                     'turmaPeriodosLetivos' => $turmaPeriodoLetivo->getTurmaPeriodosLetivos($id_turma),     
                     'conteudosLecionados' => $this->repositorio->getConteudosLecionados($id_turma),
+                    'perfilUsuario' => $perfilUsuario,
                     'selectPeriodoLetivo'  => $id_periodo_letivo,
                     'selectDisciplina'     => $id_disciplina,
         ]); 

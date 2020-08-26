@@ -83,7 +83,7 @@
                                 <td style="width=10px;">
                                     <a href="{{ route('matriculas.index', $turma->id_turma) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-users"></i></a>
                                     <a href="{{ route('turmas.edit', $turma->id_turma) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>
-                                    {{-- <a href="{{ route('turmasprofessor', $turma->id_turma) }}" class="btn btn-sm btn-outline-warning"><i class="far fa-user"></i></a> --}}
+                                    <a href="{{ route('turmasprofessor', $turma->id_turma) }}" class="btn btn-sm btn-outline-warning"><i class="far fa-user"></i></a>
                                     <a href="{{ route('turmas.show', $turma->id_turma) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-eye"></i></a>
                                 </td>
                                 

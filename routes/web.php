@@ -167,7 +167,7 @@ Route::prefix('secretaria')
                 Route::post('turmas.professor', 'TurmaProfessorController@store')->name('turmasprofessor.store');
                 Route::put('turmasprofessor/{id_turma_professor}', 'TurmaProfessorController@update')->name('turmasprofessor.update');
                 Route::get('turmas/{id_turma_professor}/professor', 'TurmaProfessorController@edit')->name('turmasprofessor.edit');     
-                Route::get('turmasprofessor/{id_turma}', 'TurmaProfessorController@index')->name('turmasprofessor');                       
+                Route::get('turmasprofessor/{id_turma}', 'TurmaProfessorController@index')->name('turmasprofessor')->middleware('can:Professor X Disciplina Ver');                       
                   
 
                 /*

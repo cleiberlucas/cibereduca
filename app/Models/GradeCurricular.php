@@ -43,6 +43,23 @@ class GradeCurricular extends Model
     }
 
     /**
+     * Retorna as disciplinas de um professor ATIVO de uma turma
+     */
+    public function disciplinasTurmaProfessor($id_turma, $idProfessor)
+    {
+        return $this::select('*')
+                ->join('tb_tipos_turmas', 'tb_grades_curriculares.fk_id_tipo_turma', 'id_tipo_turma')
+                ->join('tb_turmas', 'tb_turmas.fk_id_tipo_turma', 'id_tipo_turma')
+                ->join('tb_disciplinas', 'fk_id_disciplina', 'id_disciplina')
+                ->join('tb_turmas_disciplinas_professor', 'fk_id_grade_curricular', 'id_grade_curricular')
+                ->where('tb_turmas.id_turma', '=', $id_turma)
+                ->where('fk_id_professor', $idProfessor)
+                ->where('situacao_disciplina_professor', 1)
+                ->orderBy('disciplina')
+                ->get();
+    }
+
+    /**
      * Retorna as disciplinas de um Tipo turma
      */
     public function disciplinasTipoTurma($id_tipo_turma)

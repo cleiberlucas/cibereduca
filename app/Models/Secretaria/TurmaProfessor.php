@@ -29,6 +29,19 @@ class TurmaProfessor extends Model
         return $resultado;
     } */
    
+    /**
+     * Retorna todas as turmas e disciplinas de um professor
+     */    
+    public function getTurmaDisciplinaProfessor($idTurma, $idUsuario)
+    {
+        return $this
+            ->join('tb_grades_curriculares', 'fk_id_grade_curricular', 'id_grade_curricular')
+            ->where('fk_id_turma', $idTurma)
+            ->where('fk_id_professor', $idUsuario)
+            ->get();
+
+    }
+
     public function turma()
     {       
         return $this->belongsTo(Turma::class, 'fk_id_turma', 'id_turma');

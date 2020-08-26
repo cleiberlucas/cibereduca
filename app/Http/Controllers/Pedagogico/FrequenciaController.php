@@ -10,7 +10,9 @@ use App\Models\Pedagogico\ResultadoAlunoPeriodo;
 use App\Models\Pedagogico\TurmaPeriodoLetivo;
 use App\Models\Secretaria\Matricula;
 use App\Models\Pedagogico\TipoFrequencia;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use PhpParser\Node\Stmt\TryCatch;
 
 class FrequenciaController extends Controller
@@ -27,9 +29,21 @@ class FrequenciaController extends Controller
     {
         $this->authorize('Frequência Ver');   
 
-        //Somente disciplinas vinculadas à grade curricular da turma
+        $idUnidade = User::getUnidadeEnsinoSelecionada();
+        $perfilUsuario = new User;        
+        $perfilUsuario = $perfilUsuario->getPerfilUsuarioUnidadeEnsino($idUnidade, Auth::id());
+        
         $disciplinasTurma = new GradeCurricular;
-        $disciplinasTurma = $disciplinasTurma->disciplinasTurma($id_turma);
+        /* Perfil de professor: carregar somente disciplinas vinculadas a ele */
+        if ($perfilUsuario->fk_id_perfil == 2){
+            $disciplinasTurma = $disciplinasTurma->disciplinasTurmaProfessor($id_turma, Auth::id());
+        }
+        /* para os outros perfis libera todas as disciplinas */
+        else{            
+            //Somente disciplinas vinculadas à grade curricular da turma            
+            $disciplinasTurma = $disciplinasTurma->disciplinasTurma($id_turma);            
+        }  
+
         $turmaPeriodoLetivo = new TurmaPeriodoLetivo;
         $tiposFrequencia = new TipoFrequencia;
         $tiposFrequencia = $tiposFrequencia->getTiposFrequencia();

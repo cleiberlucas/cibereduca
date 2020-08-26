@@ -56,7 +56,19 @@ class User extends Authenticatable
     public function unidadesEnsino()
     {
         //join M:M user X UNIDADE ENSINO
-        return $this->belongsToMany(UserUnidadeEnsino::class, 'tb_usuarios_unidade_ensino', 'fk_id_user', 'fk_id_unidade_ensino');
+        return $this->belongsToMany(UserUnidadeEnsino::class, 'tb_usuarios_unidade_ensino', 'fk_id_user', 'id');
+    }
+
+    /**
+     * Consulta perfil do usuário em determinada unidade de ensino
+     */
+    public function getPerfilUsuarioUnidadeEnsino($idUnidade, $idUsuario)
+    {
+        return $this
+            ->join('tb_usuarios_unidade_ensino', 'fk_id_user', 'id')
+            ->where('fk_id_unidade_ensino', $idUnidade)
+            ->where('fk_id_user', $idUsuario)
+            ->first();
     }
 
     /* public function perfil()

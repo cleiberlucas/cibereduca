@@ -20,6 +20,7 @@ class TurmaProfessorController extends Controller
 
     public function index($idTurma)
     {
+        $this->authorize('Professor X Disciplina Ver');
 
         $turma = Turma::select('*')
             ->join('tb_tipos_turmas', 'tb_turmas.fk_id_tipo_turma', '=', 'tb_tipos_turmas.id_tipo_turma')
@@ -81,15 +82,10 @@ class TurmaProfessorController extends Controller
 
     public function store(StoreUpdateTurmaProfessor $request)
     {
-        //dd($request);
+        $this->authorize('Professor X Disciplina Cadastrar');
+
         $dados = $request->all();
-       /*  $sit = $this->verificarSituacao($dados);
-        $dados = array_merge($dados, $sit); */
-//        dd($dados);
-        //dd($dados['fk_id_grade_curricular']);
-       /*  if (count($dados['fk_id_grade_curricular']) != count($dados['fk_id_professor']))
-            return redirect()->back()->with('atencao', 'Selecione um professor para todas as disciplinas'); */
-        //dd($dados);
+       
         foreach($dados['fk_id_professor'] as $index => $professor ){
             //dd($professor);        
             if ($professor != null){
@@ -98,7 +94,7 @@ class TurmaProfessorController extends Controller
                     'situacao_disciplina_professor' => $dados['situacao_disciplina_professor'],
                     'fk_id_grade_curricular' => $dados['fk_id_grade_curricular'][$index],
                     'fk_id_professor' => $professor,
-                );
+                ); 
                 //dd($insert);
                 $this->repositorio->create($insert);
             }
@@ -158,7 +154,7 @@ class TurmaProfessorController extends Controller
 
     public function edit($id)
     {
-        $this->authorize('Turma Alterar');
+        $this->authorize('Professor X Disciplina Alterar');
 
         $turmaProfessor = $this->repositorio
             ->where('id_turma_disciplina_professor', $id)
