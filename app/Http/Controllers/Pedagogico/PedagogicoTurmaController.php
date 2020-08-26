@@ -32,7 +32,7 @@ class PedagogicoTurmaController extends Controller
                             ->orderBy('tb_sub_niveis_ensino.sub_nivel_ensino', 'asc')
                             ->orderBy('nome_turma', 'asc')
                             ->orderBy('tb_turnos.descricao_turno', 'asc')
-                            ->paginate(); 
+                            ->paginate(25); 
         
        //dd($turmas);
         return view('pedagogico.paginas.turmas.index', [

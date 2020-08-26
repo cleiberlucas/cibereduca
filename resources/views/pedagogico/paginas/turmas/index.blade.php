@@ -16,8 +16,8 @@
         </li>
     </ol>
     <h4>Lançamentos no Diário</h4>
-    <h6><i class="fas fa-chalkboard"></i> Conteúdos Lecionados &nbsp&nbsp&nbsp&nbsp&nbsp  <i class="fas fa-user-check"></i> Frequências</h6>
-    <h6><i class="fas fa-key"></i> Abrir ou fechar período letivo de uma turma.</h6>
+    <h6><a href="#" class="btn btn-sm btn-outline-success disabled" ><i class="fas fa-chalkboard"></i></a> Conteúdos Lecionados &nbsp&nbsp&nbsp&nbsp&nbsp  <a href="#" class="disabled btn btn-sm btn-outline-info"> <i class="fas fa-user-check"></i></a> Frequências</h6>
+    <h6><a href="#" class="btn btn-sm btn-outline-warning disabled"><i class="fas fa-key"></i></a> Abrir ou fechar período letivo de uma turma.</h6>
     
 @stop
 
@@ -65,10 +65,7 @@
                             <td style="width=10px;">
                                 <a href="{{ route('turmas.conteudoslecionados', $turma->id_turma) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-chalkboard"></i></a>
                                 <a href="{{ route('turmas.frequencias', $turma->id_turma) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-user-check"></i></a>
-                                <a href="{{ route('turmas.periodosletivos', $turma->id_turma) }}" class="btn btn-sm btn-outline-warning"><i class="fas fa-key"></i></a>
-                            {{--       <a href="{{ route('pedagogico.turmas.periodo', $turma->id_turma) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-users"></i></a> --}}
-                                
-                                
+                                <a href="{{ route('turmas.periodosletivos', $turma->id_turma) }}" class="btn btn-sm btn-outline-warning"><i class="fas fa-key"></i></a>                                
                             </td>
                             
                         </tr>

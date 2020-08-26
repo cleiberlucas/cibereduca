@@ -72,7 +72,7 @@ class Turma extends Model
         return $this->belongsTo(User::class, 'fk_id_user', 'id');
     }
 
-    public function periodosLetivos()
+    public function periodosLetivos() 
     {
         //join M:M turma X periodo letivo
         return $this->belongsToMany(TurmaPeriodoLetivo::class, 'tb_turmas_periodos_letivos', 'fk_id_turma', 'fk_id_periodo_letivo');
@@ -98,6 +98,7 @@ class Turma extends Model
             ->join('tb_turmas', 'tb_turmas.fk_id_tipo_turma', 'tb_tipos_turmas.id_tipo_turma')
             ->where('tb_turmas.id_turma', '=', $this->id_turma )
             /* ->join('tb_anos_letivos') */
+            ->orderBy('periodo_letivo')
             ->get();
         
         return $periodosLetivos;
