@@ -84,7 +84,8 @@ class UserUnidadeEnsinoController extends Controller
                     ->with('info', 'Escolha pelo menos uma Unidade de Ensino.');
         }
 
-        $user->unidadesEnsino()->attach($request->unidadesEnsino);
+        //dd($request->unidadesEnsino);
+        $user->unidadesEnsino()->attach($request->unidadesEnsino); 
 
         return redirect()->route('users.unidadesensino', $user->id);
     }
