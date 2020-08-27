@@ -101,7 +101,7 @@
                                             {{-- Mostra avaliações somente para períodos abertos --}}
                                             @if ($turmaPeriodoLetivo->situacao == 1)   
                                                 
-                                                <div class="form-group col-sm-2 col-xs-2">
+                                                <div class="form-group col-sm-3 col-xs-2">
                                                     <label for="">Avaliação</label>
                                                     <select name="fk_id_avaliacao[]" id="" class="form-control" required>        
                                                         <option value=""></option>
@@ -118,7 +118,7 @@
                                                     </select>
                                                 </div>  
 
-                                                <div class="form-group col-sm-2 col-xs-2">
+                                                <div class="form-group col-sm-3 col-xs-2">
                                                     <label for="">Data aplicação</label>
                                                     <input type="date" name="data_avaliacao" class="form-control" required>
                                                 </div>

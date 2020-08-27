@@ -26,7 +26,6 @@ class PedagogicoTipoTurmaController extends Controller
                                 ->orderBy('tipo_turma', 'asc')
                                 ->paginate(25); 
 
-
         return view('pedagogico.paginas.tiposturmas.index', [
                     'tiposTurmas' => $tiposTurmas,       
         ]);
