@@ -22,8 +22,8 @@
     </ol>
     @foreach ($frequenciasAlunoPeriodo as $index => $frequenciaAlunoPeriodo)
         @if ($index == 0)
-            <h3>Aluno(a): {{$frequenciaAlunoPeriodo->nome}}</h3>
-            <h4>Frequências {{$frequenciaAlunoPeriodo->periodo_letivo}} - {{$frequenciaAlunoPeriodo->nome_turma}} {{$frequenciaAlunoPeriodo->sub_nivel_ensino}} - {{$frequenciaAlunoPeriodo->descricao_turno}} </h4>
+            <h4>Aluno(a): {{$frequenciaAlunoPeriodo->nome}}</h4>
+            <h5>Frequências {{$frequenciaAlunoPeriodo->periodo_letivo}} - {{$frequenciaAlunoPeriodo->nome_turma}} {{$frequenciaAlunoPeriodo->sub_nivel_ensino}} - {{$frequenciaAlunoPeriodo->descricao_turno}} </h5>
             
             <?php $situacaoPeriodo = $frequenciaAlunoPeriodo->situacao;?>
             <br>

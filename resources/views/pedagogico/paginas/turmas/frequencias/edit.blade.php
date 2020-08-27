@@ -24,7 +24,7 @@
             </li>
         </ol>
           
-        <h3>Alterar frequência do Aluno(a): <strong>{{$frequencia->matricula->aluno->nome}}</strong></h3>            
+        <h4>Alterar frequência do Aluno(a): <strong>{{$frequencia->matricula->aluno->nome}}</strong></h4>            
         <h4>{{$frequencia->periodoLetivo->periodo_letivo}} - {{$frequencia->matricula->turma->nome_turma}} {{$frequencia->matricula->turma->tipoTurma->sub_nivel_ensino}} - {{$frequencia->matricula->turma->turno->descricao_turno}} </h4>
         <h5>Disciplina: <strong>{{$frequencia->disciplina->disciplina}}</strong></h5>
         <h5>Data da aula: <strong>{{date('d/m/Y', strtotime($frequencia->data_aula))}}</strong></h5>

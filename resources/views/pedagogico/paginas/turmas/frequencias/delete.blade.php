@@ -23,8 +23,8 @@
                 </li>
             </ol>
             
-            <h3>Apagar frequência da turma</h3>
-            <h4>{{$frequencia->periodo_letivo}} - {{$frequencia->nome_turma}} {{$frequencia->sub_nivel_ensino}} - {{$frequencia->descricao_turno}} </h4>
+            <h4>Apagar frequência da turma</h4>
+            <h5>{{$frequencia->periodo_letivo}} - {{$frequencia->nome_turma}} {{$frequencia->sub_nivel_ensino}} - {{$frequencia->descricao_turno}} </h5>
             
             <?php 
                 $idTurma = $frequencia->id_turma;                

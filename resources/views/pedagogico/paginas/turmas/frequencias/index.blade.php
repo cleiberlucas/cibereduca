@@ -22,7 +22,7 @@
     </ol>
     @foreach ($turmaPeriodosLetivos as $index => $turma)
         @if ($index == 0)
-            <h2>Frequências - {{$turma->nome_turma}} {{$turma->sub_nivel_ensino}} - {{$turma->descricao_turno}} </h2>    
+            <h4>Frequências - {{$turma->nome_turma}} {{$turma->sub_nivel_ensino}} - {{$turma->descricao_turno}} </h4>    
             @break            
         @endif
     @endforeach
