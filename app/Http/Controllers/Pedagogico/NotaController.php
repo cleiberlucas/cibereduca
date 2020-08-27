@@ -40,10 +40,12 @@ class NotaController extends Controller
                             ->join('tb_turnos', 'tb_turmas.fk_id_turno', '=', 'tb_turnos.id_turno')                                                            
                             ->where('tb_anos_letivos.fk_id_unidade_ensino', '=', User::getUnidadeEnsinoSelecionada())                             
                             ->orderBy('tb_anos_letivos.ano', 'desc')
-                            ->orderBy('tb_turnos.descricao_turno', 'asc')
                             ->orderBy('tb_sub_niveis_ensino.sub_nivel_ensino', 'asc')
                             ->orderBy('nome_turma', 'asc')
-                            ->paginate();
+                            ->orderBy('tb_turnos.descricao_turno', 'asc')
+                            ->paginate(25);
+
+
        //dd($turmas);
         return view('pedagogico.paginas.turmas.notas.index_turmas', [
                     'turmas' => $turmas,       
