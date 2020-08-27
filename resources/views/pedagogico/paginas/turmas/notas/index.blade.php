@@ -19,7 +19,7 @@
     </ol>
     @foreach ($turmaPeriodosLetivos as $index => $turma)
         @if ($index == 0)
-            <h3>Lançamento de Notas - {{$turma->nome_turma}} {{$turma->sub_nivel_ensino}} - {{$turma->descricao_turno}} </h3>    
+            <h4>Lançamento de Notas - {{$turma->nome_turma}} {{$turma->sub_nivel_ensino}} - {{$turma->descricao_turno}} </h4>    
             @break            
         @endif
     @endforeach
@@ -28,9 +28,11 @@
 @section('content')
     
     <div class="container-fluid">
-        <div class="card-header">          
-            <i class="fas fa-pencil-alt"></i> - Período aberto &nbsp&nbsp&nbsp 
-            <i class="fas fa-ban"></i> - Período fechado
+        <div class="card-header">       
+            <font size="2px">
+                <i class="fas fa-pencil-alt"></i> - Período aberto &nbsp&nbsp&nbsp 
+                <i class="fas fa-ban"></i> - Período fechado
+            </font>   
         </div>
         <div>@include('admin.includes.alerts')</div>
         {{-- Abas de Períodos --}}

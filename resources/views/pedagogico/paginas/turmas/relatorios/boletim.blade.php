@@ -28,7 +28,7 @@
                     <img src="/vendor/adminlte/dist/img/logo.png" width="60%" alt="logo">
                 </div>
                 <div class="col-sm-10 text-center">
-                    <strong><h4>{{strtoupper($unidadeEnsino->razao_social)}}</h4></strong>
+                    <strong><h4>{{mb_strToUpper($unidadeEnsino->razao_social)}}</h4></strong>
                     <h5>BOLETIM ESCOLAR</h5>
                     
                     <h6>-{{$turma->tipoTurma->anoLetivo->ano}}-</h6>

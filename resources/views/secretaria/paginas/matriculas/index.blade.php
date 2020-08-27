@@ -57,7 +57,7 @@
                         <th>N°</th>
                         <th width="50%">Aluno</th>                                                
                         <th width="15%">Situação</th>
-                        <th width="270">Ações</th>
+                        <th width="200">Ações</th>
                     </thead>
                     <tbody>                        
                         @foreach ($matriculas as $index => $matricula)

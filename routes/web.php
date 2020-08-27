@@ -269,6 +269,8 @@ Route::prefix('admin')
                  * Rotas users
                  */
                 Route::any('users/search', 'ACL\UserController@search')->name('users.search');
+                Route::get('users/editsenha', 'ACL\UserController@editSenha')->name('users.editsenha');                
+                Route::put('users/update/senha', 'ACL\UserController@updateSenha')->name('users.updatesenha');
                 Route::resource('users', 'ACL\UserController');
 
                 /**

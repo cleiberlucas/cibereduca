@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateUser;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -17,7 +18,7 @@ class UserController extends Controller
 
     }
 
-public function index() 
+    public function index() 
     {
         $users = $this->repositorio->orderBy('email')->paginate();
         
@@ -95,6 +96,50 @@ public function index()
             return redirect(-back());
 
         $dados = $request->only(['name', 'email']);
+
+        if ($request->password){
+            $dados['password'] = bcrypt($request->password);
+        }
+
+        $user->update($dados);
+        
+        /* $user->where('id', $id)->update($request->except('_token', '_method')); */
+
+        return redirect()->route('users.index');
+    }
+
+    /**
+     * Edição de senha do usuário logado
+     */
+    public function editSenha()
+    {        
+        $usuario = $this->repositorio->where('id', Auth::id())->first();
+
+        return view('admin.paginas.users.editsenha',[
+            'usuario' => $usuario,
+        ]);
+    }
+
+    /**
+     * Grava atualização de senha do usuário logado */    
+    public function updateSenha(Request $request)
+    {
+        //dd($request);
+        $user = $this->repositorio->find(Auth::id());
+        if (!$user)
+            return redirect(-back());
+
+        /* Verificando se informou a senha atual corretamente */
+        $senhaAtual = bcrypt($request->senhaAtual);
+        dd($senhaAtual);
+        
+        if ($senhaAtual != $user->password)
+            return redirect()->back()->with('erro', 'A senha atual está incorreta.');
+
+        if ($request->password != $request->password_2)
+            return redirect()->back()->with('erro', 'Informe a nova senha e a confirmação iguais.');
+
+        //$dados = $request->only(['password']);
 
         if ($request->password){
             $dados['password'] = bcrypt($request->password);

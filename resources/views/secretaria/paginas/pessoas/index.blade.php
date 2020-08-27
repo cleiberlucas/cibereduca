@@ -59,7 +59,7 @@
                         <th scope="col">Data Nascimento</th>
                         <th scope="col">Telefone</th>
                         <th scope="col">Situação</th>
-                        <th width="270">Ações</th>
+                        <th scope="col">Ações</th>
                     </thead>
                     <tbody>              
                         

@@ -22,12 +22,12 @@ class Nota extends Model
      */
     public function getPeriodosTurma($id_tipo_turma)
     {
-        return $this->select('id_periodo_letivo', 'periodo_letivo')
+        return $this->select('periodo_letivo', 'id_periodo_letivo' )
                     ->rightJoin('tb_avaliacoes', 'fk_id_avaliacao', 'id_avaliacao')
                     ->join('tb_periodos_letivos', 'fk_id_periodo_letivo', 'id_periodo_letivo')                  
                     ->where('fk_id_tipo_turma', $id_tipo_turma)
-                    ->groupBy('id_periodo_letivo')
                     ->groupBy('periodo_letivo')
+                    ->groupBy('id_periodo_letivo')                    
                     ->get();
     } 
 

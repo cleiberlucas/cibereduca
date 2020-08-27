@@ -37,7 +37,7 @@
                     </select>
                 </div>
 
-                <div class="form-group col-sm-3 col-xs-2">
+                <div class="form-group col-sm-5 col-xs-2">
                     Aluno
                     <select name="fk_id_matricula" id="fk_id_matricula" class="form-control" required > 
                         <option value=""></option>
