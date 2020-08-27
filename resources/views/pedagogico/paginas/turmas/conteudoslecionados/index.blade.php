@@ -1,5 +1,3 @@
-
-
 @extends('adminlte::page')
 
 <section></section>
@@ -30,7 +28,7 @@
     </ol>
     @foreach ($turmaPeriodosLetivos as $index => $turma)
         @if ($index == 0)
-            <h2>Contéudos Lecionados - {{$turma->nome_turma}} {{$turma->sub_nivel_ensino}} - {{$turma->descricao_turno}} </h2>    
+            <h4>Conteúdos Lecionados - {{$turma->nome_turma}} {{$turma->sub_nivel_ensino}} - {{$turma->descricao_turno}} </h4>    
         @endif
     @endforeach
 @stop
@@ -43,14 +41,16 @@
 
     <div class="container-fluid">
         <div class="card-header">
+            
           {{--   <form action="{{ route('turmas.conteudoslecionados.search') }}" method="POST" class="form form-inline">
                 @csrf
                 <input type="text" name="filtro" placeholder="Conteúdo" class="form-control" value="{{ $filtros['filtro'] ?? '' }}">
                 <button type="submit" class="btn btn-outline-secondary"><i class="fas fa-filter"></i></button>
             </form> --}}            
             <i class="fas fa-pencil-alt"></i> - Período aberto &nbsp&nbsp&nbsp 
-            <i class="fas fa-ban"></i> - Período fechado
-        </div>
+            <i class="fas fa-ban"></i> - Período fechado        
+    </div>
+    <div>@include('admin.includes.alerts')</div>
        
             {{-- Abas de Períodos --}}
             <ul class="nav nav-tabs nav-pills nav-fill justify-content-center" role="tablist">
@@ -81,7 +81,7 @@
 
                         {{-- Abas das disciplinas: Todas a grade curricular da turma --}}
                         <ul class="nav nav-tabs nav-pills nav-fill justify-content-center" role="tablist">
-                            @foreach ($disciplinasTurma as $index => $disciplinaTurma)                
+                            @foreach ($disciplinasTurma as $index => $disciplinaTurma)                 
                                 <li role="presentation" class="nav-item ">
                                     <a class="nav-link " href="#{{$turmaPeriodoLetivo->id_periodo_letivo}}{{$disciplinaTurma->fk_id_disciplina}}" aria-controls="{{$turmaPeriodoLetivo->id_periodo_letivo}}{{$disciplinaTurma->fk_id_disciplina}}" role="tab" data-toggle="tab">{{$disciplinaTurma->disciplina}}</a>
                                 </li>                        
@@ -199,4 +199,9 @@
                 </div> --}}
        {{--  </div> --}}
     </div>
+    <script>
+        $(document).ready(function(){
+              $(".alert").slideDown(300).delay(5000).slideUp(300);
+        });    
+    </script>
 @stop

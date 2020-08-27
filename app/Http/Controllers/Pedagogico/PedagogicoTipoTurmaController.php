@@ -21,10 +21,11 @@ class PedagogicoTipoTurmaController extends Controller
         $tiposTurmas = $this->repositorio
                                 ->join('tb_anos_letivos', 'fk_id_ano_letivo', 'id_ano_letivo')
                                 ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())
-                                ->orderBy('fk_id_ano_letivo', 'desc')
+                                ->orderBy('tb_anos_letivos.ano', 'desc')
                                 ->orderBy('fk_id_sub_nivel_ensino', 'asc')
                                 ->orderBy('tipo_turma', 'asc')
-                                ->paginate(); 
+                                ->paginate(25); 
+
 
         return view('pedagogico.paginas.tiposturmas.index', [
                     'tiposTurmas' => $tiposTurmas,       

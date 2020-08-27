@@ -25,7 +25,7 @@ class FrequenciaController extends Controller
         $this->resultadoAlunoPeriodo = new ResultadoAlunoPeriodo;        
     }
 
-    public function index($id_turma, $id_periodo_letivo = null, $id_disciplina = null)
+    public function index($id_turma, $id_periodo_letivo = null, $id_disciplina = null, $mensagem = null)
     {
         $this->authorize('Frequência Ver');   
 
@@ -53,7 +53,10 @@ class FrequenciaController extends Controller
                     'disciplinasTurma' => $disciplinasTurma,
                     'turmaPeriodosLetivos' => $turmaPeriodoLetivo->getTurmaPeriodosLetivos($id_turma),      
                     'turmaMatriculas'      => $this->getTurmaMatriculas($id_turma),
-                    'tiposFrequencia'      => $tiposFrequencia,            
+                    'tiposFrequencia'      => $tiposFrequencia,  
+                    'selectPeriodoLetivo'  => $id_periodo_letivo,
+                    'selectDisciplina'     =>  $id_disciplina,     
+                    'sucesso'   => $mensagem,      
         ]); 
     }
 
@@ -112,7 +115,7 @@ class FrequenciaController extends Controller
         //Atualizar o total de faltas dos aluno X período X disciplina
         $this->gravarFaltasAlunoPeriodoDisciplina($dadosFrequencia);
 
-        return $this->frequenciaShowAluno($frequencia->fk_id_periodo_letivo, $frequencia->id_matricula);
+        return $this->frequenciaShowAluno($frequencia->fk_id_periodo_letivo, $frequencia->id_matricula, 'Frequência alterada com sucesso.');
     }
 
     public function store(StoreUpdateFrequencia $request)
@@ -143,7 +146,7 @@ class FrequenciaController extends Controller
         //Gravar o total de faltas do aluno no resultado do período
         $this->gravarFaltasAlunoPeriodoDisciplina($frequencias);
 
-        return $this->index($id_turma);               
+        return $this->index($id_turma, $dados['fk_id_periodo_letivo'], $dados['fk_id_disciplina'], 'Frequências lançadas com sucesso.');               
     }
 
     /**
@@ -213,7 +216,7 @@ class FrequenciaController extends Controller
         }
     }
     
-    public function frequenciaShowAluno($id_periodo_letivo, $id_matricula)
+    public function frequenciaShowAluno($id_periodo_letivo, $id_matricula, $mensagem = null)
     {
         
         $frequencia = $this->repositorio->select('fk_id_turma')
@@ -227,9 +230,7 @@ class FrequenciaController extends Controller
         $frequenciasAlunoDisciplinasPeriodo = $this->repositorio->getFrequenciasAlunoDisciplinasPeriodo($id_periodo_letivo, $id_matricula);
         $frequenciasAlunoDatasPeriodo = $this->repositorio->getFrequenciasAlunoDatasPeriodo($id_periodo_letivo, $id_matricula);
         $frequenciasAlunoMesesPeriodo = $this->repositorio->getFrequenciasAlunoMesesPeriodo($id_periodo_letivo, $id_matricula);
-        $frequenciasAlunoPeriodo = $this->repositorio->getFrequenciasAlunoPeriodo($id_periodo_letivo, $id_matricula, $frequencia->fk_id_turma);
-
-       
+        $frequenciasAlunoPeriodo = $this->repositorio->getFrequenciasAlunoPeriodo($id_periodo_letivo, $id_matricula, $frequencia->fk_id_turma);       
 
         $id_turma = $frequencia->fk_id_turma;
 
@@ -240,6 +241,7 @@ class FrequenciaController extends Controller
             'frequenciasAlunoDisciplinasPeriodo' => $frequenciasAlunoDisciplinasPeriodo,
             'frequenciasAlunoDatasPeriodo'  => $frequenciasAlunoDatasPeriodo,
             'frequenciasAlunoMesesPeriodo'  => $frequenciasAlunoMesesPeriodo,
+            'sucesso'  => $mensagem,
         ]);
     }
 
@@ -335,7 +337,7 @@ class FrequenciaController extends Controller
         //Atualizar o total de faltas dos alunos X período X disciplina
         $this->gravarFaltasAlunoPeriodoDisciplina($dadosFrequencias);
         
-        return $this->index($id_turma); 
+        return $this->index($id_turma,  $frequencia['fk_id_periodo_letivo'], $frequencia['fk_id_disciplina'], 'Frequências removidas com sucesso.'); 
         //return redirect()->back()->with('sucesso', 'Frequências excluídas com sucesso.');
     }
 

@@ -32,13 +32,14 @@
 
     <div class="container-fluid">
         
-        @include('admin.includes.alerts')
+     
 
         <div class="card-header">          
             <i class="fas fa-pencil-alt"></i> - Período aberto &nbsp&nbsp&nbsp 
             <i class="fas fa-ban"></i> - Período fechado
         </div>
-       
+        @include('admin.includes.alerts')
+        
         {{-- Abas de Períodos --}}
         <ul class="nav nav-tabs nav-pills nav-fill justify-content-center" role="tablist">
             @foreach ($turmaPeriodosLetivos as $index => $turmaPeriodoLetivo)                

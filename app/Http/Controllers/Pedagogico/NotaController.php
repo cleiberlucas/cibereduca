@@ -125,7 +125,7 @@ class NotaController extends Controller
         //Atualizar a nota média do aluno X período X disciplina
         $this->gravarNotasAlunoPeriodoDisciplina($dadosNota);
 
-        return $this->notaShowAluno($nota->fk_id_matricula);
+        return $this->notaShowAluno($nota->fk_id_matricula, 'Nota alterada com sucesso.');
     }
 
     public function store(StoreUpdateNota $request)
@@ -259,12 +259,15 @@ class NotaController extends Controller
     }
 
     
-    public function notaShowAluno($id_matricula)
+    public function notaShowAluno($id_matricula, $mensagem = null)
     {        
         $this->authorize('Nota Alterar');
         $notasAluno = $this->repositorio->getNotasAluno($id_matricula)->first();
-        if (!$notasAluno)
-            return redirect()->back()->with('info', 'Não há nota lançada para este aluno.');
+        
+        if (!$notasAluno){
+            $id_turma = Matricula::select('fk_id_turma')->where('id_matricula', $id_matricula)->first();            
+            return redirect()->route('turmas.notas', $id_turma->fk_id_turma)->with('info', 'Não há nota lançada para este aluno.');              
+        }
         
         $id_turma = $notasAluno->matricula->fk_id_turma;
         $id_tipo_turma = $notasAluno->matricula->turma->fk_id_tipo_turma;
@@ -305,6 +308,7 @@ class NotaController extends Controller
                     'avaliacoesTurma'       => $avaliacoesTurma,
                     'notasAluno'            => $notasAluno,
                     'dadosAluno'            => $dadosAluno,
+                    'sucesso'               => $mensagem,
 
         ]);
     } 
@@ -323,7 +327,7 @@ class NotaController extends Controller
         if (!$notaAluno)
             return redirect()->back();
 
-        $notaAluno->where('id_nota_avaliacao', $id_nota, )->delete();
+
 
        /**Preparando array p atualizar a nota média do aluno */
         $dadosNota = array([
@@ -331,11 +335,15 @@ class NotaController extends Controller
                             'fk_id_matricula' => $notaAluno->fk_id_matricula,
                             'fk_id_disciplina' => $notaAluno->avaliacao->fk_id_disciplina
         ]);
-        
+
+        $id_matricula = $notaAluno->fk_id_matricula;
+
+        $notaAluno= $this->repositorio->where('id_nota_avaliacao', $id_nota, )->delete();        
+
         //Atualizar a nota média do aluno X período X disciplina
         $this->gravarNotasAlunoPeriodoDisciplina($dadosNota);
         
-        return $this->notaShowAluno($notaAluno->fk_id_matricula)->with('sucesso', 'Nota apagada com sucesso.');
+        return $this->notaShowAluno($id_matricula)->with('sucesso', 'Nota removida com sucesso.');
     } 
 
     public function search(Request $request)

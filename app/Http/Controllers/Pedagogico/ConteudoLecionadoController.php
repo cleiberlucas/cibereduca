@@ -20,8 +20,7 @@ class ConteudoLecionadoController extends Controller
         
     public function __construct(ConteudoLecionado $conteudoLecionado)
     {
-        $this->repositorio = $conteudoLecionado;
-        
+        $this->repositorio = $conteudoLecionado;        
     }
 
     public function index($id_turma, $id_periodo_letivo = null, $id_disciplina = null)
@@ -85,7 +84,9 @@ class ConteudoLecionadoController extends Controller
                         'turmaPeriodosLetivos' => $turmaPeriodoLetivo->getTurmaPeriodosLetivos($id_turma),     
                         'conteudosLecionados' => $this->repositorio->getConteudosLecionados($id_turma),
                         'selectPeriodoLetivo'  => $dados['id_periodo_letivo'],
-                        'selectDisciplina'     =>  $dados['fk_id_disciplina'],
+                        'selectDisciplina'     =>  $dados['fk_id_disciplina'],     
+                        'sucesso' => 'Conteúdo Lecionado cadastrado com sucesso.',                   
+                       
         ]);         
     }
 
@@ -128,6 +129,7 @@ class ConteudoLecionadoController extends Controller
                     'conteudosLecionados' => $this->repositorio->getConteudosLecionados($id_turma),
                     'selectPeriodoLetivo'  => $dados['id_periodo_letivo'],
                     'selectDisciplina'     => $dados['fk_id_disciplina'],
+                    'sucesso' => 'Conteúdo Lecionado alterado com sucesso.',
         ]);
     } 
 
@@ -136,6 +138,7 @@ class ConteudoLecionadoController extends Controller
      */
     public function remover($id_conteudo_lecionado)
     {
+        
         $this->authorize('Conteúdo Lecionado Remover');   
         
         $conteudoLecionado = $this->repositorio->where('id_conteudo_lecionado', $id_conteudo_lecionado, )->first();
@@ -180,6 +183,7 @@ class ConteudoLecionadoController extends Controller
                     'perfilUsuario' => $perfilUsuario,
                     'selectPeriodoLetivo'  => $id_periodo_letivo,
                     'selectDisciplina'     => $id_disciplina,
+                    'sucesso' => 'Conteúdo Lecionado removido com sucesso.',
         ]); 
     } 
 

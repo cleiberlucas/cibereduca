@@ -138,6 +138,13 @@
                 </div>
             @endforeach 
         </div> {{-- fim abas períodos --}}
-    </div
+    </div>
+
+    
+    <script>
+        $(document).ready(function(){
+              $(".alert").slideDown(300).delay(5000).slideUp(300);
+        });    
+    </script>
 
 @stop
