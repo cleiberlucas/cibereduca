@@ -26,7 +26,7 @@
                     <thead>
                         <th>Permissão</th>  
                         <th>Observações</th>                      
-                        <th width="570">Ações</th>
+                        <th width="270">Ações</th>
                     </thead>
                     <tbody>                        
                         @foreach ($permissoes as $permissao)

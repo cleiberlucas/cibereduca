@@ -34,7 +34,7 @@
                     <th>Unidades de Ensino vinculadas</th>    
                     <th>Situação vínculo</th>    
                     <th>Perfil</th>                
-                    <th width="470">Ações</th>
+                    <th width="170">Ações</th>
                 </thead> 
                 <tbody>                        
                     @foreach ($unidadesEnsino as $unidadeEnsino)

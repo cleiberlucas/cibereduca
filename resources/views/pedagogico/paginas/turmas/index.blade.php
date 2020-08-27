@@ -16,6 +16,7 @@
         </li>
     </ol>
     <h4>Lançamentos no Diário</h4>
+    <h6>Legenda:</h6>
     <h6><a href="#" class="btn btn-sm btn-outline-success disabled" ><i class="fas fa-chalkboard"></i></a> Conteúdos Lecionados &nbsp&nbsp&nbsp&nbsp&nbsp  <a href="#" class="disabled btn btn-sm btn-outline-info"> <i class="fas fa-user-check"></i></a> Frequências</h6>
     <h6><a href="#" class="btn btn-sm btn-outline-warning disabled"><i class="fas fa-key"></i></a> Abrir ou fechar período letivo de uma turma.</h6>
     
