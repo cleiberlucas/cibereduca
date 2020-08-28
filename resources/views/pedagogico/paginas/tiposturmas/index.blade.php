@@ -26,7 +26,7 @@
                     <th>Ano</th>
                     <th>Padrão de Turma</th>
                     <th>Nível de Ensino</th>                        
-                    <th width="270">Avaliações</th>
+                    <th width="200">Avaliações</th>
                 </thead>
                 <tbody>                        
                     @foreach ($tiposTurmas as $tipoTurma)
@@ -35,7 +35,7 @@
                                 {{$tipoTurma->anoLetivo->ano}}
                             </td> 
                             <td>
-                                {{$tipoTurma->tipo_turma}}
+                                <a href="{{route('tiposturmas.avaliacoes', $tipoTurma->id_tipo_turma)}}">{{$tipoTurma->tipo_turma}}</a>                                
                             </td>                   
                             <td>
                                 {{$tipoTurma->subNivelEnsino->sub_nivel_ensino}}
