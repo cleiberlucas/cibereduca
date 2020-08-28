@@ -23,7 +23,7 @@ class TipoAvaliacaoController extends Controller
         
         $tiposAvaliacoes = $this->repositorio
                                 ->orderBy('tipo_avaliacao')
-                                ->paginate();      
+                                ->paginate(20);      
                 
         return view('pedagogico.paginas.tiposavaliacoes.index', [
                     'tiposAvaliacoes' => $tiposAvaliacoes,        

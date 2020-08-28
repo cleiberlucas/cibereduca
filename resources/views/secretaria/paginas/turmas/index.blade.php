@@ -42,10 +42,9 @@
                         <th>Padrão Turma</th>
                         <th>Turma</th>                        
                         <th>Turno</th>
-                        <th>Vagas</th>
-                        <th>Localização</th>
-                        <th>Limite vagas</th>                        
-                        {{-- <th>Situação</th> --}}
+                        <th>Matrículas</th>                        
+                        <th>Vagas</th>                        
+                        <th>Localização</th>                        
                         <th >Ações</th>
                     </thead>
                     <tbody>                        
@@ -63,23 +62,16 @@
                                 </td>                                  
                                 <td>
                                     {{$turma->turno->descricao_turno}}
-                                </td>
+                                </td>                                
                                 <td>
-                                    {{$quantVagas[$turma->id_turma]}}
+                                    {{$turma->limite_alunos - $quantVagas[$turma->id_turma]}}
                                 </td> 
                                 <td>
-                                    {{$turma->localizacao}}
-                                </td>
+                                    {{$quantVagas[$turma->id_turma]}}
+                                </td>                                
                                 <td>
-                                    {{$turma->limite_alunos}}
-                                </td>     
-                                {{-- <td>
-                                    @if ($turma->situacao_turma == 1)
-                                        <b>Aberta</b>
-                                    @else
-                                        Encerrada                                        
-                                    @endif                                    
-                                </td>  --}}      
+                                    {{$turma->localizacao}}
+                                </td>                                    
                                 <td style="width=10px;">
                                     <a href="{{ route('matriculas.index', $turma->id_turma) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-users"></i></a>
                                     <a href="{{ route('turmas.edit', $turma->id_turma) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>
