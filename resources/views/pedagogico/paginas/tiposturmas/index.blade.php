@@ -41,7 +41,7 @@
                                 {{$tipoTurma->subNivelEnsino->sub_nivel_ensino}}
                             </td>                                                   
                             <td style="width=10px;">
-                                 <a href="{{route('tiposturmas.avaliacoes', $tipoTurma->id_tipo_turma)}}" class="btn btn-sm btn-success"><i class="fas fa-file-alt"></i></a>
+                                 <a href="{{route('tiposturmas.avaliacoes', $tipoTurma->id_tipo_turma)}}" class="btn btn-sm btn-outline-success"><i class="fas fa-file-alt"></i></a>
                             </td>
                             
                         </tr>
