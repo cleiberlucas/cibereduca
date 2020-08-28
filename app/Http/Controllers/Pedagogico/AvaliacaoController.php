@@ -41,7 +41,7 @@ class AvaliacaoController extends Controller
                                         ->orderBy('periodo_letivo')
                                         ->orderBy('disciplina')
                                         ->orderBy('tipo_avaliacao')
-                                        ->paginate();
+                                        ->paginate(20);
 
         return view('pedagogico.paginas.tiposturmas.avaliacoes.index', [
                     'avaliacoes' => $avaliacoes,  
