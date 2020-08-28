@@ -123,7 +123,7 @@ class AvaliacaoController extends Controller
 
     public function destroy($id)
     {
-        $this->authorize('Avaliação Apagar');
+        $this->authorize('Avaliação Remover');
 
         $avaliacao = $this->repositorio->where('id_avaliacao', $id)->first();
 
