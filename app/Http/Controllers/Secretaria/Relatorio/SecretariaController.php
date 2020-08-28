@@ -52,7 +52,9 @@ class SecretariaController extends Controller
 
             $matriculas = $matriculas->where('fk_id_turma', $request->turma)
                 ->join('tb_pessoas', 'fk_id_aluno', 'id_pessoa')
+                ->join('users', 'tb_matriculas.fk_id_user_cadastro', 'id')
                 ->orderBy($request->ordem)
+                ->orderBy('nome')
                 ->get();
 
             return view(
@@ -68,6 +70,7 @@ class SecretariaController extends Controller
                 ->join('tb_pessoas', 'fk_id_aluno', 'id_pessoa')
                 ->join('tb_turmas', 'fk_id_turma', 'id_turma')
                 ->join('tb_tipos_turmas', 'fk_id_tipo_turma', 'id_tipo_turma')
+                ->join('users', 'tb_matriculas.fk_id_user_cadastro', 'id')
                 ->where('fk_id_ano_letivo', $request->anoLetivo)
                 ->orderBy($request->ordem)
                 ->orderBy('nome')

@@ -81,7 +81,7 @@
                         <option value="nome">Nome</option>
                         <option value="data_nascimento">Data Nascimento</option>                    
                         <option value="nome_turma">Turma</option>
-                        <option value="tb_matriculas.fk_id_user_cadastro">Cadastrado por</option>
+                        <option value="name">Cadastrado por</option>
                     </select>
                 </div> 
             </div>
