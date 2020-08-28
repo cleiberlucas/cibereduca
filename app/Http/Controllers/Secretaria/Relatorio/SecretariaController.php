@@ -60,5 +60,22 @@ class SecretariaController extends Controller
                 compact('turma', 'matriculas', 'unidadeEnsino'),
             );
         }
+        else if ($request->tipo_relatorio == 'todas_matriculas') {
+            
+            $anoLetivo = AnoLetivo::where('id_ano_letivo', $request->anoLetivo)->first();
+
+            $matriculas = $matriculas
+                ->join('tb_pessoas', 'fk_id_aluno', 'id_pessoa')
+                ->join('tb_turmas', 'fk_id_turma', 'id_turma')
+                ->join('tb_tipos_turmas', 'fk_id_tipo_turma', 'id_tipo_turma')
+                ->where('fk_id_ano_letivo', $request->anoLetivo)
+                ->orderBy($request->ordem)
+                ->orderBy('nome')
+                ->get();
+
+            return view('secretaria.paginas.relatorios.todas_matriculas', 
+                compact('anoLetivo', 'matriculas', 'unidadeEnsino'),
+            );
+        }
     }
 }

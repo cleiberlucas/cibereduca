@@ -60,7 +60,7 @@
             <br>
             <div class="row">
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="tipo_relatorio" id="todas_matriculas" value="todas_matriculas" disabled>
+                    <input class="form-check-input" type="radio" name="tipo_relatorio" id="todas_matriculas" value="todas_matriculas">
                     <label for="todas_matriculas" class="form-check-label">Todos alunos matriculados</label>
                 </div>
             </div>
@@ -80,6 +80,8 @@
                         <option value=""></option>
                         <option value="nome">Nome</option>
                         <option value="data_nascimento">Data Nascimento</option>                    
+                        <option value="nome_turma">Turma</option>
+                        <option value="tb_matriculas.fk_id_user_cadastro">Cadastrado por</option>
                     </select>
                 </div> 
             </div>

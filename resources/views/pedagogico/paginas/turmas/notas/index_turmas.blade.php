@@ -38,13 +38,13 @@
                         <tr>
                             <th scope="row">{{$index+1}}</th>
                             <td>
-                                {{$turma->tipoTurma->anoLetivo->ano}}
+                                {{$turma->ano}}
                             </td>
                             <td>
-                                {{$turma->nome_turma}} {{$turma->tipoTurma->subNivelEnsino->sub_nivel_ensino}}
+                                <a href="{{ route('turmas.notas', $turma->id_turma) }}" class="btn btn-link">{{$turma->nome_turma}}</a> {{$turma->sub_nivel_ensino}}
                             </td>                                 
                             <td>
-                                {{$turma->turno->descricao_turno}}
+                                {{$turma->descricao_turno}}
                             </td>
                             <td style="width=10px;">
                                 <a href="{{ route('turmas.notas', $turma->id_turma) }}" class="btn btn-sm btn-outline-success"><i class="far fa-file-alt"></i></a>

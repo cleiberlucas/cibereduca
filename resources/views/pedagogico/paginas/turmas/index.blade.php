@@ -47,13 +47,13 @@
                         <tr>
                             <th scope="row">{{$index+1}}</th>
                             <td>
-                                {{$turma->tipoTurma->anoLetivo->ano}}
+                                {{$turma->ano}}
                             </td>
                             <td>
-                                {{$turma->nome_turma}} {{$turma->tipoTurma->subNivelEnsino->sub_nivel_ensino}}
+                                {{$turma->nome_turma}} {{$turma->sub_nivel_ensino}}
                             </td>                                 
                             <td>
-                                {{$turma->turno->descricao_turno}}
+                                {{$turma->descricao_turno}}
                             </td>
                             
                             {{-- <td>

@@ -7,6 +7,7 @@ use App\Http\Controllers\Secretaria\TurmaController;
 use App\Models\Secretaria\Turma;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PedagogicoTurmaController extends Controller
 {
@@ -22,17 +23,41 @@ class PedagogicoTurmaController extends Controller
      */
     public function index()
     {
-         $turmas = Turma::select ('*')
-                            ->join('tb_tipos_turmas', 'tb_turmas.fk_id_tipo_turma', '=', 'tb_tipos_turmas.id_tipo_turma' )
-                            ->join('tb_sub_niveis_ensino', 'tb_tipos_turmas.fk_id_sub_nivel_ensino', '=', 'tb_sub_niveis_ensino.id_sub_nivel_ensino')
-                            ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')
-                            ->join('tb_turnos', 'tb_turmas.fk_id_turno', '=', 'tb_turnos.id_turno')                                                            
-                            ->where('tb_anos_letivos.fk_id_unidade_ensino', '=', User::getUnidadeEnsinoSelecionada())                                                         
-                            ->orderBy('tb_anos_letivos.ano', 'desc')
-                            ->orderBy('tb_sub_niveis_ensino.sub_nivel_ensino', 'asc')
-                            ->orderBy('nome_turma', 'asc')
-                            ->orderBy('tb_turnos.descricao_turno', 'asc')
-                            ->paginate(25); 
+        $idUnidade = User::getUnidadeEnsinoSelecionada();
+        $perfilUsuario = new User;        
+        $perfilUsuario = $perfilUsuario->getPerfilUsuarioUnidadeEnsino($idUnidade, Auth::id());
+
+        /* Se for professor, listar somente a turma dele */
+        if ($perfilUsuario->fk_id_perfil == 2){
+            $turmas = Turma::select ('id_turma', 'nome_turma', 'sub_nivel_ensino', 'descricao_turno', 'ano')
+                ->join('tb_tipos_turmas', 'tb_turmas.fk_id_tipo_turma', '=', 'tb_tipos_turmas.id_tipo_turma' )
+                ->join('tb_sub_niveis_ensino', 'tb_tipos_turmas.fk_id_sub_nivel_ensino', '=', 'tb_sub_niveis_ensino.id_sub_nivel_ensino')
+                ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')
+                ->join('tb_turnos', 'tb_turmas.fk_id_turno', '=', 'tb_turnos.id_turno')        
+                ->join('tb_turmas_disciplinas_professor', 'tb_turmas_disciplinas_professor.fk_id_turma', 'id_turma' )                                                    
+                ->where('tb_anos_letivos.fk_id_unidade_ensino', '=', User::getUnidadeEnsinoSelecionada())         
+                ->where('fk_id_professor', Auth::id())   
+                ->where('situacao_disciplina_professor', 1)             
+                ->groupBy('id_turma')
+                ->groupBy('nome_turma')
+                ->groupBy('sub_nivel_ensino')
+                ->groupBy('descricao_turno')
+                ->groupBy('ano')                
+                ->paginate(25);
+        }
+        else{
+            $turmas = Turma::select ('*')
+                ->join('tb_tipos_turmas', 'tb_turmas.fk_id_tipo_turma', '=', 'tb_tipos_turmas.id_tipo_turma' )
+                ->join('tb_sub_niveis_ensino', 'tb_tipos_turmas.fk_id_sub_nivel_ensino', '=', 'tb_sub_niveis_ensino.id_sub_nivel_ensino')
+                ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')
+                ->join('tb_turnos', 'tb_turmas.fk_id_turno', '=', 'tb_turnos.id_turno')                                                            
+                ->where('tb_anos_letivos.fk_id_unidade_ensino', '=', User::getUnidadeEnsinoSelecionada())                                                         
+                ->orderBy('tb_anos_letivos.ano', 'desc')
+                ->orderBy('tb_sub_niveis_ensino.sub_nivel_ensino', 'asc')
+                ->orderBy('nome_turma', 'asc')
+                ->orderBy('tb_turnos.descricao_turno', 'asc')
+                ->paginate(25); 
+        }
         
        //dd($turmas);
         return view('pedagogico.paginas.turmas.index', [

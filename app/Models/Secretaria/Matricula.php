@@ -115,6 +115,14 @@ class Matricula extends Model
         return $this->belongsTo(Pessoa::class, 'fk_id_responsavel', 'id_pessoa');
     }
 
+     /**
+     * Retorna usuário que matriculou
+     */
+    public function usuarioMatricula()
+    {
+        return $this->belongsTo(User::class, 'fk_id_user_cadastro', 'id');
+    }
+
     /**
      * Retorna forma pagamento matricula
      */
