@@ -67,8 +67,10 @@ class SecretariaController extends Controller
             $anoLetivo = AnoLetivo::where('id_ano_letivo', $request->anoLetivo)->first();
 
             $matriculas = $matriculas
+                ->select('nome', 'name', 'nome_turma', 'descricao_turno')
                 ->join('tb_pessoas', 'fk_id_aluno', 'id_pessoa')
                 ->join('tb_turmas', 'fk_id_turma', 'id_turma')
+                ->join('tb_turnos', 'fk_id_turno', 'id_turno')
                 ->join('tb_tipos_turmas', 'fk_id_tipo_turma', 'id_tipo_turma')
                 ->join('users', 'tb_matriculas.fk_id_user_cadastro', 'id')
                 ->where('fk_id_ano_letivo', $request->anoLetivo)

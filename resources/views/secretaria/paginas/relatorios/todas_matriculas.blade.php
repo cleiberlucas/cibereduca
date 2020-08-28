@@ -57,13 +57,13 @@
                             <tr scope="row my-1 py-1">
                                 <th scope="row">{{$index+1}}</th>
                                 <td>
-                                    {{$matricula->aluno->nome}}
+                                    {{$matricula->nome}}
                                 </td>
                                 <td>
-                                    {{ $matricula->turma->nome_turma}} - {{$matricula->turma->turno->descricao_turno}}
+                                    {{ $matricula->nome_turma}} - {{$matricula->descricao_turno}}
                                 </td>
                                 <td>
-                                    {{$matricula->usuarioMatricula->name}}
+                                    {{$matricula->name}}
                                 </td>
                             </tr>
                         @endforeach
