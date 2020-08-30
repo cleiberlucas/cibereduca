@@ -86,10 +86,9 @@ class NotaController extends Controller
         $turma = Turma::where('id_turma', $id_turma)->first();
 
         $idTipoTurma = $turma->fk_id_tipo_turma;
-
-        $idUnidade = User::getUnidadeEnsinoSelecionada();
+        
         $perfilUsuario = new User;        
-        $perfilUsuario = $perfilUsuario->getPerfilUsuarioUnidadeEnsino($idUnidade, Auth::id());
+        $perfilUsuario = $perfilUsuario->getPerfilUsuarioUnidadeEnsino(User::getUnidadeEnsinoSelecionada(), Auth::id());
         
         $disciplinasTurma = new GradeCurricular;
         /* Perfil de professor: carregar somente disciplinas vinculadas a ele */

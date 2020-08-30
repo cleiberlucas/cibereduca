@@ -50,7 +50,7 @@
             <br>
             <div class="row">
                 <div class="col-sm-11" align="center">
-                    <h5>Alunos Matriculados</h5>
+                    <h5>Matrículas</h5>
                 </div>
             </div>
             <div class="table">

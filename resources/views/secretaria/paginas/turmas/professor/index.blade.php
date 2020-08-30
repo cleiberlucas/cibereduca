@@ -42,8 +42,8 @@
                 <table class="table table-hover">
                     <thead>                        
                         <th >Disciplina</th>                        
-                        <th width="400px">Professor</th>                    
-                        <th  width="500px">Ações</th>
+                        <th>Professor</th>                    
+                        <th>Ações</th>
                     </thead>
                     <tbody>
                         @foreach ($gradeCurricular as $index => $disciplina)

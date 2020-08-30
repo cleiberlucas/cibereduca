@@ -40,7 +40,7 @@
             
             <div class="row">
                 <div class="col-sm-11" align="center">
-                    <h5>Todos os Alunos Matriculados</h5>
+                    <h5>Todas matrículas</h5>
                 </div>
             </div>
             <div class="table">
@@ -49,6 +49,7 @@
                         <th>N°</th>
                         <th>Nome</th>                        
                         <th>Turma</th>
+                        <th>Situação</th>
                         <th>Matriculado por</th>
                     </thead>
                 
@@ -60,7 +61,10 @@
                                     {{$matricula->nome}}
                                 </td>
                                 <td>
-                                    {{ $matricula->nome_turma}} - {{$matricula->descricao_turno}}
+                                    {{$matricula->nome_turma}} - {{$matricula->descricao_turno}}
+                                </td>
+                                <td>
+                                    {{$matricula->situacao_matricula}}
                                 </td>
                                 <td>
                                     {{$matricula->name}}
