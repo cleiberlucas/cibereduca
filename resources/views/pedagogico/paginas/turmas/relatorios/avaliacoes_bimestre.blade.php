@@ -123,10 +123,10 @@
                     @endforeach
                     
                     {{-- varrendo array p imprimir media e falta de um aluno --}}
-                    @foreach ($resultados as $resultado)
-                        @if ($resultado->fk_id_matricula == $matricula->id_matricula)
+                    @foreach ($resultados as $indResult => $resultado)
+                        @if ($resultado->fk_id_matricula == $matricula->id_matricula or $indResult == 0)
                             <div class="font-cabecalho  border border-dark text-center " style="width: 50px;">
-                                <strong>{{number_format($resultado->nota_media, 2, ',', '.')}}     </strong>
+                                <strong>{{number_format($resultado->nota_media, 2, ',', '.') ?? ''}}     </strong>
                             </div>
             
                             <div class="font-cabecalho  border border-dark text-center" style="width: 50px;">
@@ -134,9 +134,11 @@
                             </div>
             
                             <div class="font-cabecalho  border border-dark text-center" style="width: 50px;">
-                                {{$resultado->total_faltas}}
+                                {{$resultado->total_faltas ?? ''}}
                             </div>
-                            @break;
+                            @if ($resultado->fk_id_matricula == $matricula->id_matricula)
+                                @break;    
+                            @endif                            
                         @endif
                         
                     @endforeach

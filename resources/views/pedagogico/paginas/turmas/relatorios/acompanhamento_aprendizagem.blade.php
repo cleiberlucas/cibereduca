@@ -103,7 +103,7 @@
             @foreach ($matriculas as $index => $matricula)
                 <div class="row py-0 " >
                     <div class="font-cabecalho  pl-2 pr-1 text-center border border-dark ">
-                        {{$index+1}}
+                        {{str_pad($index+1, 2, '0', STR_PAD_LEFT)}}
                     </div>
                     <div class="font-cabecalho col-sm-5  border border-dark ">
                         {{$matricula->aluno->nome}}
