@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 </head>
 
-<style>
+<style> 
     html {
         height: 96%;
     }
@@ -112,7 +112,7 @@
                     @endforeach
 
                     <div class="font-cabecalho  border border-dark text-center" style="width: 38px;">
-                        <?php echo $total_faltas; ?>
+                        <?php echo $total_faltas ?? ''; ?>
                     </div>
 
                 </div>
