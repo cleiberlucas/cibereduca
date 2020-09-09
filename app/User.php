@@ -61,6 +61,7 @@ class User extends Authenticatable
 
     /**
      * Consulta perfil do usuário em determinada unidade de ensino
+     * Somente ativos
      */
     public function getPerfilUsuarioUnidadeEnsino($idUnidade, $idUsuario)
     {
@@ -68,6 +69,7 @@ class User extends Authenticatable
             ->join('tb_usuarios_unidade_ensino', 'fk_id_user', 'id')
             ->where('fk_id_unidade_ensino', $idUnidade)
             ->where('fk_id_user', $idUsuario)
+            ->where('situacao_vinculo', 1) 
             ->first();
     }
 

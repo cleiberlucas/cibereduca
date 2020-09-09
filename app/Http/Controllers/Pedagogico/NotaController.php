@@ -38,6 +38,9 @@ class NotaController extends Controller
         $perfilUsuario = new User;        
         $perfilUsuario = $perfilUsuario->getPerfilUsuarioUnidadeEnsino($idUnidade, Auth::id());
 
+        if(!$perfilUsuario)
+            return redirect()->back();
+
         /* Se for professor, listar somente a turma dele */
         if ($perfilUsuario->fk_id_perfil == 2){
             $turmas = Turma::select ('id_turma', 'nome_turma', 'sub_nivel_ensino', 'descricao_turno', 'ano')

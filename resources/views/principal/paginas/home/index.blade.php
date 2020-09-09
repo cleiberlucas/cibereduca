@@ -16,7 +16,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="form-group col-sm-4 col-xs-2"> 
+            <div class="form-group col-sm-8 col-xs-2"> 
                 <form action="{{ route('home.define')}}" class="form" method="POST">
                     @csrf
                     @method('PUT')
