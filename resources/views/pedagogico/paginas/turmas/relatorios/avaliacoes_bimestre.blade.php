@@ -141,20 +141,6 @@
                         
                     @endforeach
 
-                    @if (!$resultados ))
-                        <div class="font-cabecalho  border border-dark text-center " style="width: 50px;">
-                            
-                        </div>
-        
-                        <div class="font-cabecalho  border border-dark text-center" style="width: 50px;">
-                            
-                        </div>
-        
-                        <div class="font-cabecalho  border border-dark text-center" style="width: 50px;">
-                            
-                        </div>                        
-                    @endif
-
                 </div>
 
             @endforeach {{-- fim matriculas --}}

@@ -122,7 +122,7 @@
 
                                                 <div class="form-group col-sm-3 col-xs-2">
                                                     <label for="">Data aplicação</label>
-                                                    <input type="date" name="data_avaliacao" class="form-control" required>
+                                                    <input type="date" name="data_avaliacao" class="form-control">
                                                 </div>
 
                                             @endif

@@ -1,5 +1,4 @@
 @include('admin.includes.alerts')
-@csrf
 
 <div class="container-fluid">
     <div class="row">

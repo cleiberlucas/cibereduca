@@ -1,57 +1,57 @@
 @extends('adminlte::page')
 
-@section('title', 'Rede Educa')
-
+@section('title_postfix', 'Rede Educa')
 
 @section('content_header')
-    <ol class="breadcrumb">        
+    <ol class="breadcrumb">       
         <li class="breadcrumb-item active" >
-            <a href="#" class="">Alteração Senha Acesso</a>
+            <a href="{{ route('users.index') }} " class="">Usuários</a>
         </li> 
-    </ol>
+        <li class="breadcrumb-item">
+            <a href="">Editar</a>
+        </li>
+    </ol>              
+        <h1>Editar Usuário </h1>
 @stop
 
-
-@section('content')
+    @section('content')
+    <div>@include('admin.includes.alerts')</div>
     <div class="container-fluid">
-        <form action="{{ route('users.updatesenha')}}" class="form" method="POST">
+
+        <form action="{{ route('users.update', $user->id)}}" class="form" method="POST">
             @csrf
             @method('PUT')
+             
+                
 
-            <h4>Alteração de senha de acesso</h4>
-            <div class="card-header">
-                {{$usuario->name}} - {{$usuario->email}}
+                <div class="row">
+                    <div class="form-group col-sm-4 col-xs-2">
+                        <label>Login do usuário (email):</label>
+                        <input type="email" name="email" class="form-control" placeholder="Email" value="{{ $user->email ?? old('email') }} ">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-4 col-xs-2">
+                        <label>Nome:</label>
+                        <input type="text" name="name" class="form-control" placeholder="Nome" readonly value="{{ $user->name ?? old('name') }}">
+                    </div>
+                    <div class="form-group col-sm-4 col-xs-2">
+                        <label>Senha:</label>
+                        <input type="password" name="password" class="form-control" placeholder="Senha:">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-4 col-xs-2">    
+                        <button type="submit" class="btn btn-success"><i class="fas fa-forward"></i> Enviar</button>            
+                    </div>
+                </div>
             </div>
-            
-            @include('admin.includes.alerts')
 
-            <div class="row mt-3">
-                <div class="form-group col-sm-4 col-xs-2">
-                    <label>Senha Atual:</label>
-                    <input type="password" name="senhaAtual" class="form-control" placeholder="" required>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-sm-4 col-xs-2">
-                    <label>Nova Senha:</label>
-                    <input type="password" name="password" class="form-control" placeholder="" required>
-                </div>
-                <div class="form-group col-sm-4 col-xs-2">
-                    <label>Confirme Nova Senha:</label>
-                    <input type="password" name="password_2" class="form-control" placeholder="" required>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-sm-4 col-xs-2">    
-                    <button type="submit" class="btn btn-success"><i class="fas fa-forward"></i> Enviar</button>            
-                </div>
-            </div>
         </form>
-    </div>
-
+    
     <script>
         $(document).ready(function(){
-            $(".alert").slideDown(300).delay(5000).slideUp(300);
+              $(".alert").slideDown(300).delay(5000).slideUp(300);
         });    
     </script>
 

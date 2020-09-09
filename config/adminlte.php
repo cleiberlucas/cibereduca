@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
+
 return [
 
     /*
@@ -459,16 +461,15 @@ return [
                     'url'  => 'admin/permissoes',
                     'icon' => 'fas fa-fw fa-lock',
                     'can'  => 'Usuarios', //somente Cleiber
-                ],
-                [
-                    'text' => 'Alterar Senha',
-                    'route'  => 'users.editsenha',
-                    'icon' => 'fas fa-fw fa-lock',
-                    'can'  => 'Usuarios',
-                ],
+                ],                
             ],
         ],
-        
+        [
+            'text' => 'Alterar Senha',
+            'route'  => 'users.editsenha',                   
+            'icon' => 'fas fa-fw fa-lock',
+            /* 'can'  => 'Usuarios', */
+        ],
         
     ],
 

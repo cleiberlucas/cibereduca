@@ -151,7 +151,7 @@ class DiarioController extends Controller
 
             $resultados = new ResultadoAlunoPeriodo;
             $resultados = $resultados->getResultadosTurmaPeriodoDisciplina($request->turma, $request->periodo, $request->disciplina);
-
+            //dd($resultados);
             return view('pedagogico.paginas.turmas.relatorios.avaliacoes_bimestre', [
                 'unidadeEnsino' => $unidadeEnsino,
                 'periodoLetivo' => $periodoLetivo,
@@ -174,7 +174,7 @@ class DiarioController extends Controller
             $resultados = new ResultadoAlunoPeriodo;
             $resultados = $resultados->getResultadosTurmaPeriodo($request->turma, $request->periodo);
 
-            return view('pedagogico.paginas.turmas.relatorios.rendimento_escolar', [
+            return view('pedagogico.paginas.turmas.relatorios.rendimento_escolar', [ 
                 'unidadeEnsino' => $unidadeEnsino,
                 'periodoLetivo' => $periodoLetivo,
                 'turma' => $turma,                

@@ -102,10 +102,12 @@ class UserController extends Controller
         }
 
         $user->update($dados);
-        
-        /* $user->where('id', $id)->update($request->except('_token', '_method')); */
+                
+        if ($id == Auth::id())
+            return redirect()->back()->with("sucesso", "Dados alterados com sucesso.");
 
-        return redirect()->route('users.index');
+        else
+            return redirect()->route('users.index');
     }
 
     /**
@@ -113,10 +115,10 @@ class UserController extends Controller
      */
     public function editSenha()
     {        
-        $usuario = $this->repositorio->where('id', Auth::id())->first();
+        $user = $this->repositorio->where('id', Auth::id())->first();
 
         return view('admin.paginas.users.editsenha',[
-            'usuario' => $usuario,
+            'user' => $user,
         ]);
     }
 
