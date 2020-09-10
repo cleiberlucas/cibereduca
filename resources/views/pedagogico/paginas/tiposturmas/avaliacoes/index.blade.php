@@ -64,7 +64,7 @@
                                     {{$avaliacao->tipo_avaliacao}}
                                 </td>
                                 <td>
-                                    {{$avaliacao->valor_avaliacao}}
+                                    {{number_format($avaliacao->valor_avaliacao, 1, ',', '.')}}                                    
                                 </td> 
                                      
                                 <td style="width=10px;">

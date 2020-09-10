@@ -27,7 +27,7 @@
         <h4>Alterar nota do Aluno(a): <strong>{{$notaAluno->matricula->aluno->nome}}</strong></h4>            
         <h4>{{$notaAluno->avaliacao->periodoLetivo->periodo_letivo}} - {{$notaAluno->matricula->turma->nome_turma}} {{$notaAluno->matricula->turma->tipoTurma->sub_nivel_ensino}} - {{$notaAluno->matricula->turma->turno->descricao_turno}} </h4>
         <h5>Disciplina: <strong>{{$notaAluno->avaliacao->disciplina->disciplina}}</strong></h5>
-        <h5>Avaliação: <strong>{{$notaAluno->avaliacao->tipoAvaliacao->tipo_avaliacao}} - valor {{number_format($notaAluno->avaliacao->valor_avaliacao, 2, ',', '.')}}</strong></h5>
+        <h5>Avaliação: <strong>{{$notaAluno->avaliacao->tipoAvaliacao->tipo_avaliacao}} - valor {{number_format($notaAluno->avaliacao->valor_avaliacao, 1, ',', '.')}}</strong></h5>
                 
 @stop
 

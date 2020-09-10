@@ -102,7 +102,7 @@
                             @if ($resultado->fk_id_matricula == $matricula->id_matricula
                                 and $resultado->fk_id_disciplina == $disciplina->fk_id_disciplina)
                                 
-                                    {{number_format($resultado->nota_media, 2, ',', '.')}}  
+                                    {{number_format($resultado->nota_media, 1, ',', '.')}}  
                                    
                                 <?php $total_faltas = $resultado->total_faltas; ?>
                                 @break;

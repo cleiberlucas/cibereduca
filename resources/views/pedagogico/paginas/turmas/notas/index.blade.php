@@ -113,7 +113,7 @@
                                                             @if ($turmaPeriodoLetivo->id_periodo_letivo == $avaliacao->periodoLetivo->id_periodo_letivo && 
                                                                 $disciplinaTurma->fk_id_disciplina == $avaliacao->fk_id_disciplina)
                                                                 
-                                                                <option value="{{$avaliacao->id_avaliacao }}">{{$avaliacao->tipoAvaliacao->tipo_avaliacao}} - Valor {{$avaliacao->valor_avaliacao}}</option>
+                                                                <option value="{{$avaliacao->id_avaliacao }}">{{$avaliacao->tipoAvaliacao->tipo_avaliacao}} - Valor {{number_format($avaliacao->valor_avaliacao, 1, ',', '.')}}</option>
                                                             @endif
                                                         @endforeach
 
@@ -158,7 +158,7 @@
                                                 {{-- Libera lançamento de notas somente se o período estiver aberto --}}
                                                 @if ($turmaPeriodoLetivo->situacao == 1)   
                                                     <div class="form-group col-sm-2 col-xs-2">
-                                                        <input type="number" name="nota[]" id="nota[{{$turmaPeriodoLetivo->id_periodo_letivo}}{{$disciplinaTurma->fk_id_disciplina}}{{$turmaMatricula->id_matricula}}]" step="0.010" min=0 max=100 class="form-control">
+                                                        <input type="number" name="nota[]" id="nota[{{$turmaPeriodoLetivo->id_periodo_letivo}}{{$disciplinaTurma->fk_id_disciplina}}{{$turmaMatricula->id_matricula}}]" step="0.010" min=0 max=10 class="form-control">
                                                     </div>  
                                                 @endif     
 

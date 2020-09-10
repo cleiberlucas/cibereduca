@@ -80,7 +80,7 @@
                     <div class="  foo font-cabecalho  border border-dark" >
                         {{$avaliacao->tipo_avaliacao}}
                         <br>
-                        ({{number_format($avaliacao->valor_avaliacao, 2, ',', '.')}})
+                        ({{number_format($avaliacao->valor_avaliacao, 1, ',', '.')}})
                     </div>                                
                 @endforeach
                 
@@ -115,7 +115,7 @@
                                 @if ($nota->fk_id_avaliacao == $avaliacao->id_avaliacao
                                     and $nota->fk_id_matricula == $matricula->id_matricula)
                                     
-                                    {{number_format($nota->nota, 2, ',', '.')}}                                    
+                                    {{number_format($nota->nota, 1, ',', '.')}}                                    
                                     @break;
                                 @endif                                                
                             @endforeach
@@ -126,7 +126,7 @@
                     @foreach ($resultados as $resultado)
                         @if ($resultado->fk_id_matricula == $matricula->id_matricula)
                             <div class="font-cabecalho  border border-dark text-center " style="width: 50px;">
-                                <strong>{{number_format($resultado->nota_media, 2, ',', '.')}}     </strong>
+                                <strong>{{number_format($resultado->nota_media, 1, ',', '.')}}     </strong>
                             </div>
             
                             <div class="font-cabecalho  border border-dark text-center" style="width: 50px;">

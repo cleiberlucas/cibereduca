@@ -165,7 +165,12 @@
                                             and $disciplina->id_disciplina == $resultado->fk_id_disciplina
                                             and $matricula->id_matricula == $resultado->fk_id_matricula)
                                             
-                                            {{number_format($resultado->nota_media, 2, ',', '.')}}
+                                            @if ($resultado->nota_media == 10)
+                                                {{$resultado->nota_media}}
+                                            @else
+                                                {{number_format($resultado->nota_media, 1, ',', '.')}}    
+                                            @endif
+                                            
                                             <?php $achou_nota = true;
                                                 if ($indexPeriodo <= 1)
                                                     $total_ms1 = $total_ms1 + $resultado->nota_media;
@@ -258,7 +263,7 @@
                                                 
                                                 <?php 
                                                     if ($total_ms2 > 0)
-                                                        echo number_format(($total_ms2/2), 2, ',', '.'); 
+                                                        echo number_format(($total_ms2/2), 1, ',', '.'); 
                                                     else {
                                                         echo '-';
                                                     }

@@ -37,7 +37,7 @@
                     <strong>Tipo Avaliação:</strong>  {{ $avaliacao->tipoAvaliacao->tipo_avaliacao}}
                 </li>
                 <li>
-                    <strong>Valor:</strong> {{ $avaliacao->valor_avaliacao}}
+                    <strong>Valor:</strong>  {{number_format($avaliacao->valor_avaliacao, 1, ',', '.')}}
                 </li>                                
                 <li><strong>Conteúdo: </strong><br>
                     {{$avaliacao->conteudo}}

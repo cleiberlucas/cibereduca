@@ -66,7 +66,7 @@
     <div class="row">
         <div class="form-group col-sm-3 col-xs-2">            
             <label>* Valor</label>
-            <input type="number" step="0.010"  name="valor_avaliacao" class="form-control" placeholder="" required  value="{{ $avaliacao->valor_avaliacao ?? old('valor_avaliacao') }}">
+            <input type="number" step="0.010" min=0.1 max=10 name="valor_avaliacao" class="form-control" placeholder="" required  value="{{ $avaliacao->valor_avaliacao ?? old('valor_avaliacao') }}">
         </div>          
     </div>
     <div class="row">

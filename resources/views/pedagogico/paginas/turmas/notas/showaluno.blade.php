@@ -110,13 +110,13 @@
                                                         @foreach ($turmaPeriodosLetivos as $turmaPeriodoLetivo)
                                                             @if ($turmaPeriodoLetivo->id_periodo_letivo == $periodoTurma->id_periodo_letivo)
                                                                 @if ($turmaPeriodoLetivo->situacao == 0)
-                                                                    {{number_format($notaAluno->nota, 2, ',', '.')}}
+                                                                    {{number_format($notaAluno->nota, 1, ',', '.')}}
                                                                     
                                                                     {{-- <a href="{{route('turmas.nota.edit', $notaAluno->id_nota_avaliacao)}}">{{number_format($notaAluno->nota, 2, ',', '.')}}</a>                                                             --}}
                                                                 @else
                                                                     <a class="btn btn-sm btn-outline-danger" href="{{route('turmas.nota.remover', $notaAluno->id_nota_avaliacao)}}"><i class="far fa-trash-alt"></i></a>
                                                                     &nbsp&nbsp&nbsp&nbsp&nbsp
-                                                                    <a href="{{route('turmas.nota.edit', $notaAluno->id_nota_avaliacao)}}">{{number_format($notaAluno->nota, 2, ',', '.')}}</a>
+                                                                    <a href="{{route('turmas.nota.edit', $notaAluno->id_nota_avaliacao)}}">{{number_format($notaAluno->nota, 1, ',', '.')}}</a>
                                                                 
                                                                 @endif 
                                                                 @break;
