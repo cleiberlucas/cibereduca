@@ -44,7 +44,7 @@
 
         <tr>
             <td><strong>N°</strong></td>
-            <td align="center"><strong>NOME DO ALUNO(A)</strong></td>
+            <td align="center"><strong>NOME DO(A) ALUNO(A)</strong></td>
             
             {{-- Mostrando dias que houve frequencia --}}
             @foreach ($diasFrequencias as $diaFrequencia)

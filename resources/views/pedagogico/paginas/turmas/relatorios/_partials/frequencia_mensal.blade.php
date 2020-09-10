@@ -1,7 +1,7 @@
 {{-- Cabeçalho da ficha de frequencia mensal --}}
 <tr>
     <td colspan=26 align="center">
-        <strong>{{strToUpper($unidadeEnsino->nome_fantasia)}}</strong>
+        <strong>{{mb_strToUpper ($unidadeEnsino->nome_fantasia)}}</strong>
     </td>
 </tr>
 <tr>
