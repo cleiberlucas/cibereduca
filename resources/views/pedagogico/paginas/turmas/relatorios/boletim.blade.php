@@ -279,12 +279,12 @@
                 <font size="1px">
                     <i>CiberEduca - Plataforma de Gestão Escolar</i>
                 </font>
-            </div>        </div>
-
+            </div>        
+        </div>
         <div class="row border-0">
             <div class="col border-0">                
                 <hr>
-                <br><br><br>
+                <br>
             </div>
         </div>              
     </div>
