@@ -103,8 +103,7 @@
                                 </div>    
                             @endif
 
-                            @if ($indexPeriodo == 3)
-                            
+                            @if ($indexPeriodo == 3)                            
                                 <div class="col-sm-1 col-xs-2 border border-dark border-top-0 border-right-0"> 
                                     <div class="row  ">
                                         <div class="col-sm-12 col-xs-2 ">
@@ -120,8 +119,7 @@
                                     </div>
                                 </div>                             
                             @endif
-                        @endforeach {{-- fim colunas períodos letivos --}}
-                        
+                        @endforeach {{-- fim colunas períodos letivos --}}                        
 
                         <div class="col-sm-1 col-xs-2 px-0 border border-dark border-top-0">
                             <strong>Média Final MRF</strong>
@@ -134,9 +132,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
-                
-            
+            </div>              
             
             {{-- Linhas disciplinas --}}
             @foreach ($disciplinas as $disciplina)
@@ -144,70 +140,58 @@
                     <div class="col-sm-3 col-xs-2">
                         {{$disciplina->disciplina}}
                     </div>
-
                     <?php 
                         $total_ms1 = 0;
                         $total_ms2 = 0;
                     ?>
-
                     @foreach ($periodosLetivos as $indexPeriodo => $periodoLetivo)
+                    <?php 
+                        $achou_nota = false;
+                        $achou_falta = false;
+                    ?>
                         <div class="col-sm-1 col-xs-2 "> 
                             <div class="row text-center border-dark">
                                 <div class="col-sm-6 col-xs-2 px-0 border border-dark border-top-0 border-right-0 border-bottom-0">
-                                    {{-- Varrendo array p imprimir NOTA MÉDIA --}}
-                                    <?php 
-                                        $achou_nota = false;
-                                        $achou_falta = false;
-                                    ?>
-                                    @foreach ($resultados as $indexResult => $resultado)
-                                        
-                                        @if ($periodoLetivo->id_periodo_letivo == $resultado->fk_id_periodo_letivo
+                                    {{-- Varrendo array p imprimir NOTA MÉDIA --}}   
+                                    <?php                                
+                                    foreach ($resultados as $indexResult => $resultado){
+                                        if ($periodoLetivo->id_periodo_letivo == $resultado->fk_id_periodo_letivo
                                             and $disciplina->id_disciplina == $resultado->fk_id_disciplina
-                                            and $matricula->id_matricula == $resultado->fk_id_matricula)
+                                            and $matricula->id_matricula == $resultado->fk_id_matricula){     
+
+                                            if ($resultado->nota_media == 10 or $resultado->nota_media == 0)
+                                                echo $resultado->nota_media;
+                                            else
+                                                echo number_format($resultado->nota_media, 1, ',', '.');
                                             
-                                            @if ($resultado->nota_media == 10)
-                                                {{$resultado->nota_media}}
-                                            @else
-                                                {{number_format($resultado->nota_media, 1, ',', '.')}}    
-                                            @endif
-                                            
-                                            <?php $achou_nota = true;
+                                             $achou_nota = true;
                                                 if ($indexPeriodo <= 1)
                                                     $total_ms1 = $total_ms1 + $resultado->nota_media;
-                                                else {
-                                                    $total_ms2 = $total_ms2 + $resultado->nota_media;
-                                                }
-                                            ?>
-
-                                            @break;                                                                                    
-                                        @endif
-                                        
-                                    @endforeach
-                                    
-                                    <?php if (!$achou_nota)
-                                        echo '-';
+                                                else 
+                                                    $total_ms2 = $total_ms2 + $resultado->nota_media;                                                
+                                            
+                                            break;                                                                                    
+                                        }
+                                    }
+                                    if (!$achou_nota)
+                                        echo '#';
                                     ?>
                                 </div>
-
                                 <div class="col-sm-6 col-xs-2 border border-dark border-top-0 border-right-0  border-bottom-0">
                                     {{-- Varrendo array p imprimir FALTAS --}}                                
                                 <?php                                   
-                                    $achou_falta = false;
-                                ?>
-                                    @foreach ($resultados as $resultado)
-                                        @if ($periodoLetivo->id_periodo_letivo == $resultado->fk_id_periodo_letivo
+                                    $achou_falta = false;                                
+                                    foreach ($resultados as $resultado){
+                                        if ($periodoLetivo->id_periodo_letivo == $resultado->fk_id_periodo_letivo
                                             and $disciplina->id_disciplina == $resultado->fk_id_disciplina
-                                            and $matricula->id_matricula == $resultado->fk_id_matricula)
+                                            and $matricula->id_matricula == $resultado->fk_id_matricula){
 
-                                            {{$resultado->total_faltas}}
-                                            <?php $achou_falta = true;?>
-                                            @break;                                        
-                                            
-                                        @endif
-                                        
-                                    @endforeach
-
-                                    <?php if (!$achou_falta)
+                                            echo $resultado->total_faltas;
+                                            $achou_falta = true;
+                                            break;
+                                        }
+                                    }                                    
+                                    if (!$achou_falta)
                                         echo '-';
                                     ?>
                                 </div>
@@ -220,7 +204,6 @@
                             <div class="col-sm-1 col-xs-2 border border-dark border-top-0 border-right-0 border-bottom-0"> 
                                 <div class="row  ">
                                     <div class="col-sm-12 col-xs-2 ">
-
                                         <div class="row  ">
                                             <div class="col-sm-6 col-xs-2 border border-dark border-top-0 border-left-0 border-bottom-0">
                                                 {{-- RS1 --}}
@@ -237,8 +220,7 @@
                                                     else {
                                                         echo '-';
                                                     }
-                                                ?>
-                                                
+                                                ?>                                                
                                             </div>
                                         </div>
                                     </div>
@@ -252,23 +234,20 @@
                             <div class="col-sm-1 col-xs-2 border border-dark border-top-0 border-right-0 border-bottom-0"> 
                                 <div class="row  ">
                                     <div class="col-sm-12 col-xs-2 ">
-
                                         <div class="row  ">
                                             <div class="col-sm-6 col-xs-2 border border-dark border-top-0 border-left-0 border-bottom-0">
                                                 {{-- RS2 --}}
                                                 -
                                             </div>
                                             <div class="col-sm-6 col-xs-2 border-bottom-0">
-                                                {{-- MS2 --}}
-                                                
+                                                {{-- MS2 --}}                                                
                                                 <?php 
                                                     if ($total_ms2 > 0)
                                                         echo number_format(($total_ms2/2), 1, ',', '.'); 
                                                     else {
                                                         echo '-';
                                                     }
-                                                ?>
-                                                
+                                                ?>                                                
                                             </div>
                                         </div>
                                     </div>
