@@ -174,7 +174,7 @@
                                         }
                                     }
                                     if (!$achou_nota)
-                                        echo '#';
+                                        echo '-';
                                     ?>
                                 </div>
                                 <div class="col-sm-6 col-xs-2 border border-dark border-top-0 border-right-0  border-bottom-0">
