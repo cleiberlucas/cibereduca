@@ -111,8 +111,7 @@
                                     </div>
                                 </div>                             
                             @endif
-                        @endforeach {{-- fim colunas períodos letivos --}}                        
-
+                        @endforeach {{-- fim colunas períodos letivos --}}
                         <div class="col-sm-1 col-xs-2 px-0 border border-dark border-top-0">
                             <strong>Média Final MRF</strong>
                         </div>
@@ -124,69 +123,57 @@
                         </div>
                     </div>
                 </div>
-            </div>              
-            
+            </div>
             {{-- Linhas disciplinas --}}
             @foreach ($disciplinas as $disciplina)
                 <div class="row font-cabecalho border border-dark border-bottom-0 ">
-                    <div class="col-sm-3 col-xs-2">
-                        {{$disciplina->disciplina}}
-                    </div>
+                    <div class="col-sm-3 col-xs-2"> {{$disciplina->disciplina}} </div>
                     <?php 
                         $total_ms1 = 0;
                         $total_ms2 = 0;
                     ?>
                     @foreach ($periodosLetivos as $indexPeriodo => $periodoLetivo)
-                    <?php 
-                        $achou_nota = false;
-                        $achou_falta = false;
-                    ?>
-                        <div class="col-sm-1 col-xs-2 "> 
+                        <?php
+                            $achou_resultado = false;
+                            $total_faltas_periodo;
+                        ?>
+                        <div class="col-sm-1 col-xs-2 ">
                             <div class="row text-center border-dark">
                                 <div class="col-sm-6 col-xs-2 px-0 border border-dark border-top-0 border-right-0 border-bottom-0">
-                                    {{-- Varrendo array p imprimir NOTA MÉDIA --}}   
-                                    <?php                                
-                                    foreach ($resultados as $indexResult => $resultado){
-                                        if ($periodoLetivo->id_periodo_letivo == $resultado->fk_id_periodo_letivo
-                                            and $disciplina->id_disciplina == $resultado->fk_id_disciplina
-                                            and $matricula->id_matricula == $resultado->fk_id_matricula){     
-
-                                            if ($resultado->nota_media == 10 or $resultado->nota_media == 0)
-                                                echo $resultado->nota_media;
-                                            else
-                                                echo number_format($resultado->nota_media, 1, ',', '.');
-                                            
-                                             $achou_nota = true;
-                                                if ($indexPeriodo <= 1)
-                                                    $total_ms1 = $total_ms1 + $resultado->nota_media;
-                                                else 
-                                                    $total_ms2 = $total_ms2 + $resultado->nota_media;                                                
-                                            
-                                            break;                                                                                    
-                                        }
-                                    }
-                                    if (!$achou_nota)
-                                        echo '-';
-                                    ?>
-                                </div>
-                                <div class="col-sm-6 col-xs-2 border border-dark border-top-0 border-right-0  border-bottom-0">
-                                    {{-- Varrendo array p imprimir FALTAS --}}                                
-                                <?php                                   
-                                    $achou_falta = false;                                
-                                    foreach ($resultados as $resultado){
-                                        if ($periodoLetivo->id_periodo_letivo == $resultado->fk_id_periodo_letivo
-                                            and $disciplina->id_disciplina == $resultado->fk_id_disciplina
-                                            and $matricula->id_matricula == $resultado->fk_id_matricula){
-
-                                            echo $resultado->total_faltas;
-                                            $achou_falta = true;
-                                            break;
-                                        }
+                                {{-- Varrendo array p imprimir NOTA MÉDIA E FALTAS--}}   
+                                <?php                                
+                                foreach ($resultados as $indexResult => $resultado){
+                                    //if ($indexResult == 0)
+                                      
+                                    if ($periodoLetivo->id_periodo_letivo == $resultado->fk_id_periodo_letivo
+                                        and $disciplina->id_disciplina == $resultado->fk_id_disciplina
+                                        and $matricula->id_matricula == $resultado->fk_id_matricula){     
+                                        
+                                        $achou_resultado = true;
+                                        //IMPRIMINDO NOTA
+                                        if ($resultado->nota_media == 10 or $resultado->nota_media == 0)
+                                            echo $resultado->nota_media;                                        
+                                        else
+                                            echo number_format($resultado->nota_media, 1, ',', '.');                                            
+                                        
+                                            $total_faltas_periodo = $resultado->total_faltas;
+                                        
+                                        if ($indexPeriodo <= 1)
+                                            $total_ms1 = $total_ms1 + $resultado->nota_media;
+                                        else 
+                                            $total_ms2 = $total_ms2 + $resultado->nota_media;                                            
+                                        
+                                        break;
                                     }                                    
-                                    if (!$achou_falta)
-                                        echo '-';
-                                    ?>
-                                </div>
+                                } 
+                                if (!$achou_resultado)
+                                    echo '-';
+                                //FALTAS
+                                echo '</div>
+                                        <div class="col-sm-6 col-xs-2 border border-dark border-top-0 border-right-0  border-bottom-0">';                                
+                                echo $total_faltas_periodo;
+                                echo '</div>';                                     
+                                ?>                                
                             </div>
                         </div>
                         {{-- Mostrar RS1 E MS1 --}}
@@ -195,18 +182,12 @@
                                 <div class="row  ">
                                     <div class="col-sm-12 col-xs-2 ">
                                         <div class="row  ">
-                                            <div class="col-sm-6 col-xs-2 border border-dark border-top-0 border-left-0 border-bottom-0">
-                                                {{-- RS1 --}}
-                                                -
-                                            </div>
+                                            <div class="col-sm-6 col-xs-2 border border-dark border-top-0 border-left-0 border-bottom-0"> {{-- RS1 --}} - </div>
                                             <div class="col-sm-6 col-xs-2 border-bottom-0">
-                                                {{-- MS1 --}}
-                                                
+                                                {{-- MS1 --}}                                                
                                                 <?php 
-                                                    if ($total_ms1 > 0)
-                                                        echo '-';
-                                                        //echo number_format(($total_ms1/2), 2, ',', '.'); 
-
+                                                    if ($total_ms1 > 0)                                                        
+                                                        echo number_format(($total_ms1/2), 1, ',', '.'); 
                                                     else {
                                                         echo '-';
                                                     }
@@ -217,16 +198,12 @@
                                 </div>
                             </div>                                
                         @endif
-
                         @if ($indexPeriodo == 3)                        
                             <div class="col-sm-1 col-xs-2 border border-dark border-top-0 border-right-0 border-bottom-0"> 
                                 <div class="row  ">
                                     <div class="col-sm-12 col-xs-2 ">
                                         <div class="row  ">
-                                            <div class="col-sm-6 col-xs-2 border border-dark border-top-0 border-left-0 border-bottom-0">
-                                                {{-- RS2 --}}
-                                                -
-                                            </div>
+                                            <div class="col-sm-6 col-xs-2 border border-dark border-top-0 border-left-0 border-bottom-0"> {{-- RS2 --}} - </div>
                                             <div class="col-sm-6 col-xs-2 border-bottom-0">
                                                 {{-- MS2 --}}                                                
                                                 <?php 
@@ -242,57 +219,45 @@
                                 </div>
                             </div>                          
                         @endif
-
                     @endforeach {{-- fim array periodos letivos --}}
-                    <div class="col-sm-1 col-xs-2 border border-dark border-top-0 border-bottom-0 border-right-0">
-                        
-                    </div>
-                    <div class="col-sm-1 col-xs-2 border border-dark border-top-0 border-bottom-0 ">
-                        
-                    </div>
-                    <div class="col-sm-1 col-xs-2 border-0">
-                         Cursando
-                    </div>
-                    
+                    <div class="col-sm-1 col-xs-2 border border-dark border-top-0 border-bottom-0 border-right-0"> </div>
+                    <div class="col-sm-1 col-xs-2 border border-dark border-top-0 border-bottom-0 "> </div>
+                    <div class="col-sm-1 col-xs-2 border-0"> Cursando </div>                    
                 </div>
             @endforeach
-
             <div class="row border border-dark ">
                 <div class="col-sm-12 col-xs-2">
                     <font size="2px">
-                    Legenda: N: Nota &nbsp;&nbsp;&nbsp; F: Falta &nbsp;&nbsp;&nbsp; RS1: Resultado Semestral 1 &nbsp;&nbsp;&nbsp;MS1: Média Semestral 1 &nbsp;&nbsp;&nbsp;MS2: Média Semestral 2 &nbsp;&nbsp;&nbsp;RS2: Resultado Semestral 2
-                    
+                    Legenda: N: Nota &nbsp;&nbsp;&nbsp; F: Falta &nbsp;&nbsp;&nbsp; RS1: Resultado Semestral 1 &nbsp;&nbsp;&nbsp;MS1: Média Semestral 1 &nbsp;&nbsp;&nbsp;MS2: Média Semestral 2 &nbsp;&nbsp;&nbsp;RS2: Resultado Semestral 2                    
                     &nbsp;&nbsp;&nbsp;  MRF: Média Após Rec. Final &nbsp;&nbsp;&nbsp;RF: Resultado Final
                 </font>
                 </div>
-            </div>       
-        
-        <div class="row ">
-            <div class="col text-center mt-2">
-                <font color=blue>
-                <strong>CONHECIMENTO PARA O MUNDO. VALORES PARA A VIDA.</strong>
-                </font>
-            </div>            
-        </div>  
-        <div class="row">
-            <div class="col text-right">
-                <font size="1px">
-                    <i>CiberEduca - Plataforma de Gestão Escolar</i>
-                </font>
-            </div>        
-        </div>
-        <div class="row border-0">
-            <div class="col border-0">                
-                <hr>
-                <br>
+            </div>              
+            <div class="row ">
+                <div class="col text-center mt-2">
+                    <font color=blue>
+                    <strong>CONHECIMENTO PARA O MUNDO. VALORES PARA A VIDA.</strong>
+                    </font>
+                </div>            
+            </div>  
+            <div class="row">
+                <div class="col text-right">
+                    <font size="1px">
+                        <i>CiberEduca - Plataforma de Gestão Escolar</i>
+                    </font>
+                </div>        
             </div>
-        </div>              
-    </div>
-
-    {{-- Quebra página a cada 2 boletins --}}
-    @if ($indexMatricula % 2 == 1)
-        <div style="page-break-after: always"></div>        
-    @endif
+            <div class="row border-0">
+                <div class="col border-0">                
+                    <hr>
+                    <br>
+                </div>
+            </div>              
+        </div>
+        {{-- Quebra página a cada 2 boletins --}}
+        @if ($indexMatricula % 2 == 1)
+            <div style="page-break-after: always"></div>        
+        @endif
     @endforeach {{-- Fim array alunos --}}   
     
 </body>
