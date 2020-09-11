@@ -135,7 +135,7 @@
                     @foreach ($periodosLetivos as $indexPeriodo => $periodoLetivo)
                         <?php
                             $achou_resultado = false;
-                            $total_faltas_periodo;
+                            $total_faltas_periodo = '-';
                         ?>
                         <div class="col-sm-1 col-xs-2 ">
                             <div class="row text-center border-dark">
