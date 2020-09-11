@@ -19,8 +19,7 @@
     }
 </style>
 <body>
-    @foreach ($matriculas as $indexMatricula => $matricula)              
-        
+    @foreach ($matriculas as $indexMatricula => $matricula)
         {{-- Cabeçalho --}}
         <div class="container border border-primary rounded">
             <div class="row">
@@ -35,7 +34,6 @@
                 </div>
             </div>
         </div>
-
         {{-- Dados aluno --}}
         <div class="container border border-dark">
             <div class="row ">
@@ -52,11 +50,9 @@
                 </div> --}}
                 <div class="col-sm-4 col-xs-2">
                     <strong>Curso: {{$matricula->turma->tipoTurma->subNivelEnsino->sub_nivel_ensino}}</strong>
-                </div>
-               
+                </div>               
             </div>
         </div>
-
         {{-- Notas --}}
         <div class="container ">
             <div class="row font-cabecalho  text-center">
@@ -64,18 +60,15 @@
                     <div class="row border-dark">
                         <div class="col-sm-3 col-xs-2 ">
                             <strong>Disciplinas</strong>
-                        </div>
-                        
+                        </div>                        
                         {{-- Colunas Períodos letivos --}}
-                        @foreach ($periodosLetivos as $indexPeriodo => $periodoLetivo)
-                                                
+                        @foreach ($periodosLetivos as $indexPeriodo => $periodoLetivo)                                                
                             <div class="col-sm-1 col-xs-2 border-dark border-bottom-0">                        
                                 <div class="row text-center ">
                                     <div class="col-sm-12 col-xs-2 px-0 border border-dark border-right-0 border-top-0">
                                         <strong>{{$periodoLetivo->periodo_letivo}} </strong>
                                     </div>
                                 </div>
-
                                 <div class="row text-center border-dark">
                                     <div class="col-sm-6 col-xs-2 border border-dark border-top-0 border-right-0">
                                         <strong>N</strong>
@@ -84,8 +77,7 @@
                                         <strong>F</strong>
                                     </div>
                                 </div>                   
-                            </div>                                
-                            
+                            </div> 
                             @if ($indexPeriodo == 1 )
                                 <div class="col-sm-1 col-xs-2  border border-dark border-top-0 border-right-0"> 
                                     <div class="row  text-center">
@@ -197,10 +189,8 @@
                                 </div>
                             </div>
                         </div>
-
                         {{-- Mostrar RS1 E MS1 --}}
                         @if ($indexPeriodo == 1 )
-
                             <div class="col-sm-1 col-xs-2 border border-dark border-top-0 border-right-0 border-bottom-0"> 
                                 <div class="row  ">
                                     <div class="col-sm-12 col-xs-2 ">
@@ -225,12 +215,10 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div> 
-                                
+                            </div>                                
                         @endif
 
-                        @if ($indexPeriodo == 3)
-                        
+                        @if ($indexPeriodo == 3)                        
                             <div class="col-sm-1 col-xs-2 border border-dark border-top-0 border-right-0 border-bottom-0"> 
                                 <div class="row  ">
                                     <div class="col-sm-12 col-xs-2 ">
@@ -256,8 +244,6 @@
                         @endif
 
                     @endforeach {{-- fim array periodos letivos --}}
-
-                    
                     <div class="col-sm-1 col-xs-2 border border-dark border-top-0 border-bottom-0 border-right-0">
                         
                     </div>
@@ -279,8 +265,7 @@
                     &nbsp;&nbsp;&nbsp;  MRF: Média Após Rec. Final &nbsp;&nbsp;&nbsp;RF: Resultado Final
                 </font>
                 </div>
-            </div>
-        
+            </div>       
         
         <div class="row ">
             <div class="col text-center mt-2">
@@ -294,25 +279,21 @@
                 <font size="1px">
                     <i>CiberEduca - Plataforma de Gestão Escolar</i>
                 </font>
-            </div>
-
-        </div>
+            </div>        </div>
 
         <div class="row border-0">
             <div class="col border-0">                
                 <hr>
                 <br><br><br>
             </div>
-        </div>
-              
+        </div>              
     </div>
 
     {{-- Quebra página a cada 2 boletins --}}
     @if ($indexMatricula % 2 == 1)
         <div style="page-break-after: always"></div>        
     @endif
-    @endforeach {{-- Fim array alunos --}}
-   
+    @endforeach {{-- Fim array alunos --}}   
     
 </body>
 </html>
