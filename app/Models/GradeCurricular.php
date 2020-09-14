@@ -53,6 +53,7 @@ class GradeCurricular extends Model
                 ->join('tb_disciplinas', 'fk_id_disciplina', 'id_disciplina')
                 ->join('tb_turmas_disciplinas_professor', 'fk_id_grade_curricular', 'id_grade_curricular')
                 ->where('tb_turmas_disciplinas_professor.fk_id_turma', '=', $id_turma)
+                ->where('tb_turmas.id_turma', $id_turma)
                 ->where('fk_id_professor', '=', $idProfessor)
                 ->where('situacao_disciplina_professor', 1)
                 ->orderBy('disciplina')
