@@ -52,7 +52,7 @@
         <div class="container">
             
             <div class="mt-3 text-center">                
-                <h5>Avaliações Bimestre</h5>
+                <h5>Avaliações Bimestrais</h5>
             </div>
             
             <div class="row">
@@ -77,11 +77,8 @@
                 </div>
 
                 @foreach ($avaliacoes as $avaliacao)
-                    <div class="  foo font-cabecalho  border border-dark" >
-                        {{$avaliacao->tipo_avaliacao}}
-                        <br>
-                        ({{number_format($avaliacao->valor_avaliacao, 1, ',', '.')}})
-                    </div>                                
+                    <div class="  foo font-cabecalho  border border-dark" > {{$avaliacao->tipo_avaliacao}}
+                        <br> ({{number_format($avaliacao->valor_avaliacao, 1, ',', '.')}}) </div>                                
                 @endforeach
                 
                 <div class="foo font-cabecalho  border border-dark" style="width: 50px;">
@@ -101,12 +98,8 @@
 
             @foreach ($matriculas as $index => $matricula)
                 <div class="row py-0 " >
-                    <div class="larg-div-n font-cabecalho  pl-2 pr-1 text-center border border-dark ">
-                        {{str_pad($index+1, 2, '0', STR_PAD_LEFT)}}
-                    </div>
-                    <div class="font-cabecalho col-sm-5  border border-dark ">
-                        {{$matricula->aluno->nome}}
-                    </div>
+                    <div class="larg-div-n font-cabecalho  pl-2 pr-1 text-center border border-dark "> {{str_pad($index+1, 2, '0', STR_PAD_LEFT)}} </div>
+                    <div class="font-cabecalho col-sm-5  border border-dark "> {{$matricula->aluno->nome}} </div>
                     
                     {{-- varrendo array p imprimir nota da avaliação de um aluno --}}
                     @foreach ($avaliacoes as $avaliacao)
@@ -114,8 +107,9 @@
                             @foreach ($notas as $nota)                           
                                 @if ($nota->fk_id_avaliacao == $avaliacao->id_avaliacao
                                     and $nota->fk_id_matricula == $matricula->id_matricula)
-                                    
-                                    {{number_format($nota->nota, 1, ',', '.')}}                                    
+                                    @if ($nota->nota > 0)
+                                        {{number_format($nota->nota, 1, ',', '.')}}                                    
+                                    @endif
                                     @break;
                                 @endif                                                
                             @endforeach
@@ -126,21 +120,13 @@
                     @foreach ($resultados as $resultado)
                         @if ($resultado->fk_id_matricula == $matricula->id_matricula)
                             <div class="font-cabecalho  border border-dark text-center " style="width: 50px;">
-                                <strong>{{number_format($resultado->nota_media, 1, ',', '.')}}     </strong>
-                            </div>
-            
-                            <div class="font-cabecalho  border border-dark text-center" style="width: 50px;">
-                                
-                            </div>
-            
-                            <div class="font-cabecalho  border border-dark text-center" style="width: 50px;">
-                                {{$resultado->total_faltas}}
-                            </div>
+                                <strong> {{number_format($resultado->nota_media, 1, ',', '.')}} </strong> </div>            
+                            <div class="font-cabecalho  border border-dark text-center" style="width: 50px;"> </div>            
+                            <div class="font-cabecalho  border border-dark text-center" style="width: 50px;">{{$resultado->total_faltas}} </div>
                             @break;
                         @endif
                         
                     @endforeach
-
                 </div>
 
             @endforeach {{-- fim matriculas --}}

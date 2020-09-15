@@ -102,9 +102,7 @@
                             @if ($resultado->fk_id_matricula == $matricula->id_matricula
                                 and $resultado->fk_id_disciplina == $disciplina->fk_id_disciplina)
                                 
-                                @if ($resultado->nota_media <= 0 or $resultado->nota_media == '')
-                                    -
-                                @else
+                                @if ($resultado->nota_media > 0)                                    
                                     {{number_format($resultado->nota_media, 1, ',', '.')}}
                                 @endif
 
