@@ -142,7 +142,7 @@
                     <div class="row">
                         
                             <div class="form-group col-sm-3 col-xs-2">
-                                Período Letivo
+                                <font color="blue">Período Letivo</font>                                
                                 <select name="periodo" id="periodo" class="form-control"> 
                                     <option value=""></option>
                                 </select>
@@ -150,14 +150,14 @@
                         
                     </div>
 
-                    <div class="row my-3 ml-5">
+                   {{--  <div class="row my-3 ml-5">
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="tipo_relatorio" id="aprendizagem" value="aprendizagem" >
                             <label for="aprendizagem" class="form-check-label">Acompanhamento de Aprendizagem</label>
                             <br>
                             <small>(uma disciplina)</small>
                         </div>
-                    </div>
+                    </div> --}}
 
                     <div class="row my-3 ml-5">
                         <div class="form-check">
