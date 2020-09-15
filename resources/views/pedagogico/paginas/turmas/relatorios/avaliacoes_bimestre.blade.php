@@ -92,15 +92,11 @@
                 <div class="foo font-cabecalho  border border-dark" style="width: 50px;">
                     Faltas Bimestral
                 </div>
-
-
             </div>
-
             @foreach ($matriculas as $index => $matricula)
                 <div class="row py-0 " >
                     <div class="larg-div-n font-cabecalho  pl-2 pr-1 text-center border border-dark "> {{str_pad($index+1, 2, '0', STR_PAD_LEFT)}} </div>
-                    <div class="font-cabecalho col-sm-5  border border-dark "> {{$matricula->aluno->nome}} </div>
-                    
+                    <div class="font-cabecalho col-sm-5  border border-dark "> {{$matricula->aluno->nome}} </div>                    
                     {{-- varrendo array p imprimir nota da avaliação de um aluno --}}
                     @foreach ($avaliacoes as $avaliacao)
                         <div class="font-cabecalho border border-dark text-center" style="width: 50px;">
@@ -120,7 +116,10 @@
                     @foreach ($resultados as $resultado)
                         @if ($resultado->fk_id_matricula == $matricula->id_matricula)
                             <div class="font-cabecalho  border border-dark text-center " style="width: 50px;">
-                                <strong> {{number_format($resultado->nota_media, 1, ',', '.')}} </strong> </div>            
+                                @if ($resultado->nota_media > 0)
+                                    <strong> {{number_format($resultado->nota_media, 1, ',', '.')}} </strong> 
+                                @endif
+                            </div>            
                             <div class="font-cabecalho  border border-dark text-center" style="width: 50px;"> </div>            
                             <div class="font-cabecalho  border border-dark text-center" style="width: 50px;">{{$resultado->total_faltas}} </div>
                             @break;
