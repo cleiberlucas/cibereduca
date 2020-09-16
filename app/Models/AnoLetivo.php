@@ -36,6 +36,20 @@ class AnoLetivo extends Model
         return $resultado;
     }
 
+    /**
+    * Retorna a média de aprovação de um ano letivo
+    * @param int idanoletivo
+    * @return double media aprovacao
+    */
+    public function getMediaAprovacao($id_ano_letivo)
+    {
+        $mediaAprovacao = $this
+            ->select('media_minima_aprovacao')
+            ->where('id_ano_letivo', $id_ano_letivo)->first();
+        
+        return $mediaAprovacao;
+    }
+
     public function unidadeEnsino()
     {      
         return $this->belongsTo(UnidadeEnsino::class, 'fk_id_unidade_ensino', 'id_unidade_ensino');

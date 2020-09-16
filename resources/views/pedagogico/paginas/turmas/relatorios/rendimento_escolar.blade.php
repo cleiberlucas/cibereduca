@@ -27,7 +27,7 @@
         writing-mode: vertical-rl; 
         transform: rotate(180deg);
          max-height: 100vw; 
-        height: 150px;
+        height: 200px;
         width: 38px;
         /* text-align: center; */
     }
@@ -103,9 +103,12 @@
                                 and $resultado->fk_id_disciplina == $disciplina->fk_id_disciplina)
                                 
                                 @if ($resultado->nota_media > 0)                                    
-                                    {{number_format($resultado->nota_media, 1, ',', '.')}}
+                                    @if($resultado->nota_media >= $mediaAprovacao)
+                                        <strong> {{number_format($resultado->nota_media, 1, ',', '.')}} </strong> 
+                                    @else
+                                        <font color="red"><strong> {{number_format($resultado->nota_media, 1, ',', '.')}} </strong> </font>
+                                    @endif
                                 @endif
-
                                 <?php $total_faltas = $resultado->total_faltas; ?>
                                 @break;
                             @endif

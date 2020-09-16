@@ -99,12 +99,19 @@
                     <div class="font-cabecalho col-sm-5  border border-dark "> {{$matricula->aluno->nome}} </div>                    
                     {{-- varrendo array p imprimir nota da avaliação de um aluno --}}
                     @foreach ($avaliacoes as $avaliacao)
+                        <?php
+                            $mediaAprovaAvaliacao = $mediaAprovacao * $avaliacao->valor_avaliacao / 100;
+                        ?>
                         <div class="font-cabecalho border border-dark text-center" style="width: 50px;">
                             @foreach ($notas as $nota)                           
                                 @if ($nota->fk_id_avaliacao == $avaliacao->id_avaliacao
                                     and $nota->fk_id_matricula == $matricula->id_matricula)
                                     @if ($nota->nota > 0)
-                                        {{number_format($nota->nota, 1, ',', '.')}}                                    
+                                        @if ($nota->nota >= $mediaAprovaAvaliacao)
+                                            {{number_format($nota->nota, 1, ',', '.')}}
+                                        @else
+                                            <font color="red">{{number_format($nota->nota, 1, ',', '.')}}</font>
+                                        @endif
                                     @endif
                                     @break;
                                 @endif                                                
@@ -117,7 +124,11 @@
                         @if ($resultado->fk_id_matricula == $matricula->id_matricula)
                             <div class="font-cabecalho  border border-dark text-center " style="width: 50px;">
                                 @if ($resultado->nota_media > 0)
-                                    <strong> {{number_format($resultado->nota_media, 1, ',', '.')}} </strong> 
+                                    @if($resultado->nota_media >= $mediaAprovacao)
+                                        <strong> {{number_format($resultado->nota_media, 1, ',', '.')}} </strong> 
+                                    @else
+                                        <font color="red"><strong> {{number_format($resultado->nota_media, 1, ',', '.')}} </strong> </font>
+                                    @endif
                                 @endif
                             </div>            
                             <div class="font-cabecalho  border border-dark text-center" style="width: 50px;"> </div>            

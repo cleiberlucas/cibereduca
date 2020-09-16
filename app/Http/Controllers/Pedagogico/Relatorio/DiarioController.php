@@ -65,7 +65,11 @@ class DiarioController extends Controller
         $periodosLetivos = new PeriodoLetivo;
 
         $periodoLetivo = $periodosLetivos->where('id_periodo_letivo', $request->periodo)->first();
-
+        
+        $anosLetivos = new AnoLetivo;
+        $mediaAprovacao = $anosLetivos->getMediaAprovacao($request->anoLetivo);
+        $mediaAprovacao = floatval($mediaAprovacao->media_minima_aprovacao);
+        
         $alunos = new Matricula;
         $alunos = $alunos->getAlunosTurma($request->turma);
         //dd($alunos);
@@ -102,6 +106,7 @@ class DiarioController extends Controller
                 'disciplinas' => $disciplinas,
                 'periodosLetivos' => $periodosLetivos,
                 'resultados'    => $resultados,
+                'mediaAprovacao' => $mediaAprovacao,
             ]);
         } else if ($request->tipo_relatorio == 'aprendizagem') {
             if ($request->disciplina == null)
@@ -161,6 +166,7 @@ class DiarioController extends Controller
                 'avaliacoes' => $avaliacoes,
                 'notas' => $notas,
                 'resultados' => $resultados,
+                'mediaAprovacao' => $mediaAprovacao,
             ]);
         }
             /* rendimento escolar */
@@ -181,6 +187,7 @@ class DiarioController extends Controller
                 'matriculas' => $alunos,                
                 'resultados' => $resultados,
                 'gradeCurricular' => $gradeCurricular,
+                'mediaAprovacao' => $mediaAprovacao,
             ]);
         }
 

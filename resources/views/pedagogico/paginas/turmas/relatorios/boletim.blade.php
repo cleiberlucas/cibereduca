@@ -154,7 +154,10 @@
                                         if ($resultado->nota_media == 10 or $resultado->nota_media == 0)
                                             echo $resultado->nota_media;                                        
                                         else
-                                            echo number_format($resultado->nota_media, 1, ',', '.');                                            
+                                            if($resultado->nota_media >= $mediaAprovacao)
+                                                echo number_format($resultado->nota_media, 1, ',', '.');
+                                            else
+                                                echo '<font color="red">'. number_format($resultado->nota_media, 1, ',', '.').'</font>';                                            
                                         
                                             $total_faltas_periodo = $resultado->total_faltas;
                                         
@@ -186,8 +189,11 @@
                                             <div class="col-sm-6 col-xs-2 border-bottom-0">
                                                 {{-- MS1 --}}                                                
                                                 <?php 
-                                                    if ($total_ms1 > 0)                                                        
-                                                        echo number_format(($total_ms1/2), 1, ',', '.'); 
+                                                    if ($total_ms1 > 0)     
+                                                        if ($total_ms1/2 >= $mediaAprovacao)                                                   
+                                                            echo number_format(($total_ms1/2), 1, ',', '.'); 
+                                                        else
+                                                            echo '<font color="red">'.number_format(($total_ms1/2), 1, ',', '.').'</font>';
                                                     else {
                                                         echo '-';
                                                     }
