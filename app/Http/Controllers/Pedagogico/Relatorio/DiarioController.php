@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\AnoLetivo;
 use App\Models\GradeCurricular;
 use App\Models\Pedagogico\Avaliacao;
+use App\Models\Pedagogico\ConteudoLecionado;
 use App\Models\Pedagogico\Frequencia;
 use App\Models\Pedagogico\Nota;
 use App\Models\Pedagogico\ResultadoAlunoPeriodo;
@@ -108,7 +109,7 @@ class DiarioController extends Controller
                 'resultados'    => $resultados,
                 'mediaAprovacao' => $mediaAprovacao,
             ]);
-        } else if ($request->tipo_relatorio == 'aprendizagem') {
+        } /* else if ($request->tipo_relatorio == 'aprendizagem') {
             if ($request->disciplina == null)
                 return redirect()->back()->with('atencao', 'Escolha uma disciplina.');
             
@@ -127,11 +128,44 @@ class DiarioController extends Controller
                 'disciplina' => $disciplina,
                 'matriculas' => $alunos,
             ]);
+        } */
+            /* Conteúdo lecionado bimestral*/
+        else if($request->tipo_relatorio == 'conteudo_bimestral_disciplina'){
+            if ($request->disciplina == null)
+                return redirect()->back()->with('atencao', 'Escolha uma disciplina.');
+        
+            if ($request->conteudo_periodo == null)
+                return redirect()->back()->with('atencao', 'Escolha um período Letivo.');
+
+            $disciplina = new Disciplina;
+            $disciplina = $disciplina->getDisciplina($request->disciplina);
+
+            $periodoLetivo = $periodosLetivos->where('id_periodo_letivo', $request->conteudo_periodo)->first();
+
+            $conteudosLecionados = new ConteudoLecionado;
+            $conteudosLecionados = $conteudosLecionados
+                ->select('data_aula', 'conteudo_lecionado')
+                ->join('tb_turmas_periodos_letivos', 'fk_id_turma_periodo_letivo', 'id_turma_periodo_letivo')
+                ->where('fk_id_periodo_letivo', $request->conteudo_periodo)
+                ->where('fk_id_turma', $request->turma)
+                ->where('fk_id_disciplina', $request->disciplina)
+                ->orderBy('data_aula')
+                ->get();
+
+            return view('pedagogico.paginas.turmas.relatorios.conteudos_bimestre_disciplina', [
+                'unidadeEnsino' => $unidadeEnsino,
+                'periodoLetivo' => $periodoLetivo,
+                'turma' => $turma,
+                'disciplina' => $disciplina,
+                'conteudosLecionados' => $conteudosLecionados,
+
+                ]);
+                
         }
                 /* Avaliações bimestre */
         else if ($request->tipo_relatorio == 'avaliacoes_bimestre'){
             if ($request->disciplina == null)
-            return redirect()->back()->with('atencao', 'Escolha uma disciplina.');
+                return redirect()->back()->with('atencao', 'Escolha uma disciplina.');
         
             if ($request->periodo == null)
                 return redirect()->back()->with('atencao', 'Escolha um período Letivo.');

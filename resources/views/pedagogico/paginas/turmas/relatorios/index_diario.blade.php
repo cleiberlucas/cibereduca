@@ -37,7 +37,7 @@
                     </select>
                 </div>
 
-                <div class="form-group col-sm-3 col-xs-2">
+                <div class="form-group col-sm-4 col-xs-2">
                     Turma
                     <select name="turma" id="turma" class="form-control"  required > 
                         <option value=""></option>
@@ -63,7 +63,11 @@
             <hr>
 
             {{-- Abas  --}}
-            <ul class="nav nav-tabs nav-pills " role="tablist">                
+            <ul class="nav nav-tabs nav-pills " role="tablist">  
+                <li role="presentation" class="nav-item">
+                    <a class="nav-link " href="#conteudo" aria-controls="conteudo" role="tab" data-toggle="tab">Conteúdos Lecionados</a>                    
+                </li>
+
                 <li role="presentation" class="nav-item">
                     <a class="nav-link " href="#frequencia" aria-controls="frequencia" role="tab" data-toggle="tab">Frequências</a>                    
                 </li> 
@@ -82,6 +86,24 @@
             </ul>
 
             <div class="tab-content">
+                {{-- Conteúdos lecionados --}}            
+                <div role="tabpanel" class="tab-pane" id="conteudo"> 
+                    <div class="form-group col-sm-3 col-xs-2">
+                        <font color="blue">Período Letivo</font>                                
+                        <select name="conteudo_periodo" id="conteudo_periodo" class="form-control"> 
+                            <option value=""></option>
+                        </select>
+                    </div>
+
+                    <div class="row my-3 ml-5">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="tipo_relatorio" id="conteudo_bimestral_disciplina" value="conteudo_bimestral_disciplina" >
+                            <label for="conteudo_bimestral_disciplina" class="form-check-label">Conteúdo Lecionado</label>
+                            <br>
+                            <small>(uma disciplina)</small>
+                        </div>
+                    </div>
+                </div>
 
                 {{-- Frequências --}}            
                 <div role="tabpanel" class="tab-pane" id="frequencia"> 
@@ -118,7 +140,7 @@
 
                 {{-- Boletins --}}   
                         
-                    <div role="tabpanel" class="tab-pane active" id="boletim"> 
+                    <div role="tabpanel" class="tab-pane " id="boletim"> 
                         <font color="green"> 
                         <div class="row my-3 ml-5">
                             <div class="form-check">

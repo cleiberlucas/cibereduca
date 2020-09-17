@@ -12,7 +12,7 @@ $(document).ready(function(){
       //console.log("id ano "+id);
       // Empty the dropdown
       $('#periodo').find('option').not(':first').remove();
-      
+      $('#conteudo_periodo').find('option').not(':first').remove();      
   
       // AJAX request 
       $.ajax({
@@ -35,7 +35,8 @@ $(document).ready(function(){
 
               var option = "<option value='"+id+"'>"+nome+"</option>"; 
 
-              $("#periodo").append(option); 
+              $("#periodo").append(option);
+              $("#conteudo_periodo").append(option); 
             }
           }
 
