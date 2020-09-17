@@ -87,6 +87,16 @@
                     <label for="todos_alunos" class="form-check-label">Todos alunos cadastrados</label>
                 </div>
             </div>
+            <br>
+            <div class="row">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="tipo_relatorio" id="lista_assinatura" value="lista_assinatura">
+                    <label for="lista_assinatura" class="form-check-label">Lista Assinaturas</label>
+                    
+                </div>
+                <div class="form-group col-sm-6">
+                    Título da lista: <input type="text" class="form-control" name="titulo_lista" > </div>
+            </div>
 
             <br>
             <div class="row">

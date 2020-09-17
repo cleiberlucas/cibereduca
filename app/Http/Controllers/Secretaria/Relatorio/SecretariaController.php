@@ -39,7 +39,7 @@ class SecretariaController extends Controller
     /**
      * Verifica escolhas do usuário e gera relatório
      */
-    public function filtros(Request $request)
+    public function filtros(Request $request) 
     {
         $this->authorize('Pessoa Ver');
 
@@ -56,6 +56,7 @@ class SecretariaController extends Controller
             $turma = $turma->where('id_turma', $request->turma)->first();
         }
 
+        /**Alunos de uma turma */
         if ($request->tipo_relatorio == 'alunos_turma') {
             if ($request->turma == null)
                 return redirect()->back()->with('atencao', 'Escolha uma turma.');
@@ -72,6 +73,25 @@ class SecretariaController extends Controller
                 compact('turma', 'matriculas', 'unidadeEnsino'),
             );
         }
+        else if ($request->tipo_relatorio == 'lista_assinatura') {
+            if ($request->turma == null)
+                return redirect()->back()->with('atencao', 'Escolha uma turma.');
+            
+                $titulo = $request->titulo_lista;
+
+            $matriculas = $matriculas->where('fk_id_turma', $request->turma)
+                ->join('tb_pessoas', 'fk_id_aluno', 'id_pessoa')
+                ->join('users', 'tb_matriculas.fk_id_user_cadastro', 'id')    
+                ->orderBy($request->ordem) 
+                ->orderBy('nome')
+                ->get();
+
+            return view(
+                'secretaria.paginas.relatorios.lista_assinatura_turma',
+                compact('turma', 'matriculas', 'titulo'),
+            );
+        }
+        /**Todos alunos matriculados */
         else if ($request->tipo_relatorio == 'todas_matriculas') {
             
             $anoLetivo = AnoLetivo::where('id_ano_letivo', $request->anoLetivo)->first();
