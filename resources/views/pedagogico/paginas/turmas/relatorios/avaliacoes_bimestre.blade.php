@@ -10,7 +10,7 @@
 
 <style>
     html {
-        height: 96%;
+        height: 100%;
     }
 
     body {
@@ -44,14 +44,10 @@
 </style>
 
 <body>
-    <div class="container-fluid">
-        <div class="container">    
-            @include('secretaria.paginas._partials.cabecalho')    
-        </div>
-
+    <div class="container-fluid">        
         <div class="container">
-            
-            <div class="mt-3 text-center">                
+            @include('secretaria.paginas._partials.cabecalho_redeeduca')        
+            <div class="mt-0 pt-0 text-center">                
                 <h5>Avaliações Bimestrais</h5>
             </div>
             
@@ -165,7 +161,7 @@
         </div>
         
     </div>
-    @include('secretaria.paginas._partials.rodape_cibereduca')
+    @include('secretaria.paginas._partials.rodape_redeeduca')
     
 </body>
 </html>

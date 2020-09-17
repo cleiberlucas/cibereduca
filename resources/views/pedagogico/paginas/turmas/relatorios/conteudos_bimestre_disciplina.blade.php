@@ -48,15 +48,13 @@
     <div class="container-fluid">
        
         <div class="container">    
-            <div class="row">
-                <div class="col-sm-12 text-center">        
-                    <img src="/vendor/adminlte/dist/img/cabecalho.jpg" width="100%" height="90%" alt="logo">
-                </div>
+           
+            @include('secretaria.paginas._partials.cabecalho_redeeduca')
+            <div class="row my-0 py-0">
+                <div class="col-sm-12 my-0 text-center">        
+                    <h5>Conteúdos Lecionados</h5>
+                </div>            
             </div>
-
-            <div class="text-center">                
-                <h5>Conteúdos Lecionados</h5>
-            </div>            
             
             <div class="row">
                 <div class="col-sm-5">
@@ -75,7 +73,7 @@
                 </div>
 
                 <div class="col-sm-11 border border-dark border-left-0">
-                    <strong>CONTEÚDO LECIONADO</strong>
+                    <strong>Conteúdo Lecionado</strong>
                 </div>               
             </div>
             @foreach ($conteudosLecionados as $index => $conteudoLecionado)
@@ -114,25 +112,6 @@
         
     </div>
 
-    <footer class="footer">        
-        <div class="row my-0 py-0 mr-0 ">            
-            <div class="col-sm-11 col-xs-2 ml-5 my-0 py-0 text-right">
-                <font size="1px">CiberEduca - Plataforma de Gestão Escolar</font>
-            </div>         
-        </div>
-      
-        <div class="row mx-0 my-0">
-            <div class="col-sm-12 text-center my-0 mx-0">        
-                <img src="/vendor/adminlte/dist/img/rodape.jpg" width="90%" height="90%" alt="logo">
-            </div>
-        </div>
-        {{-- <div class="row my-0">
-            <div class="col-sm-12 col-xs-2 ml-5 my-0 py-0" align="center">
-                <font size="1px">CiberSys - Sistemas Inteligentes</font>
-            </div>            
-        </div> --}}
-
-    </footer> 
-    
+    @include('secretaria.paginas._partials.rodape_redeeduca')
 </body>
 </html>
