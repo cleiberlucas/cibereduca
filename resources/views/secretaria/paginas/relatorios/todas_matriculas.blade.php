@@ -12,7 +12,7 @@
 <style>   
    
     html {
-        height: 95%;
+        height: 100%;
     }
 
     body {
@@ -30,9 +30,10 @@
 
 <body>
     <div class="container-fluid ">        
-        @include('secretaria.paginas._partials.cabecalho')
+        
         <div class="content">
-            <div class="row mt-5">
+            @include('secretaria.paginas._partials.cabecalho_redeeduca')
+            <div class="row mt-0 pt-0">
                 <div class="col-sm-11 col-xs-2 my-0" >  
                     <h5><strong>Ano:</strong> {{$anoLetivo->ano}}</h5>                    
                 </div>
@@ -84,7 +85,7 @@
         </div> {{-- fim div content --}}
        
     </div>
-    @include('secretaria.paginas._partials.rodape_cibereduca')
+    @include('secretaria.paginas._partials.rodape_redeeduca')
     
 </body>
 </html>
