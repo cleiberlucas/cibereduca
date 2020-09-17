@@ -68,7 +68,7 @@
                         <th>N°</th>
                         <th>Nome</th>                        
                         <th width="450px">Assinatura</th>
-                        <th>Data</th>
+                        <th width="150px">Data</th>
                     </thead>
                 
                     <tbody>                        
