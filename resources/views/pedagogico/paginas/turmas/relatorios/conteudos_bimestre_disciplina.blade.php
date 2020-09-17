@@ -11,7 +11,7 @@
 
 <style> 
     html {
-        height: 96%;
+        height: 100%;
     }
 
     body {
@@ -46,13 +46,15 @@
 
 <body>
     <div class="container-fluid">
+       
         <div class="container">    
-            @include('secretaria.paginas._partials.cabecalho')    
-        </div>
+            <div class="row">
+                <div class="col-sm-12 text-center">        
+                    <img src="/vendor/adminlte/dist/img/cabecalho.jpg" width="100%" height="90%" alt="logo">
+                </div>
+            </div>
 
-        <div class="container">            
-            
-            <div class="mt-3 text-center">                
+            <div class="text-center">                
                 <h5>Conteúdos Lecionados</h5>
             </div>            
             
@@ -112,7 +114,25 @@
         
     </div>
 
-    @include('secretaria.paginas._partials.rodape_cibereduca')
+    <footer class="footer">        
+        <div class="row my-0 py-0 mr-0 ">            
+            <div class="col-sm-11 col-xs-2 ml-5 my-0 py-0 text-right">
+                <font size="1px">CiberEduca - Plataforma de Gestão Escolar</font>
+            </div>         
+        </div>
+      
+        <div class="row mx-0 my-0">
+            <div class="col-sm-12 text-center my-0 mx-0">        
+                <img src="/vendor/adminlte/dist/img/rodape.jpg" width="90%" height="90%" alt="logo">
+            </div>
+        </div>
+        {{-- <div class="row my-0">
+            <div class="col-sm-12 col-xs-2 ml-5 my-0 py-0" align="center">
+                <font size="1px">CiberSys - Sistemas Inteligentes</font>
+            </div>            
+        </div> --}}
+
+    </footer> 
     
 </body>
 </html>
