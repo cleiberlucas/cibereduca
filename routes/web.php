@@ -5,6 +5,23 @@ use Illuminate\Support\Facades\Route;
 /**
  * Rotas Pedagogico
  */
+Route::prefix('financeiro')
+        ->namespace('Financeiro')
+        ->middleware('auth')
+        ->group(function () {
+
+                /**
+                 * Rotas Financeiro
+                 */
+                
+                Route::resource('financeiro', 'FinanceiroController');
+                route::any('financeiro/alunos/{id_aluno}', 'FinanceiroController@indexAluno')->name('financeiro.indexAluno');
+                Route::get('financeiro/create/{id_aluno}', 'FinanceiroController@create')->name('financeiro.create');
+
+        });
+/**
+ * Rotas Pedagogico
+ */
 Route::prefix('pedagogico')
         ->namespace('Pedagogico')
         ->middleware('auth')
@@ -151,8 +168,8 @@ Route::prefix('secretaria')
 
                 Route::get('matriculas/contrato/{id_matricula}', 'MatriculaController@imprimirContrato')->name('matriculas.contrato')->middleware('can:Matrícula Contrato Ver');
                 Route::get('matriculas/ficha/{id_aluno}', 'MatriculaController@imprimirFichaMatricula')->name('matriculas.ficha')->middleware('can:Matrícula Ficha Ver');
-                Route::get('matriculas/getAlunos/{id_ano_letivo}', 'MatriculaController@getAlunos')->name('matriculas.getAlunos');
-
+                Route::get('matriculas/getAlunos/{id_ano_letivo}', 'MatriculaController@getAlunos')->name('matriculas.getAlunos');                
+                Route::get('matriculas/getValores/{id_matricula}', 'MatriculaController@getValores')->name('matriculas.getValores');
                  
                 /**
                  * Rotas Turmas

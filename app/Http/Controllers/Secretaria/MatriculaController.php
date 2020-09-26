@@ -329,6 +329,30 @@ class MatriculaController extends Controller
         exit;
     }
 
+    /*
+    *Consulta valores de uma matrícula
+    *Valores matrícula, curso e material didático    
+    */
+    public function getValores($id_matricula)
+    {
+        $valores['data'] = $this->repositorio->select('tb_matriculas.valor_matricula', 
+                                            'valor_curso',
+                                            'valor_desconto',
+                                            'qt_parcelas_curso',
+                                            'data_venc_parcela_um',
+                                            'tb_matriculas.valor_material_didatico',
+                                            'qt_parcelas_mat_didatico',
+                                            'obs_matricula',
+                                            )   
+                                ->join('tb_turmas', 'tb_turmas.id_turma', 'tb_matriculas.fk_id_turma')                               
+                                ->join('tb_tipos_turmas', 'tb_turmas.fk_id_tipo_turma', 'tb_tipos_turmas.id_tipo_turma' )                             
+                                ->where('id_matricula', $id_matricula)   
+                                ->get();
+
+        echo json_encode($valores);
+        exit;
+    }
+
     /**
      * Verifica se a situação foi ativada
      */

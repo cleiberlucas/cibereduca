@@ -334,6 +334,20 @@ return [
                 ], */
             ],
         ],
+        ['text'    => 'Financeiro',
+            'icon'    => 'fas fa-dollar-sign',                        
+            'icon_color' => 'blue',
+            'can'  => 'Usuarios',
+            'submenu' => [
+                [
+                    'text' => 'Recebíveis',
+                    'route'  => 'financeiro.index',
+                    'icon' => 'fas fa-hand-holding-usd',
+                    'icon_color' => 'blue',
+                    'can'  => 'Usuarios',
+                ],
+            ],
+        ],
         [
             'text'    => 'Configurações',
             'icon'    => 'fas fa-fw fa-cogs',
@@ -440,6 +454,7 @@ return [
                 ], */
             ],
         ],
+       
         ['text'    => 'Usuários',
             'icon'    => 'fas fa-fw fa-users-cog',
             'can'  => 'Usuário Ver',
