@@ -28,6 +28,7 @@ $(document).ready(function(){
 
             if(len > 0){
               // Read data and create <option >
+              //console.log(response);
               for(var i=0; i<len; i++){
 
                 var valor_matricula = response['data'][i].valor_matricula;                
@@ -35,10 +36,29 @@ $(document).ready(function(){
                 var valor_desconto = response['data'][i].valor_desconto;
                 var valor_contrato = valor_curso - valor_desconto;
 
+                var qt_parcelas_mat_didatico = response['data'][i].qt_parcelas_mat_didatico;
+                var valor_material_didatico = response['data'][i].valor_material_didatico;
+
                 document.getElementById('valor_matricula').value = valor_matricula;
                 document.getElementById('valor_curso').value = valor_curso;
                 document.getElementById('valor_desconto').value = valor_desconto;
-                
+
+                document.getElementById('qt_parcelas_mat_didatico').value = qt_parcelas_mat_didatico;
+                document.getElementById('valor_material_didatico').value = valor_material_didatico;
+
+               // data_venc = new Date(response['data'][i].data_venc_parcela_um);
+                document.getElementById('data_venc_parcela_um').value = response['data'][i].data_venc_parcela_um;
+                console.log('DATA VENC 1 = '+response['data'][i].data_venc_parcela_um);
+
+                var data_venc_parcela_um = '';
+                if (typeof response['data'][i].data_venc_parcela_um != "undefined"){
+                  data_venc_parcela_um = response['data'][i].data_venc_parcela_um;                  
+                }
+                else{
+                  alert("Defina o vencimento da primeira parcela do curso no contrato do aluno.");
+                  //return;
+                }
+
                 console.log(document.getElementById('valor_matricula').value);
                 /* $('#form').append('<input type="hidden" id="valor_matricula" name="valor_matricula" value="'+valor_matricula+'">'); */
 
@@ -48,12 +68,13 @@ $(document).ready(function(){
                 valor_contrato = valor_contrato.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL'});
 
                 var qt_parcelas_curso = response['data'][i].qt_parcelas_curso;
+                if(qt_parcelas_curso < 1){
+                  alert("Defina a quantidade de parcelas do curso no contrato do aluno.");
+                  return;
+                }
                 document.getElementById('qt_parcelas_curso').value = qt_parcelas_curso;
                 
-                var data_venc_parc_um = '';
-                if (typeof response['data'][i].data_venc_parc_um != "undefined"){
-                   data_venc_parc_um = response['data'][i].data_venc_parc_um;
-                }
+                
 
                 var valor_material_didatico = response['data'][i].valor_material_didatico;
                 valor_material_didatico = valor_material_didatico.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL'});
@@ -65,7 +86,7 @@ $(document).ready(function(){
 
                 informacoes += '<b>Matrícula</b>: '+valor_matricula+'<br> ';
                 informacoes += '<b>Valor contrato</b>: '+ (valor_contrato) +' - Curso '+valor_curso+' Desconto '+valor_desconto+' - ';
-                informacoes += 'Parcelas: '+qt_parcelas_curso+' - 1° Vencimento '+data_venc_parc_um +'<br>';
+                informacoes += 'Parcelas: '+qt_parcelas_curso+' - 1° Vencimento '+formataData(data_venc_parcela_um) +'<br>';
 
                 informacoes += '<b>Material Didático</b>: '+valor_material_didatico+' Parcelas: '+qt_parcelas_mat_didatico+'<br>';
 

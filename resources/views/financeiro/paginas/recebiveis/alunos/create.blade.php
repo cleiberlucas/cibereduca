@@ -18,6 +18,10 @@
             <input type="hidden" class="" id="valor_curso" name="valor_curso" value="">
             <input type="hidden" class="" id="valor_desconto" name="valor_desconto" value="">
             <input type="hidden" class="" id="qt_parcelas_curso" name="qt_parcelas_curso" value="">
+            <input type="hidden" class="" id="data_venc_parcela_um" name="data_venc_parcela_um" value="">
+
+            <input type="hidden" class="" id="valor_material_didatico" name="valor_material_didatico" value="">
+            <input type="hidden" class="" id="qt_parcelas_mat_didatico" name="qt_parcelas_mat_didatico" value="">
                         
             <div class="form-group">
                 <div class="row">
@@ -45,7 +49,9 @@
                     <div class="col-sm-12" id="valores"></div>
                 </div> 
                 <hr>
-                <div class="row pt-3" id="campos"></div>
+                <div class="row" id="campos">
+                    <div class="row" id="linha"> </div>
+                </div>
             </div>
             <div class="row ">
                 <div class="form-group col-sm-4 col-xs-2">     
@@ -56,6 +62,7 @@
         </form>
     </div>
 
+    <script type="text/javascript" src="{!!asset('/js/utils.js')!!}"></script>
     <script type="text/javascript" src="{!!asset('/js/valoresRecebiveis.js')!!}"></script>
     <script type="text/javascript" src="{!!asset('/js/camposRecebiveis.js')!!}"></script>
     
