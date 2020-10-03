@@ -11,12 +11,17 @@ Route::prefix('financeiro')
         ->group(function () {
 
                 /**
-                 * Rotas Financeiro
-                 */
-                
+                 * Rotas Financeiro RECEBÍVEL
+                 */                
                 Route::resource('financeiro', 'FinanceiroController');
-                route::any('financeiro/alunos/{id_aluno}', 'FinanceiroController@indexAluno')->name('financeiro.indexAluno');
-                Route::get('financeiro/create/{id_aluno}', 'FinanceiroController@create')->name('financeiro.create');
+                route::any('alunos/{id_aluno}', 'FinanceiroController@indexAluno')->name('financeiro.indexAluno');
+                Route::get('create/{id_aluno}', 'FinanceiroController@create')->name('financeiro.create');                
+
+                /**
+                 * Rotas Financeiro RECEBIMENTO
+                 */                
+                Route::resource('recebimento', 'RecebimentoController');                
+                Route::get('recebimento/create/{id_recebivel}', 'RecebimentoController@create')->name('recebimento.create');
 
         });
 /**

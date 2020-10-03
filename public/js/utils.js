@@ -72,3 +72,18 @@ function somarMesData(data, qt){
 function pad(s) { 
   return (s < 10) ? '0' + s : s; 
 }
+
+function recalcularValorParcela(valor_principal, valor_desconto, campo_desconto, valor_total){
+  //console.log('Recalculando Valor.');
+  //console.log("Recebeu "+valor_principal+" e "+valor_desconto);
+  if (valor_desconto > valor_principal){
+    alert('O valor do desconto não pode ser maior que o valor principal.');
+    document.getElementById(''+campo_desconto).value = 0;
+    document.getElementById(''+valor_total).value = valor_principal - 0;
+    return;
+  }
+  //console.log('campo total '+valor_total);
+  //console.log("total = "+(valor_principal - valor_desconto));
+  document.getElementById(''+valor_total).value = valor_principal - valor_desconto;
+  //return valor_principal - valor_desconto;
+}

@@ -7,9 +7,12 @@ $(document).ready(function(){
     // Conta selecionado
     $('#fk_id_matricula').change(function(){
       
+      //Limpando a div dos campos
+      document.getElementById("campos").innerHTML = "";
+
         // ID matrícula
         var id_matricula = $('#fk_id_matricula').val();
-        console.log("id matrícula "+id_matricula);
+        //console.log("id matrícula "+id_matricula);
         // Empty the dropdown
         document.getElementById('valores').innerHTML = '';
         //$('#valores').innerHTML = '';
@@ -48,7 +51,7 @@ $(document).ready(function(){
 
                // data_venc = new Date(response['data'][i].data_venc_parcela_um);
                 document.getElementById('data_venc_parcela_um').value = response['data'][i].data_venc_parcela_um;
-                console.log('DATA VENC 1 = '+response['data'][i].data_venc_parcela_um);
+                //console.log('DATA VENC 1 = '+response['data'][i].data_venc_parcela_um);
 
                 var data_venc_parcela_um = '';
                 if (typeof response['data'][i].data_venc_parcela_um != "undefined"){
@@ -59,7 +62,7 @@ $(document).ready(function(){
                   //return;
                 }
 
-                console.log(document.getElementById('valor_matricula').value);
+               // console.log(document.getElementById('valor_matricula').value);
                 /* $('#form').append('<input type="hidden" id="valor_matricula" name="valor_matricula" value="'+valor_matricula+'">'); */
 
                 valor_matricula = valor_matricula.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL'});
@@ -73,8 +76,6 @@ $(document).ready(function(){
                   return;
                 }
                 document.getElementById('qt_parcelas_curso').value = qt_parcelas_curso;
-                
-                
 
                 var valor_material_didatico = response['data'][i].valor_material_didatico;
                 valor_material_didatico = valor_material_didatico.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL'});
@@ -85,10 +86,10 @@ $(document).ready(function(){
                 var informacoes = '<b>Dados do contrato:</b><br>';
 
                 informacoes += '<b>Matrícula</b>: '+valor_matricula+'<br> ';
-                informacoes += '<b>Valor contrato</b>: '+ (valor_contrato) +' - Curso '+valor_curso+' Desconto '+valor_desconto+' - ';
-                informacoes += 'Parcelas: '+qt_parcelas_curso+' - 1° Vencimento '+formataData(data_venc_parcela_um) +'<br>';
+                informacoes += '<b>Valor contrato</b>: '+ (valor_contrato) +' (curso '+valor_curso+' e desconto '+valor_desconto+')';
+                informacoes += ' | '+qt_parcelas_curso+' Parcelas  com 1° Vencimento em '+formataData(data_venc_parcela_um) +'<br>';
 
-                informacoes += '<b>Material Didático</b>: '+valor_material_didatico+' Parcelas: '+qt_parcelas_mat_didatico+'<br>';
+                informacoes += '<b>Material Didático</b>: '+valor_material_didatico+' em '+qt_parcelas_mat_didatico+' parcelas.<br>';
 
                 informacoes += '<b>Observações</b>: '+obs_matricula;
 

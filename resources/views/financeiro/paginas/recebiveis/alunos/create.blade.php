@@ -3,6 +3,21 @@
 @section('title_postfix', ' Recebíveis')
 
 @section('content_header')
+    <ol class="breadcrumb">        
+        <li class="breadcrumb-item active" >            
+            <a href="#" class=""> Financeiro</a>
+        </li>
+        <li class="breadcrumb-item active" >            
+            <a href="{{ route('financeiro.index') }} " class=""> Recebíveis</a>
+        </li>
+        <li class="breadcrumb-item active" >            
+            <a href="{{ route('financeiro.indexAluno', $aluno->id_pessoa) }}" class=""> Aluno</a>
+        </li>
+        <li class="breadcrumb-item active" >            
+            <a href="#" class=""> Lançar</a>
+        </li>
+    </ol>
+    <br>
     <h4>Lançar Recebível</h4>
     <h4>Aluno: {{$aluno->nome}}</h4>
 @stop
@@ -12,8 +27,13 @@
         
         @include('admin.includes.alerts')
 
-        <form action="{{ route('disciplinas.store')}}" class="form" name="form" method="POST">
+        <form action="{{ route('financeiro.store')}}" class="form" name="form" method="POST">
             @csrf                       
+            <input type="hidden" class="" id="fk_id_unidade_ensino" name="fk_id_unidade_ensino" value="{{$unidadeEnsino}}">
+            <input type="hidden" class="" id="fk_id_usuario_cadastro" name="fk_id_usuario_cadastro" value="{{Auth::id()}}">
+            <input type="hidden" class="" id="fk_id_situacao_recebivel" name="fk_id_situacao_recebivel" value="1">
+            <input type="hidden" class="" id="id_pessoa" name="id_pessoa" value="{{$aluno->id_pessoa}}">
+
             <input type="hidden" class="" id="valor_matricula" name="valor_matricula" value="">
             <input type="hidden" class="" id="valor_curso" name="valor_curso" value="">
             <input type="hidden" class="" id="valor_desconto" name="valor_desconto" value="">
@@ -37,7 +57,7 @@
                 
                     <div class="col-sm-4">
                         <label>*Recebível:</label>
-                        <select name="fk_id_conta_contabil" id="fk_id_conta_contabil" class="form-control">
+                        <select name="fk_id_conta_contabil_principal" id="fk_id_conta_contabil_principal" class="form-control">
                             <option value=""></option>
                             @foreach ($contasContabeis as $contaContabil)
                                 <option value="{{$contaContabil->id_conta_contabil}}"> {{$contaContabil->descricao_conta}}</option>
@@ -46,16 +66,14 @@
                     </div>
                 </div>   
                 <div class="row pt-3">
-                    <div class="col-sm-12" id="valores"></div>
+                    <div class="form-group col-sm-12" id="valores"></div>
                 </div> 
                 <hr>
-                <div class="row" id="campos">
-                    <div class="row" id="linha"> </div>
-                </div>
+                <div class="row" id="campos">  </div>
             </div>
             <div class="row ">
                 <div class="form-group col-sm-4 col-xs-2">     
-                    * Todos os Campos Obrigatórios<br>       
+                    * Campos Obrigatórios<br>       
                     <button type="submit" class="btn btn-success"><i class="fas fa-forward"></i> Enviar</button>            
                 </div>
             </div>

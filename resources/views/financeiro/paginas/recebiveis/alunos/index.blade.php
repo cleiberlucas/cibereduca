@@ -46,8 +46,7 @@
                     <th scope="col">Parcela</th>
                     <th scope="col">Valor</th>
                     <th scope="col">Vencimento</th>
-                    <th scope="col">Pagamento</th>
-                    <th scope="col">Valor Recebido</th>
+                    <th scope="col">Pagamento</th>                    
                     <th scope="col">Ações</th>
                 </thead>
                 <tbody>
@@ -56,16 +55,15 @@
                             <th scope="row">{{$index+1}}</th>
                             <td>{{$recebivel->descricao_conta}} - {{$recebivel->tipo_turma}} - {{$recebivel->ano}}</td>
                             <td>{{$recebivel->parcela}}</td>
-                            <td>{{number_format($recebivel->valor_principal, 2, ',', '.')}}</td>
-                            <td>{{date('d/m/Y', strtotime($recebivel->data_vencimento))}}</td>
-                            <td>{{isset($recebivel->data_recebimento) ?? ''}}</td>
+                            <td>{{number_format($recebivel->valor_total, 2, ',', '.')}}</td>
+                            <td>{{date('d/m/Y', strtotime($recebivel->data_vencimento))}}</td>                            
                             <td>{{isset($recebivel->valor_recebido) ?? ''}}</td>                                                                
-                            <td >
-                                {{-- Link para pasta do aluno --}}                                    
-                                {{-- <a href="{{ route('matriculas.pasta', $pessoa->id_pessoa) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-archive"></i></a>                                         --}}
+                            <td >                                
+                                <a href="{{ route('recebimento.create', $recebivel->id_recebivel) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-hand-holding-usd"></i></a>
+                                <a href="{{ route('financeiro.edit', $recebivel->id_recebivel) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>
                                 
-                                {{-- <a href="{{ route('pessoas.edit', $pessoa->id_pessoa) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>
-                                <a href="{{ route('pessoas.show', $pessoa->id_pessoa) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-eye"></i></a> --}}
+                                {{-- <a href="{{ route('pessoas.edit', $pessoa->id_pessoa) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a> --}}
+                                {{-- <a href="{{ route('pessoas.show', $pessoa->id_pessoa) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-eye"></i></a> --}}
                             </td>                                
                         </tr>
                     @endforeach

@@ -16,6 +16,8 @@ class Recebivel extends Model
         'fk_id_matricula', 
         'fk_id_conta_contabil_principal',
         'valor_principal',
+        'valor_desconto_principal',
+        'valor_total',
         'desconto_autorizado',
         'motivo_desconto',
         'fk_id_usuario_desconto',

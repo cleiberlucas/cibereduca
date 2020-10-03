@@ -26,13 +26,13 @@ class StoreUpdateRecebivel extends FormRequest
         //$id = $this->segment(3);
     
         return [
-            'fk_id_unidade_ensino'  => 'required',
+            /* 'fk_id_unidade_ensino'  => 'required',
             'fk_id_matricula'       => 'required',
-            'fk_id_conta_contabil_principal'        => "required",
+            'fk_id_conta_contabil_principal'        => "required", */
             'valor_principal'   => "required",
+            'valor_total'       => "required",
             'data_vencimento' => "required",
-            'parcela' => "required",
-            'fk_id_situacao_recebivel'  => "required",
+            'parcela' => "required",            
             'fk_id_usuario_cadastro' => "required",            
         ];    
     }
@@ -44,11 +44,12 @@ class StoreUpdateRecebivel extends FormRequest
             'fk_id_matricula.required'       => 'Matrícula não recebida.',
             'fk_id_conta_contabil_principal.required'        => "Escolha a conta contábil.",
             'valor_principal.required'             => "Informe o valor principal.",
+            'valor_total.required'             => "Valor total não recebido.",
             'data_vencimento.required'       => "Informe a data de vencimento.",        
             'parcela.required'            => "Informe o número da parcela.",
             'fk_id_situacao_recebivel.required'     => "Situação do recebível não definida.",
             'fk_id_usuario_cadastro.required'     => "Usuário cadastro não definido.",
-            ]
+            
         ];    
     }
 }
