@@ -55,7 +55,7 @@ $(document).ready(function(){
         for (var i=1; i<= qt_parcelas; i++){          
             $('#campos').append('<div class="row mt-5 pt-5">');
               $('#campos').append('<div class="form-group col-sm-3 col-xs-2"> <label>Valor '+i+':</label> <input type="number" step="0.010" class="form-control" required name="valor_principal['+i+']" readonly value="'+valor_principal/qt_parcelas+'" /> </div>');
-              $('#campos').append('<div class="form-group col-sm-3 col-xs-2"> <label>Valor desconto '+i+':</label> <input type="number" step="0.010" class="form-control" name="valor_desconto_principal['+i+']" id="valor_desconto_principal['+i+']" value="'+valor_desconto/qt_parcelas+'" onBlur="recalcularValorParcela('+valor_principal/qt_parcelas+', this.value, \'valor_desconto_principal['+i+']\', \'valor_total['+i+']\')" /> </div>');
+              $('#campos').append('<div class="form-group col-sm-3 col-xs-2"> <label>Valor desconto '+i+':</label> <input type="number" step="0.010" class="form-control" name="valor_desconto_principal['+i+']" id="valor_desconto_principal['+i+']" value="'+valor_desconto/qt_parcelas+'" onBlur="recalcularValor('+valor_principal/qt_parcelas+', this.value, \'valor_desconto_principal['+i+']\', \'valor_total['+i+']\')" /> </div>');
               $('#campos').append('<div class="form-group col-sm-2 col-xs-2"> <label>N° Parcela:</label> <input type="text" class="form-control" maxlength="5" size="5" required name="parcela['+i+']" value="'+i+'/'+qt_parcelas+'" /> </div>');
               
               //calculando datas dos próximos vencimentos

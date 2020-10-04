@@ -19,6 +19,7 @@ class Recebimento extends Model
         'data_credito',
         'data_registra_recebimento',
         'numero_recibo',
+        'codigo_validacao',
         'fk_id_usuario_recebimento',        
     ];
    

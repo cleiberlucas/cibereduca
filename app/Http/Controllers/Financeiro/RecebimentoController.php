@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Financeiro;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateRecebimento;
+use App\Models\Financeiro\Correcao;
 use App\Models\Financeiro\Recebimento;
 use App\Models\Financeiro\Recebivel;
 use App\Models\FormaPagamento;
+use App\User;
 
 class RecebimentoController extends Controller
 {
@@ -50,12 +52,24 @@ class RecebimentoController extends Controller
         if ($recebivel->situacao == 3)
             return redirect()->back()->with('atencao', 'Recebível foi SUBSTITUÍDO/RECALCULADO. Não é possível receber.');
                 
+        $codigoValidacao = sprintf('%07X', mt_rand(0, 0xFFFFFFF));
+        //dd($codigoValidacao);
+    
         $formasPagto = new FormaPagamento();
         $formasPagto = $formasPagto->getFormasPagamento();
+
+        $correcoes = new Correcao;
+        $correcoes = $correcoes
+            ->select('descricao_conta', 'fk_id_conta_contabil',
+                'indice_correcao', 'aplica_correcao')
+            ->join('tb_contas_contabeis', 'fk_id_conta_contabil', 'id_conta_contabil')
+            ->where('situacao', '1')
+            ->where('aplica_correcao', '1')
+            ->where('fk_id_unidade_ensino', '=', User::getUnidadeEnsinoSelecionada())
+            ->get();
         
         return view('financeiro.paginas.recebimentos.create',
-            compact('recebivel', 'formasPagto')
-                       
+            compact('recebivel', 'formasPagto', 'codigoValidacao', 'correcoes')
         );
     }
 
@@ -66,19 +80,7 @@ class RecebimentoController extends Controller
  
         $dados = $request->all();
 
-       // dd($dados);
-
-       $insert = array(
-           'fk_id_recebivel' => $dados['fk_id_recebivel'],
-           'fk_id_forma_pagamento' => $dados['fk_id_forma_pagamento'],
-           'valor_recebido' => $dados['valor_recebido'],
-           'data_recebimento' => $dados['data_recebimento'],
-           'data_credito' => $dados['data_credito'],
-           'fk_id_usuario_recebimento' => $dados['fk_id_usuario_recebimento'],
-           
-       ); 
-   // dd($insert);
-       $this->repositorio->create($insert);
+       $this->repositorio->create($dados);
 
        return redirect()->route('financeiro.indexAluno', $dados['id_pessoa'])->with('sucesso', 'Recebimento lançado com sucesso.');
     }

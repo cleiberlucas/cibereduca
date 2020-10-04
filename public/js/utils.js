@@ -73,9 +73,18 @@ function pad(s) {
   return (s < 10) ? '0' + s : s; 
 }
 
-function recalcularValorParcela(valor_principal, valor_desconto, campo_desconto, valor_total){
-  //console.log('Recalculando Valor.');
-  //console.log("Recebeu "+valor_principal+" e "+valor_desconto);
+/**
+ * Recalcula valor de recebível conforme desconto informado
+ * Utilizado para valor principal, multas ou juros
+ * @param {*} valor_principal 
+ * @param {*} valor_desconto 
+ * @param {*} campo_desconto 
+ * @param {*} valor_total 
+ */
+
+function recalcularValor(valor_principal, valor_desconto, campo_desconto, valor_total){
+  //console.log('Recalculando Valor .');
+ // console.log("Recebeu "+valor_principal+" e "+valor_desconto);
   if (valor_desconto > valor_principal){
     alert('O valor do desconto não pode ser maior que o valor principal.');
     document.getElementById(''+campo_desconto).value = 0;
