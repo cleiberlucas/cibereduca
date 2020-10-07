@@ -40,7 +40,7 @@
             <input type="hidden" class="" id="fk_id_usuario_recebimento" name="fk_id_usuario_recebimento" value="{{Auth::id()}}">  
             
             @foreach ($correcoes as $index => $correcao)
-                <input type="hidden" class="" id="fk_id_conta_contabil[{{$index}}]" name="fk_id_conta_contabil[{{$index}}]" value="{{$correcao->fk_id_conta_contabil}}">  
+                <input type="hidden" class="" id="fk_id_conta_contabil_acrescimo[{{$index}}]" name="fk_id_conta_contabil_acrescimo[{{$index}}]" value="{{$correcao->fk_id_conta_contabil}}">  
                 <input type="hidden" class="" id="indice_correcao[{{$index}}]" name="indice_correcao[{{$index}}]" value="{{$correcao->indice_correcao}}">  
                 <input type="hidden" class="" id="aplica_correcao[{{$index}}]" name="aplica_correcao[{{$index}}]" value="{{$correcao->aplica_correcao}}">  
             @endforeach
@@ -68,15 +68,15 @@
                     </div>
                     <div class="form-group col-sm-3 col-xs-4">
                         <label>* Data Crédito:</label>
-                        <input type="date" class="form-control" required name="data_credito" value="{{ $recebivel->data_vencimento ?? old('data_vencimento') }}" />
+                        <input type="date" class="form-control" required id="data_credito" name="data_credito" value="{{ $recebivel->data_vencimento ?? old('data_vencimento') }}" />
                     </div>
                 </div>
                 <div class="row" id="multa"> </div>
                 <div class="row" id="juro"> </div>
-                <div class="row">
+                <div class="row" id="pagto1">
                     <div class="form-group col-sm-3 col-xs-4">            
-                        <label>* Forma de pagamento</label>
-                        <select name="fk_id_forma_pagamento" id="fk_id_forma_pagamento" required class="form-control">
+                        <label>* Forma de pagamento 1</label>
+                        <select name="fk_id_forma_pagamento[0]" id="fk_id_forma_pagamento[0]" required class="form-control">
                             <option value=""></option>
                             @foreach ($formasPagto as $formaPagto)
                                 <option value="{{$formaPagto->id_forma_pagamento }}"
@@ -89,10 +89,34 @@
                         </select>
                     </div> 
                     <div class="form-group col-sm-3 col-xs-4">
-                        <label>* VALOR TOTAL RECEBIDO:</label>
-                        <input type="number" id="valor_recebido" name="valor_recebido" required step="0.010"  class="form-control" value="{{ $recebivel->valor_total ?? old('valor_total') }}">
+                        <label>* VALOR TOTAL RECEBIDO 1:</label>
+                        <input type="number" id="valor_recebido[0]" name="valor_recebido[0]" required step="0.010"  class="form-control" value="{{ $recebivel->valor_total ?? old('valor_total') }}" 
+                            onBlur="calcularSegundoRecebimento();">
                     </div>
                 </div>   
+                {{-- 2ª linha de pagamento para o caso de pagar parte em dinheiro e parte em cartão --}}
+                <div class="row" id="pagto2">
+                    <div class="form-group col-sm-3 col-xs-4">            
+                        <label>(**) Forma de pagamento 2</label>
+                        <select name="fk_id_forma_pagamento[1]" id="fk_id_forma_pagamento[1]"  class="form-control">
+                            <option value=""></option>
+                            @foreach ($formasPagto as $formaPagto)
+                                <option value="{{$formaPagto->id_forma_pagamento }}"
+                                    @if (isset($matricula) && $formaPagto->id_forma_pagamento == $matricula->fk_id_forma_pagto_matricula)
+                                        selected="selected"
+                                    @endif
+                                    >                    
+                                    {{$formaPagto->forma_pagamento}}</option>
+                            @endforeach
+                        </select>
+                        
+                        <small>(**) Somente se o pagamento for fracionado em dinheiro e cartão, por exemplo.</small>
+                    </div> 
+                    <div class="form-group col-sm-3 col-xs-4">
+                        <label>VALOR TOTAL RECEBIDO 2:</label>
+                        <input type="number" id="valor_recebido[1]" name="valor_recebido[1]" readonly step="0.010"  class="form-control" value="">
+                    </div>
+                </div>
                 <div class="row ">
                     <div class="form-group col-sm-3 col-xs-4">
                         <label>Número Recibo:</label>
@@ -112,6 +136,7 @@
 
     <script type="text/javascript" src="{!!asset('/js/utils.js')!!}"></script>
     <script type="text/javascript" src="{!!asset('/js/camposAcrescimos.js')!!}"></script>
+    <script type="text/javascript" src="{!!asset('/js/calculaSegundoRecebimento.js')!!}"></script>
     
     <script>
         $(document).ready(function(){

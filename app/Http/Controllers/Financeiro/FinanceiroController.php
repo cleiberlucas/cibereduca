@@ -60,7 +60,9 @@ class FinanceiroController extends Controller
             ->first();
 
         $recebiveis = $this->repositorio
-            ->select('id_recebivel', 'descricao_conta', 'tipo_turma', 'ano', 'parcela', 'valor_total', 'data_vencimento', 'data_recebimento', 'nome')
+            ->select('id_recebivel', 'ano', 'data_vencimento', 'fk_id_conta_contabil_principal', 'parcela',
+                'fk_id_situacao_recebivel',
+                'descricao_conta', 'tipo_turma', 'valor_total',  'data_recebimento', 'nome')
             ->rightJoin('tb_matriculas', 'fk_id_matricula', 'id_matricula')
             ->join('tb_pessoas', 'id_pessoa', 'fk_id_aluno')
             ->join('tb_turmas', 'fk_id_turma', 'id_turma')
@@ -70,9 +72,13 @@ class FinanceiroController extends Controller
             ->join('tb_tipos_situacao_recebivel', 'fk_id_situacao_recebivel', 'id_situacao_recebivel')
             ->leftJoin('tb_recebimentos', 'fk_id_recebivel', 'id_recebivel')            
             ->where('fk_id_aluno', $id_aluno)
+            ->where('fk_id_situacao_recebivel', '<=', '3')
             ->where('tb_recebiveis.fk_id_unidade_ensino', '=', User::getUnidadeEnsinoSelecionada())
-            ->orderBy('ano', 'desc')
-            ->orderBy('data_vencimento', 'asc')
+            ->groupBy('id_recebivel')
+            ->groupBy('ano')
+            ->groupBy('data_vencimento')
+            ->groupBy('fk_id_conta_contabil_principal')
+            ->groupBy('parcela')
             ->paginate(25);
 
         return view('financeiro.paginas.recebiveis.alunos.index', 
@@ -95,12 +101,13 @@ class FinanceiroController extends Controller
             ->join('tb_turmas', 'fk_id_turma', 'id_turma')
             ->join('tb_tipos_turmas', 'fk_id_tipo_turma', 'id_tipo_turma')
             ->join('tb_pessoas', 'fk_id_aluno', 'id_pessoa')
-            ->where('id_pessoa', $id_aluno)
+            ->where('id_pessoa', $id_aluno)            
             ->get();
 
         $contasContabeis = new ContaContabil;
         $contasContabeis = $contasContabeis
             ->where('situacao', '1')
+            ->where('id_conta_contabil', '<=', 3)
             ->get();
 
         $unidadeEnsino = User::getUnidadeEnsinoSelecionada();
@@ -142,7 +149,7 @@ class FinanceiroController extends Controller
             }
         }
 
-        return redirect()->route('financeiro.create', $dados['id_pessoa'] );
+        return redirect()->route('financeiro.create', $dados['id_pessoa'] )->with('sucesso', 'Recebível lançado com sucesso.');
     }
 
     public function edit($id_recebivel)
@@ -191,6 +198,20 @@ class FinanceiroController extends Controller
         $recebivel->where('id_recebivel', $id)->update($request->except('_token', '_method'));
 
         return redirect()->route('financeiro.indexAluno', $id)->with('sucesso', 'Recebível alterado com sucesso.');
+    }
+
+    public function updateSituacao($id_recebivel, $situacao)
+    {
+        //$this->authorize('Recebível Alterar');   
+        $recebivel = $this->repositorio->where('id_recebivel', $id_recebivel)->first();
+
+        if (!$recebivel)
+            return redirect()->back()->with('erro', 'Recebível não encontrado.');
+
+        $situacao_recebivel = Array('fk_id_situacao_recebivel' => $situacao);
+        $recebivel->where('id_recebivel', $id_recebivel)->update($situacao_recebivel);
+
+        //return redirect()->route('financeiro.indexAluno', $id)->with('sucesso', 'Recebível alterado com sucesso.');
     }
 
 }

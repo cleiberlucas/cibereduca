@@ -50,20 +50,43 @@
                     <th scope="col">Ações</th>
                 </thead>
                 <tbody>
-                    @foreach ($recebiveis as $index => $recebivel)                        
-                        <tr>
+                    @foreach ($recebiveis as $index => $recebivel)       
+                        
+                        <?php
+                        $hoje = date('Y-m-d');
+                        /* Recebido */
+                        if ($recebivel->fk_id_situacao_recebivel == 2)
+                            echo '<tr bgcolor="#cef6d8">';
+                        /* Em atraso */
+                        elseif ($recebivel->fk_id_situacao_recebivel == 1 and strtotime($recebivel->data_vencimento) < strtotime($hoje))
+                            echo '<tr bgcolor="#F8E0E0">';
+                        else 
+                            echo '<tr>';
+                        ?>
+                        
                             <th scope="row">{{$index+1}}</th>
                             <td>{{$recebivel->descricao_conta}} - {{$recebivel->tipo_turma}} - {{$recebivel->ano}}</td>
                             <td>{{$recebivel->parcela}}</td>
                             <td>{{number_format($recebivel->valor_total, 2, ',', '.')}}</td>
-                            <td>{{date('d/m/Y', strtotime($recebivel->data_vencimento))}}</td>                            
-                            <td>{{isset($recebivel->valor_recebido) ?? ''}}</td>                                                                
-                            <td >                                
-                                <a href="{{ route('recebimento.create', $recebivel->id_recebivel) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-hand-holding-usd"></i></a>
-                                <a href="{{ route('financeiro.edit', $recebivel->id_recebivel) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>
-                                
-                                {{-- <a href="{{ route('pessoas.edit', $pessoa->id_pessoa) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a> --}}
-                                {{-- <a href="{{ route('pessoas.show', $pessoa->id_pessoa) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-eye"></i></a> --}}
+                            <td>{{date('d/m/Y', strtotime($recebivel->data_vencimento))}}</td>                                                        
+                            <td> 
+                                @if (isset($recebivel->data_recebimento))
+                                    {{date('d/m/Y', strtotime($recebivel->data_recebimento)) ?? ''}}
+                                @endif
+                            </td>
+                            <td >    
+                                {{-- A receber --}}
+                                @if ($recebivel->fk_id_situacao_recebivel == 1)
+                                    {{-- Receber --}}
+                                    <a href="{{ route('recebimento.create', $recebivel->id_recebivel) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-hand-holding-usd"></i></a>    
+                                    {{-- Editar --}}
+                                    <a href="{{ route('financeiro.edit', $recebivel->id_recebivel) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>
+
+                                {{-- Recebido --}}
+                                @elseif ($recebivel->fk_id_situacao_recebivel == 2)
+                                    {{-- Impressão recibo --}}
+                                    <a href="{{ route('recebimento.recibo', $recebivel->id_recebivel) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-receipt"></i></i></a>
+                                @endif   
                             </td>                                
                         </tr>
                     @endforeach

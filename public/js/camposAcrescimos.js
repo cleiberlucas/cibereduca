@@ -11,8 +11,8 @@ function calcularAcrescimos(){
   document.getElementById("juro").innerHTML = "";
   
     // ID conta contábil
-    var id_conta_contabil_multa = document.getElementById("fk_id_conta_contabil[0]").value;
-    var id_conta_contabil_juro = document.getElementById("fk_id_conta_contabil[1]").value;
+    var id_conta_contabil_multa = document.getElementById("fk_id_conta_contabil_acrescimo[0]").value;
+    var id_conta_contabil_juro = document.getElementById("fk_id_conta_contabil_acrescimo[1]").value;
 
     var indice_multa = document.getElementById("indice_correcao[0]").value;
     var indice_juro = document.getElementById("indice_correcao[1]").value;
@@ -23,12 +23,16 @@ function calcularAcrescimos(){
     var valor_total_principal = document.getElementById("valor_total").value;
 
     //console.log('conta multa '+id_conta_contabil_multa);
+    //setando data crédito = data recebimento
+    document.getElementById("data_credito").value = document.getElementById('data_recebimento').value;
+
     var data_venc = new Date(document.getElementById('data_vencimento').value);
-    var data_pagto = new Date(document.getElementById('data_recebimento').value);
-    if (data_pagto <= data_venc)
+    var data_recebto = new Date(document.getElementById('data_recebimento').value);
+    
+    if (data_recebto <= data_venc)
       var dias_atraso = 0;
     else{
-      var diff = Math.abs(data_pagto.getTime() - data_venc.getTime());
+      var diff = Math.abs(data_recebto.getTime() - data_venc.getTime());
       var dias_atraso = Math.ceil(diff / (1000 * 60 * 60 * 24));
     }
     // console.log('DIAS ATRASO '+dias_atraso);
@@ -67,6 +71,8 @@ function somarRecebiveis(){
   if (document.getElementById("valor_total_acrescimo[1]"))
     valor_juro = parseFloat(document.getElementById("valor_total_acrescimo[1]").value);
 
-  var valor_total_recebido = (valor_total_principal + valor_multa + valor_juro);
-  document.getElementById('valor_recebido').value = valor_total_recebido;
+  var valor_total_recebido = (valor_total_principal + valor_multa + valor_juro).toFixed(2);
+  document.getElementById('valor_recebido[0]').value = valor_total_recebido;
+  document.getElementById('valor_recebido[1]').value = 0;
+  document.getElementById("fk_id_forma_pagamento[1]").removeAttribute('required', 'required');
 }
