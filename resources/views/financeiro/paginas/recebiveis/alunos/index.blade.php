@@ -1,8 +1,4 @@
-
-
 @extends('adminlte::page')
-
-<section></section>
 
 @section('title_postfix', ' Pessoas')
 
@@ -45,8 +41,7 @@
                     <th scope="col">Recebível</th>                        
                     <th scope="col">Parcela</th>
                     <th scope="col">Valor</th>
-                    <th scope="col">Vencimento</th>
-                    <th scope="col">Pagamento</th>                    
+                    <th scope="col">Vencimento</th>                                      
                     <th scope="col">Ações</th>
                 </thead>
                 <tbody>
@@ -69,24 +64,23 @@
                             <td>{{$recebivel->parcela}}</td>
                             <td>{{number_format($recebivel->valor_total, 2, ',', '.')}}</td>
                             <td>{{date('d/m/Y', strtotime($recebivel->data_vencimento))}}</td>                                                        
-                            <td> 
-                                @if (isset($recebivel->data_recebimento))
-                                    {{date('d/m/Y', strtotime($recebivel->data_recebimento)) ?? ''}}
-                                @endif
-                            </td>
+                            
                             <td >    
                                 {{-- A receber --}}
                                 @if ($recebivel->fk_id_situacao_recebivel == 1)
                                     {{-- Receber --}}
-                                    <a href="{{ route('recebimento.create', $recebivel->id_recebivel) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-hand-holding-usd"></i></a>    
+                                    <a href="{{ route('recebimento.create', $recebivel->id_recebivel) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-hand-holding-usd"></i></a>    
                                     {{-- Editar --}}
-                                    <a href="{{ route('financeiro.edit', $recebivel->id_recebivel) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>
+                                    <a href="{{ route('financeiro.edit', $recebivel->id_recebivel) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-edit"></i></a>
 
                                 {{-- Recebido --}}
                                 @elseif ($recebivel->fk_id_situacao_recebivel == 2)
                                     {{-- Impressão recibo --}}
-                                    <a href="{{ route('recebimento.recibo', $recebivel->id_recebivel) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-receipt"></i></i></a>
+                                    <a href="{{ route('recebimento.recibo', $recebivel->id_recebivel) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-receipt"></i></i></a>
                                 @endif   
+                                {{-- show --}}
+                                <a href="{{ route('financeiro.show', $recebivel->id_recebivel) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-eye"></i></i></a>
+
                             </td>                                
                         </tr>
                     @endforeach

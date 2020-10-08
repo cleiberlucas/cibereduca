@@ -87,10 +87,8 @@ class RecebimentoController extends Controller
         $gravou_acrescimo = $acrescimo->store($dados);
 
         if ($gravou_acrescimo){
+            //Gravar recebimentos
             foreach($dados['valor_recebido'] as $index => $valor_recebido){
-                //if ($index > 0)
-                    //dd($dados['valor_recebido'][$index]);
-
                 if ( $dados['valor_recebido'][$index] > 0){
                     $insert = array(
                         'fk_id_recebivel' => $dados['fk_id_recebivel'],
@@ -106,12 +104,15 @@ class RecebimentoController extends Controller
                     $this->repositorio->create($insert);
                 }                
             }
+
             $recebivel = new FinanceiroController(new Recebivel);
             //Alterando situação do recebível p RECEBIDO  = 2
-            $recebivel->updateSituacao($dados['fk_id_recebivel'], 2);
+            //alterando valor do desconto principal
+            //alteranado valor total
+            $recebivel->updateSituacaoRecebido($dados['fk_id_recebivel'], $dados['valor_desconto_principal'], $dados['valor_total'], 2);
 
             return redirect()->route('financeiro.indexAluno', $dados['id_pessoa'])->with('sucesso', 'Recebimento lançado com sucesso.');
-        }
+        }//fim gravação recebimentos
         else
             return redirect()->route('financeiro.indexAluno', $dados['id_pessoa'])->with('erro', 'Houve erro ao gravar o recebimento. Entre em contato com o desenvolvedor.');
        
@@ -140,8 +141,13 @@ class RecebimentoController extends Controller
             ->join('tb_anos_letivos', 'fk_id_ano_letivo', 'id_ano_letivo')
             ->join('users', 'fk_id_usuario_recebimento', 'id')
             ->where('id_recebivel', $id_recebivel)
+            ->where('fk_id_situacao_recebivel', 2)
             ->orderBy('tb_recebiveis.fk_id_conta_contabil_principal')            
             ->get();
+        
+            //caso o usuário altere o id do recebivel na url e não esteja pago
+            if (count($recebimento) == 0)
+                return redirect()->back();
 
         $acrescimos = new Acrescimo;
         $acrescimos = $acrescimos
@@ -160,56 +166,36 @@ class RecebimentoController extends Controller
 
         //dd($recebimento);
 
-        return view('financeiro.paginas.recebimentos.recibo', compact('recebimento', 'formasPagamento', 'acrescimos'));
+        return view('financeiro.paginas.recebimentos.recibo', 
+            compact('recebimento', 'formasPagamento', 'acrescimos'));
 
     }
 
-    /* public function edit($id_recebivel)
+    public function destroy($fk_id_recebivel)
     {
-        $this->authorize('Recebível Alterar');   
-       
-        $recebivel = $this->repositorio
-            ->select('descricao_conta', 
-                'tipo_turma', 'ano', 
-                'parcela', 'valor_principal', 'valor_desconto_principal', 'valor_total', 'data_vencimento', 'data_recebimento', 'obs_recebivel',
-                'id_pessoa', 'nome')
-            ->rightJoin('tb_matriculas', 'fk_id_matricula', 'id_matricula')
-            ->join('tb_pessoas', 'id_pessoa', 'fk_id_aluno')
-            ->join('tb_turmas', 'fk_id_turma', 'id_turma')
-            ->join('tb_tipos_turmas', 'fk_id_tipo_turma', 'id_tipo_turma')
-            ->join('tb_anos_letivos', 'fk_id_ano_letivo', 'id_ano_letivo')
-            ->join('tb_contas_contabeis', 'fk_id_conta_contabil_principal', 'id_conta_contabil')
-            ->join('tb_tipos_situacao_recebivel', 'fk_id_situacao_recebivel', 'id_situacao_recebivel')
-            ->leftJoin('tb_recebimentos', 'fk_id_recebivel', 'id_recebivel')            
-            ->where('id_recebivel', $id_recebivel)
-            ->first();
+        //Remover recebimento
+        $this->authorize('Recebimento Remover');
 
-        if (!$recebivel)
-            return redirect()->back()->with('erro', 'Recebível não encontrado.');
-        
-        if ($recebivel->situacao == 2)
-            return redirect()->back()->with('atencao', 'Recebível foi pago. Não é possível alterar.');
+        $recebimento = $this->repositorio->where('fk_id_recebivel', $fk_id_recebivel)->first();
 
-        if ($recebivel->situacao == 3)
-            return redirect()->back()->with('atencao', 'Recebível foi SUBSTITUÍDO/RECALCULADO. Não é possível alterar.');
-                
-        return view('financeiro.paginas.recebiveis.alunos.edit',
-            compact('recebivel')
-                       
-        );
-    } */
+        if (!$recebimento)
+            return redirect()->back()->with('error', 'Recebimento não encontrado.');           
 
-    /* public function update(StoreUpdateRecebivel $request, $id)
-    {
-        $this->authorize('Recebível Alterar');   
-        $recebivel = $this->repositorio->where('id_recebivel', $id)->first();
+        try {
+            $recebimento->where('fk_id_recebivel', $fk_id_recebivel)->delete();
 
-        if (!$recebivel)
-            return redirect()->back()->with('erro', 'Recebível não encontrado.');
+            //Remover acréscimos
+            $acrescimos = new AcrescimoController(new Acrescimo);
+            $acrescimos->apagarAcrescimo($fk_id_recebivel);
+            
+            //Voltar recebível p situação 1 = A RECEBER
+            $recebivel = new FinanceiroController(new Recebivel);
+            $recebivel->updateSituacaoReceber($fk_id_recebivel);
 
-        $recebivel->where('id_recebivel', $id)->update($request->except('_token', '_method'));
+        } catch (QueryException $qe) {
+            return redirect()->back()->with('error', 'Não foi possível excluir o recebimento. ');            
+        }
+        return redirect()->back()->with('sucesso', 'Recebimento removido com sucesso.');
 
-        return redirect()->route('financeiro.indexAluno', $id)->with('sucesso', 'Recebível alterado com sucesso.');
-    } */
-
+    }
 }

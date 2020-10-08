@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Financeiro;
 
 use App\Http\Controllers\Controller;
 use App\Models\Financeiro\Acrescimo;
-use App\User;
 
 class AcrescimoController extends Controller
 {
@@ -40,6 +39,25 @@ class AcrescimoController extends Controller
             }
         }
         return $gravou_acrescimo;       
+    }
+
+    //Remover acréscimo de um recebível
+    public function apagarAcrescimo($id_recebivel)
+    {                
+        $acrescimo = $this->repositorio->where('fk_id_recebivel', $id_recebivel)->first();
+
+       /*  if (!$acrescimo)
+            return redirect()->back()->with('error', 'Recebimento não encontrado.');  */          
+
+        try {
+            if ($acrescimo)
+                $acrescimo->where('fk_id_recebivel', $id_recebivel)->delete();
+
+        } catch (QueryException $qe) {
+            return redirect()->back()->with('error', 'Não foi possível excluir o acréscimo. ');            
+        }
+        //return redirect()->route('tiposturmas.avaliacoes', $avaliacao->fk_id_tipo_turma);
+        return true;
     }
 
 }

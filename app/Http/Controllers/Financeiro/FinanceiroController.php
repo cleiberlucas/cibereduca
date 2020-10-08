@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Financeiro;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateRecebivel;
+use App\Models\Financeiro\Acrescimo;
 use App\Models\Financeiro\ContaContabil;
+use App\Models\Financeiro\Recebimento;
 use App\Models\Financeiro\Recebivel;
 use App\Models\FormaPagamento;
 use App\Models\Secretaria\Matricula;
@@ -62,23 +64,21 @@ class FinanceiroController extends Controller
         $recebiveis = $this->repositorio
             ->select('id_recebivel', 'ano', 'data_vencimento', 'fk_id_conta_contabil_principal', 'parcela',
                 'fk_id_situacao_recebivel',
-                'descricao_conta', 'tipo_turma', 'valor_total',  'data_recebimento', 'nome')
+                'descricao_conta', 'tipo_turma', 'valor_total', 'nome')
             ->rightJoin('tb_matriculas', 'fk_id_matricula', 'id_matricula')
             ->join('tb_pessoas', 'id_pessoa', 'fk_id_aluno')
             ->join('tb_turmas', 'fk_id_turma', 'id_turma')
             ->join('tb_tipos_turmas', 'fk_id_tipo_turma', 'id_tipo_turma')
             ->join('tb_anos_letivos', 'fk_id_ano_letivo', 'id_ano_letivo')
             ->join('tb_contas_contabeis', 'fk_id_conta_contabil_principal', 'id_conta_contabil')
-            ->join('tb_tipos_situacao_recebivel', 'fk_id_situacao_recebivel', 'id_situacao_recebivel')
-            ->leftJoin('tb_recebimentos', 'fk_id_recebivel', 'id_recebivel')            
+            ->join('tb_tipos_situacao_recebivel', 'fk_id_situacao_recebivel', 'id_situacao_recebivel')            
             ->where('fk_id_aluno', $id_aluno)
             ->where('fk_id_situacao_recebivel', '<=', '3')
-            ->where('tb_recebiveis.fk_id_unidade_ensino', '=', User::getUnidadeEnsinoSelecionada())
-            ->groupBy('id_recebivel')
-            ->groupBy('ano')
-            ->groupBy('data_vencimento')
-            ->groupBy('fk_id_conta_contabil_principal')
-            ->groupBy('parcela')
+            ->where('tb_recebiveis.fk_id_unidade_ensino', '=', User::getUnidadeEnsinoSelecionada())            
+            ->orderBy('ano', 'desc')
+            ->orderBy('data_vencimento')
+            ->orderBy('fk_id_conta_contabil_principal')
+            ->orderBy('parcela')
             ->paginate(25);
 
         return view('financeiro.paginas.recebiveis.alunos.index', 
@@ -200,18 +200,89 @@ class FinanceiroController extends Controller
         return redirect()->route('financeiro.indexAluno', $id)->with('sucesso', 'Recebível alterado com sucesso.');
     }
 
-    public function updateSituacao($id_recebivel, $situacao)
-    {
-        //$this->authorize('Recebível Alterar');   
+    //Alterando situação, valor_total e valor_desconto principal do recebível
+    public function updateSituacaoRecebido($id_recebivel, $valor_desconto_principal, $valor_total, $situacao)
+    {        
         $recebivel = $this->repositorio->where('id_recebivel', $id_recebivel)->first();
 
         if (!$recebivel)
             return redirect()->back()->with('erro', 'Recebível não encontrado.');
 
-        $situacao_recebivel = Array('fk_id_situacao_recebivel' => $situacao);
-        $recebivel->where('id_recebivel', $id_recebivel)->update($situacao_recebivel);
+        $situacao_recebivel = Array('fk_id_situacao_recebivel' => $situacao,                                    
+                                    'valor_desconto_principal' => $valor_desconto_principal,
+                                    'valor_total' => $valor_total);
 
-        //return redirect()->route('financeiro.indexAluno', $id)->with('sucesso', 'Recebível alterado com sucesso.');
+        $recebivel->where('id_recebivel', $id_recebivel)->update($situacao_recebivel);
+    }
+
+    //voltando recebível p situação A RECEBER = 1
+    public function updateSituacaoReceber($id_recebivel)
+    {        
+        $recebivel = $this->repositorio->where('id_recebivel', $id_recebivel)->first();
+
+        if (!$recebivel)
+            return redirect()->back()->with('erro', 'Recebível não encontrado.');
+
+        $situacao_recebivel = Array('fk_id_situacao_recebivel' => 1);
+
+        $recebivel->where('id_recebivel', $id_recebivel)->update($situacao_recebivel);
+    }
+
+    public function show($id)
+    {
+        $this->authorize('Recebível Ver');   
+        $recebivel = $this->repositorio
+            ->select('id_recebivel', 'valor_principal', 'valor_desconto_principal', 'valor_total', 'data_vencimento', 'parcela', 'obs_recebivel', 'tb_recebiveis.data_cadastro',
+                'descricao_conta',
+                'aluno.nome as nome_aluno', 'aluno.id_pessoa',
+                'resp.nome as nome_resp',
+                'nome_turma',
+                'name',
+                'cnpj', 'tb_unidades_ensino.endereco',
+                'ano',
+                'id_situacao_recebivel', 'situacao_recebivel',
+                )                       
+            ->join('tb_unidades_ensino', 'id_unidade_ensino', 'tb_recebiveis.fk_id_unidade_ensino')
+            ->join('tb_contas_contabeis', 'tb_recebiveis.fk_id_conta_contabil_principal', 'id_conta_contabil')                        
+            ->join('tb_matriculas', 'fk_id_matricula', 'id_matricula')
+            ->join('tb_pessoas as aluno', 'fk_id_aluno', 'aluno.id_pessoa')
+            ->join('tb_pessoas as resp', 'fk_id_responsavel', 'resp.id_pessoa')
+            ->join('tb_turmas', 'fk_id_turma', 'id_turma')
+            ->join('tb_tipos_turmas', 'fk_id_tipo_turma', 'id_tipo_turma')
+            ->join('tb_anos_letivos', 'fk_id_ano_letivo', 'id_ano_letivo')
+            ->join('users', 'fk_id_usuario_cadastro', 'id')
+            ->join('tb_tipos_situacao_recebivel', 'fk_id_situacao_recebivel', 'id_situacao_recebivel')
+            ->where('id_recebivel', $id)                        
+            ->first();
+
+        $recebimentos = new Recebimento;        
+        $recebimento = $recebimentos
+            ->select('data_recebimento', 'data_credito', 'numero_recibo', 'codigo_validacao', 'data_registra_recebimento',
+                'name',)            
+            ->join('users', 'fk_id_usuario_recebimento', 'id')
+            ->where('fk_id_recebivel', $id)
+            ->first();
+
+        $acrescimos = new Acrescimo;
+        $acrescimos = $acrescimos
+            ->select('valor_acrescimo', 'valor_desconto_acrescimo', 'valor_total_acrescimo',
+                'descricao_conta')
+            ->join('tb_contas_contabeis', 'fk_id_conta_contabil_acrescimo', 'id_conta_contabil')
+            ->where('fk_id_recebivel', $id)
+            ->get();
+
+        $formasPagamento = $recebimentos
+            ->select('valor_recebido', 'forma_pagamento')            
+            ->join('tb_formas_pagamento', 'fk_id_forma_pagamento', 'id_forma_pagamento')
+            ->where('fk_id_recebivel', $id)
+            ->get();
+
+        if (!$recebivel)
+            return redirect()->back()->with('alert', "Recebível não encontrado.");
+
+        return view('financeiro.paginas.recebiveis.alunos.show', 
+            compact('recebivel', 'recebimento', 'acrescimos', 'formasPagamento')
+        );
     }
 
 }

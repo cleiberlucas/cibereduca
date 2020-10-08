@@ -1,8 +1,5 @@
-
-
 @extends('adminlte::page')
 
-<section></section>
 
 @section('title_postfix', ' Anos Letivos')
 

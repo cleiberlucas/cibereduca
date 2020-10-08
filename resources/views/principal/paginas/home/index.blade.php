@@ -1,7 +1,5 @@
 @extends('adminlte::page')
 
-<section></section>
-
 @section('title_postfix', '')
 
 @section('content_header')        

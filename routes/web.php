@@ -23,6 +23,7 @@ Route::prefix('financeiro')
                 Route::resource('recebimento', 'RecebimentoController');                
                 Route::get('recebimento/create/{id_recebivel}', 'RecebimentoController@create')->name('recebimento.create');
                 Route::get('recebimento/recibo/{id_recebivel}', 'RecebimentoController@recibo')->name('recebimento.recibo');
+                Route::get('recebimento/destroy/{id_recebivel}', 'RecebimentoController@destroy')->name('recebimento.destroy');
 
         });
 /**
