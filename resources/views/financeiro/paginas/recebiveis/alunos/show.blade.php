@@ -77,7 +77,7 @@
             @if ($recebivel->id_situacao_recebivel == 1)
                 <div class="row pt-3">
                     <div class="col-sm-11">
-                        <a href="#" class="btn btn-outline-danger"> <i class="fas fa-trash"></i> Remover </a>
+                        <a href="javascript:confirmaExcluiRecebivel({{$recebivel->id_recebivel}});" class="btn btn-outline-danger"> <i class="fas fa-trash"></i> Remover </a>
                     </div>
                 </div>            
             @endif
@@ -91,7 +91,9 @@
             @foreach ($formasPagamento as $index => $forma_pagto)
                 @if (isset($forma_pagto))
                     @if ($index == 0)
-                        <h5>Pagamento em: {{date('d/m/Y', strtotime($recebimento->data_recebimento))}} <a href="{{route('recebimento.destroy', $recebivel->id_recebivel)}}" class="btn btn-outline-danger"> <i class="fas fa-trash"></i> Remover Pagamento </a></h5>
+                        <h5>Pagamento em: {{date('d/m/Y', strtotime($recebimento->data_recebimento))}}                                
+                            <a href="javascript:confirmaExcluiRecebimento({{$recebivel->id_recebivel}});" class="btn btn-outline-danger"> <i class="fas fa-trash"></i> Remover Pagamento </a></h5>
+
                         <h6>Data de crédito: {{date('d/m/Y', strtotime($recebimento->data_credito))}}</h6>
                         <h6>Número Recibo: {{$recebimento->recibo}}</h6>
                         <h6>Código Validação: {{$recebimento->codigo_validacao}}</h6>        
@@ -150,10 +152,14 @@
         </div>
     </div>
         
+    <script type="text/javascript" src="{!!asset('/js/confirmaExcluiRecebimento.js')!!}"></script>
+    <script type="text/javascript" src="{!!asset('/js/confirmaExcluiRecebivel.js')!!}"></script>
+
     <script>
         $(document).ready(function(){
               $(".alert").slideDown(300).delay(5000).slideUp(300);
         });  
+
     </script>
 
 @endsection

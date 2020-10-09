@@ -195,7 +195,7 @@ class RecebimentoController extends Controller
         } catch (QueryException $qe) {
             return redirect()->back()->with('error', 'Não foi possível excluir o recebimento. ');            
         }
-        return redirect()->back()->with('sucesso', 'Recebimento removido com sucesso.');
+        return redirect()->back();
 
     }
 }

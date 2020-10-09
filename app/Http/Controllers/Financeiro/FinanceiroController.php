@@ -285,4 +285,25 @@ class FinanceiroController extends Controller
         );
     }
 
+    
+    public function destroy($id_recebivel)
+    {
+        //Remover recebimento
+        $this->authorize('Recebivel Remover');
+
+        $recebivel = $this->repositorio->where('id_recebivel', $id_recebivel)->first();
+
+        if (!$recebivel)
+            return redirect()->back()->with('error', 'Recebível não encontrado.');           
+
+        try {
+            $recebivel->where('id_recebivel', $id_recebivel)->delete();
+
+        } catch (QueryException $qe) {
+            return redirect()->back()->with('error', 'Não foi possível excluir o recebível.');            
+        }
+        return redirect()->back();
+
+    }
+
 }
