@@ -343,7 +343,7 @@ return [
                     'route'  => 'financeiro.index',
                     'icon' => 'fas fa-hand-holding-usd',
                     'icon_color' => 'blue',
-                    'can'  => 'Recebível Cadastrar',
+                    'can'  => 'Recebível Ver',
                 ],
             ],
         ],

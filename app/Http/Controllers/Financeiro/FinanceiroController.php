@@ -163,7 +163,7 @@ class FinanceiroController extends Controller
      */
     public function create($id_aluno){
         $this->authorize('Recebível Cadastrar');
-        
+
         $aluno = new Pessoa;
         $aluno = $aluno->select('nome', 'id_pessoa')
             ->where('id_pessoa', $id_aluno)
@@ -305,7 +305,9 @@ class FinanceiroController extends Controller
     /* Dados de um recebíuvel */
     public function show($id)
     {
-        $this->authorize('Recebível Ver');   
+        $autorizado = $this->authorize('Recebível Ver');   
+        //dd($autorizado);
+
         $recebivel = $this->repositorio
             ->select('id_recebivel', 'valor_principal', 'valor_desconto_principal', 'valor_total', 'data_vencimento', 'parcela', 'obs_recebivel', 'tb_recebiveis.data_cadastro',
                 'descricao_conta',
@@ -364,22 +366,23 @@ class FinanceiroController extends Controller
     public function destroy($id_recebivel)
     {
         //Remover recebimento
-        $this->authorize('Recebível Remover');
+        $autorizado = $this->authorize('Recebível Remover');
+        //dd($autorizado);
 
         $recebivel = $this->repositorio->where('id_recebivel', $id_recebivel)->first();
 
-        if (!$recebivel)
-            return redirect()->back()->with('error', 'Recebível não encontrado.');           
+        if (!$recebivel){
+            return redirect()->back()->with('error', 'Recebível não encontrado.');  
+            return false;
+        }                
 
         try {
             $recebivel->where('id_recebivel', $id_recebivel)->delete();
-
+            return true;     
         } catch (QueryException $qe) {
             //return redirect()->back()->with('error', 'Não foi possível excluir o recebível.');            
             return false;
-        }
-        return true;
-      
+        }      
     }
 
 }
