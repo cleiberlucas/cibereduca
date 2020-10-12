@@ -365,9 +365,8 @@ class FinanceiroController extends Controller
     public function destroy($id_recebivel)
     {
         //Remover recebimento
-        $autorizado = $this->authorize('Recebível Remover');
-        if (!$autorizado->allowed())
-            return false;
+        $this->authorize('Recebível Remover');
+        //dd($autorizado);
 
         $recebivel = $this->repositorio->where('id_recebivel', $id_recebivel)->first();
 
