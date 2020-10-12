@@ -361,13 +361,13 @@ class FinanceiroController extends Controller
             compact('recebivel', 'recebimento', 'acrescimos', 'formasPagamento')
         );
     }
-
     
     public function destroy($id_recebivel)
     {
         //Remover recebimento
         $autorizado = $this->authorize('Recebível Remover');
-        //dd($autorizado);
+        if (!$autorizado->allowed())
+            return false;
 
         $recebivel = $this->repositorio->where('id_recebivel', $id_recebivel)->first();
 
