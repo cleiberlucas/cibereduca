@@ -18,6 +18,7 @@ Route::prefix('financeiro')
                 Route::get('create/{id_aluno}', 'FinanceiroController@create')->name('financeiro.create');                
                 Route::get('recebivel/destroy/{id_aluno}', 'FinanceiroController@destroy')->name('financeiro.destroy');   
                 Route::any('recebivel/searchAluno', 'FinanceiroController@searchAluno')->name('recebivel.aluno.search');
+                Route::any('recebivel/search', 'FinanceiroController@search')->name('recebivel.search');
 
                 /**
                  * Rotas Financeiro RECEBIMENTO

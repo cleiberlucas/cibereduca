@@ -336,15 +336,14 @@ return [
         ],
         ['text'    => 'Financeiro',
             'icon'    => 'fas fa-dollar-sign',                        
-            'icon_color' => 'blue',
-            'can'  => 'Usuarios',
+            'icon_color' => 'blue',            
             'submenu' => [
                 [
                     'text' => 'Recebíveis',
                     'route'  => 'financeiro.index',
                     'icon' => 'fas fa-hand-holding-usd',
                     'icon_color' => 'blue',
-                    'can'  => 'Usuarios',
+                    'can'  => 'Recebível Cadastrar',
                 ],
             ],
         ],

@@ -22,8 +22,9 @@
         @include('admin.includes.alerts')
         <div class="card-header">
            
-            <form action="{{ route('pessoas.search') }}" method="POST" class="form form-inline">
+            <form action="{{ route('recebivel.search') }}" method="POST" class="form form-inline">
                 @csrf
+                <input type="hidden" class="" id="id_aluno" name="id_aluno" value="{{$aluno->id_pessoa}}">
                 <input type="text" name="filtro" placeholder="" class="form-control" value="{{ $filtros['filtro'] ?? '' }}">                
                 <button type="submit" class="btn btn-outline-secondary"><i class="fas fa-filter"></i></button>
             </form>

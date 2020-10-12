@@ -49,7 +49,7 @@ class FinanceiroController extends Controller
         ]); 
     }
 
-    /* Filtrando recebíveis */
+    /* Filtrando alunos */
     public function searchAluno(Request $request)
     {
         $filtros = $request->except('_token');      
@@ -80,6 +80,45 @@ class FinanceiroController extends Controller
             'pessoas' => $pessoas,
             'filtros' => $filtros,
         ]); 
+    }
+
+    /* Filtrando recebíveis de 1 aluno */
+    public function search(Request $request)
+    {        
+        $filtros = $request->except('_token');      
+       // dd(strlen($filtros['filtro']))  ;
+        
+        $filtro = $filtros['filtro'];
+        
+        $aluno = new Pessoa;
+        $aluno = $aluno->select('nome', 'id_pessoa')
+            ->where('id_pessoa', $request['id_aluno'])
+            ->first();
+
+        $recebiveis = $this->repositorio
+            ->select('id_recebivel', 'ano', 'data_vencimento', 'fk_id_conta_contabil_principal', 'parcela',
+                'fk_id_situacao_recebivel',
+                'descricao_conta', 'tipo_turma', 'valor_total', 'nome')
+            ->rightJoin('tb_matriculas', 'fk_id_matricula', 'id_matricula')
+            ->join('tb_pessoas', 'id_pessoa', 'fk_id_aluno')
+            ->join('tb_turmas', 'fk_id_turma', 'id_turma')
+            ->join('tb_tipos_turmas', 'fk_id_tipo_turma', 'id_tipo_turma')
+            ->join('tb_anos_letivos', 'fk_id_ano_letivo', 'id_ano_letivo')
+            ->join('tb_contas_contabeis', 'fk_id_conta_contabil_principal', 'id_conta_contabil')
+            ->join('tb_tipos_situacao_recebivel', 'fk_id_situacao_recebivel', 'id_situacao_recebivel')            
+            ->where('fk_id_aluno', $request['id_aluno'])
+            ->where('fk_id_situacao_recebivel', '<=', '3')
+            ->where('tb_recebiveis.fk_id_unidade_ensino', '=', User::getUnidadeEnsinoSelecionada())   
+            ->where('descricao_conta', 'like', '%'.$filtro.'%')         
+            ->orderBy('ano', 'desc')
+            ->orderBy('data_vencimento')
+            ->orderBy('fk_id_conta_contabil_principal')
+            ->orderBy('parcela')
+            ->paginate(25);
+
+        return view('financeiro.paginas.recebiveis.alunos.index', 
+            compact('aluno', 'recebiveis', 'filtros')
+        );
     }
 
     /**
@@ -123,6 +162,8 @@ class FinanceiroController extends Controller
      * Abre interfaace para lançamento de recebíveis
      */
     public function create($id_aluno){
+        $this->authorize('Recebível Cadastrar');
+        
         $aluno = new Pessoa;
         $aluno = $aluno->select('nome', 'id_pessoa')
             ->where('id_pessoa', $id_aluno)
