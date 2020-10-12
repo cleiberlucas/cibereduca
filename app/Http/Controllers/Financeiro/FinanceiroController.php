@@ -49,6 +49,39 @@ class FinanceiroController extends Controller
         ]); 
     }
 
+    /* Filtrando recebíveis */
+    public function searchAluno(Request $request)
+    {
+        $filtros = $request->except('_token');      
+       // dd(strlen($filtros['filtro']))  ;
+
+        if (isset($filtros['filtro']) and strlen($filtros['filtro']) < 3){
+            return back()->with('atencao', 'Informe, no mínimo, 3 caracteres para pesquisar.');
+            $filtro = '';
+        }
+        else if (!isset($filtros['filtro']))
+            $filtro = '';
+        else
+        $filtro = $filtros['filtro'];
+
+        //dd($filtros);
+        $pessoas = new Pessoa;
+
+        $pessoas = $pessoas
+        ->select('id_pessoa', 'nome', 'situacao_pessoa')
+        ->join('tb_unidades_ensino', 'fk_id_unidade_ensino', 'id_unidade_ensino')
+        ->where('fk_id_tipo_pessoa', 1)
+        ->where('id_unidade_ensino', '=', User::getUnidadeEnsinoSelecionada())
+        ->where('nome', 'like', '%'.$filtro.'%')
+        ->orderBy('nome', 'asc')
+        ->paginate(20);
+
+        return view('financeiro.paginas.recebiveis.index', [
+            'pessoas' => $pessoas,
+            'filtros' => $filtros,
+        ]); 
+    }
+
     /**
      * Lista recebíveis de um aluno
      */
@@ -159,7 +192,7 @@ class FinanceiroController extends Controller
         $recebivel = $this->repositorio
             ->select('descricao_conta', 
                 'tipo_turma', 'ano', 
-                'parcela', 'valor_principal', 'valor_desconto_principal', 'valor_total', 'data_vencimento', 'data_recebimento', 'obs_recebivel',
+                'id_recebivel', 'parcela', 'valor_principal', 'valor_desconto_principal', 'valor_total', 'data_vencimento', 'data_recebimento', 'obs_recebivel',
                 'id_pessoa', 'nome')
             ->rightJoin('tb_matriculas', 'fk_id_matricula', 'id_matricula')
             ->join('tb_pessoas', 'id_pessoa', 'fk_id_aluno')
@@ -195,9 +228,9 @@ class FinanceiroController extends Controller
         if (!$recebivel)
             return redirect()->back()->with('erro', 'Recebível não encontrado.');
 
-        $recebivel->where('id_recebivel', $id)->update($request->except('_token', '_method'));
+        $recebivel->where('id_recebivel', $id)->update($request->except('_token', '_method', 'id_aluno'));
 
-        return redirect()->route('financeiro.indexAluno', $id)->with('sucesso', 'Recebível alterado com sucesso.');
+        return redirect()->route('financeiro.indexAluno', $request['id_aluno'])->with('sucesso', 'Recebível alterado com sucesso.');
     }
 
     //Alterando situação, valor_total e valor_desconto principal do recebível
@@ -228,6 +261,7 @@ class FinanceiroController extends Controller
         $recebivel->where('id_recebivel', $id_recebivel)->update($situacao_recebivel);
     }
 
+    /* Dados de um recebíuvel */
     public function show($id)
     {
         $this->authorize('Recebível Ver');   
@@ -289,7 +323,7 @@ class FinanceiroController extends Controller
     public function destroy($id_recebivel)
     {
         //Remover recebimento
-        $this->authorize('Recebivel Remover');
+        $this->authorize('Recebível Remover');
 
         $recebivel = $this->repositorio->where('id_recebivel', $id_recebivel)->first();
 
@@ -300,10 +334,11 @@ class FinanceiroController extends Controller
             $recebivel->where('id_recebivel', $id_recebivel)->delete();
 
         } catch (QueryException $qe) {
-            return redirect()->back()->with('error', 'Não foi possível excluir o recebível.');            
+            //return redirect()->back()->with('error', 'Não foi possível excluir o recebível.');            
+            return false;
         }
-        return redirect()->back();
-
+        return true;
+      
     }
 
 }

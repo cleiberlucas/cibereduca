@@ -30,10 +30,11 @@
         
         @include('admin.includes.alerts')
 
-        <form action="{{ route('financeiro.update', $recebivel->id_pessoa)}}" class="form" name="form" method="POST">
+        <form action="{{ route('financeiro.update', $recebivel->id_recebivel)}}" class="form" name="form" method="POST">
             @csrf                       
             @method('PUT')            
             <input type="hidden" class="" id="fk_id_usuario_cadastro" name="fk_id_usuario_cadastro" value="{{Auth::id()}}">         
+            <input type="hidden" class="" id="id_aluno" name="id_aluno" value="{{$recebivel->id_pessoa}}">         
                                     
             <div class="form-group">
                 <div class="row">

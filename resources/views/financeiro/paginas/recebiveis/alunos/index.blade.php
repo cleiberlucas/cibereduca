@@ -72,6 +72,7 @@
                                     <a href="{{ route('recebimento.create', $recebivel->id_recebivel) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-hand-holding-usd"></i></a>    
                                     {{-- Editar --}}
                                     <a href="{{ route('financeiro.edit', $recebivel->id_recebivel) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-edit"></i></a>
+                                    <a href="javascript:confirmaExcluiRecebivel({{$recebivel->id_recebivel}});" class="btn btn-sm btn-outline-danger"> <i class="fas fa-trash"></i></a>
 
                                 {{-- Recebido --}}
                                 @elseif ($recebivel->fk_id_situacao_recebivel == 2)
@@ -95,6 +96,8 @@
             </div>
         </div>
     </div>
+
+    <script type="text/javascript" src="{!!asset('/js/confirmaExcluiRecebivel.js')!!}"></script>
 
     <script>
         $(document).ready(function(){

@@ -74,13 +74,6 @@
                     <i>Lançado em {{date('d/m/Y H:i:s', strtotime($recebivel->data_cadastro))}} por {{$recebivel->name}}</i>
                 </div>
             </div>
-            @if ($recebivel->id_situacao_recebivel == 1)
-                <div class="row pt-3">
-                    <div class="col-sm-11">
-                        <a href="javascript:confirmaExcluiRecebivel({{$recebivel->id_recebivel}});" class="btn btn-outline-danger"> <i class="fas fa-trash"></i> Remover </a>
-                    </div>
-                </div>            
-            @endif
 
             <?php
                 $total_recebido = 0;
@@ -95,7 +88,7 @@
                             <a href="javascript:confirmaExcluiRecebimento({{$recebivel->id_recebivel}});" class="btn btn-outline-danger"> <i class="fas fa-trash"></i> Remover Pagamento </a></h5>
 
                         <h6>Data de crédito: {{date('d/m/Y', strtotime($recebimento->data_credito))}}</h6>
-                        <h6>Número Recibo: {{$recebimento->recibo}}</h6>
+                        <h6>Número Recibo: {{$recebimento->numero_recibo}}</h6>
                         <h6>Código Validação: {{$recebimento->codigo_validacao}}</h6>        
                     @endif
             
@@ -130,8 +123,6 @@
                 @endif                
             @endforeach
            
-
-           
             {{-- Acréscimos --}}
             @foreach ($acrescimos as $ind => $acrescimo)
                 @if (isset($acrescimo))
@@ -143,23 +134,19 @@
                             <strong>{{$acrescimo->descricao_conta}}</strong> R$ {{number_format($acrescimo->valor_acrescimo, 2, ',', '.')}}                    
                             <strong>&nbsp&nbsp&nbsp Desconto:</strong> R$ {{number_format($acrescimo->valor_desconto_acrescimo, 2, ',', '.')}}  <strong>&nbsp&nbsp&nbsp Total:</strong> R$ {{number_format($acrescimo->valor_total_acrescimo, 2, ',', '.')}}
                         </div>
-                    </div>
-                    
-                @endif
-                
+                    </div>                    
+                @endif                
             @endforeach
 
         </div>
     </div>
         
-    <script type="text/javascript" src="{!!asset('/js/confirmaExcluiRecebimento.js')!!}"></script>
-    <script type="text/javascript" src="{!!asset('/js/confirmaExcluiRecebivel.js')!!}"></script>
+    <script type="text/javascript" src="{!!asset('/js/confirmaExcluiRecebimento.js')!!}"></script>    
 
     <script>
         $(document).ready(function(){
               $(".alert").slideDown(300).delay(5000).slideUp(300);
         });  
-
     </script>
 
 @endsection

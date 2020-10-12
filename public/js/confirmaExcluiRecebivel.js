@@ -1,5 +1,5 @@
 /**
- * Confirma exclusão recebimento 
+ * Confirma exclusão recebível
  */
 function confirmaExcluiRecebivel(id_recebivel){
         
@@ -7,12 +7,20 @@ function confirmaExcluiRecebivel(id_recebivel){
     if (confirm('Confirma a exclusão do recebível?')){
 
         $.ajax({
-          url: '/financeiro/destroy/'+id_recebivel, 
+          url: '/financeiro/recebivel/destroy/'+id_recebivel, 
           type: 'get',
           dataType: 'html',
-          success: function(response){            
-            history.go(-1);
-            alert("Recebível excluído com sucesso.");            
+          success: function(response){      
+            console.log('response '+response);
+            if (response == 1){
+             // window.history.back();   
+              alert("Recebível excluído com sucesso.");            
+              window.location.reload();
+            }
+            else{
+              alert("ATENÇÃO! Não foi possível excluir o recebível.");            
+              window.location.reload();
+            }
           }
       });
     }    
