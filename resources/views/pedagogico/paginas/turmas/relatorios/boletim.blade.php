@@ -38,18 +38,18 @@
         <div class="container border border-dark">
             <div class="row ">
                 <div class="col-sm-12 col-xs-2 mt-2">
-                    <strong>ALUNO(A): {{$matricula->aluno->nome}}</strong>
+                    <strong>ALUNO(A): {{$matricula->nome}}</strong>
                 </div>
             </div>
             <div class="row mb-2">
                 <div class="col-sm-5 col-xs-2">
-                    <strong>Turma: {{$matricula->turma->nome_turma}} - {{$matricula->turma->turno->descricao_turno}}</strong>
+                    <strong>Turma: {{$matricula->nome_turma}} - {{$matricula->descricao_turno}}</strong>
                 </div>
                {{--  <div class="col-sm-3 col-xs-2">
                     <strong>Turno: {{$matricula->turma->turno->descricao_turno}}</strong>
                 </div> --}}
                 <div class="col-sm-4 col-xs-2">
-                    <strong>Curso: {{$matricula->turma->tipoTurma->subNivelEnsino->sub_nivel_ensino}}</strong>
+                    <strong>Curso: {{$matricula->sub_nivel_ensino}}</strong>
                 </div>               
             </div>
         </div>
