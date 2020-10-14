@@ -35,9 +35,8 @@ class ResultadoAlunoPeriodo extends Model
     public function getResultadosTurma($id_turma)
     {
         return $this  
-            ->select('tb_resultados_alunos_periodos.*')          
-            ->join('tb_periodos_letivos', 'tb_resultados_alunos_periodos.fk_id_periodo_letivo', 'id_periodo_letivo')
-            ->join('tb_turmas_periodos_letivos', 'tb_turmas_periodos_letivos.fk_id_periodo_letivo', 'tb_resultados_alunos_periodos.fk_id_periodo_letivo')
+            ->select('tb_resultados_alunos_periodos.*')                      
+            ->join('tb_matriculas', 'fk_id_matricula', 'id_matricula')
             ->where('fk_id_turma', $id_turma)            
             ->get();
     }
