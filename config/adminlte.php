@@ -345,6 +345,13 @@ return [
                     'icon_color' => 'blue',
                     'can'  => 'Recebível Ver',
                 ],
+                [
+                    'text' => 'Relatórios',
+                    'route'  => 'recebiveis.relatorios.index',
+                    'icon' => 'far fa-file-alt',
+                    'icon_color' => 'blue',
+                    'can'   => 'Recebível Verd',
+                ],
             ],
         ],
         [

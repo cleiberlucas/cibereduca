@@ -40,12 +40,12 @@
                 <div class="row">
                     <div class="col-sm-3">
                         <label>Valor:</label>
-                        <input type="number" name="valor_principal" step="0.010" required readonly class="form-control" value="{{ $recebivel->valor_principal ?? old('valor_principal') }}">
+                        <input type="number" name="valor_principal" id="valor_principal" step="0.010" required class="form-control" value="{{ $recebivel->valor_principal ?? old('valor_principal') }}" onBlur="recalcularValor('valor_principal', 'valor_desconto_principal', 'valor_desconto_principal', 'valor_total')">
                     </div>
                 
                     <div class="col-sm-3">
                         <label>Valor Desconto:</label>
-                    <input type="number" step="0.010" class="form-control" name="valor_desconto_principal" id="valor_desconto_principal" value="{{$recebivel->valor_desconto_principal ?? old('valor_desconto_principal')}}" onBlur="recalcularValor({{$recebivel->valor_principal}}, this.value, 'valor_desconto_principal', 'valor_total')" />
+                    <input type="number" step="0.010" class="form-control" name="valor_desconto_principal" id="valor_desconto_principal" value="{{$recebivel->valor_desconto_principal ?? old('valor_desconto_principal')}}" onBlur="recalcularValor('valor_principal', 'valor_desconto_principal', 'valor_desconto_principal', 'valor_total')" />
                     </div>
                     <div class="col-sm-2">
                         <label>*Nº Parcela:</label>

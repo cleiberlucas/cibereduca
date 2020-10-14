@@ -82,17 +82,19 @@ function pad(s) {
  * @param {*} valor_total 
  */
 
-function recalcularValor(valor_principal, valor_desconto, campo_desconto, valor_total){
+function recalcularValor(campo_valor_principal, campo_valor_desconto, campo_desconto, campo_valor_total){
   //console.log('Recalculando Valor .');
  // console.log("Recebeu "+valor_principal+" e "+valor_desconto);
+ valor_principal = parseFloat(document.getElementById(''+campo_valor_principal).value);
+ valor_desconto = parseFloat(document.getElementById(''+campo_valor_desconto).value);
   if (valor_desconto > valor_principal){
-    alert('O valor do desconto não pode ser maior que o valor principal.');
+    alert('O valor do desconto não pode ser maior que o valor principal. Principal: '+valor_principal+ 'Desconto: '+valor_desconto);
     document.getElementById(''+campo_desconto).value = 0;
-    document.getElementById(''+valor_total).value = valor_principal - 0;
+    document.getElementById(''+campo_valor_total).value = valor_principal - 0;
     return;
   }
-  //console.log('campo total '+valor_total);
+  //console.log('campo total '+campo_valor_total);
   //console.log("total = "+(valor_principal - valor_desconto));
-  document.getElementById(''+valor_total).value = valor_principal - valor_desconto;
+  document.getElementById(''+campo_valor_total).value = (valor_principal - valor_desconto).toFixed(2);
   //return valor_principal - valor_desconto;
 }
