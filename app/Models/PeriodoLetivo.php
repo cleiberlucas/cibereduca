@@ -37,7 +37,7 @@ class PeriodoLetivo extends Model
     {
         return $this->join('tb_anos_letivos', 'fk_id_ano_letivo', 'id_ano_letivo')
                     ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())
-                    ->where('fk_id_ano_letivo', $idAnoLetivo)
+                    ->where('id_ano_letivo', $idAnoLetivo)
                     ->orderBy('periodo_letivo')
                     ->get();
     }
