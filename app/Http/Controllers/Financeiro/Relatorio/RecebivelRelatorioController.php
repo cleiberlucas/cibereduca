@@ -40,7 +40,7 @@ class RecebivelRelatorioController extends Controller
 
         $situacoesRecebivel = TipoSituacaoRecebivel::get();
 
-        $pessoas = new Pessoa;
+        /* $pessoas = new Pessoa;
 
         $pessoas = $pessoas
         ->select('id_pessoa', 'nome', 'situacao_pessoa')
@@ -48,10 +48,22 @@ class RecebivelRelatorioController extends Controller
         ->where('fk_id_tipo_pessoa', 1)
         ->where('id_unidade_ensino', '=', User::getUnidadeEnsinoSelecionada())
         ->orderBy('nome', 'asc')
-        ->paginate(20);
+        ->paginate(20); */
+
+        $usuarios = new User;
+        $usuarios = $usuarios
+            ->select('id', 'name')
+            ->join('tb_usuarios_unidade_ensino', 'fk_id_user', 'id')
+            ->where('fk_id_unidade_ensino', '=', session()->get('id_unidade_ensino'))
+            ->where('situacao_vinculo', '1')
+            ->orderBy('name')        
+            ->get();
+
+        $formasPagamento = new FormaPagamento;
+        $formasPagamento = $formasPagamento->getFormasPagamento();
 
         return view('financeiro.paginas.recebiveis.relatorios.index',             
-            compact('anosLetivos', 'situacoesRecebivel')); 
+            compact('anosLetivos', 'situacoesRecebivel', 'usuarios', 'formasPagamento')); 
     }
 
     public function recebiveis(){

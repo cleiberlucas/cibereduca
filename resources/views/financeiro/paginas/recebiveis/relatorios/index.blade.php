@@ -20,24 +20,43 @@
             @csrf            
             <div class="row">
                 <div class="form-group col-sm-2 col-xs-1">
-                    <label for="">Ano Letivo</label>
-                    <select class="form-control" name="anoLetivo" id="anoLetivo" required>
-                        <option value="0">Selecione</option>
+                    <label for="">*Ano Letivo</label>
+                    <select class="form-control" name="ano_letivo" id="ano_letivo" required>
+                        <option value="-1">Selecione</option>
+                        <option value="0">Todos</option>
                         @foreach ($anosLetivos as $anoLetivo)
                             <option value="{{$anoLetivo->id_ano_letivo}}">{{$anoLetivo->ano}}</option>                            
                         @endforeach
                     </select>
                 </div>
-            
                 <div class="form-group col-sm-3 col-xs-1">
-                    <label for="">Situação Recebível</label>
-                    <select class="form-control" name="anoLetivo" id="anoLetivo" >
+                    <label for="">Tipo Recebível</label>
+                    <select class="form-control" name="tipo_recebivel" id="tipo_recebivel" required>
+                        <option value="-1"></option>                        
+                        @foreach ($situacoesRecebivel as $sitRecebivel)
+                            <option value="{{$sitRecebivel->id_situacao_recebivel}}">{{$sitRecebivel->situacao_recebivel}}</option>                            
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group col-sm-3 col-xs-1">
+                    <label for="">*Situação Recebível</label>
+                    <select class="form-control" name="situacao_recebivel" id="situacao_recebivel" required>
                         <option value="-1">Selecione</option>
                         <option value="0">Todos</option>
                         @foreach ($situacoesRecebivel as $sitRecebivel)
                             <option value="{{$sitRecebivel->id_situacao_recebivel}}">{{$sitRecebivel->situacao_recebivel}}</option>                            
                         @endforeach
                     </select>
+                </div>
+
+                <div class="form-group col-sm-2 col-xs-1">
+                    <label for="">Código de Validação</label>
+                    <input type="text" name="codigo_validacao" class="form-control" maxlength="7"  value="">
+                </div>
+
+                <div class="form-group col-sm-2 col-xs-1">
+                    <label for="">Número Recibo</label>
+                    <input type="text" name="numero_recibo" class="form-control" maxlength="10"  value="">
                 </div>
             </div>
 
@@ -74,12 +93,22 @@
             </div>
 
             <div class="row">
-                <div class="form-group col-sm-3 col-xs-1">
+                <div class="form-group col-sm-4 col-xs-1">
+                    <label for="">Forma de Pagamento</label>
+                    <select class="form-control" name="forma_pagamento" id="forma_pagamento" >
+                        <option value="-1"></option>                        
+                        @foreach ($formasPagamento as $formaPagto)
+                            <option value="{{$formaPagto->id_forma_pagamento}}">{{$formaPagto->forma_pagamento}}</option>                            
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="form-group col-sm-4 col-xs-1">
                     <label for="">Recebido por</label>
                     <select class="form-control" name="recebido_por" id="recebido_por" >
-                        <option value="0">Selecione</option>                        
-                        @foreach ($situacoesRecebivel as $sitRecebivel)
-                            <option value="{{$sitRecebivel->id_situacao_recebivel}}">{{$sitRecebivel->situacao_recebivel}}</option>                            
+                        <option value="-1"></option>                                                
+                        @foreach ($usuarios as $usuario)
+                            <option value="{{$usuario->id}}">{{$usuario->name}}</option>                            
                         @endforeach
                     </select>
                 </div>
@@ -87,9 +116,9 @@
 
             <div class="row">
                 <div class="form-group col-sm-3 col-xs-2">
-                    Ordenação
+                    <label for="">Ordenação</label>
                     <select name="ordem" id="ordem" class="form-control" required > 
-                        <option value=""></option>
+                        <option value="-1"></option>
                         <option value="nome_aluno">Nome</option>
                         <option value="data_vencimento">Data Vencimento</option>                    
                         <option value="data_pagamento">Data Pagamento</option>                    

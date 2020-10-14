@@ -41,8 +41,8 @@ function calcularAcrescimos(){
     if (aplicar_multa == 1 && dias_atraso > 0){
       var valor_multa = (valor_total_principal * indice_multa / 100).toFixed(2);
       $('#multa').append('<div class="row mt-5 pt-5">');
-        $('#multa').append('<div class="form-group col-sm-3 col-xs-2"> <label>Multa: ('+indice_multa+'%)</label> <input type="number" step="0.010" class="form-control" readonly required name="valor_acrescimo[0]" readonly value="'+valor_multa+'" /> </div>');
-        $('#multa').append('<div class="form-group col-sm-3 col-xs-2"> <label>Desconto Multa:</label> <input type="number" step="0.010" class="form-control" name="valor_desconto_acrescimo[0]" id="valor_desconto_acrescimo[0]" value="" onBlur="recalcularValor('+valor_multa+', this.value, \'valor_desconto_acrescimo[0]\', \'valor_total_acrescimo[0]\'); somarRecebiveis();" /> </div>');
+        $('#multa').append('<div class="form-group col-sm-3 col-xs-2"> <label>Multa: ('+indice_multa+'%)</label> <input type="number" step="0.010" class="form-control" readonly required name="valor_acrescimo[0]" id="valor_acrescimo[0]" readonly value="'+valor_multa+'" /> </div>');
+        $('#multa').append('<div class="form-group col-sm-3 col-xs-2"> <label>Desconto Multa:</label> <input type="number" step="0.010" class="form-control" name="valor_desconto_acrescimo[0]" id="valor_desconto_acrescimo[0]" value="" onBlur="recalcularValor(\'valor_acrescimo[0]\', \'valor_desconto_acrescimo[0]\', \'valor_desconto_acrescimo[0]\', \'valor_total_acrescimo[0]\'); somarRecebiveis();" /> </div>');
         $('#multa').append('<div class="form-group col-sm-3 col-xs-2"> <label>Valor Multa:</label> <input type="number" step="0.010" class="form-control" readonly name="valor_total_acrescimo[0]" id="valor_total_acrescimo[0]" value="'+valor_multa+'" /> </div>');
       $('#multa').append(' </div>');       
     }
@@ -51,8 +51,8 @@ function calcularAcrescimos(){
     if (aplicar_juro == 1 && dias_atraso > 0){         
         var valor_juro = (valor_total_principal / 30 * indice_juro / 100 * dias_atraso).toFixed(2);
       $('#juro').append('<div class="row mt-5 pt-5">');
-        $('#juro').append('<div class="form-group col-sm-3 col-xs-2"> <label>Juros: ('+indice_juro+'% ao mês)</label> <input type="number" step="0.010" class="form-control" readonly required name="valor_acrescimo[1]" readonly value="'+valor_juro+'" /> </div>');
-        $('#juro').append('<div class="form-group col-sm-3 col-xs-2"> <label>Desconto Juros:</label> <input type="number" step="0.010" class="form-control" name="valor_desconto_acrescimo[1]" id="valor_desconto_acrescimo[1]" value="" onBlur="recalcularValor('+valor_juro+', this.value, \'valor_desconto_acrescimo[1]\', \'valor_total_acrescimo[1]\'); somarRecebiveis();" /> </div>');
+        $('#juro').append('<div class="form-group col-sm-3 col-xs-2"> <label>Juros: ('+indice_juro+'% ao mês)</label> <input type="number" step="0.010" class="form-control" readonly required name="valor_acrescimo[1]" id="valor_acrescimo[1]" readonly value="'+valor_juro+'" /> </div>');
+        $('#juro').append('<div class="form-group col-sm-3 col-xs-2"> <label>Desconto Juros:</label> <input type="number" step="0.010" class="form-control" name="valor_desconto_acrescimo[1]" id="valor_desconto_acrescimo[1]" value="" onBlur="recalcularValor(\'valor_acrescimo[1]\', \'valor_desconto_acrescimo[1]\', \'valor_desconto_acrescimo[1]\', \'valor_total_acrescimo[1]\'); somarRecebiveis();" /> </div>');
         $('#juro').append('<div class="form-group col-sm-3 col-xs-2"> <label>Valor Juros: ('+dias_atraso+' dias)</label> <input type="number" step="0.010" class="form-control" readonly name="valor_total_acrescimo[1]" id="valor_total_acrescimo[1]" value="'+valor_juro+'" /> </div>');
       $('#juro').append(' </div>');        
     }       
