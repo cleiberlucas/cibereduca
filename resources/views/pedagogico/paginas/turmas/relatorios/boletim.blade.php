@@ -30,7 +30,7 @@
                     <strong><h4>{{mb_strToUpper($unidadeEnsino->razao_social)}}</h4></strong>
                     <h5>BOLETIM ESCOLAR</h5>
                     
-                    <h6>-{{$turma->tipoTurma->anoLetivo->ano}}-</h6>
+                    <h6>-{{$turma->ano}}-</h6>
                 </div>
             </div>
         </div>
@@ -43,13 +43,13 @@
             </div>
             <div class="row mb-2">
                 <div class="col-sm-5 col-xs-2">
-                    <strong>Turma: {{$matricula->nome_turma}} - {{$matricula->descricao_turno}}</strong>
+                    <strong>Turma: {{$turma->nome_turma}} - {{$turma->descricao_turno}}</strong>
                 </div>
                {{--  <div class="col-sm-3 col-xs-2">
                     <strong>Turno: {{$matricula->turma->turno->descricao_turno}}</strong>
                 </div> --}}
                 <div class="col-sm-4 col-xs-2">
-                    <strong>Curso: {{$matricula->sub_nivel_ensino}}</strong>
+                    <strong>Curso: {{$turma->sub_nivel_ensino}}</strong>
                 </div>               
             </div>
         </div>

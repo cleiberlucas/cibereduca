@@ -15,6 +15,7 @@ use App\Models\PeriodoLetivo;
 use App\Models\Secretaria\Disciplina;
 use App\Models\Secretaria\Matricula;
 use App\Models\Secretaria\Turma;
+use App\Models\Turno;
 use App\Models\UnidadeEnsino;
 use PDF;
 use Illuminate\Http\Request;
@@ -58,10 +59,17 @@ class DiarioController extends Controller
     {
 
         //dd($request);
-        $turma = Turma::where('id_turma', $request->turma)->first();
+        $turma = Turma::
+            select('nome_turma', 'descricao_turno', 'sub_nivel_ensino', 'fk_id_unidade_ensino', 'ano')
+            ->join('tb_tipos_turmas', 'fk_id_tipo_turma', 'id_tipo_turma')
+            ->join('tb_turnos', 'fk_id_turno', 'id_turno')
+            ->join('tb_sub_niveis_ensino', 'fk_id_sub_nivel_ensino', 'id_sub_nivel_ensino')
+            ->join('tb_anos_letivos', 'fk_id_ano_letivo', 'id_ano_letivo')
+            ->where('id_turma', $request->turma)        
+            ->first();
 
         $unidadeEnsino = new UnidadeEnsino;
-        $unidadeEnsino = $unidadeEnsino->where('id_unidade_ensino', $turma->tipoTurma->anoLetivo->fk_id_unidade_ensino)->first();
+        $unidadeEnsino = $unidadeEnsino->where('id_unidade_ensino', $turma->fk_id_unidade_ensino)->first();
 
         $periodosLetivos = new PeriodoLetivo;
 

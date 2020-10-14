@@ -79,11 +79,7 @@ class Matricula extends Model
     public function getAlunosTurma($id_turma)
     {
         $alunos = $this
-            ->select('id_matricula', 'nome', 'nome_turma', 'descricao_turno', 'sub_nivel_ensino')
-            ->join('tb_turmas', 'fk_id_turma', 'id_turma')
-            ->join('tb_tipos_turmas', 'fk_id_tipo_turma', 'id_tipo_turma')
-            ->join('tb_turnos', 'fk_id_turno', 'id_turno')
-            ->join('tb_sub_niveis_ensino', 'fk_id_sub_nivel_ensino', 'id_sub_nivel_ensino')
+            ->select('id_matricula', 'nome', )            
             ->join('tb_pessoas', 'fk_id_aluno', 'id_pessoa')
             ->where('fk_id_turma', $id_turma)
             ->orderBy('nome')
@@ -98,11 +94,7 @@ class Matricula extends Model
     public function getMatriculaAluno($id_matricula)
     {
         $aluno = $this
-            ->select('id_matricula', 'nome', 'nome_turma', 'descricao_turno', 'sub_nivel_ensino')
-            ->join('tb_turmas', 'fk_id_turma', 'id_turma')
-            ->join('tb_tipos_turmas', 'fk_id_tipo_turma', 'id_tipo_turma')
-            ->join('tb_turnos', 'fk_id_turno', 'id_turno')
-            ->join('tb_sub_niveis_ensino', 'fk_id_sub_nivel_ensino', 'id_sub_nivel_ensino')
+            ->select('id_matricula', 'nome', )            
             ->join('tb_pessoas', 'fk_id_aluno', 'id_pessoa')
             ->where('id_matricula', $id_matricula)            
             ->get();
