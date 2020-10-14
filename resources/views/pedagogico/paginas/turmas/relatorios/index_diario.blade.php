@@ -42,7 +42,8 @@
                     <select name="turma" id="turma" class="form-control"  required > 
                         <option value=""></option>
                     </select>
-                </div>            
+                </div>    
+                         
             </div>
             <div class="row">
                 <div class="form-group col-sm-2 col-xs-2">
@@ -144,8 +145,14 @@
                         <font color="green"> 
                         <div class="row my-3 ml-5">
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="tipo_relatorio" id="boletim_aluno" value="boletim_aluno" disabled required>
+                                <input class="form-check-input" type="radio" name="tipo_relatorio" id="boletim_aluno" value="boletim_aluno" required>
                                 <label for="boletim_aluno" class="form-check-label">Boletim Aluno</label>
+                            </div>
+                            <div class="form-group ml-3 col-sm-4 col-xs-2">
+                                Aluno
+                                <select name="fk_id_matricula" id="fk_id_matricula" class="form-control"> 
+                                    <option value=""></option>
+                                </select>
                             </div>
                         </div>
     
@@ -250,6 +257,7 @@
     </div>
 
     <script type="text/javascript" src="{!!asset('/js/populaTurmas.js')!!}"></script>
+    <script type="text/javascript" src="{!!asset('/js/populaAlunosTurma.js')!!}"></script>
     <script type="text/javascript" src="{!!asset('/js/populaMeses.js')!!}"></script>
     {{-- <script type="text/javascript" src="{!!asset('/js/populaPeriodos.js')!!}"></script> --}}
     <script type="text/javascript" src="{!!asset('/js/populaDisciplinas.js')!!}"></script>

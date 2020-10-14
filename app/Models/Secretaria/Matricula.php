@@ -93,7 +93,7 @@ class Matricula extends Model
     {
         $aluno = $this->select('*')
             ->join('tb_pessoas', 'fk_id_aluno', 'id_pessoa')
-            ->where('fk_id_matricula', $id_matricula)            
+            ->where('id_matricula', $id_matricula)            
             ->get();
 
         return $aluno;

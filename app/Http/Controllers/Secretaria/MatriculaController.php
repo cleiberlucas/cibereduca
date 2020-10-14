@@ -330,6 +330,27 @@ class MatriculaController extends Controller
     }
 
     /*
+    *Lista de todos alunos matriculados em uma turma
+    *somente para popular combo
+    */
+    public function getAlunosTurma($id_turma)
+    {
+        $alunos['data'] = $this->repositorio->select('id_matricula', 
+                                            'nome')
+                                ->join('tb_pessoas', 'id_pessoa', 'tb_matriculas.fk_id_aluno') 
+                                ->join('tb_turmas', 'tb_turmas.id_turma', 'tb_matriculas.fk_id_turma')                               
+                                ->join('tb_tipos_turmas', 'tb_turmas.fk_id_tipo_turma', '=', 'tb_tipos_turmas.id_tipo_turma' )                                
+                                ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')                                                                
+                                ->where('tb_matriculas.fk_id_turma', $id_turma)
+                                ->where('tb_anos_letivos.fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())
+                                ->orderBy('nome')
+                                ->get();
+
+        echo json_encode($alunos);
+        exit;
+    }
+
+    /*
     *Consulta valores de uma matrícula
     *Valores matrícula, curso e material didático    
     */

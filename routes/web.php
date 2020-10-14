@@ -184,6 +184,7 @@ Route::prefix('secretaria')
                 Route::get('matriculas/contrato/{id_matricula}', 'MatriculaController@imprimirContrato')->name('matriculas.contrato')->middleware('can:Matrícula Contrato Ver');
                 Route::get('matriculas/ficha/{id_aluno}', 'MatriculaController@imprimirFichaMatricula')->name('matriculas.ficha')->middleware('can:Matrícula Ficha Ver');
                 Route::get('matriculas/getAlunos/{id_ano_letivo}', 'MatriculaController@getAlunos')->name('matriculas.getAlunos');                
+                Route::get('matriculas/getAlunosTurma/{id_turma}', 'MatriculaController@getAlunosTurma')->name('matriculas.getAlunosTurma');                
                 Route::get('matriculas/getValores/{id_matricula}', 'MatriculaController@getValores')->name('matriculas.getValores');
                  
                 /**

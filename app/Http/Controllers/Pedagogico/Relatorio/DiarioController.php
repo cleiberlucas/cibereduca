@@ -72,18 +72,23 @@ class DiarioController extends Controller
         $mediaAprovacao = floatval($mediaAprovacao->media_minima_aprovacao);
         
         $alunos = new Matricula;
-        $alunos = $alunos->getAlunosTurma($request->turma);
+        
         //dd($alunos);
 
         //Consultar apenas um aluno da turma
         if ($request->tipo_relatorio == 'boletim_aluno') {
-            $alunos = $alunos->getMatriculaAluno($request->matricula);
+            $alunos = $alunos->getMatriculaAluno($request->fk_id_matricula); 
+
+            if ($request->fk_id_matricula == null)
+                return redirect()->back()->with('atencao', 'Escolha um aluno.');
 
             //Le resultados de NOTAS E FALTAS do bimestre de 1 aluno
             $resultados = new ResultadoAlunoPeriodo;
-            $resultados = $resultados->getResultadosMatricula($request->matricula);
+            $resultados = $resultados->getResultadosMatricula($request->fk_id_matricula);
             //dd($resultados);
         } else if ($request->tipo_relatorio == 'boletim_turma') {
+            $alunos = $alunos->getAlunosTurma($request->turma);
+
             //Le resultados de NOTAS E FALTAS do bimestre de 1 turma
             $resultados = new ResultadoAlunoPeriodo;
             $resultados = $resultados->getResultadosTurma($request->turma); 
