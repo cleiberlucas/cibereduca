@@ -37,7 +37,7 @@
                     </select>
                 </div>
 
-                <div class="form-group col-sm-4 col-xs-2">
+                <div class="form-group col-sm-5 col-xs-2">
                     Turma
                     <select name="turma" id="turma" class="form-control"  required > 
                         <option value=""></option>
@@ -53,7 +53,7 @@
                     </select>
                 </div>  
 
-                <div class="form-group col-sm-3 col-xs-2">
+                <div class="form-group col-sm-5 col-xs-2">
                     Disciplina
                     <select name="disciplina" id="disciplina" class="form-control">
                         <option value=""></option>
