@@ -53,7 +53,7 @@
             
             <div class="row">
                 <div class="col-sm-5">
-                    <h6>{{$turma->nome_turma}} - {{$turma->tipoTurma->subNivelEnsino->sub_nivel_ensino}} - {{$turma->turno->descricao_turno}}</h6>
+                    <h6>{{$turma->nome_turma}} - {{$turma->sub_nivel_ensino}} - {{$turma->descricao_turno}}</h6>
                     
                     <h6>{{$periodoLetivo->periodo_letivo}}/{{$periodoLetivo->anoLetivo->ano}}</h6>
                     
@@ -92,7 +92,7 @@
             @foreach ($matriculas as $index => $matricula)
                 <div class="row py-0 " >
                     <div class="larg-div-n font-cabecalho  pl-2 pr-1 text-center border border-dark "> {{str_pad($index+1, 2, '0', STR_PAD_LEFT)}} </div>
-                    <div class="font-cabecalho col-sm-5  border border-dark "> {{$matricula->aluno->nome}} </div>                    
+                    <div class="font-cabecalho col-sm-5  border border-dark "> {{$matricula->nome}} </div>                    
                     {{-- varrendo array p imprimir nota da avaliação de um aluno --}}
                     @foreach ($avaliacoes as $avaliacao)
                         <?php

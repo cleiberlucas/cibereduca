@@ -183,6 +183,8 @@ class DiarioController extends Controller
             if ($request->periodo == null)
                 return redirect()->back()->with('atencao', 'Escolha um período Letivo.');
 
+            $alunos = $alunos->getAlunosTurma($request->turma);
+
             $disciplina = new Disciplina;
             $disciplina = $disciplina->getDisciplina($request->disciplina);
 
@@ -221,11 +223,14 @@ class DiarioController extends Controller
             if ($request->periodo == null)
                 return redirect()->back()->with('atencao', 'Escolha um período Letivo.');
 
-            $gradeCurricular = new GradeCurricular;
-            $gradeCurricular = $gradeCurricular->where('fk_id_tipo_turma', $turma->fk_id_tipo_turma)->get();
+            $alunos = $alunos->getAlunosTurma($request->turma);
+
+            $disciplinas = new GradeCurricular;
+            $disciplinas = $disciplinas->disciplinasTurma($request->turma);
 
             $resultados = new ResultadoAlunoPeriodo;
             $resultados = $resultados->getResultadosTurmaPeriodo($request->turma, $request->periodo);
+            //dd($resultados);
 
             return view('pedagogico.paginas.turmas.relatorios.rendimento_escolar', [ 
                 'unidadeEnsino' => $unidadeEnsino,
@@ -233,7 +238,7 @@ class DiarioController extends Controller
                 'turma' => $turma,                
                 'matriculas' => $alunos,                
                 'resultados' => $resultados,
-                'gradeCurricular' => $gradeCurricular,
+                'gradeCurricular' => $disciplinas,
                 'mediaAprovacao' => $mediaAprovacao,
             ]);
         }
@@ -242,6 +247,8 @@ class DiarioController extends Controller
             Somente dados da turma, disciplina e aluno
         */ else if ($request->tipo_relatorio == 'freq_mensal_branco') {
             $this->authorize('Frequência Ver');
+
+            $alunos = $alunos->getAlunosTurma($request->turma);
 
             if ($request->mes == null)
                 return redirect()->back()->with('atencao', 'Escolha um mês.');
@@ -266,6 +273,8 @@ class DiarioController extends Controller
             Somente dados da turma, disciplina e aluno
         */ else if ($request->tipo_relatorio == 'freq_mensal_disciplina') {
             $this->authorize('Frequência Ver');
+
+            $alunos = $alunos->getAlunosTurma($request->turma);
 
             if ($request->mes == null)
                 return redirect()->back()->with('atencao', 'Escolha um mês.');

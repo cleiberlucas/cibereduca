@@ -7,9 +7,9 @@
 </tr>
 <tr>
     <td colspan=2>            
-        <strong>{{$turma->tipoTurma->anoLetivo->ano}} - {{$turma->nome_turma}}</strong>
+        <strong>{{$turma->ano}} - {{$turma->nome_turma}}</strong>
         <br>
-        <strong>{{$turma->tipoTurma->subNivelEnsino->sub_nivel_ensino}} - {{$turma->turno->descricao_turno}}</strong>
+        <strong>{{$turma->sub_nivel_ensino}} - {{$turma->descricao_turno}}</strong>
     </td>
     <td colspan=24>
         <strong>Mês: <?php echo nomeMes($mes); ?></strong>
