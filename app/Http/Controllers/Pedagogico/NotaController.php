@@ -293,7 +293,7 @@ class NotaController extends Controller
         $notas = $this->repositorio
             ->select('tb_notas_avaliacoes.fk_id_matricula', 'tb_avaliacoes.fk_id_periodo_letivo', 'tb_avaliacoes.fk_id_disciplina')
             ->join('tb_avaliacoes', 'fk_id_avaliacao', 'id_avaliacao')
-            ->where('tb_notas_avaliacoes.fk_id_matricula', '=', '1')
+            ->where('tb_notas_avaliacoes.fk_id_matricula', '=', '352')
             ->groupBy('tb_notas_avaliacoes.fk_id_matricula', 'tb_avaliacoes.fk_id_periodo_letivo', 'tb_avaliacoes.fk_id_disciplina')
             ->get();
 
