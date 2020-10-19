@@ -105,6 +105,7 @@ Route::prefix('pedagogico')
                  */
 
                 route::get('turmas/nota/{id_nota_avaliacao}', 'NotaController@remover')->name('turmas.nota.remover');
+                route::any('turmas/notas/updatetodas', 'NotaController@atualizarTodasNotas')->name('turmas.notas.updatetodas');
                 route::put('turmas/nota/{id_nota_avaliacao}', 'NotaController@update')->name('turmas.notas.update');
                 Route::get('turmas/nota/{id_nota_avaliacao}/edit', 'NotaController@edit')->name('turmas.nota.edit');
                 Route::any('turmas/notas/search', 'NotaController@search')->name('turmas.notas.search');
@@ -119,6 +120,8 @@ Route::prefix('pedagogico')
                 Route::get('turmas/relatorios/diario', 'Relatorio\DiarioController@diario')->name('turmas.relatorios.diarios');
                 Route::post('turmas/relatorios/diario/filtros', 'Relatorio\DiarioController@filtros')->name('turmas.relatorios.diarios.filtros');
                 Route::post('turmas/relatorios/diario/frequencia_branco', 'Relatorio\DiarioController@frequenciaFichaBranco')->name('turmas.relatorios.diarios.frequencia_branco');
+
+                Route::get('frequencia/export/', 'Relatorio\DiarioController@frequenciaExcel')->name('frequencia.excel');
         });
 
 /**

@@ -286,6 +286,50 @@ class NotaController extends Controller
         }
     }
 
+    //rotina p atualização de nota média
+    //tem algum problema no recálculo das médias
+    public function atualizarTodasNotas(){
+        //ler todas as notas gravadas
+        $notas = $this->repositorio
+            ->select('tb_notas_avaliacoes.fk_id_matricula', 'tb_avaliacoes.fk_id_periodo_letivo', 'tb_avaliacoes.fk_id_disciplina')
+            ->join('tb_avaliacoes', 'fk_id_avaliacao', 'id_avaliacao')
+            ->where('tb_notas_avaliacoes.fk_id_matricula', '=', '1')
+            ->groupBy('tb_notas_avaliacoes.fk_id_matricula', 'tb_avaliacoes.fk_id_periodo_letivo', 'tb_avaliacoes.fk_id_disciplina')
+            ->get();
+
+       //     dd($notas);
+        
+         /*Ler a soma de notas do aluno X periodo X disciplina */
+         foreach($notas as $key => $nota){
+             //dd($nota);
+            $nota_media = $this->repositorio->getNotasAlunoPeriodoDisciplina($nota['fk_id_matricula'], $nota['fk_id_periodo_letivo'], $nota['fk_id_disciplina']);
+            //dd($nota_media);
+
+            $atualizarNota = array('fk_id_matricula' => $nota['fk_id_matricula'], 'fk_id_periodo_letivo' => $nota['fk_id_periodo_letivo'], 'fk_id_disciplina' =>  $nota['fk_id_disciplina'], 'nota_media' => $nota_media);
+           // dd($atualizarNota);
+
+             //Verificar se já foi lançado resultado para um período
+          $existeResultado = $this->resultadoAlunoPeriodo->getResultadoAlunoPeriodoDisciplina($nota['fk_id_matricula'], $nota['fk_id_periodo_letivo'], $nota['fk_id_disciplina']);
+
+          //Existe resultado lançado
+          //ALTERAR SOMA NOTA NO RESULTADO DO PERIODO
+          if ($existeResultado == 1)
+              $this->alterarNotasResultadoAluno($atualizarNota);
+          
+          //Não existe resultado lançado
+          //INSERIR SOMA NOTAS NO RESULTADO DO PERIODO
+          else
+              $this->inserirNotasResultadoAluno($atualizarNota);
+        
+
+         }
+
+          
+          //dd($this->repositorio->getFaltasAlunoPeriodoDisciplina($fk_id_matricula, $fk_id_periodo_letivo, $fk_id_disciplina));    
+
+         
+    }
+
     
     public function notaShowAluno($id_matricula, $mensagem = null)
     {        
