@@ -2,24 +2,23 @@
 
 namespace App\Http\Controllers\Pedagogico\Relatorio;
 
+use App\Exports\FrequenciaExport;
+use App\Exports\FrequenciaExportView;
 use App\Http\Controllers\Controller;
 use App\Models\AnoLetivo;
 use App\Models\GradeCurricular;
 use App\Models\Pedagogico\Avaliacao;
 use App\Models\Pedagogico\ConteudoLecionado;
-use App\Models\Pedagogico\Frequencia;
 use App\Models\Pedagogico\Nota;
 use App\Models\Pedagogico\ResultadoAlunoPeriodo;
-use App\Models\Pedagogico\TipoAvaliacao;
 use App\Models\PeriodoLetivo;
 use App\Models\Secretaria\Disciplina;
 use App\Models\Secretaria\Matricula;
 use App\Models\Secretaria\Turma;
-use App\Models\Turno;
 use App\Models\UnidadeEnsino;
-use PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DiarioController extends Controller
 {
@@ -53,6 +52,11 @@ class DiarioController extends Controller
                 'disciplina' => $disciplina,
             ]
         );
+    }
+
+    //teste todas frequencias
+    public function frequenciaExcel(){
+        return Excel::download(new FrequenciaExport, 'users.xlsx');
     }
 
     public function filtros(Request $request)
@@ -247,7 +251,7 @@ class DiarioController extends Controller
             Somente dados da turma, disciplina e aluno
         */ else if ($request->tipo_relatorio == 'freq_mensal_branco') {
             $this->authorize('Frequência Ver');
-
+            
             $alunos = $alunos->getAlunosTurma($request->turma);
 
             if ($request->mes == null)
@@ -258,6 +262,15 @@ class DiarioController extends Controller
 
             $disciplina = new Disciplina;
             $disciplina = $disciplina->getDisciplina($request->disciplina);
+
+            return Excel::download(new FrequenciaExportView("pedagogico.paginas.turmas.relatorios.frequencia_mensal_branco",
+                $unidadeEnsino,
+                $turma,
+                $request->mes,
+                $disciplina,
+                $alunos,
+                24), trans_choice('general.repayment', 2) . ' ' . trans_choice('general.report',
+                1) . '.xlsx');
 
             return view('pedagogico.paginas.turmas.relatorios.frequencia_mensal_branco', [
                 'unidadeEnsino' => $unidadeEnsino,

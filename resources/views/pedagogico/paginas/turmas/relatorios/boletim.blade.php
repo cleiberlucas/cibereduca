@@ -127,7 +127,7 @@
             {{-- Linhas disciplinas --}}
             @foreach ($disciplinas as $disciplina)
                 <div class="row font-cabecalho border border-dark border-bottom-0 ">
-                    <div class="col-sm-3 col-xs-2"> {{$disciplina->disciplina}} </div>
+                    <div class="col-sm-3 col-xs-2 ml-0 pl-0" > {{$disciplina->disciplina}} </div>
                     <?php 
                         $total_ms1 = 0;
                         $total_ms2 = 0;

@@ -253,6 +253,10 @@
             <div class="row ml-5">
                 <button type="submit" class="btn btn-primary"><i class="fas fa-print"></i> Imprimir</button>
             </div>
+            {{-- <div class="row ml-5">
+                <a href="{{ route('frequencia.excel') }}" class="btn btn-sm btn-link"> Excel</a>
+                
+            </div> --}}
         </form>
     </div>
 

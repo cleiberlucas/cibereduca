@@ -3,12 +3,10 @@
 namespace App\Http\Controllers\Secretaria;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreUpdateDocumentoEscola;
 use App\Models\AnoLetivo;
 use App\Models\Secretaria\DocumentoEscola;
 use Illuminate\Http\Request;
 use App\Models\Secretaria\Matricula;
-use App\Models\TipoDocumentoEscola;
 use App\Models\UnidadeEnsino;
 use App\User;
 use LaravelQRCode\Facades\QRCode;
@@ -65,7 +63,7 @@ class DocumentoEscolaController extends Controller
                 //lendo conteúdo da view para armazenar do BD
                 $conteudo = view(
                     'secretaria.paginas.matriculas.documentos_escola.declaracao_cursando',
-                    compact('matricula', 'unidadeEnsino', 'codigoValidacao', 'url_texto', 'url_qrcode')
+                    compact('matricula', 'unidadeEnsino', 'codigoValidacao', 'url_texto', 'url_qrcode') 
                 );
                 
                 $request->merge(['fk_id_tipo_documento' => 1]);
