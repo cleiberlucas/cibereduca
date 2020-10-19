@@ -318,14 +318,9 @@ class NotaController extends Controller
           //Não existe resultado lançado
           //INSERIR SOMA NOTAS NO RESULTADO DO PERIODO
           else
-              $this->inserirNotasResultadoAluno($atualizarNota);
-        
+              $this->inserirNotasResultadoAluno($atualizarNota);        
 
          }
-
-          
-          //dd($this->repositorio->getFaltasAlunoPeriodoDisciplina($fk_id_matricula, $fk_id_periodo_letivo, $fk_id_disciplina));    
-
          
     }
 

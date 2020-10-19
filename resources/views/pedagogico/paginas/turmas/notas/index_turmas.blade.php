@@ -12,7 +12,7 @@
         </li>
     </ol>
     <h4>Lançamentos de Notas</h4>    
-    <a href="{{ route('turmas.notas.updatetodas') }}" class="btn btn-sm btn-outline-success"><i class="far fa-file-alt"></i>Atualizar notas</a>
+    
 @stop
 
 @section('content')
