@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Pedagogico\Relatorio;
 use App\Exports\FrequenciaExport;
 use App\Exports\FrequenciaExportView;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Pedagogico\NotaController;
 use App\Models\AnoLetivo;
 use App\Models\GradeCurricular;
 use App\Models\Pedagogico\Avaliacao;
@@ -91,6 +92,11 @@ class DiarioController extends Controller
         if ($request->tipo_relatorio == 'boletim_aluno') {
             $alunos = $alunos->getMatriculaAluno($request->fk_id_matricula); 
 
+            //atualizar notas médias antes de rodar os boletins
+            $atualizarMedia = new NotaController(new Nota);
+            $atualizarMedia->atualizarNotasTurma($request->turma);
+
+
             if ($request->fk_id_matricula == null)
                 return redirect()->back()->with('atencao', 'Escolha um aluno.');
 
@@ -99,6 +105,10 @@ class DiarioController extends Controller
             $resultados = $resultados->getResultadosMatricula($request->fk_id_matricula);
             //dd($resultados);
         } else if ($request->tipo_relatorio == 'boletim_turma') {
+            //atualizar notas médias antes de rodar os boletins
+            $atualizarMedia = new NotaController(new Nota);
+            $atualizarMedia->atualizarNotasTurma($request->turma);
+
             $alunos = $alunos->getAlunosTurma($request->turma);
 
             //Le resultados de NOTAS E FALTAS do bimestre de 1 turma
@@ -111,6 +121,7 @@ class DiarioController extends Controller
         if ($request->tipo_relatorio == 'boletim_aluno' or $request->tipo_relatorio == 'boletim_turma') {
             $this->authorize('Nota Ver');
 
+            
             $disciplinas = new GradeCurricular;
             $disciplinas = $disciplinas->disciplinasTurma($request->turma);
             

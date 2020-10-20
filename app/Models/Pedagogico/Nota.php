@@ -74,7 +74,7 @@ class Nota extends Model
     /**
      * Retorna a soma das avaliações de um aluno X período X disciplina
      */
-    public function getNotasAlunoPeriodoDisciplina($id_matricula, $id_periodo_letivo, $id_disciplina)
+    public function getNotasAlunoPeriodoDisciplina($id_matricula, $id_periodo_letivo, $id_disciplina) 
     {
         return $this
                     ->join('tb_avaliacoes', 'fk_id_avaliacao', 'id_avaliacao')                    
