@@ -157,7 +157,7 @@ class DiarioController extends Controller
                 'matriculas' => $alunos,
             ]);
         } */
-            /* Conteúdo lecionado bimestral*/
+                /* Conteúdo lecionado bimestral - UMA DISCIPLINA*/
         else if($request->tipo_relatorio == 'conteudo_bimestral_disciplina'){
             if ($request->disciplina == null)
                 return redirect()->back()->with('atencao', 'Escolha uma disciplina.');
@@ -185,6 +185,37 @@ class DiarioController extends Controller
                 'periodoLetivo' => $periodoLetivo,
                 'turma' => $turma,
                 'disciplina' => $disciplina,
+                'conteudosLecionados' => $conteudosLecionados,
+
+                ]);
+                
+        }
+        /* Conteúdo lecionado bimestral - TODAS DISCIPLINA*/
+        else if($request->tipo_relatorio == 'conteudo_bimestral_todas_disciplinas'){
+            
+            if ($request->conteudo_periodo == null)
+                return redirect()->back()->with('atencao', 'Escolha um período Letivo.');
+
+            $disciplinas = new GradeCurricular;
+            $disciplinas = $disciplinas->disciplinasTurma($request->turma);
+
+            $periodoLetivo = $periodosLetivos->where('id_periodo_letivo', $request->conteudo_periodo)->first();
+
+            $conteudosLecionados = new ConteudoLecionado;
+            $conteudosLecionados = $conteudosLecionados
+                ->select('data_aula', 'conteudo_lecionado', 'fk_id_disciplina')
+                ->join('tb_turmas_periodos_letivos', 'fk_id_turma_periodo_letivo', 'id_turma_periodo_letivo')
+                ->where('fk_id_periodo_letivo', $request->conteudo_periodo)
+                ->where('fk_id_turma', $request->turma)
+                ->orderBy('fk_id_disciplina')
+                ->orderBy('data_aula')
+                ->get();
+
+            return view('pedagogico.paginas.turmas.relatorios.conteudos_bimestre_todas_disciplinas', [
+                'unidadeEnsino' => $unidadeEnsino,
+                'periodoLetivo' => $periodoLetivo,
+                'turma' => $turma,
+                'disciplinas' => $disciplinas,
                 'conteudosLecionados' => $conteudosLecionados,
 
                 ]);

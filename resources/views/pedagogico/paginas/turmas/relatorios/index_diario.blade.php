@@ -98,10 +98,14 @@
 
                     <div class="row my-3 ml-5">
                         <div class="form-check">
+                            <input class="form-check-input" type="radio" name="tipo_relatorio" id="conteudo_bimestral_todas_disciplinas" value="conteudo_bimestral_todas_disciplinas" >
+                            <label for="conteudo_bimestral_todas_disciplinas" class="form-check-label">Conteúdo Lecionado - Todas disciplinas</label>                            
+                        </div>
+                    </div>
+                    <div class="row my-3 ml-5">
+                        <div class="form-check">
                             <input class="form-check-input" type="radio" name="tipo_relatorio" id="conteudo_bimestral_disciplina" value="conteudo_bimestral_disciplina" >
-                            <label for="conteudo_bimestral_disciplina" class="form-check-label">Conteúdo Lecionado</label>
-                            <br>
-                            <small>(uma disciplina)</small>
+                            <label for="conteudo_bimestral_disciplina" class="form-check-label">Conteúdo Lecionado - Uma disciplina</label>                            
                         </div>
                     </div>
                 </div>
