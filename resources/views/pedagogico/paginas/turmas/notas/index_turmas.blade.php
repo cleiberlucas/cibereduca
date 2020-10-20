@@ -48,13 +48,8 @@
                                 {{$turma->descricao_turno}}
                             </td>
                             <td style="width=10px;">
-                                <a href="{{ route('turmas.notas', $turma->id_turma) }}" class="btn btn-sm btn-outline-success"><i class="far fa-file-alt"></i></a>
-                                <a href="{{ route('turmas.notas.updatenotasturma', $turma->id_turma) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-sync"></i></a>
-                                {{-- <a href="{{ route('turmas.frequencias', $turma->id_turma) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-user-check"></i></a>
-                                <a href="{{ route('turmas.periodosletivos', $turma->id_turma) }}" class="btn btn-sm btn-outline-warning"><i class="fas fa-key"></i></a> --}}
-                                
-                            </td>
-                            
+                                <a href="{{ route('turmas.notas', $turma->id_turma) }}" class="btn btn-sm btn-outline-success"><i class="far fa-file-alt"></i></a>                                                                
+                            </td>                            
                         </tr>
                     @endforeach
                 </tbody>
