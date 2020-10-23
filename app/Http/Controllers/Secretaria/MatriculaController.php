@@ -64,7 +64,7 @@ class MatriculaController extends Controller
         $this->authorize('Matrícula Cadastrar');   
         $turma = Turma::select('tb_turmas.nome_turma', 'tb_turmas.id_turma', 'tb_turmas.limite_alunos',
                         'tb_anos_letivos.ano', 'tb_turnos.descricao_turno', 'tb_sub_niveis_ensino.sub_nivel_ensino',
-                        'tb_tipos_turmas.valor_curso', 'tb_tipos_turmas.fk_id_ano_letivo' )
+                        'tb_tipos_turmas.valor_curso', 'tb_tipos_turmas.valor_matricula', 'tb_tipos_turmas.valor_material_didatico','tb_tipos_turmas.fk_id_ano_letivo' )
                         ->join('tb_tipos_turmas', 'tb_turmas.fk_id_tipo_turma', '=', 'tb_tipos_turmas.id_tipo_turma' )
                         ->join('tb_sub_niveis_ensino', 'tb_tipos_turmas.fk_id_sub_nivel_ensino', '=', 'tb_sub_niveis_ensino.id_sub_nivel_ensino')
                         ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')
