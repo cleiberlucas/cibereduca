@@ -7,7 +7,7 @@
     <div class="row">
         <input type="hidden" name="fk_id_user" value="{{Auth::id()}}">
         <div class="form-group col-sm-2 col-xs-2">            
-            <label>Ano letivo:</label>
+            <label>* Ano letivo:</label>
             <select name="fk_id_ano_letivo" id="" class="form-control" required>
                 <option value=""></option>
                 @foreach ($anosLetivos as $anoletivo)
@@ -25,12 +25,12 @@
 
     <div class="row">
         <div class="form-group col-sm-3 col-xs-2">
-            <label>Nome padrão da turma:</label>
-            <input type="text" name="tipo_turma" required class="form-control" placeholder="1º Ano" value="{{ $tipoTurma->tipo_turma ?? old('tipo_turma') }}">        
+            <label>* Nome padrão da turma:</label>
+            <input type="text" name="tipo_turma" required class="form-control" value="{{ $tipoTurma->tipo_turma ?? old('tipo_turma') }}">        
         </div>
         
         <div class="form-group col-sm-3 col-xs-2">
-        <label>Nível de Ensino:</label>
+        <label>* Nível de Ensino:</label>
             <select name="fk_id_sub_nivel_ensino" id="" class="form-control" required>
                 <option value=""></option>
                 @foreach ($subNiveisEnsino as $subNivelEnsino)
@@ -47,22 +47,36 @@
     </div>
     
     <div class="row">
-        <div class="form-group col-sm-2 col-xs-2">
-            <label>Valor Curso:</label>
+        <div class="form-group col-sm-3 col-xs-2">
+            <label>Valor Matrícula:</label>
+            <input type="number" id="valor_matricula"  name="valor_matricula" step="0.010" class="form-control" placeholder="" value="{{ $tipoTurma->valor_matricula ?? old('valor_matricula') }}">
+        </div>
+        <div class="form-group col-sm-3 col-xs-2">
+            <label>Valor Material Didático:</label>
+            <input type="number" id="valor_material_didatico"  name="valor_material_didatico" step="0.010" class="form-control" placeholder="" value="{{ $tipoTurma->valor_material_didatico ?? old('valor_material_didatico') }}">
+        </div>
+        <div class="form-group col-sm-3 col-xs-2">
+            <label>* Valor Curso:</label>
             <input type="number" id="valor_curso" required name="valor_curso" step="0.010" class="form-control" placeholder="" value="{{ $tipoTurma->valor_curso ?? old('valor_curso') }}">
         </div>
     </div>
     
     <div class="row">
         <div class="form-group col-sm-4 col-xs-2">            
-            * Todos os Campos Obrigatórios<br>
+            * Campos Obrigatórios<br>
             <button type="submit" class="btn btn-success"><i class="fas fa-forward"></i> Enviar</button>            
         </div>
     </div>
 </div>
 
 <script>
+    document.getElementById("valor_matricula").addEventListener("change", function(){
+        this.value = parseFloat(this.value).toFixed(2);
+    });
+    document.getElementById("valor_material_didatico").addEventListener("change", function(){
+        this.value = parseFloat(this.value).toFixed(2);
+    });
     document.getElementById("valor_curso").addEventListener("change", function(){
-   this.value = parseFloat(this.value).toFixed(2);
-});
+        this.value = parseFloat(this.value).toFixed(2);
+    });
 </script>

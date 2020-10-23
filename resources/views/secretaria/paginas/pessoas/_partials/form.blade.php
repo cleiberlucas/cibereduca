@@ -88,7 +88,7 @@
 <script>
     $(document).ready(function ($) { 
         var $campoCpf = $("#cpf");
-        $campoCpf.mask('000.000.000-00', {reverse: true});
+        $campoCpf.mask('000.000.000-00', {reverse: false});
     });
 
     $(document).ready(function ($) { 

@@ -30,6 +30,12 @@
                     <strong>Nível Ensino:</strong> {{ $tipoturma->subNivelEnsino->sub_nivel_ensino}}
                 </li>
                 <li>
+                    <strong>Valor Matrícula:</strong> R$ {{ number_format($tipoturma->valor_matricula, 2, ',', '.')}}
+                </li> 
+                <li>
+                    <strong>Valor Material Didático:</strong> R$ {{ number_format($tipoturma->valor_material_didatico, 2, ',', '.')}}
+                </li> 
+                <li>
                     <strong>Valor Curso:</strong> R$ {{ number_format($tipoturma->valor_curso, 2, ',', '.')}}
                 </li>                                
                 <li>

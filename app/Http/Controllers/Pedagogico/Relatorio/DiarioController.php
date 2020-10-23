@@ -56,9 +56,9 @@ class DiarioController extends Controller
     }
 
     //teste todas frequencias
-    public function frequenciaExcel(){
+    /* public function frequenciaExcel(){
         return Excel::download(new FrequenciaExport, 'users.xlsx');
-    }
+    } */
 
     public function filtros(Request $request)
     {
@@ -305,14 +305,14 @@ class DiarioController extends Controller
             $disciplina = new Disciplina;
             $disciplina = $disciplina->getDisciplina($request->disciplina);
 
-            return Excel::download(new FrequenciaExportView("pedagogico.paginas.turmas.relatorios.frequencia_mensal_branco",
+           /*  return Excel::download(new FrequenciaExportView("pedagogico.paginas.turmas.relatorios.frequencia_mensal_teste",
                 $unidadeEnsino,
                 $turma,
                 $request->mes,
                 $disciplina,
                 $alunos,
                 24), trans_choice('general.repayment', 2) . ' ' . trans_choice('general.report',
-                1) . '.xlsx');
+                1) . '.xlsx'); */
 
             return view('pedagogico.paginas.turmas.relatorios.frequencia_mensal_branco', [
                 'unidadeEnsino' => $unidadeEnsino,

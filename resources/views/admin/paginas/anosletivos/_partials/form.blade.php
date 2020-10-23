@@ -4,7 +4,7 @@
 <div class="container-fluid">
     
     <div class="row">        
-        <div class="col-sm-2 col-xs-2">
+        <div class="col-sm-5 col-xs-2">
             <input type="hidden" name="fk_id_user" value="{{Auth::id()}}">
             <div class="form-group">
                 <label>Unidade de Ensino:</label>
@@ -28,13 +28,13 @@
         <div class="col-sm-2 col-xs-2">
             <div class="form-group">
                 <label>Ano Letivo:</label>
-                <input type="number" name="ano" class="form-control" required placeholder="2020" value="{{ $anoLetivo->ano ?? old('ano') }}">
+                <input type="number" name="ano" class="form-control" required placeholder="" value="{{ $anoLetivo->ano ?? old('ano') }}">
             </div>
         </div>
-        <div class="col-sm-2 col-xs-2">
+        <div class="col-sm-3 col-xs-2">
             <div class="form-group">
                 <label>Média Mínima Aprovação:</label>
-                <input type="number" name="media_minima_aprovacao" class="form-control" required placeholder="60" value="{{ $anoLetivo->media_minima_aprovacao ?? old('media_minima_aprovacao') }}">
+                <input type="number" name="media_minima_aprovacao" class="form-control" required placeholder="" value="{{ $anoLetivo->media_minima_aprovacao ?? old('media_minima_aprovacao') }}">
             </div>
         </div>
         <div class="col-sm-2 col-xs-2">
