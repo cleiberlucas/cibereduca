@@ -169,12 +169,16 @@
                                         break;
                                     }                                    
                                 } 
-                                if (!$achou_resultado)
+                                if (!$achou_resultado )
                                     echo '-';
                                 //FALTAS
                                 echo '</div>
                                         <div class="col-sm-6 col-xs-2 border border-dark border-top-0 border-right-0  border-bottom-0">';                                
-                                echo $total_faltas_periodo;
+                                if ($total_faltas_periodo == 0)
+                                    echo '-';
+                                else
+                                    echo $total_faltas_periodo;
+                                    
                                 echo '</div>';                                     
                                 ?>                                
                             </div>
