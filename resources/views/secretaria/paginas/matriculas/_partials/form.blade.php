@@ -63,7 +63,11 @@
         <div class="form-group col-sm-3 col-xs-2">            
             <label>* Valor Matrícula</label>
             <input type="number"  name="valor_matricula" id="valor_matricula" step="0.010" class="form-control"  required value="{{ $matricula->valor_matricula ?? old('valor_matricula') }}">
-            <small>Valor padrão da Matrícula: R$ {{number_format($turma->valor_matricula, 2, ',', '.') ?? ''}} </small>
+            <small>Valor padrão da Matrícula: R$ 
+                @if (isset($turma))
+                    {{number_format($turma->valor_matricula, 2, ',', '.')}}     
+                @endif
+            </small>
         </div>
 
         <div class="form-group col-sm-3 col-xs-2">            
@@ -140,7 +144,11 @@
         <div class="form-group col-sm-3 col-xs-2">            
             <label>Valor Material Didático</label>
             <input type="number" name="valor_material_didatico" id="valor_material_didatico" step="0.010" class="form-control"  value="{{ $matricula->valor_material_didatico ?? old('valor_material_didatico') }}">
-            <small>Valor padrão do Material: R$ {{number_format($turma->valor_material_didatico, 2, ',', '.')  ?? ''}} </small>
+            <small>Valor padrão do Material: R$ 
+                @if (isset($turma))
+                    {{number_format($turma->valor_material_didatico, 2, ',', '.')}} 
+                @endif
+            </small>
         </div>   
         <div class="form-group col-sm-3 col-xs-2">            
             <label>Quantidade parcelas</label>
