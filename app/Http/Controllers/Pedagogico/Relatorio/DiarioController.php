@@ -96,7 +96,6 @@ class DiarioController extends Controller
             $atualizarMedia = new NotaController(new Nota);
             $atualizarMedia->atualizarNotasTurma($request->turma);
 
-
             if ($request->fk_id_matricula == null)
                 return redirect()->back()->with('atencao', 'Escolha um aluno.');
 
@@ -268,6 +267,10 @@ class DiarioController extends Controller
         else if ($request->tipo_relatorio == 'rendimento_escolar'){
             if ($request->periodo == null)
                 return redirect()->back()->with('atencao', 'Escolha um período Letivo.');
+
+            //atualizar notas médias antes de rodar os boletins
+            $atualizarMedia = new NotaController(new Nota);
+            $atualizarMedia->atualizarNotasTurma($request->turma);
 
             $alunos = $alunos->getAlunosTurma($request->turma);
 
