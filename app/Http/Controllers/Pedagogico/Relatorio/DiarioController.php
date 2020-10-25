@@ -268,7 +268,7 @@ class DiarioController extends Controller
             if ($request->periodo == null)
                 return redirect()->back()->with('atencao', 'Escolha um período Letivo.');
 
-            //atualizar notas médias antes de rodar os boletins
+            //atualizar notas médias antes de rodar
             $atualizarMedia = new NotaController(new Nota);
             $atualizarMedia->atualizarNotasTurma($request->turma);
 

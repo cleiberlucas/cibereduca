@@ -62,11 +62,46 @@ class RecebivelRelatorioController extends Controller
         $formasPagamento = new FormaPagamento;
         $formasPagamento = $formasPagamento->getFormasPagamento();
 
+        $tiposRecebivel = new ContaContabil;
+        $tiposRecebivel = $tiposRecebivel->get();
+
         return view('financeiro.paginas.recebiveis.relatorios.index',             
-            compact('anosLetivos', 'situacoesRecebivel', 'usuarios', 'formasPagamento')); 
+            compact('anosLetivos', 'situacoesRecebivel', 'usuarios', 'formasPagamento', 'tiposRecebivel')); 
     }
 
-    public function recebiveis(){
+    public function recebiveis(Request $request){
+        $recebiveis = new Recebivel;
+
+        //filtro obrigatório: unidade de ensino
+        $recebiveis = $recebiveis  
+            ->join('tb_unidades_ensino', 'fk_id_unidade_ensino', 'id_unidade_ensino')
+            ->where('tb_recebiveis.fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada());
+
+        //alguns joins necessários, mesmo se não houver filtro
+        $recebiveis = $recebiveis
+            ->join('tb_anos_letivos', 'tb_anos_letivos.fk_id_unidade_ensino', 'id_unidade_ensino')
+            ->join('tb_contas_contabeis', 'fk_id_conta_contabil_principal', 'id_conta_contabil')
+            ->join('tb_tipos_situacao_recebivel', 'fk_id_situacao_recebivel', 'id_situacao_recebivel')
+            ;
+
+        //filtrando ano letivo        
+        if ($request->ano_letivo > 0)
+            $recebiveis = $recebiveis->where('id_ano_letivo', $request->ano_letivo);
+
+        //filtrando tipo recebível (conta contábil)
+        if ($request->tipo_recebivel > 0)
+            $recebiveis = $recebiveis->where('fk_id_conta_contabil_principal', $request->tipo_recebivel);
+
+        if ($request->situacao_recebivel > 0)
+            $recebiveis = $recebiveis->where('fk_id_tipo_situacao_recebivel', $request->situacao_recebivel);
+
+        
+        $recebiveis = $recebiveis->get();
+
+        return view('',
+                compact('')
+        );
+        
 
     }
 
