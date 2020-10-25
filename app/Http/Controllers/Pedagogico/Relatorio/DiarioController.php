@@ -91,13 +91,13 @@ class DiarioController extends Controller
         //Consultar apenas um aluno da turma
         if ($request->tipo_relatorio == 'boletim_aluno') {
             $alunos = $alunos->getMatriculaAluno($request->fk_id_matricula); 
-
-            //atualizar notas médias antes de rodar os boletins
-            $atualizarMedia = new NotaController(new Nota);
-            $atualizarMedia->atualizarNotasTurma($request->turma);
-
+           
             if ($request->fk_id_matricula == null)
                 return redirect()->back()->with('atencao', 'Escolha um aluno.');
+
+            //atualizar notas médias antes de rodar
+            $atualizarMedia = new NotaController(new Nota);
+            $atualizarMedia->atualizarNotasAluno($request->fk_id_matricula);
 
             //Le resultados de NOTAS E FALTAS do bimestre de 1 aluno
             $resultados = new ResultadoAlunoPeriodo;
