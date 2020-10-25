@@ -119,7 +119,7 @@
                                                     </div>
                                                     <div class="form-group col-sm-8 col-xs-2">
                                                         <label>Lançar Conteúdo Lecionado - <font color="blue">{{$turmaPeriodoLetivo->periodo_letivo}} - {{$disciplinaTurma->disciplina}}:</font></label><br>            
-                                                        <textarea name="conteudo_lecionado" id="" rows="2">{{old('conteudo_lecionado')}}</textarea>
+                                                        <textarea name="conteudo_lecionado" id="" rows="2" required >{{old('conteudo_lecionado')}}</textarea>
                                                     </div>
                                                     <div class="form-group col-sm-1 col-xs-2 ">   
                                                         <br><br><br>                                             
