@@ -73,7 +73,7 @@ class DisciplinaController extends Controller
         $disciplinas = $this->repositorio->search($request->filtro);
         
         return view('secretaria.paginas.disciplinas.index', [
-            'disciplina' => $disciplinas,
+            'disciplinas' => $disciplinas,
             'filtros' => $filtros,
         ]);
     }
