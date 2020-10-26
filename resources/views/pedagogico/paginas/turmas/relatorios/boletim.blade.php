@@ -194,7 +194,7 @@
                                                 {{-- MS1 --}}                                                
                                                 <?php 
                                                     if ($total_ms1 > 0)     
-                                                        if ($total_ms1/2 >= $mediaAprovacao)                                                   
+                                                        if (number_format($total_ms1/2, 1, '.', '.') >= $mediaAprovacao)                                                   
                                                             echo number_format(($total_ms1/2), 1, ',', '.'); 
                                                         else
                                                             echo '<font color="red">'.number_format(($total_ms1/2), 1, ',', '.').'</font>';
