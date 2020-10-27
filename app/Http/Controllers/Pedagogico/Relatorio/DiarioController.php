@@ -312,7 +312,7 @@ class DiarioController extends Controller
             $resultados = new ResultadoAlunoPeriodo;
             $resultados = $resultados 
                 ->select('fk_id_matricula', 'fk_id_disciplina', 'nota_media', 'total_faltas')
-                ->join('tb_turmas_periodos_letivos', 'tb_turmas_periodos_letivos.fk_id_periodo_letivo', 'tb_resultados_alunos_periodos.fk_id_periodo_letivo')
+                ->join('tb_matriculas', 'fk_id_matricula', 'id_matricula')
                 ->where('fk_id_turma', $request->turma)            
                 ->where('tb_resultados_alunos_periodos.fk_id_periodo_letivo', $request->periodo)            
                 ->get();
