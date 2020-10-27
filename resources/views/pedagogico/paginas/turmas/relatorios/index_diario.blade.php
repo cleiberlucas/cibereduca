@@ -200,7 +200,7 @@
                     </div>
                     <div class="row my-3 ml-5">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="tipo_relatorio" id="avaliacoes_bimestre_todas_disciplinas" value="avaliacoes_bimestre_todas_disciplinas" >
+                            <input class="form-check-input" type="radio" name="tipo_relatorio" id="avaliacoes_bimestre_todas_disciplinas" value="avaliacoes_bimestre_todas_disciplinas" disabled>
                             <label for="avaliacoes_bimestre_todas_disciplinas" class="form-check-label">Resultado Bimestral - Avaliações todas disciplinas</label>
                         </div>
                     </div>
