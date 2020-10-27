@@ -310,7 +310,13 @@ class DiarioController extends Controller
                 ->get();
 
             $resultados = new ResultadoAlunoPeriodo;
-            $resultados = $resultados->getResultadosTurmaPeriodo($request->turma, $request->periodo);
+            $resultados = $resultados 
+                ->select('fk_id_matricula', 'fk_id_disciplina', 'nota_media', 'total_faltas')
+                ->join('tb_turmas_periodos_letivos', 'tb_turmas_periodos_letivos.fk_id_periodo_letivo', 'tb_resultados_alunos_periodos.fk_id_periodo_letivo')
+                ->where('fk_id_turma', $request->turma)            
+                ->where('tb_resultados_alunos_periodos.fk_id_periodo_letivo', $request->periodo)            
+                ->get();
+
             //dd($resultados);
             return view('pedagogico.paginas.turmas.relatorios.avaliacoes_bimestre', [
                 'unidadeEnsino' => $unidadeEnsino,
