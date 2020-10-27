@@ -65,7 +65,7 @@ class DiarioController extends Controller
 
         //dd($request);
         $turma = Turma::
-            select('nome_turma', 'descricao_turno', 'sub_nivel_ensino', 'fk_id_unidade_ensino', 'ano')
+            select('nome_turma', 'descricao_turno', 'sub_nivel_ensino', 'fk_id_unidade_ensino', 'ano', 'fk_id_tipo_turma')
             ->join('tb_tipos_turmas', 'fk_id_tipo_turma', 'id_tipo_turma')
             ->join('tb_turnos', 'fk_id_turno', 'id_turno')
             ->join('tb_sub_niveis_ensino', 'fk_id_sub_nivel_ensino', 'id_sub_nivel_ensino')
@@ -163,7 +163,7 @@ class DiarioController extends Controller
         
             if ($request->conteudo_periodo == null)
                 return redirect()->back()->with('atencao', 'Escolha um período Letivo.');
-
+                
             $disciplina = new Disciplina;
             $disciplina = $disciplina->getDisciplina($request->disciplina);
 
@@ -220,18 +220,25 @@ class DiarioController extends Controller
                 ]);
                 
         }
-                /* Avaliações bimestre */
-        else if ($request->tipo_relatorio == 'avaliacoes_bimestre'){
+                /* Avaliações bimestre UMA DISCIPLINA */
+        else if ($request->tipo_relatorio == 'avaliacoes_bimestre_disciplina'){
             if ($request->disciplina == null)
                 return redirect()->back()->with('atencao', 'Escolha uma disciplina.');
         
             if ($request->periodo == null)
                 return redirect()->back()->with('atencao', 'Escolha um período Letivo.');
 
+                
+            //atualizar notas médias antes de rodar os boletins
+            $atualizarMedia = new NotaController(new Nota);
+            $atualizarMedia->atualizarNotasTurma($request->turma);
+
             $alunos = $alunos->getAlunosTurma($request->turma);
 
-            $disciplina = new Disciplina;
-            $disciplina = $disciplina->getDisciplina($request->disciplina);
+            $disciplinas = new GradeCurricular;
+            $disciplinas = $disciplinas
+                ->disciplinasTurma($request->turma)
+                ->where('fk_id_disciplina', $request->disciplina);
 
             $avaliacoes = Avaliacao::
                 join('tb_tipos_avaliacao', 'fk_id_tipo_avaliacao', 'id_tipo_avaliacao')
@@ -240,6 +247,7 @@ class DiarioController extends Controller
                 ->where('fk_id_disciplina', $request->disciplina)
                 ->orderBy('tipo_avaliacao')
                 ->get();
+                //dd($avaliacoes);
 
             $notas = Nota::            
                 join('tb_avaliacoes', 'fk_id_avaliacao', 'id_avaliacao')                
@@ -255,7 +263,52 @@ class DiarioController extends Controller
                 'unidadeEnsino' => $unidadeEnsino,
                 'periodoLetivo' => $periodoLetivo,
                 'turma' => $turma,
-                'disciplina' => $disciplina,
+                'disciplinas' => $disciplinas,
+                'matriculas' => $alunos,
+                'avaliacoes' => $avaliacoes,
+                'notas' => $notas,
+                'resultados' => $resultados,
+                'mediaAprovacao' => $mediaAprovacao,
+            ]);
+        }
+        /* Avaliações bimestre TODAS DISCIPLINAS */
+        else if ($request->tipo_relatorio == 'avaliacoes_bimestre_todas_disciplinas'){
+            
+            if ($request->periodo == null)
+                return redirect()->back()->with('atencao', 'Escolha um período Letivo.');
+                
+            //atualizar notas médias antes de rodar os boletins
+            $atualizarMedia = new NotaController(new Nota);
+            $atualizarMedia->atualizarNotasTurma($request->turma);
+
+            $alunos = $alunos->getAlunosTurma($request->turma);
+
+            $disciplinas = new GradeCurricular;
+            $disciplinas = $disciplinas
+                ->disciplinasTurma($request->turma);
+            //dd($disciplinas);
+
+            $avaliacoes = Avaliacao::
+                join('tb_tipos_avaliacao', 'fk_id_tipo_avaliacao', 'id_tipo_avaliacao')
+                ->where('fk_id_periodo_letivo', $request->periodo)
+                ->where('fk_id_tipo_turma', $turma->fk_id_tipo_turma)                
+                ->orderBy('tipo_avaliacao')
+                ->get();
+
+            $notas = Nota::            
+                join('tb_avaliacoes', 'fk_id_avaliacao', 'id_avaliacao')                
+                ->where('fk_id_tipo_turma', $turma->fk_id_tipo_turma)
+                ->where('fk_id_periodo_letivo', $request->periodo)                
+                ->get();
+
+            $resultados = new ResultadoAlunoPeriodo;
+            $resultados = $resultados->getResultadosTurmaPeriodo($request->turma, $request->periodo);
+            //dd($resultados);
+            return view('pedagogico.paginas.turmas.relatorios.avaliacoes_bimestre', [
+                'unidadeEnsino' => $unidadeEnsino,
+                'periodoLetivo' => $periodoLetivo,
+                'turma' => $turma,
+                'disciplinas' => $disciplinas,
                 'matriculas' => $alunos,
                 'avaliacoes' => $avaliacoes,
                 'notas' => $notas,

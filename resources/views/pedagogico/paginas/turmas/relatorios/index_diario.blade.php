@@ -194,10 +194,14 @@
 
                     <div class="row my-3 ml-5">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="tipo_relatorio" id="avaliacoes_bimestre" value="avaliacoes_bimestre" >
-                            <label for="avaliacoes_bimestre" class="form-check-label">Resultado Bimestral</label>
-                            <br>
-                            <small>(avaliações de uma disciplina)</small>
+                            <input class="form-check-input" type="radio" name="tipo_relatorio" id="avaliacoes_bimestre_disciplina" value="avaliacoes_bimestre_disciplina" >
+                            <label for="avaliacoes_bimestre_disciplina" class="form-check-label">Resultado Bimestral - Avaliações de uma disciplina</label>
+                        </div>
+                    </div>
+                    <div class="row my-3 ml-5">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="tipo_relatorio" id="avaliacoes_bimestre_todas_disciplinas" value="avaliacoes_bimestre_todas_disciplinas" >
+                            <label for="avaliacoes_bimestre_todas_disciplinas" class="form-check-label">Resultado Bimestral - Avaliações todas disciplinas</label>
                         </div>
                     </div>
 
