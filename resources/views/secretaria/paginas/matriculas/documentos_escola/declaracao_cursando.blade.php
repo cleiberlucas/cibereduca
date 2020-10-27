@@ -42,7 +42,7 @@
 
 <body>
     <div class="container-fluid ">        
-        @include('secretaria.paginas._partials.cabecalho')
+        @include('secretaria.paginas._partials.cabecalho_redeeduca')
         <div class="content">
             <div class="row">
                 <div class="form-group col-sm-11 col-xs-2 my-5 py-0" >  
@@ -104,9 +104,9 @@
             </div>
         
         </div>
-        @include('secretaria.paginas._partials.rodape_cibereduca')
-    </div>
         
+    </div>
+    @include('secretaria.paginas._partials.rodape_redeeduca')
    
 
     {{-- <footer class="footer">
