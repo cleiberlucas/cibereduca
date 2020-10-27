@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Avaliações {{$turma->nome_turma}} {{$periodoLetivo->periodo_letivo}}</title>
+    <title>Avaliações {{$periodoLetivo->periodo_letivo}} - {{$turma->nome_turma}}</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 </head>
 
@@ -106,7 +106,7 @@
                         {{-- varrendo array p imprimir nota da avaliação de um aluno --}}
                         @foreach ($avaliacoes as $avaliacao)
                             
-                            @if($disciplina->fk_id_disciplina == $avaliacao->fk_id_disciplina)
+                            @if($disciplina->id_disciplina == $avaliacao->fk_id_disciplina)
                                 <div class="font-cabecalho border border-dark text-center" style="width: 50px;">
                                 <?php
                                     $mediaAprovaAvaliacao = $mediaAprovacao * $avaliacao->valor_avaliacao / 100;
@@ -133,7 +133,7 @@
                         {{-- varrendo array p imprimir media e falta de um aluno --}}
                         @foreach ($resultados as $resultado)
                             @if ($resultado->fk_id_matricula == $matricula->id_matricula
-                                and $disciplina->fk_id_disciplina == $resultado->fk_id_disciplina)
+                                and $disciplina->id_disciplina == $resultado->fk_id_disciplina)
                                 <div class="font-cabecalho  border border-dark text-center " style="width: 50px;">
                                     @if ($resultado->nota_media > 0)
                                         @if($resultado->nota_media >= $mediaAprovacao)

@@ -43,7 +43,7 @@ class ResultadoAlunoPeriodo extends Model
 
     /**
      * Consulta lançamento de resultado de FALTA E NOTA para uma turma X periodo
-     * @param $id_turma, $id_disciplina 
+     * @param $id_turma, $id_periodo
      * @return array
      */
     public function getResultadosTurmaPeriodo($id_turma, $id_periodo)

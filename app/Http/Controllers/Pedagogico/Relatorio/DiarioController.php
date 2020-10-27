@@ -285,18 +285,26 @@ class DiarioController extends Controller
 
             $disciplinas = new GradeCurricular;
             $disciplinas = $disciplinas
-                ->disciplinasTurma($request->turma);
+                ->select('id_disciplina', 'disciplina')
+                ->join('tb_tipos_turmas', 'tb_grades_curriculares.fk_id_tipo_turma', 'id_tipo_turma')
+                ->join('tb_turmas', 'tb_turmas.fk_id_tipo_turma', 'id_tipo_turma')
+                ->join('tb_disciplinas', 'fk_id_disciplina', 'id_disciplina')
+                ->where('id_turma', $request->turma)
+                ->orderBy('disciplina')
+                ->get();
             //dd($disciplinas);
 
             $avaliacoes = Avaliacao::
-                join('tb_tipos_avaliacao', 'fk_id_tipo_avaliacao', 'id_tipo_avaliacao')
+                select('fk_id_disciplina', 'tipo_avaliacao', 'valor_avaliacao', 'id_avaliacao')
+                ->join('tb_tipos_avaliacao', 'fk_id_tipo_avaliacao', 'id_tipo_avaliacao')
                 ->where('fk_id_periodo_letivo', $request->periodo)
                 ->where('fk_id_tipo_turma', $turma->fk_id_tipo_turma)                
                 ->orderBy('tipo_avaliacao')
                 ->get();
 
-            $notas = Nota::            
-                join('tb_avaliacoes', 'fk_id_avaliacao', 'id_avaliacao')                
+            $notas = Nota::   
+                select('fk_id_avaliacao', 'fk_id_matricula', 'nota')         
+                ->join('tb_avaliacoes', 'fk_id_avaliacao', 'id_avaliacao')                
                 ->where('fk_id_tipo_turma', $turma->fk_id_tipo_turma)
                 ->where('fk_id_periodo_letivo', $request->periodo)                
                 ->get();
