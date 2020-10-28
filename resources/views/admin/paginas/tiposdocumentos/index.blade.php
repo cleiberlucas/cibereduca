@@ -1,10 +1,6 @@
-
-
 @extends('adminlte::page')
 
-
-
-@section('title_postfix', ' Disciplinas')
+@section('title_postfix', ' Tipos de Documentos')
 
 @section('content_header')
     <ol class="breadcrumb">

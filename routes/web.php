@@ -2,8 +2,26 @@
 
 use Illuminate\Support\Facades\Route;
 
+
 /**
- * Rotas Pedagogico
+ * Rotas Captacao
+ */
+Route::prefix('captacao')
+        ->namespace('Captacao')
+        ->middleware('auth')
+        ->group(function () {
+
+                /**
+                 * Rotas Captações
+                 */
+                Route::any('captacao/search', 'CaptacaoController@search')->name('captacao.search');
+                Route::resource('captacao', 'CaptacaoController');  
+
+        }
+);
+
+/**
+ * Rotas Financeiro
  */
 Route::prefix('financeiro')
         ->namespace('Financeiro')
@@ -187,9 +205,10 @@ Route::prefix('secretaria')
 
                 Route::get('matriculas/contrato/{id_matricula}', 'MatriculaController@imprimirContrato')->name('matriculas.contrato')->middleware('can:Matrícula Contrato Ver');
                 Route::get('matriculas/ficha/{id_aluno}', 'MatriculaController@imprimirFichaMatricula')->name('matriculas.ficha')->middleware('can:Matrícula Ficha Ver');
-                Route::get('matriculas/getAlunos/{id_ano_letivo}', 'MatriculaController@getAlunos')->name('matriculas.getAlunos');                
+                Route::get('matriculas/getAlunos/{id_ano_letivo}', 'MatriculaController@getAlunos')->name('matriculas.getAlunos');                                
                 Route::get('matriculas/getAlunosTurma/{id_turma}', 'MatriculaController@getAlunosTurma')->name('matriculas.getAlunosTurma');                
                 Route::get('matriculas/getValores/{id_matricula}', 'MatriculaController@getValores')->name('matriculas.getValores');
+                
                  
                 /**
                  * Rotas Turmas
@@ -206,7 +225,6 @@ Route::prefix('secretaria')
                 Route::get('turmas/{id_turma_professor}/professor', 'TurmaProfessorController@edit')->name('turmasprofessor.edit');     
                 Route::get('turmasprofessor/{id_turma}', 'TurmaProfessorController@index')->name('turmasprofessor')->middleware('can:Professor X Disciplina Ver');                       
                   
-
                 /*
                 *Rotas Pessoas
                 */
@@ -219,8 +237,8 @@ Route::prefix('secretaria')
                 Route::get('pessoas/{id_pessoa}', 'PessoaController@show')->name('pessoas.show');
                 Route::post('pessoas', 'PessoaController@store')->name('pessoas.store');
                 Route::any('{id_tipo_pessoa}/pessoas', 'PessoaController@index')->name('pessoas.index')->middleware('can:Pessoa Ver');
-
                 Route::get('pessoas/getPessoa/{nome}', 'PessoaController@getPessoa')->name('pessoas.getPessoa');
+                Route::get('pessoas/getResponsaveisTodos/{resp}', 'PessoaController@getResponsaveisTodos')->name('pessoas.getResponsaveisTodos');                
 
                 /**
                  * Rotas disciplinas

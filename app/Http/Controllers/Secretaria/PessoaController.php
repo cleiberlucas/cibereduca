@@ -306,6 +306,24 @@ class PessoaController extends Controller
         // dd($pessoa);
     }
 
+    
+    /*
+    *Lista de todos responsaveis cadastrados
+    *somente para popular combo
+    */
+    public function getResponsaveisTodos()
+    {
+        $responsaveis['data'] = $this->repositorio
+            ->select('id_pessoa', 'nome')         
+            ->where('fk_id_tipo_pessoa', 2)                       
+            ->orderBy('nome')
+            ->get();
+
+        echo json_encode($responsaveis);
+        exit;
+    }
+
+
     /**
      * Verifica se a situação foi ativada
      */
