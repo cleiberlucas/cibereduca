@@ -18,8 +18,8 @@
     <div class="container-fluid">
         <div class="card-header">            
             <h4>Captação {{$captacao->ano}}</h4>
-            <h5><strong>Interessado(a): {{$captacao->nome}} - {{$captacao->tipo_cliente}}</strong></h5>
-            <h5><b>Aluno(a): {{$captacao->aluno}} - Série Pretendida: {{$captacao->serie_pretendida}}</b></h5>
+            <h6> <strong>Interessado(a): <a href="{{ route('pessoas.edit', $captacao->id_pessoa) }}" class="btn btn-link" target="_blank"> {{$captacao->nome}}</a> </strong></h6>
+            <h6><b>{{$captacao->tipo_cliente}} - {{$captacao->aluno}} - Série Pretendida: {{$captacao->serie_pretendida}}</b></h6>
         </div>
         <div class="card-body">
             <ul>

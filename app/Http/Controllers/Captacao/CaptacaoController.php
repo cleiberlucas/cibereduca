@@ -194,7 +194,7 @@ class CaptacaoController extends Controller
         $this->authorize('Captação Ver');
 
         $captacao = $this->repositorio  
-            ->select('nome',
+            ->select('nome', 'id_pessoa',
                 'ano',
                 'id_captacao', 'aluno', 'serie_pretendida', 'telefone_1', 'telefone_2', 'email_1', 'email_2', 'data_contato', 'observacao', 'tb_captacoes.data_cadastro',
                 'necessita_apoio', 'valor_matricula', 'valor_curso', 'valor_material_didatico',
