@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateCaptacao;
 use App\Models\AnoLetivo;
 use App\Models\Captacao\Captacao;
+use App\Models\Captacao\HistoricoCaptacao;
 use App\Models\Captacao\MotivoContato;
 use App\Models\Captacao\TipoCliente;
 use App\Models\Captacao\TipoDescoberta;
@@ -91,7 +92,6 @@ class CaptacaoController extends Controller
             'motivosContato' => $motivosContato,
             'tiposNegociacao' => $tiposNegociacao,
             'tiposDescoberta' => $tiposDescoberta,
-
         ]);
     }
 
@@ -127,53 +127,53 @@ class CaptacaoController extends Controller
              
         if (!$captacao)
             return redirect()->back();
-            $anosLetivos = new AnoLetivo;
-            $anosLetivos = $anosLetivos
-                ->select('id_ano_letivo', 'ano')
-                ->where('fk_id_unidade_ensino', session()->get('id_unidade_ensino') )
-                ->orderBy('ano', 'desc')
-                ->get();
-    
-            // dd($anosLetivos);
-    
-            $pessoas = new Pessoa;
-            $pessoas = $pessoas
-                ->select('id_pessoa', 'nome')
-                ->where('fk_id_tipo_pessoa', 2)
-                ->orderBy('nome')
-                ->get();
-    
-            $tiposCliente = new TipoCliente;
-            $tiposCliente = $tiposCliente
-                ->orderBy('tipo_cliente')
-                ->get();
-    
-            $motivosContato = new MotivoContato;
-            $motivosContato = $motivosContato
-                ->orderBy('motivo_contato')
-                ->get();
-    
-            $tiposNegociacao = new TipoNegociacao;
-            $tiposNegociacao = $tiposNegociacao
-                ->orderBy('tipo_negociacao')
-                ->get();
-            
-            $tiposDescoberta = new TipoDescoberta;
-            $tiposDescoberta = $tiposDescoberta
-                ->orderBy('tipo_descoberta')
-                ->get();
-    
-            return view('captacao.paginas.edit', [
-                'captacao' => $captacao,
-                'anosLetivos' => $anosLetivos,
-                'pessoas' => $pessoas,
-                'tiposCliente' => $tiposCliente,
-                'motivosContato' => $motivosContato,
-                'tiposNegociacao' => $tiposNegociacao,
-                'tiposDescoberta' => $tiposDescoberta,
-    
-            ]);
+
+        $anosLetivos = new AnoLetivo;
+        $anosLetivos = $anosLetivos
+            ->select('id_ano_letivo', 'ano')
+            ->where('fk_id_unidade_ensino', session()->get('id_unidade_ensino') )
+            ->orderBy('ano', 'desc')
+            ->get();
+
+        // dd($anosLetivos);
+
+        $pessoas = new Pessoa;
+        $pessoas = $pessoas
+            ->select('id_pessoa', 'nome')
+            ->where('fk_id_tipo_pessoa', 2)
+            ->orderBy('nome')
+            ->get();
+
+        $tiposCliente = new TipoCliente;
+        $tiposCliente = $tiposCliente
+            ->orderBy('tipo_cliente')
+            ->get();
+
+        $motivosContato = new MotivoContato;
+        $motivosContato = $motivosContato
+            ->orderBy('motivo_contato')
+            ->get();
+
+        $tiposNegociacao = new TipoNegociacao;
+        $tiposNegociacao = $tiposNegociacao
+            ->orderBy('tipo_negociacao')
+            ->get();
         
+        $tiposDescoberta = new TipoDescoberta;
+        $tiposDescoberta = $tiposDescoberta
+            ->orderBy('tipo_descoberta')
+            ->get();
+
+        return view('captacao.paginas.edit', [
+            'captacao' => $captacao,
+            'anosLetivos' => $anosLetivos,
+            'pessoas' => $pessoas,
+            'tiposCliente' => $tiposCliente,
+            'motivosContato' => $motivosContato,
+            'tiposNegociacao' => $tiposNegociacao,
+            'tiposDescoberta' => $tiposDescoberta,
+
+        ]);        
     }
 
     public function update(StoreUpdateCaptacao $request, $id)
@@ -197,6 +197,8 @@ class CaptacaoController extends Controller
             ->select('nome',
                 'ano',
                 'id_captacao', 'aluno', 'serie_pretendida', 'telefone_1', 'telefone_2', 'email_1', 'email_2', 'data_contato', 'observacao', 'tb_captacoes.data_cadastro',
+                'necessita_apoio', 'valor_matricula', 'valor_curso', 'valor_material_didatico',
+                'valor_bilingue', 'valor_robotica',
                 'tipo_cliente',
                 'motivo_contato',
                 'tipo_descoberta',
@@ -216,10 +218,27 @@ class CaptacaoController extends Controller
         if (!$captacao)
             return redirect()->back()->with('alerta', 'Captação não encontrada.');
 
-        return view('captacao.paginas.show', [
-            'captacao' => $captacao
+        $historicos = new HistoricoCaptacao;
+        $historicos = $historicos
+            ->join('tb_motivos_contato', 'fk_id_motivo_contato', 'id_motivo_contato')    
+            ->where('fk_id_captacao', $id)
+            ->orderby('data_contato')
+            ->get();
+
+        return view('captacao.paginas.show', 
+            compact('captacao', 'historicos')            
+        );
+    }
+    
+    public function search(Request $request)
+    {
+        $filtros = $request->except('_token');
+        $captacoes = $this->repositorio->search($request->filtro);
+        
+        return view('captacao.paginas.index', [
+                    'captacoes' => $captacoes,
+                    'filtros' => $filtros,
         ]);
     }
-
 
 }

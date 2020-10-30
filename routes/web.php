@@ -17,6 +17,11 @@ Route::prefix('captacao')
                 Route::any('captacao/search', 'CaptacaoController@search')->name('captacao.search');
                 Route::resource('captacao', 'CaptacaoController');  
 
+                Route::any('historico/create/{id_captacao}', 'HistoricoController@create')->name('historico.create');
+                Route::any('historico/store', 'HistoricoController@store')->name('historico.store');
+                Route::put('historico/update/{id_historico}', 'HistoricoController@update')->name('historico.update');
+                Route::get('historico/delete/{id_avaliacao}', 'HistoricoController@destroy')->name('historico.destroy');
+
         }
 );
 
@@ -35,7 +40,7 @@ Route::prefix('financeiro')
                 Route::post('relatorios', 'Relatorio\RecebivelRelatorioController@recebiveis')->name('relatorios.recebiveis')->middleware('can:Recebível Ver');
 
                 Route::resource('financeiro', 'FinanceiroController');
-                route::any('alunos/{id_aluno}', 'FinanceiroController@indexAluno')->name('financeiro.indexAluno');
+                route::any('alunos/{id_aluno}', 'FinanceiroController@indexAlunao')->name('financeiro.indexAluno');
                 Route::get('create/{id_aluno}', 'FinanceiroController@create')->name('financeiro.create');                
                 Route::get('recebivel/destroy/{id_aluno}', 'FinanceiroController@destroy')->name('financeiro.destroy');   
                 Route::any('recebivel/searchAluno', 'FinanceiroController@searchAluno')->name('recebivel.aluno.search');

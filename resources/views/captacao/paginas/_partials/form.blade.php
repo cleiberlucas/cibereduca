@@ -62,10 +62,28 @@
             <input type="text" name="aluno" class="form-control" value="{{ $captacao->aluno ?? old('aluno') }}">        
         </div>
 
-        <div class="form-group col-sm-4 col-xs-2">
+        <div class="form-group col-sm-3 col-xs-2">
             <label>Série Pretendida:</label>
             <input type="text" name="serie_pretendida" class="form-control" value="{{ $captacao->serie_pretendida ?? old('serie_pretendida') }}">        
-        </div>       
+        </div>
+        
+        <div class="form-group col-sm-3 col-xs-2">
+            <label>* Apoio psicológico ou pedagógico:</label>
+            <select name="necessita_apoio" id="necessita_apoio" class="form-control" required>
+                <option value=""></option>
+                <option value="0" 
+                    @if (isset($captacao) and $captacao->necessita_apoio == 0)
+                        selected                    
+                    @endif>
+                Não</option>
+
+                <option value="1"
+                    @if (isset($captacao) and $captacao->necessita_apoio == 1)
+                        selected                    
+                    @endif>
+                Sim</option>
+            </select>
+        </div>
     </div>
 
     <div class="row">
@@ -126,6 +144,32 @@
             </select>
         </div> 
 
+    </div>
+    <strong>Valores negociados</strong>
+    <div class="row">
+        <div class="form-group col-sm-3 col-xs-2">
+            <label>Matrícula:</label><br>
+            <input type="number" name="valor_matricula" id="valor_matricula" step="0.010" class="form-control"  value="{{ $captacao->valor_matricula ?? old('valor_matricula') }}">    
+        </div>
+        <div class="form-group col-sm-3 col-xs-2">
+            <label>Curso:</label><br>
+            <input type="number" name="valor_curso" id="valor_curso" step="0.010" class="form-control"  value="{{ $captacao->valor_curso ?? old('valor_curso') }}">    
+        </div>
+        <div class="form-group col-sm-3 col-xs-2">
+            <label>Material Didático:</label><br>
+            <input type="number" name="valor_material_didatico" id="valor_material_didatico" step="0.010" class="form-control"  value="{{ $captacao->valor_material_didatico ?? old('valor_material_didatico') }}">    
+        </div>
+    </div>
+
+    <div class="row">       
+        <div class="form-group col-sm-3 col-xs-2">
+            <label>Bilíngue:</label><br>
+            <input type="number" name="valor_bilingue" id="valor_bilingue" step="0.010" class="form-control"  value="{{ $captacao->valor_bilingue ?? old('valor_bilingue') }}">    
+        </div>
+        <div class="form-group col-sm-3 col-xs-2">
+            <label>Robótica:</label><br>
+            <input type="number" name="valor_robotica" id="valor_robotica" step="0.010" class="form-control"  value="{{ $captacao->valor_robotica ?? old('valor_robotica') }}">    
+        </div>
     </div>
 
     <div class="row">

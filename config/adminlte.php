@@ -358,14 +358,14 @@ return [
         ['text'    => 'Captação',
         'icon'    => 'fas fa-plus',                        
         'icon_color' => 'orange',            
-        'can'  => 'Bloqueado',
+        'can'  => 'Captação Ver',
         'submenu' => [
             [
                 'text' => 'Captações',
                 'route'  => 'captacao.index',
                 'icon' => 'fas fa-plus-circle',
                 'icon_color' => 'orange',
-                'can'  => 'Bloqueado',
+                'can'  => 'Captação Ver',
             ],
         ],
     ],

@@ -20,7 +20,7 @@
         <div class="card-header">
             <form action="{{ route('captacao.search') }}" method="POST" class="form form-inline">
                 @csrf
-            <input type="text" name="filtro" placeholder="Informe interessado" class="form-control" value="{{ $filtros['filtro'] ?? '' }}">
+            <input type="text" name="filtro" size="30" placeholder="Informe interessado ou aluno" class="form-control" value="{{ $filtros['filtro'] ?? '' }}">
                 <button type="submit"class="btn btn-outline-secondary"><i class="fas fa-filter"></i></button>
             </form>
         </div>
@@ -50,6 +50,7 @@
                                     <td>{{$captacao->serie_pretendida}}</td>
                                     <td>{{$captacao->tipo_negociacao}}</td>
                                     <td style="width=10px;">
+                                        <a href="{{ route('historico.create', $captacao->id_captacao) }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-paste"></i></a>
                                         <a href="{{ route('captacao.edit', $captacao->id_captacao) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>
                                         <a href="{{ route('captacao.show', $captacao->id_captacao) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-eye"></i></a>
                                     </td>

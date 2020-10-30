@@ -37,7 +37,7 @@ class StoreUpdateHistoricoCaptacao extends FormRequest
     public function messages()
     {        
         return [
-            'fk_id_captacao.required'           => "Escolha um responsável.",
+            'fk_id_captacao.required'           => "ID captação não recebido.",
             'data_contato.required'     => "Escolha um aluno.",
             'historico.required'           => "Escolha um tipo de cliente.",
             'fk_id_motivo_contato.required'        => 'Escolha um motivo de contato.',            

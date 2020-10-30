@@ -14,13 +14,22 @@ class Captacao extends Model
         
     protected $fillable = ['fk_id_pessoa', 'aluno', 'serie_pretendida', 'data_contato',
         'fk_id_ano_letivo', 'fk_id_tipo_cliente', 'fk_id_motivo_contato', 'fk_id_tipo_negociacao', 'fk_id_tipo_descoberta', 
+        'necessita_apoio', 'valor_matricula', 'valor_curso', 'valor_material_didatico', 'valor_bilingue', 'valor_robotica', 
         'data_cadastro', 'fk_id_usuario_captacao', 'observacao'];
    
     public function search($filtro = null)
     {
         $resultado = $this
-            ->where('motivo_contato', 'like', "%{$filtro}%")                             
-            ->paginate();
+            ->select('tb_captacoes.*',
+                'tb_pessoas.nome',
+                'ano',
+                'tipo_negociacao')
+            ->join('tb_pessoas', 'fk_id_pessoa', 'id_pessoa')
+            ->join('tb_anos_letivos', 'fk_id_ano_letivo', 'id_ano_letivo')
+            ->join('tb_tipos_negociacao', 'fk_id_tipo_negociacao', 'id_tipo_negociacao')
+            ->where('aluno', 'like', "%{$filtro}%")                             
+            ->orWhere('nome', 'like', "%{$filtro}%")            
+            ->paginate(25);
         
         return $resultado;
     }
