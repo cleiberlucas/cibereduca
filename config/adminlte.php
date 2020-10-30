@@ -336,7 +336,8 @@ return [
         ],
         ['text'    => 'Financeiro',
             'icon'    => 'fas fa-dollar-sign',                        
-            'icon_color' => 'blue',            
+            'icon_color' => 'blue',  
+            'can'  => 'Recebível Ver',          
             'submenu' => [
                 [
                     'text' => 'Recebíveis',
