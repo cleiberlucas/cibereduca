@@ -30,7 +30,7 @@ class HistoricoController extends Controller
         $this->authorize('Captação Cadastrar');
         
         $captacao = Captacao::
-            select('nome',
+            select('nome', 'id_pessoa',
             'ano',
             'id_captacao', 'aluno', 'serie_pretendida', 'telefone_1', 'telefone_2', 'email_1', 'email_2', 'data_contato', 
             'necessita_apoio', 'valor_matricula', 'valor_curso', 'valor_material_didatico',
