@@ -62,8 +62,11 @@
 
             <div class="row">
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="declaracao" id="declaracao_transferencia" value="declaracao_transferencia" disabled>
-                    <label for="declaracao_transferencia" class="form-check-label">Transferência</label>
+                    <input class="form-check-input" type="radio" name="declaracao" id="declaracao_transferencia" value="declaracao_transferencia_concluido" >
+                    <label for="declaracao_transferencia" class="form-check-label">Transferência - Curso concluído</label>
+                    &nbsp;&nbsp;&nbsp;&nbsp; Aluno(a) apto a cursar:
+                    <input type="text" name="aptoCurso" size="10" >
+                    &nbsp;&nbsp; do Ensino <input type="text" size="30" class="text" name="nivelEnsino" placeholder="Exemplo: Ensino Fundamental" >
                 </div>
             </div>
 

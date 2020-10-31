@@ -84,6 +84,48 @@ class DocumentoEscolaController extends Controller
                 'secretaria.paginas.matriculas.documentos_escola.declaracao_cursando',
                 compact('matricula', 'unidadeEnsino', 'codigoValidacao', 'url_texto', 'url_qrcode')
             );
+        }
+        else if ($request['declaracao'] == 'declaracao_transferencia_concluido') {
+                       
+            $aptoCurso = $request->aptoCurso;
+            if (strlen($aptoCurso) < 5)
+                return redirect()->back()->with('atencao',  'Informe o CURSO que o aluno está apto a cursar.');
+
+            $nivelEnsino = $request->nivelEnsino;
+            if (strlen($nivelEnsino) < 5)
+                return redirect()->back()->with('atencao',  'Informe o NÍVEL DE ENSINO que o aluno está apto a cursar.');
+
+            $anoLetivo = $request->anoLetivo;
+            $anoLetivo = new AnoLetivo;
+            $anoLetivo = $anoLetivo
+                ->select('ano')
+                ->where('id_ano_letivo', $request->anoLetivo)->first();
+
+            try {
+                //lendo conteúdo da view para armazenar do BD
+                $conteudo = view(
+                    'secretaria.paginas.matriculas.documentos_escola.declaracao_transferencia_concluido',
+                    compact('anoLetivo', 'matricula', 'unidadeEnsino', 'codigoValidacao', 'url_texto', 'url_qrcode', 'aptoCurso', 'nivelEnsino') 
+                );
+                
+                $request->merge(['fk_id_tipo_documento' => 2]);
+                $request->merge(['corpo_documento' => $conteudo]);
+            } catch (\Throwable $th) {                
+                return redirect()->back()->with('erro', 'Houve erro ao gerar a Declaração.');
+            }
+
+            try {
+                //Solicitando gravação da declaração no BD
+                $this->store($request);
+            } catch (\Throwable $th) {
+                return redirect()->back()->with('erro', 'Houve erro ao gravar a Declaração.');
+            }           
+            
+            //Visualizando a declaração
+            return view(
+                'secretaria.paginas.matriculas.documentos_escola.declaracao_transferencia_concluido',
+                compact('anoLetivo', 'matricula', 'unidadeEnsino', 'codigoValidacao', 'url_texto', 'url_qrcode', 'aptoCurso', 'nivelEnsino')
+            );
         } else
             return redirect()->back()->withInput()->with('atencao', 'Escolha um tipo de declaração.');
     }

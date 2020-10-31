@@ -91,7 +91,7 @@
                                 <a href="{{ route('matriculas.documentos', $matricula->id_matricula) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-tasks"></i></a>                                    
                                 <a href="{{ route('matriculas.show', $matricula->id_matricula) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-eye"></i></a>                                    
                                 <a href="{{ route('matriculas.contrato', $matricula->id_matricula) }}" target="_blank" class="btn btn-sm btn-outline-dark"><i class="fas fa-file-contract"></i></a>
-                                {{-- <a href="{{ route('matriculas.requerimento', $matricula->id_matricula) }}" target="_blank" class="btn btn-sm btn-outline-dark"><i class="fas fa-file-signature"></i></a> --}}
+                                <a href="{{ route('matriculas.requerimento', $matricula->id_matricula) }}" target="_blank" class="btn btn-sm btn-outline-dark"><i class="fas fa-file-signature"></i></a>
                                 {{-- <a href="" class="btn btn-sm btn-outline-warning"><i class="fas fa-address-book"></i></i></a> --}}
                             </td>
                             
