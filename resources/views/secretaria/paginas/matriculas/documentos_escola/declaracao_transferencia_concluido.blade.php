@@ -99,7 +99,7 @@
                     <font size="2px">            
                     Verifique a autenticidade deste documento em {{$url_texto}}
                     <br>
-                    Documento gerado em {{date('d/m/Y H:m:i')}} - Código de Validação: {{$codigoValidacao}}
+                    Documento gerado em {{date('d/m/Y H:i:s')}} - Código de Validação: {{$codigoValidacao}}
                 </font>
                 </div>
             </div>
