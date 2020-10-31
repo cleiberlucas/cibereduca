@@ -40,7 +40,7 @@ Route::prefix('financeiro')
                 Route::post('relatorios', 'Relatorio\RecebivelRelatorioController@recebiveis')->name('relatorios.recebiveis')->middleware('can:Recebível Ver');
 
                 Route::resource('financeiro', 'FinanceiroController');
-                route::any('alunos/{id_aluno}', 'FinanceiroController@indexAlunao')->name('financeiro.indexAluno');
+                route::any('alunos/{id_aluno}', 'FinanceiroController@indexAluno')->name('financeiro.indexAluno');
                 Route::get('create/{id_aluno}', 'FinanceiroController@create')->name('financeiro.create');                
                 Route::get('recebivel/destroy/{id_aluno}', 'FinanceiroController@destroy')->name('financeiro.destroy');   
                 Route::any('recebivel/searchAluno', 'FinanceiroController@searchAluno')->name('recebivel.aluno.search');

@@ -39,7 +39,7 @@
                         <tr>
                             <th scope="row">{{$index+1}}</th>
                             <td>
-                                {{-- ALUNO - link p pasta do aluno --}}                                    
+                                {{-- ALUNO - link p ficha financeira do aluno --}}                                    
                                 <a href="{{ route('financeiro.indexAluno', $pessoa->id_pessoa) }}" class="btn btn-sm btn-link"> {{$pessoa->nome}}</a>    
                             </td>                                 
                             <td>
