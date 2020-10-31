@@ -18,7 +18,7 @@
 
     <div class="form-group col-sm-6 col-xs-12">
         <label>Identidade:</label>
-        <input type="text" name="doc_identidade" class="form-control" placeholder="Documento de Identidade" value="{{ $pessoa->doc_identidade ?? old('doc_identidade') }}">
+        <input type="text" name="doc_identidade" maxlength="45" class="form-control" placeholder="Documento de Identidade" value="{{ $pessoa->doc_identidade ?? old('doc_identidade') }}">
     </div>
 </div>
 
@@ -54,11 +54,11 @@
 <div class="row">
     <div class="form-group col-sm-4 col-xs-12">
         <label>Nome do Pai:</label>
-        <input type="text" name="pai" class="form-control" placeholder="Pai" value="{{ $pessoa->pai ?? old('pai') }}">
+        <input type="text" name="pai" maxlength="100" class="form-control" placeholder="Pai" value="{{ $pessoa->pai ?? old('pai') }}">
     </div>
     <div class="form-group col-sm-4 col-xs-12">
         <label>Nome da Mãe:</label>
-        <input type="text" name="mae" class="form-control" placeholder="Mãe" value="{{ $pessoa->mae ?? old('mae') }}">
+        <input type="text" name="mae" maxlength="100" class="form-control" placeholder="Mãe" value="{{ $pessoa->mae ?? old('mae') }}">
     </div>
 </div>
 
@@ -76,11 +76,11 @@
 <div class="row">
     <div class="form-group col-sm-4 col-xs-12">        
         <label>E-mail:</label>
-        <input type="email" name="email_1" class="form-control" placeholder="E-mail principal" value="{{ $pessoa->email_1 ?? old('email_1') }}">
+        <input type="email" name="email_1"  maxlength="100" class="form-control" placeholder="E-mail principal" value="{{ $pessoa->email_1 ?? old('email_1') }}">
     </div>
     <div class="form-group col-sm-4 col-xs-12">        
         <label>E-mail opcional:</label>
-        <input type="email" name="email_2" class="form-control" placeholder="E-mail opcional" value="{{ $pessoa->email_2 ?? old('email_2') }}">
+        <input type="email" name="email_2"maxlength="100" class="form-control" placeholder="E-mail opcional" value="{{ $pessoa->email_2 ?? old('email_2') }}">
     </div>
 </div>
 

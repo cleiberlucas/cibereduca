@@ -50,7 +50,7 @@
                         
                         <input type="hidden" name="fk_id_user_alteracao" value="{{Auth::id()}}">
                         <label>* Nome:</label>
-                        <input type="text" name="nome" class="form-control" placeholder="Nome" required value="{{ $pessoa->nome ?? old('nome') }}" >
+                        <input type="text" name="nome" maxlength="100" class="form-control" placeholder="Nome" required value="{{ $pessoa->nome ?? old('nome') }}" >
                     </div>
                     <div class="form-group col-sm-4 col-xs-12">
                         <label>Foto:</label>
@@ -62,6 +62,17 @@
             
              {{-- Endereço apenas para responsáveis --}}
              @if ($pessoa->fk_id_tipo_pessoa == '2')
+                <div class="row">
+                    <div class="form-group col-sm-4 col-xs-2"> 
+                        <label for="">Profissão</label>
+                        <input type="text" name="profissao" class="form-control" maxlength="100" placeholder="Profissão" value="{{ $pessoa->profissao ?? old('profissao') }}">
+                    </div>
+                    <div class="form-group col-sm-4 col-xs-2"> 
+                        <label for="">Empresa</label>
+                        <input type="text" name="empresa" class="form-control" maxlength="150" placeholder="Empresa" value="{{ $pessoa->empresa ?? old('empresa') }}">
+                    </div>
+                </div>
+
                 @include('secretaria.paginas.pessoas._partials.form_endereco')    
             @endif
 

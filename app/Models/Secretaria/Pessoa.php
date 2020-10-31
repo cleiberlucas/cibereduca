@@ -32,6 +32,8 @@ class Pessoa extends Model
                             'email_1', 
                             'email_2', 
                             'fk_id_tipo_pessoa', 
+                            'profissao',
+                            'empresa',
                             'obs_pessoa', 
                             'fk_id_unidade_ensino',
                             'fk_id_user_cadastro',

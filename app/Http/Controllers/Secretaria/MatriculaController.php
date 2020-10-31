@@ -268,6 +268,21 @@ class MatriculaController extends Controller
         ]);
     }
 
+    
+    public function imprimirReqMatricula($id_matricula)
+    {
+        $this->authorize('Matrícula Contrato Ver');  
+        $matricula = $this->repositorio->where('id_matricula', $id_matricula)->first();
+        
+        $unidadeEnsino = new UnidadeEnsino;
+        $unidadeEnsino = $unidadeEnsino->where('id_unidade_ensino', $matricula->turma->tipoTurma->anoLetivo->fk_id_unidade_ensino)->first();
+        
+        return view('secretaria.paginas.matriculas.requerimento_matricula', [
+            'matricula' => $matricula,        
+            'unidadeEnsino' =>$unidadeEnsino,
+        ]);
+    }
+
     public function imprimirFichaMatricula($id_aluno)
     {
         $this->authorize('Matrícula Ver');

@@ -279,7 +279,9 @@ class PessoaController extends Controller
                         'fk_id_user',
                         'situacao_pessoa',
                         'estado',
-                        'fk_id_user_alteracao'
+                        'fk_id_user_alteracao',
+                        'profissao',
+                        'empresa'
                     ));
 
         $pessoas = $this->repositorio->where('fk_id_tipo_pessoa', $pessoa->fk_id_tipo_pessoa)->orderBy('nome', 'asc')->paginate(20);
