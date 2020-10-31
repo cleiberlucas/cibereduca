@@ -175,7 +175,10 @@ class DocumentoEscolaController extends Controller
     {
         $this->authorize('Documento Escola Ver'); 
 
-        $documentoEscola = $this->repositorio->where('id_documento_escola', $id_documento)->first();
+        $documentoEscola = $this->repositorio
+            ->where('id_documento_escola', $id_documento)
+            ->where('situacao_documento', 1)
+            ->first();
 
         return view('secretaria.paginas.matriculas.documentos_escola.show', [
             'documentoEscola' => $documentoEscola,
