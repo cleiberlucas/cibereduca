@@ -44,7 +44,9 @@
                                 <h3><b>{{$matricula->aluno->nome}}</b></h3>
                             </div>
                             <div class="p-2">
-                                <img src="{{url("storage/".$matricula->aluno->foto)}}" alt="" width="100" heigth="200">
+                                @if (isset($matricula->aluno->foto))
+                                    <img src="{{url("storage/".$matricula->aluno->foto)}}" alt="" width="100" heigth="200">
+                                @endif
                             </div>
                             <div class="p-2"> </div>
                         </div>
