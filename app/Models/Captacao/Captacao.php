@@ -3,6 +3,7 @@
 namespace App\Models\Captacao;
 
 use App\Models\AnoLetivo;
+use App\Models\UnidadeEnsino;
 use Illuminate\Database\Eloquent\Model;
 
 class Captacao extends Model
@@ -27,8 +28,10 @@ class Captacao extends Model
             ->join('tb_pessoas', 'fk_id_pessoa', 'id_pessoa')
             ->join('tb_anos_letivos', 'fk_id_ano_letivo', 'id_ano_letivo')
             ->join('tb_tipos_negociacao', 'fk_id_tipo_negociacao', 'id_tipo_negociacao')
+            ->where('tb_anos_letivos.fk_id_unidade_ensino', session()->get('id_unidade_ensino'))
             ->where('aluno', 'like', "%{$filtro}%")                             
-            ->orWhere('nome', 'like', "%{$filtro}%")            
+            ->orWhere('nome', 'like', "%{$filtro}%")     
+            ->orWhere('fk_id_pessoa', $filtro)       
             ->paginate(25);
         
         return $resultado;

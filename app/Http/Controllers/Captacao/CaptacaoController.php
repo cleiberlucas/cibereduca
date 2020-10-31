@@ -233,7 +233,9 @@ class CaptacaoController extends Controller
     public function search(Request $request)
     {
         $filtros = $request->except('_token');
+       // dd($request->filtro);
         $captacoes = $this->repositorio->search($request->filtro);
+        
         
         return view('captacao.paginas.index', [
                     'captacoes' => $captacoes,

@@ -39,8 +39,11 @@
                         @if ($index == 0)
                         <div class="d-flex justify-content-between">
                             <div class="p-2">  
-                                <h3>Arquivo do Responsável</h3>                          
-                                <h3><b>{{$matricula->responsavel->nome}}</b></h3>
+                                <h4>Arquivo do Responsável</h4>                          
+                                <h4><b>{{$matricula->responsavel->nome}}</b></h4> 
+                                
+                                <a href="{{ route('captacao.search', ['filtro' => $matricula->fk_id_responsavel]) }}" class="btn btn-sm btn-outline-warning"><i class="fas fa-plus-circle"></i>Captações</a>
+                                
                             </div>                            
                             <div class="p-2"> </div>
                         </div>
@@ -76,8 +79,14 @@
                                     <a href="{{ route('matriculas.edit', $matricula->id_matricula) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>
                                     <a href="{{ route('matriculas.documentos', $matricula->id_matricula) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-tasks"></i></a>                                    
                                     <a href="{{ route('matriculas.show', $matricula->id_matricula) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-eye"></i></a>                                    
-                                    <a href="" class="btn btn-sm btn-outline-dark"><i class="fas fa-file-contract"></i></a>
-                                    <a href="" class="btn btn-sm btn-outline-warning"><i class="fas fa-address-book"></i></i></a>
+                                    <a href="{{ route('matriculas.contrato', $matricula->id_matricula) }}" target="_blank" class="btn btn-sm btn-outline-dark"><i class="fas fa-file-contract"></i></a>
+                                    <a href="{{ route('matriculas.requerimento', $matricula->id_matricula) }}" target="_blank" class="btn btn-sm btn-outline-dark"><i class="fas fa-file-signature"></i></a>
+                                    
+                                   {{--  <form action="{{ route('captacao.search') }}" method="POST" class="form form-inline">
+                                        @csrf
+                                    <input type="text" name="filtro" size="30" placeholder="Informe interessado ou aluno" class="form-control" value="{{ $filtros['$matricula->responsavel->nome'] ?? '' }}" hidden>
+                                        <button type="submit"class="btn btn-sm btn-outline-alert"><i class="fas fa-plus-circle"></i></button>
+                                    </form> --}}
                                 </td>
                                 
                             </tr>
