@@ -1,7 +1,5 @@
 @extends('adminlte::page')
 
-
-
 @section('title_postfix', ' Documentos')
 
 @section('content_header')
@@ -70,8 +68,11 @@
                                     {{$documento->matricula->turma->tipoTurma->anoLetivo->ano}}
                                 </td>                            
                                 <td>
-                                    <a href="{{ route('matriculas.documentos_escola.show', $documento->id_documento_escola) }}" target="_blank" class="href">{{$documento->tipoDocumentoEscola->tipo_documento}}</a>
-                                    
+                                    @if ($documento->situacao_documento == 1)
+                                        <a href="{{ route('matriculas.documentos_escola.show', $documento->id_documento_escola) }}" target="_blank" class="href">{{$documento->tipoDocumentoEscola->tipo_documento}}</a>
+                                    @else
+                                        {{$documento->tipoDocumentoEscola->tipo_documento}}
+                                    @endif                                    
                                 </td>                                
                                 <td>
                                     {{date('d/m/Y H:i:s', strtotime($documento->data_geracao))}}
@@ -81,15 +82,19 @@
                                 </td>
                                 <td>
                                     @if ($documento->situacao_documento == 1)
-                                    <b> Válido</b>
-                                @else
-                                    Inválido                                    
-                                @endif
+                                        <b> Válido</b>
+                                    @else
+                                        <font color="red">Inválido</font>
+                                    @endif
                                 </td>                                                                                  
                                                                     
                                 <td style="width=10px;">                                
-                                    <a href="{{ route('matriculas.documentos_escola.show', $documento->id_documento_escola) }}" target="_blank" class="btn btn-sm btn-outline-info"><i class="fas fa-print"></i></a>
-                                    <a href="#" class="btn btn-sm btn-outline-danger"><i class="fas fa-ban"></i></a>
+                                    @if ($documento->situacao_documento == 1)
+                                        <a href="{{ route('matriculas.documentos_escola.show', $documento->id_documento_escola) }}" target="_blank" class="btn btn-sm btn-outline-info"><i class="fas fa-print"></i></a>                                    
+                                        <a href="{{ route('matriculas.documentos_escola.invalidar', [$documento->id_documento_escola, $documento->matricula->fk_id_aluno])}}" class="btn btn-sm btn-outline-danger"><i class="fas fa-ban"></i></a>
+                                    @else
+                                        <a href="{{ route('matriculas.documentos_escola.revalidar', [$documento->id_documento_escola, $documento->matricula->fk_id_aluno])}}" class="btn btn-sm btn-outline-success"><i class="far fa-check-circle"></i></a>
+                                    @endif
 
                                     {{-- <a href="{{ route('matriculas.edit', $documento->id_matricula) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>
                                     <a href="{{ route('matriculas.documentos', $documento->id_matricula) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-tasks"></i></a>                                                                                                       

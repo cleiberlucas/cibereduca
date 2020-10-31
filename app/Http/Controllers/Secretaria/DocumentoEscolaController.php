@@ -182,6 +182,31 @@ class DocumentoEscolaController extends Controller
         ]);
     }
 
+    public function invalidarDocumento($id_documento, $id_aluno)
+    {
+        $documentoEscola = $this->repositorio->where('id_documento_escola', $id_documento );
+        if (!$documentoEscola)
+            return redirect()->back()->with('erro', 'Documento não encontrado.');
+        
+        $documentoEscola->where('id_documento_escola', $id_documento)->update(['situacao_documento' => 0]);
+
+        return $this->index($id_aluno)->with('sucesso', 'O documento foi invalidado.');
+
+    }
+
+    
+    public function revalidarDocumento($id_documento, $id_aluno)
+    {
+        $documentoEscola = $this->repositorio->where('id_documento_escola', $id_documento );
+        if (!$documentoEscola)
+            return redirect()->back()->with('erro', 'Documento não encontrado.');
+        
+        $documentoEscola->where('id_documento_escola', $id_documento)->update(['situacao_documento' => 1]);
+
+        return $this->index($id_aluno)->with('sucesso', 'O documento foi revalidado.');
+
+    }
+
     /**
      * Abre interface para verificação de autenticidade de documento
      */

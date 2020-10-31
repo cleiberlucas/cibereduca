@@ -70,7 +70,7 @@
                     <input type="date" name="data_geracao" class="form-control" required value="{{old('data_geracao')}}">
                 </div>
                 <div class="form-group col-sm-3 col-xs-2">
-                    <label>Código de Verificação</label>
+                    <label>Código de Validação</label>
                     <input type="text" name="codigo_validacao" class="form-control" maxlength="255" required value="{{old('codigo_validacao')}}">
                 </div>
             </div>

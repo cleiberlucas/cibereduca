@@ -195,6 +195,8 @@ Route::prefix('secretaria')
                 Route::get('matriculas/documentos_escola/{id_documento}', 'DocumentoEscolaController@show')->name('matriculas.documentos_escola.show');
                 Route::get('matriculas/{id_aluno}/documentos_escola', 'DocumentoEscolaController@index')->name('matriculas.documentos_escola')->middleware('can:Matrícula Ver');
                 Route::post('matriculas/documentos_escola', 'DocumentoEscolaController@gerar')->name('matriculas.documentos_escola.gerar');
+                Route::get('matriculas/documentos_escola/{id_documento}/invalidar/{id_aluno}', 'DocumentoEscolaController@invalidarDocumento')->name('matriculas.documentos_escola.invalidar');
+                Route::get('matriculas/documentos_escola/{id_documento}/revalidar/{id_aluno}', 'DocumentoEscolaController@revalidarDocumento')->name('matriculas.documentos_escola.revalidar');
 
                 /**
                  * Rotas Matrículas
