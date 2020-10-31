@@ -11,13 +11,13 @@ class UnidadeEnsino extends Model
 
     public $timestamps = false;
     
-    protected $fillable = ['razao_social', 'nome_fantasia', 'cnpj', 'telefone', 'endereco', 'email', 'nome_assinatura', 'cargo_assinatura', 'url_site', 'situacao'];
+    protected $fillable = ['razao_social', 'nome_fantasia', 'cnpj', 'telefone', 'endereco', 'cidade_uf', 'email', 'nome_assinatura', 'cargo_assinatura', 'url_site', 'situacao'];
       
     public function search($filtro = null)
     {
         $resultado = $this->where('nome_fantasia', 'LIKE', "%{$filtro}%")
                             ->orWhere('razao_social', 'LIKE', "%{$filtro}%")
-                            ->paginate(1);
+                            ->paginate();
         
         return $resultado;
     }

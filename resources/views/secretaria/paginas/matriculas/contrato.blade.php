@@ -199,7 +199,7 @@
                     <p align="justify">Para dirimir questões oriundas deste contrato fica eleito o Foro da Comarca em cuja jurisdição o CONTRATANTE tiver domicílio. <br>
                     E, por estarem as PARTES de acordo com todos os termos e condições do presente contrato, assinam este instrumento em duas vias de igual teor e forma, na presença das testemunhas abaixo, para que se produzam todos os efeitos legais. <br>
                     </p>
-                    <center>Formosa-GO, {{date('d/m/Y', strtotime($matricula->data_matricula))}}.</center>
+                    <center>{{$unidadeEnsino->cidade_uf}}, {{date('d/m/Y', strtotime($matricula->data_matricula))}}.</center>
 
                     <br><br>
                     <table align="center">
