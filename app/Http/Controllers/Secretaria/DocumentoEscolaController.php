@@ -209,7 +209,7 @@ class DocumentoEscolaController extends Controller
         else            
             return view('secretaria.paginas.matriculas.documentos_escola.autenticidade', 
                 ['sucesso' => 'Documento válido - ' . $documentoEscola->tipoDocumentoEscola->tipo_documento . ' emitido para ' . $documentoEscola->matricula->aluno->nome . '.',
-                'dados' => 'Emitido em '.date('d/m/Y H:m:i', strtotime($documentoEscola->data_geracao)).' - Código de Validação: '.$documentoEscola->codigo_validacao
+                'dados' => 'Emitido em '.date('d/m/Y H:i:s', strtotime($documentoEscola->data_geracao)).' - Código de Validação: '.$documentoEscola->codigo_validacao
                 ])
                 ->withInput('');            
             
