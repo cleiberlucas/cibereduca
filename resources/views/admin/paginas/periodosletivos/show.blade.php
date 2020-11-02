@@ -30,6 +30,7 @@
                 <li>
                     <strong>Data fim:</strong> {{date('d/m/Y', strtotime($periodoletivo->data_fim))}}
                 </li>
+                <li><strong>Dias letivos:</strong> {{$periodoletivo->quantidade_dias_letivos}}</li>
                 <li>
                     <strong>Situação:</strong>
                     @if ($periodoletivo->situacao == 1)

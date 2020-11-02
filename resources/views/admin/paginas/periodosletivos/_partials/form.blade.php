@@ -27,14 +27,22 @@
         </div>
     </div>
     <div class="row">
-        <div class="form-group col-sm-2 col-xs-2">
+        <div class="form-group col-sm-3 col-xs-2">
             <label>Data início:</label>
             <input type="date" name="data_inicio" class="form-control" required value="{{ $periodoLetivo->data_inicio ?? old('data_inicio') }}">
         </div>
-        <div class="form-group col-sm-2 col-xs-2">
+        <div class="form-group col-sm-3 col-xs-2">
             <label>Data fim:</label>
             <input type="date" name="data_fim" class="form-control" required value="{{ $periodoLetivo->data_fim ?? old('data_fim') }}">
         </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group col-sm-3 col-xs-2">
+            <label>Quantidade dias letivos:</label>
+            <input type="number" name="quantidade_dias_letivos" class="form-control" value="{{ $periodoLetivo->quantidade_dias_letivos ?? old('quantidade_dias_letivos') }}">
+        </div>
+    </div>
 
         <div class="form-group col-sm-3 col-xs-2">
                 <label>Situação:</label><br>

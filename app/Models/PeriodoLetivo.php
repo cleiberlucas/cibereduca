@@ -13,13 +13,15 @@ class PeriodoLetivo extends Model
     
     public $timestamps = false;
         
-    protected $fillable = ['periodo_letivo',  'fk_id_ano_letivo', 'data_inicio', 'data_fim', 'situacao', 'fk_id_user'];
+    protected $fillable = ['periodo_letivo',  'fk_id_ano_letivo', 'data_inicio', 'data_fim', 'quantidade_dias_letivos', 'situacao', 'fk_id_user'];
    
     public function search($filtro = null)
     {
         $resultado = $this->join('tb_anos_letivos', 'fk_id_ano_letivo', 'id_ano_letivo')
                             ->where('periodo_letivo', 'like', "%{$filtro}%") 
                             ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())
+                            ->orderBy('ano', 'desc')
+                            ->orderBy('periodo_letivo')                                         
                             ->paginate();
         
         return $resultado;

@@ -31,8 +31,8 @@
                         <th>Período Letivo</th>
                         <th>Data Início</th>
                         <th>Data Fim</th>
-                        <th>Situação</th>
-                        <th>Data Alteração</th>
+                        <th>Dias Letivos</th>
+                        <th>Situação</th>                        
                         <th width="270">Ações</th>
                     </thead>
                     <tbody>                        
@@ -49,17 +49,17 @@
                                 </td>                   
                                 <td>
                                     {{date('d/m/Y', strtotime($periodoLetivo->data_fim))}}
-                                </td>                   
+                                </td>  
+                                <td>
+                                    {{$periodoLetivo->quantidade_dias_letivos}}
+                                </td>                 
                                 <td>
                                     @if ($periodoLetivo->situacao == 1)
                                         <b>Aberto</b>
                                     @else
                                         Encerrado                                        
                                     @endif                                    
-                                </td>     
-                                <td>
-                                    {{date('d/m/Y H:m:i', strtotime($periodoLetivo->data_alteracao))}}
-                                </td>                            
+                                </td>                                                                
                                 <td style="width=10px;">
                                     <a href="{{ route('periodosletivos.edit', $periodoLetivo->id_periodo_letivo) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>
                                     <a href="{{ route('periodosletivos.show', $periodoLetivo->id_periodo_letivo) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-eye"></i></a>

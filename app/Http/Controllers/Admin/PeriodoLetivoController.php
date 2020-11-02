@@ -24,8 +24,9 @@ class PeriodoLetivoController extends Controller
     {
         $periodosLetivos = $this->repositorio->join('tb_anos_letivos', 'fk_id_ano_letivo', 'id_ano_letivo')
                                             ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())   
+                                            ->orderBy('ano', 'desc')
                                             ->orderBy('periodo_letivo')                                         
-                                            ->paginate();          
+                                            ->paginate(12);          
         //dd($periodosLetivos);
         return view('admin.paginas.periodosletivos.index', [
                     'periodosLetivos' => $periodosLetivos,        
