@@ -114,7 +114,7 @@
                         <br>
                         Data nascimento: {{date('d/m/Y', strtotime($matricula->responsavel->data_nascimento))}}
                         &nbsp;&nbsp;&nbsp;Sexo: {{$matricula->responsavel->sexo->sexo}}
-                        &nbsp;&nbsp;&nbsp;Doc. Identidade: {{$matricula->responsavel->doc_identidade}} {{$matricula->responsavel->tipoDocIdentidade->tipo_doc_identidade}}
+                        &nbsp;&nbsp;&nbsp;Doc. Identidade: {{$matricula->responsavel->doc_identidade}} {{$matricula->responsavel->tipoDocIdentidade->tipo_doc_identidade ?? ''}} 
                         &nbsp;&nbsp;&nbsp;CPF: {{mascaraCpfCnpj('###.###.###-##', $matricula->responsavel->cpf)}}  
                         <br>
                         Endereço: {{$matricula->responsavel->endereco->endereco ?? ''}} - {{$matricula->responsavel->endereco->complemento ?? ''}} &nbsp&nbsp&nbsp Nº {{$matricula->responsavel->endereco->numero ?? ''}}
@@ -151,17 +151,17 @@
                 </tr>
             </table>
 
-            <table border="0" cellspacing="0">
+            <table>
                 <tr>
                     <td colspan=2>
-                        <p align="justify">OBS: Pedidos de mudança de turma ou de período, de atuais alunos, devem ser feitos através de formulário próprio, mediante a disponibilidade de vaga.
+                        <br>
+                        OBS: Pedidos de mudança de turma ou de período, de atuais alunos, devem ser feitos através de formulário próprio, mediante a disponibilidade de vaga.
                         Casos especiais (separação judicial, alteração na guarda de menor, responsável financeiro diverso dos pais, etc.) devem ser comunicados por escrito.
-                        <br>Declaro que neste ato assinei o Contrato de Prestação de Serviços Educacionais (v. verso) e tomei ciência de todas as suas cláusulas, com as quais concordo.
-                        </p>
+                        <br>Declaro que neste ato assinei o Contrato de Prestação de Serviços Educacionais (v. verso) e tomei ciência de todas as suas cláusulas, com as quais concordo.                        
                     </td>
                 </tr>        
             </table>
-
+            <br>            
             <table>
                 <tr>
                     <td width="200px">{{$unidadeEnsino->cidade_uf}}, {{date('d/m/Y', strtotime($matricula->data_matricula))}}.</td>
