@@ -61,7 +61,9 @@ class TipoTurmaController extends Controller
         $tipoTurma = $this->repositorio
                             ->join('tb_anos_letivos', 'fk_id_ano_letivo', 'id_ano_letivo')
                             ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())
-                            ->where('id_tipo_turma', $id)->with('anoLetivo', 'subNivelEnsino', 'usuario')->first();
+                            ->where('id_tipo_turma', $id)
+                            ->with('anoLetivo', 'subNivelEnsino', 'usuario')
+                            ->first();
 
         if (!$tipoTurma)
             return redirect()->back();

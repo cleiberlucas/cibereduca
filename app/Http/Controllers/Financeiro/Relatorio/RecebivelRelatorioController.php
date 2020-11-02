@@ -93,7 +93,7 @@ class RecebivelRelatorioController extends Controller
             $recebiveis = $recebiveis->where('fk_id_conta_contabil_principal', $request->tipo_recebivel);
 
         if ($request->situacao_recebivel > 0)
-            $recebiveis = $recebiveis->where('fk_id_tipo_situacao_recebivel', $request->situacao_recebivel);
+            $recebiveis = $recebiveis->where('fk_id_situacao_recebivel', $request->situacao_recebivel);
 
         
         $recebiveis = $recebiveis->get();

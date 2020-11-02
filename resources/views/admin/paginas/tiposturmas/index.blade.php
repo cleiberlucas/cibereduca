@@ -6,6 +6,8 @@
 @section('title_postfix', ' Padrão de Turmas')
 
 @section('content_header')
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <ol class="breadcrumb">        
         <li class="breadcrumb-item active" >
             <a href="{{ route('tiposturmas.index') }} " class="">Padrões de Turmas</a>
@@ -16,6 +18,8 @@
 @stop
 
 @section('content')
+
+    
     <div class="container-fluid">
         <div class="card-header">
             <form action="{{ route('tiposturmas.search') }}" method="POST" class="form form-inline">
@@ -24,6 +28,7 @@
                 <button type="submit" class="btn btn-outline-secondary"><i class="fas fa-filter"></i></button>
             </form>
         </div>
+        @include('admin.includes.alerts')
         <div class="table-responsive">
                 <table class="table table-hover">
                     <thead>
@@ -68,4 +73,11 @@
                 </div>
         </div>
     </div>
+    
+<script>
+    $(document).ready(function(){
+          $(".alert").slideDown(300).delay(5000).slideUp(300);
+    });    
+</script>
+
 @stop
