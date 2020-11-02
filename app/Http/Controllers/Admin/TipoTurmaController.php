@@ -111,7 +111,7 @@ class TipoTurmaController extends Controller
         ]);
     }
 
-    public function update(StoreUpdateTipoTurma $request, $id)
+    public function update(StoreUpdateTipoTurma $request, $id) 
     {        
         $tipoTurma = $this->repositorio->where('id_tipo_turma', $id)->first();     
         if (!$tipoTurma)
@@ -119,6 +119,6 @@ class TipoTurmaController extends Controller
 
         $tipoTurma->where('id_tipo_turma', $id)->update($request->except('_token', '_method'));
 
-        return redirect()->route('tiposturmas.index');
+        return redirect()->route('tiposturmas.index')->with('sucesso', 'Padrão de Turma alterado com sucesso.');
     }
 }
