@@ -27,7 +27,7 @@ class DocumentoEscolaController extends Controller
     {
         $this->authorize('Documento Escola Ver'); 
 
-        $anosLetivos = new AnoLetivo;
+        $anosLetivos = new AnoLetivo; 
         $anosLetivos = $anosLetivos->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())
             ->orderBy('ano', 'desc')
             ->get();
@@ -59,6 +59,9 @@ class DocumentoEscolaController extends Controller
         $unidadeEnsino = $unidadeEnsino->where('id_unidade_ensino', user::getUnidadeEnsinoSelecionada())->first();
        
         if ($request['declaracao'] == 'declaracao_cursando') {
+            if ($matricula->fk_id_situacao_matricula != 1)
+                return redirect()->back()->with('erro', 'A matrícula deste aluno não está ativa.');
+
             try {
                 //lendo conteúdo da view para armazenar do BD
                 $conteudo = view(
@@ -86,7 +89,9 @@ class DocumentoEscolaController extends Controller
             );
         }
         else if ($request['declaracao'] == 'declaracao_transferencia_concluido') {
-                       
+            if ($matricula->fk_id_situacao_matricula != 4)
+                return redirect()->back()->with('erro', 'A matrícula deste aluno não está na situação de transferência.');
+
             $aptoCurso = $request->aptoCurso;
             if (strlen($aptoCurso) < 5)
                 return redirect()->back()->with('atencao',  'Informe o CURSO que o aluno está apto a cursar.');
