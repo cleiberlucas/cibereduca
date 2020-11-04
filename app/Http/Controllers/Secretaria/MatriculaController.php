@@ -12,6 +12,7 @@ use App\Models\Secretaria\Turma;
 use App\Models\TipoDescontoCurso;
 use App\Models\SituacaoMatricula;
 use App\Models\TipoAtendimentoEspecializado;
+use App\Models\TipoTurma;
 use App\Models\UnidadeEnsino;
 use App\User;
 use PDF;
@@ -231,6 +232,60 @@ class MatriculaController extends Controller
         ]);
     }
 
+    /* Função exclusiva para alteração da turma do aluno */
+    public function editTurma($id)
+    {
+        $this->authorize('Matrícula Alterar');          
+
+        $matricula = $this->repositorio
+                                ->select('tb_matriculas.id_matricula', 'tb_matriculas.fk_id_turma', 
+                                        'tb_turmas.nome_turma', 
+                                        'tb_anos_letivos.ano', 'tb_anos_letivos.id_ano_letivo',
+                                        'tb_turnos.descricao_turno', 
+                                        'tb_sub_niveis_ensino.sub_nivel_ensino',
+                                        'aluno.nome as nome_aluno', 'aluno.id_pessoa as id_aluno', 'aluno.foto',                                                                                
+                                        ) 
+                                ->join('tb_pessoas as aluno', 'aluno.id_pessoa', 'tb_matriculas.fk_id_aluno')                                                                
+                                ->join('tb_turmas', 'tb_turmas.id_turma', 'tb_matriculas.fk_id_turma')                               
+                                ->join('tb_tipos_turmas', 'tb_turmas.fk_id_tipo_turma', '=', 'tb_tipos_turmas.id_tipo_turma' )
+                                ->join('tb_sub_niveis_ensino', 'tb_tipos_turmas.fk_id_sub_nivel_ensino', '=', 'tb_sub_niveis_ensino.id_sub_nivel_ensino')
+                                ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')
+                                ->join('tb_turnos', 'tb_turmas.fk_id_turno', '=', 'tb_turnos.id_turno')   
+                                ->where('tb_anos_letivos.fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())      
+                                ->where('id_matricula', $id)
+                                ->first();
+
+        if (!$matricula)
+            return redirect()->back();
+
+        $turmas = new Turma;
+
+        $turmas = Turma::select('id_turma', 'nome_turma', 'descricao_turno')
+            ->join('tb_tipos_turmas', 'tb_turmas.fk_id_tipo_turma', '=', 'tb_tipos_turmas.id_tipo_turma')
+            ->join('tb_sub_niveis_ensino', 'tb_tipos_turmas.fk_id_sub_nivel_ensino', '=', 'tb_sub_niveis_ensino.id_sub_nivel_ensino')
+            ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')
+            ->join('tb_turnos', 'tb_turmas.fk_id_turno', '=', 'tb_turnos.id_turno')            
+            ->where('situacao_turma', 1)
+            ->where('fk_id_ano_letivo', $matricula->id_ano_letivo)
+            ->orderBy('tb_anos_letivos.ano', 'desc')
+            ->orderBy('tb_sub_niveis_ensino.sub_nivel_ensino', 'asc')
+            ->orderBy('nome_turma', 'asc')
+            ->orderBy('tb_turnos.descricao_turno', 'asc')
+            ->get();
+
+        /* $turmas = $turmas
+            ->join('tb_tipos_turmas', 'fk_id_tipo_turma', 'id_tipo_turma')            
+            ->where('situacao_turma', 1)
+            ->where('fk_id_ano_letivo', $matricula->id_ano_letivo)
+            ->get(); */
+                
+        return view('secretaria.paginas.matriculas.edit_aluno_turma',[
+                        'matricula'          => $matricula,
+                        'turmas'             => $turmas,
+                        
+        ]);
+    }
+
     public function update(StoreUpdateMatricula $request, $id)
     {
         $matricula = $this->repositorio->where('id_matricula', $id)->first();
@@ -245,6 +300,18 @@ class MatriculaController extends Controller
         $matricula->where('id_matricula', $id)->update($request->except('_token', '_method'));
 
         return redirect()->route('matriculas.index', $matricula->fk_id_turma);
+    }
+
+    public function updateTurma(Request $request, $id)
+    {
+        $matricula = $this->repositorio->where('id_matricula', $id)->first();
+
+        if (!$matricula)
+            return redirect()->back()->with('erro', 'Matrícula não encontrada.');
+        
+        $matricula->where('id_matricula', $id)->update($request->except('_token', '_method'));
+
+        return redirect()->route('matriculas.index', $matricula->fk_id_turma)->with('sucesso', 'A turma do aluno foi alterada com sucesso.');
     }
 
     public function imprimirContrato($id_matricula)

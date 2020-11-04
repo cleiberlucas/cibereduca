@@ -203,7 +203,9 @@ Route::prefix('secretaria')
                  */
                 Route::get('matriculas/create/{id_turma}', 'MatriculaController@create')->name('matriculas.create');
                 Route::put('matriculas/{id_turma}', 'MatriculaController@update')->name('matriculas.update');
+                Route::put('matriculas/{id_turma}/updateTurma', 'MatriculaController@updateTurma')->name('matriculas.update.turma');
                 Route::get('matriculas/{id_turma}/edit', 'MatriculaController@edit')->name('matriculas.edit');
+                Route::get('matriculas/{id_turma}/editTurma', 'MatriculaController@editTurma')->name('matriculas.edit.turma');
                 Route::any('matriculas/search', 'MatriculaController@search')->name('matriculas.search');
                 Route::delete('matriculas/{id_turma}', 'MatriculaController@destroy')->name('matriculas.destroy');
                 Route::get('matriculas/{id_turma}', 'MatriculaController@show')->name('matriculas.show');

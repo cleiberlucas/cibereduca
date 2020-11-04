@@ -17,9 +17,13 @@
                 </li>
             </ol>
             
-            <h1><strong>Editar </strong> Matrícula {{$matricula->ano}} - 
-            Turma: {{$matricula->nome_turma}} - {{$matricula->descricao_turno}}</h1>
-            <h3><strong>Valor do Curso: </strong><font color=green> R$ {{number_format($matricula->valor_curso, 2, ',', '.')}} </font> </h3>
+            <h4>
+                <strong>Editar </strong> Matrícula {{$matricula->ano}} - 
+                Turma: {{$matricula->nome_turma}} - {{$matricula->descricao_turno}} 
+                <a href="{{ route('matriculas.edit.turma', $matricula->id_matricula) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i> Alterar Turma do Aluno</a>
+            </h4>
+
+            <h5><strong>Valor do Curso: </strong><font color=green> R$ {{number_format($matricula->valor_curso, 2, ',', '.')}} </font> </h5>
 
         </div>
         <div class="p-2">
@@ -31,7 +35,7 @@
     </div>
 
 <div class="" align="center">
-    <h1><strong> Aluno: {{$matricula->nome_aluno}}</strong></h1>
+    <h4><strong> Aluno: {{$matricula->nome_aluno}}</strong></h4>
 </div>
 
 @stop
