@@ -261,14 +261,16 @@ class MatriculaController extends Controller
         //$pdf = PDF
 
         /* return $pdf->setPaper('a4')->stream('contrato.pdf'); */
-        return view('secretaria.paginas.matriculas.contrato', [
-            'matricula' => $matricula,
-            /* 'corpoContrato' => $corpoContrato, */
-            'unidadeEnsino' =>$unidadeEnsino,
-        ]);
+        if ($matricula->turma->tipoTurma->anoLetivo->ano == 2020){
+            return view('secretaria.paginas.matriculas.contrato_2020', [
+                'matricula' => $matricula,
+                /* 'corpoContrato' => $corpoContrato, */
+                'unidadeEnsino' =>$unidadeEnsino,
+            ]);
+        }
     }
 
-    
+    //Requerimento de matrícula
     public function imprimirReqMatricula($id_matricula)
     {
         $this->authorize('Matrícula Contrato Ver');  

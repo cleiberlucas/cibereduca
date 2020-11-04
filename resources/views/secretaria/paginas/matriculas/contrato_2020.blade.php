@@ -83,7 +83,7 @@
             </tr>
             <tr>
                 <td colspan=2>
-                    <br><br>
+                    <br>
                     <strong>QUADRO 02: ALUNO(A)</strong>
                     <br>
                     Nome: {{$matricula->aluno->nome}}   &nbsp&nbsp&nbsp Série/Ano: {{$matricula->turma->nome_turma}} - {{$matricula->turma->tipoTurma->subNivelEnsino->sub_nivel_ensino ?? ''}} - {{$matricula->turma->tipoTurma->anoLetivo->ano ?? ''}}
@@ -94,28 +94,22 @@
             </tr>
             <tr>
                 <td colspan=2>
-                    <br><br>
+                    <br>
                     <strong>QUADRO 03: CONTRATADA</strong>
                     <br>
                     {{$unidadeEnsino->razao_social}}, inscrita no CNPJ sob o n° {{mascaraCpfCnpj('##.###.###/####-##', $unidadeEnsino->cnpj)}}, Matriz, sediada à {{$unidadeEnsino->endereco}}.
                     
                 </td>
-            </tr>
+            </tr>            
             <tr>
                 <td colspan=2>
+                    <br>
+                    <strong>QUADRO 04: DESCRIÇÃO DO INVESTIMENTO</strong>
                     <br><br>
-                    <strong>QUADRO 04: CURSO {{mb_strtoupper($matricula->turma->tipoTurma->subNivelEnsino->sub_nivel_ensino) ?? ''}} E MATERIAL DIDÁTICO DO SISTEMA DE ENSINO DOM BOSCO</strong>                    
-                </td>
-            </tr>
-            <tr>
-                <td colspan=2>
-                    <br><br>
-                    <strong>QUADRO 05: DESCRIÇÃO DO INVESTIMENTO</strong>
-                    <br><br>
-                    <strong>5.1 - MATRÍCULA</strong>
+                    <strong>4.1 - MATRÍCULA</strong>
                     R$ {{number_format($matricula->valor_matricula, 2, ',', '.')}}      &nbsp&nbsp&nbsp PAGTO: {{date('d/m/Y', strtotime($matricula->data_pagto_matricula))}}      &nbsp&nbsp&nbsp Forma de Pagto: {{$matricula->formaPagamentoMatricula->forma_pagamento ?? ''}}
                     <br><br>
-                    <strong>5.2 - CURSO</strong>
+                    <strong>4.2 - CURSO</strong>
                     VLR CURSO: R$ {{number_format($matricula->turma->tipoTurma->valor_curso, 2, ',', '.') ?? ''}}
                     @if (isset($matricula->valor_desconto) && $matricula->valor_desconto > 0)
                         &nbsp&nbsp&nbsp VLR DESCONTO: R$ {{number_format($matricula->valor_desconto, 2, ',', '.') ?? ''}}     
@@ -134,7 +128,7 @@
                     <br>
                     <strong>VLR TOTAL: R$ {{number_format($matricula->turma->tipoTurma->valor_curso - $matricula->valor_desconto, 2, ',', '.') ?? ''}}</strong>
                     <br><br>
-                    <strong>5.3 - MATERIAL DIDÁTICO DOM BOSCO E COLEÇÃO AMIGAVELMENTE (1º AO 9º ANO):</strong>
+                    <strong>4.3 - MATERIAL DIDÁTICO DOM BOSCO E COLEÇÃO AMIGAVELMENTE (1º AO 9º ANO):</strong>
                     <br>
                     QTD: {{$matricula->qt_parcelas_mat_didatico}} PARCELA(S) - VLR UNITÁRIO: R$ 
                     @if ($matricula->qt_parcelas_mat_didatico > 0)
@@ -142,13 +136,21 @@
                     @endif
                     &nbsp&nbsp&nbsp Forma de Pagto: {{$matricula->formaPagamentoMaterialDidatico->forma_pagamento ?? ''}} &nbsp&nbsp&nbsp 1º Pagto: {{date('d/m/Y', strtotime($matricula->data_pagto_mat_didatico))}}
                     <br>
-                    <strong>VLR TOTAL MATERIAL DIDÁTICO: R$ {{number_format($matricula->valor_material_didatico, 2, ',', '.') ?? ''}}</strong> 
-                    <hr>
+                    <strong>VLR TOTAL MATERIAL DIDÁTICO: R$ {{number_format($matricula->valor_material_didatico, 2, ',', '.') ?? ''}}</strong>                     
                 </td>
             </tr>
             <tr>
-                <td colspan=2>                    
+                <td colspan="2">
+                    <br>
+                    @if(strlen($matricula->obs_matricula) > 0)
+                        <strong>Informações complementares:</strong> {{$matricula->obs_matricula}}
+                    @endif
+                </td>
 
+            </tr>
+            <tr>
+                <td colspan=2>                    
+                    <hr>
                     <center><b><u>CLÁUSULA PRIMEIRA – DO OBJETO DO CONTRATO</u></b></center>
                     <p align="justify">O objeto deste contrato é a prestação de serviços educacionais e compra do material didático selecionados nas opções descritas no quadro 04.</p>
                     <p><u><b>Parágrafo Primeiro</u></b>: Caso o beneficiário do contrato venha a se enquadrar na condição de aluno com necessidades educacionais especiais, deverá o CONTRATANTE arcar com o pagamento dos respectivos custos, os quais serão discriminados em instrumento específico, sendo igualmente de responsabilidade do CONTRATANTE o pagamento dos profissionais de saúde que atendam o(a) ALUNO(A).
