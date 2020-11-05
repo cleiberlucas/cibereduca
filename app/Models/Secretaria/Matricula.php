@@ -23,7 +23,7 @@ class Matricula extends Model
         'fk_id_aluno', 'fk_id_responsavel', 'fk_id_turma',
         'data_matricula', 'valor_matricula', 'data_limite_desistencia', 'data_vigencia', 'data_pagto_matricula', 'fk_id_forma_pagto_matricula',
         'valor_desconto', 'fk_id_tipo_desconto_curso', 'qt_parcelas_curso', 'data_venc_parcela_um', 'fk_id_forma_pagto_curso',
-        'valor_material_didatico', 'data_pagto_mat_didatico', 'fk_id_forma_pagto_didatico', 'qt_parcelas_mat_didatico',
+        'valor_entrada_mat_didatico', 'fk_id_forma_pagto_entrada_mat_didatico', 'valor_material_didatico', 'data_pagto_mat_didatico', 'fk_id_forma_pagto_didatico', 'qt_parcelas_mat_didatico',
         'fk_id_atendimento_especializado', 'obs_matricula', 'fk_id_situacao_matricula', 'obs_matricula', 'fk_id_user_cadastro', 'fk_id_user_altera'
     ];
 
@@ -148,6 +148,14 @@ class Matricula extends Model
     public function formaPagamentoMaterialDidatico()
     {
         return $this->belongsTo(FormaPagamento::class, 'fk_id_forma_pagto_mat_didatico', 'id_forma_pagamento');
+    }
+
+    /**
+     * Retorna forma pagamento entrada material didático
+     */
+    public function formaPagamentoEntradaMaterialDidatico()
+    {
+        return $this->belongsTo(FormaPagamento::class, 'fk_id_forma_pagto_entrada_mat_didatico', 'id_forma_pagamento');
     }
 
     /**

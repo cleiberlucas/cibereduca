@@ -107,7 +107,11 @@
                     <strong>QUADRO 04: DESCRIÇÃO DO INVESTIMENTO</strong>
                     <br><br>
                     <strong>4.1 - MATRÍCULA</strong>
-                    R$ {{number_format($matricula->valor_matricula, 2, ',', '.')}}      &nbsp&nbsp&nbsp PAGTO: {{date('d/m/Y', strtotime($matricula->data_pagto_matricula))}}      &nbsp&nbsp&nbsp Forma de Pagto: {{$matricula->formaPagamentoMatricula->forma_pagamento ?? ''}}
+                    R$ {{number_format($matricula->valor_matricula, 2, ',', '.')}}      &nbsp&nbsp&nbsp PAGTO: 
+                    @if (isset($matricula->data_pagto_matricula))
+                         {{date('d/m/Y', strtotime($matricula->data_pagto_matricula))}}
+                    @endif
+                         &nbsp&nbsp&nbsp Forma de Pagto: {{$matricula->formaPagamentoMatricula->forma_pagamento ?? ''}}
                     <br><br>
                     <strong>4.2 - CURSO</strong>
                     VLR CURSO: R$ {{number_format($matricula->turma->tipoTurma->valor_curso, 2, ',', '.') ?? ''}}
@@ -129,14 +133,17 @@
                     <strong>VLR TOTAL: R$ {{number_format($matricula->turma->tipoTurma->valor_curso - $matricula->valor_desconto, 2, ',', '.') ?? ''}}</strong>
                     <br><br>
                     <strong>4.3 - MATERIAL DIDÁTICO DOM BOSCO E COLEÇÃO AMIGAVELMENTE (1º AO 9º ANO):</strong>
+                    <br>                    
+                    Valor entrada: R$ {{number_format($matricula->valor_entrada_mat_didatico, 2, ',', '.') ?? ''}}
+                    &nbsp&nbsp&nbsp Forma de Pagto Entrada: {{$matricula->formaPagamentoEntradaMaterialDidatico->forma_pagamento ?? ''}} &nbsp&nbsp&nbsp 1º Pagto: {{date('d/m/Y', strtotime($matricula->data_pagto_mat_didatico))}}
                     <br>
-                    QTD: {{$matricula->qt_parcelas_mat_didatico}} PARCELA(S) - VLR UNITÁRIO: R$ 
+                    QTD PARCELA(S): {{$matricula->qt_parcelas_mat_didatico}} - VLR UNITÁRIO: R$ 
                     @if ($matricula->qt_parcelas_mat_didatico > 0)
                         {{number_format($matricula->valor_material_didatico/$matricula->qt_parcelas_mat_didatico, 2, ',', '.') ?? ''}} 
-                    @endif
-                    &nbsp&nbsp&nbsp Forma de Pagto: {{$matricula->formaPagamentoMaterialDidatico->forma_pagamento ?? ''}} &nbsp&nbsp&nbsp 1º Pagto: {{date('d/m/Y', strtotime($matricula->data_pagto_mat_didatico))}}
+                    @endif                    
+                    &nbsp&nbsp&nbsp Forma de Pagto Parcelas: {{$matricula->formaPagamentoMaterialDidatico->forma_pagamento ?? ''}} 
                     <br>
-                    <strong>VLR TOTAL MATERIAL DIDÁTICO: R$ {{number_format($matricula->valor_material_didatico, 2, ',', '.') ?? ''}}</strong>                     
+                    <strong>VLR TOTAL MATERIAL DIDÁTICO: R$ {{number_format($matricula->valor_entrada_mat_didatico+$matricula->valor_material_didatico, 2, ',', '.') ?? ''}}</strong>                     
                 </td>
             </tr>
             <tr>

@@ -142,7 +142,32 @@
     <h3>Material Didático</h3>
     <div class="row">
         <div class="form-group col-sm-3 col-xs-2">            
-            <label>Valor Material Didático</label>
+            <label>Valor Entrada Material Didático</label>
+            <input type="number" name="valor_entrada_mat_didatico" id="valor_entrada_mat_didatico" step="0.010" class="form-control"  value="{{ $matricula->valor_entrada_mat_didatico ?? old('valor_entrada_mat_didatico') }}">            
+        </div>   
+        <div class="form-group col-sm-3 col-xs-2">            
+            <label>Pagto Material Didático</label>
+            <input type="date" name="data_pagto_mat_didatico" class="form-control"  value="{{ $matricula->data_pagto_mat_didatico ?? old('data_pagto_mat_didatico') }}">
+        </div> 
+        <div class="form-group col-sm-3 col-xs-2">            
+            <label>Forma de Pagamento Entrada</label>
+            <select name="fk_id_forma_pagto_entrada_mat_didatico" id="fk_id_forma_pagto_entrada_mat_didatico" class="form-control">
+                <option value=""></option>
+                @foreach ($formasPagto as $formaPagto)
+                    <option value="{{$formaPagto->id_forma_pagamento }}"
+                        @if (isset($matricula) && $formaPagto->id_forma_pagamento == $matricula->fk_id_forma_pagto_entrada_mat_didatico)
+                            selected="selected"
+                        @endif
+                        >                    
+                        {{$formaPagto->forma_pagamento}}</option>
+                @endforeach
+            </select>
+        </div> 
+    </div>
+    
+    <div class="row">
+        <div class="form-group col-sm-3 col-xs-2">            
+            <label>Valor Restante Material Didático</label>
             <input type="number" name="valor_material_didatico" id="valor_material_didatico" step="0.010" class="form-control"  value="{{ $matricula->valor_material_didatico ?? old('valor_material_didatico') }}">
             <small>Valor padrão do Material: R$ 
                 @if (isset($turma))
@@ -154,10 +179,7 @@
             <label>Quantidade parcelas</label>
             <input type="number" name="qt_parcelas_mat_didatico" class="form-control"  value="{{ $matricula->qt_parcelas_mat_didatico ?? old('qt_parcelas_mat_didatico') }}">
         </div>
-        <div class="form-group col-sm-3 col-xs-2">            
-            <label>Pagto Material Didático</label>
-            <input type="date" name="data_pagto_mat_didatico" class="form-control"  value="{{ $matricula->data_pagto_mat_didatico ?? old('data_pagto_mat_didatico') }}">
-        </div> 
+        
         <div class="form-group col-sm-3 col-xs-2">            
             <label>Forma de Pagamento</label>
             <select name="fk_id_forma_pagto_mat_didatico" id="fk_id_forma_pagto_mat_didatico" class="form-control">
@@ -229,6 +251,10 @@
     });
 
     document.getElementById("valor_desconto").addEventListener("change", function(){
+        this.value = parseFloat(this.value).toFixed(2);
+    });
+
+    document.getElementById("valor_entrada_mat_didatico").addEventListener("change", function(){
         this.value = parseFloat(this.value).toFixed(2);
     });
 

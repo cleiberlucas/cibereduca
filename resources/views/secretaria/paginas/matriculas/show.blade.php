@@ -50,9 +50,13 @@
                 </li>
                 <br>
                 <li>
-                    <strong>Material Didático:</strong> R$ {{number_format($matricula->valor_material_didatico, 2, ',', '.')}}
-                        - Pago em: {{date('d/m/Y', strtotime($matricula->data_pagto_mat_didatico))}}
-                        - Número de Parcelas: {{$matricula->qt_parcelas_mat_didatico}} Forma de pagamento: {{$matricula->formaPagamentoMaterialDidatico->forma_pagamento ?? ''}}
+                    <strong>Material Didático: Total R$ {{number_format($matricula->valor_entrada_mat_didatico+$matricula->valor_material_didatico, 2, ',', '.')}}</strong> 
+                    <br>
+                    <strong>Entrada: </strong>R$ {{number_format($matricula->valor_entrada_mat_didatico, 2, ',', '.')}} - Pago em: {{date('d/m/Y', strtotime($matricula->data_pagto_mat_didatico))}}
+                    - Forma de pagamento: {{$matricula->formaPagamentoEntradaMaterialDidatico->forma_pagamento ?? ''}}
+                    <br>
+                    <strong>Valor parcelado:</strong> R$ {{number_format($matricula->valor_material_didatico, 2, ',', '.')}}                        
+                    - Número de Parcelas: {{$matricula->qt_parcelas_mat_didatico}} - Forma de pagamento: {{$matricula->formaPagamentoMaterialDidatico->forma_pagamento ?? ''}}
                 </li>
                 <br>
                 <li><strong>Atendimento Especializado:</strong></li> {{$matricula->atendimentoEspecializado->atendimentoEspecializado ?? ''}}
