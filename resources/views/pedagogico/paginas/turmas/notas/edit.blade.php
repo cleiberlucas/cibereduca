@@ -33,6 +33,9 @@
     <form action="{{ route('turmas.notas.update', $notaAluno->id_nota_avaliacao)}}" class="form" method="POST">
         @csrf
         @method('PUT')
+
+        <input type="hidden" class="" id="fk_id_user" name="fk_id_user" value="{{Auth::id()}}">  
+
         <div class="row">
             <div class="form-group col-sm-2 col-xs-2">
                 <label for="">Valor nota</label>                

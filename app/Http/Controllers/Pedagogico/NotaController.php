@@ -119,8 +119,6 @@ class NotaController extends Controller
 
     public function edit($id_nota)
     {
-       
-
         $nota = $this->repositorio->where('id_nota_avaliacao', $id_nota)                                    
                                     ->first();
         
