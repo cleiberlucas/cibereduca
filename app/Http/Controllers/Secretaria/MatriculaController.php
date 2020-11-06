@@ -354,7 +354,7 @@ class MatriculaController extends Controller
 
     public function imprimirFichaMatricula($id_aluno)
     {
-        //$this->authorize('Matrícula Ver');
+        $this->authorize('Matrícula Ver');
 
         $matricula = $this->repositorio->where('fk_id_aluno', $id_aluno)->first();  
 

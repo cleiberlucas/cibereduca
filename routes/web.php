@@ -164,6 +164,12 @@ Route::get('autenticidade', 'Secretaria\DocumentoEscolaController@autenticidade'
 Route::any('verifica_autenticidade', 'Secretaria\DocumentoEscolaController@verificarAutenticidade')->name('matriculas.documentos_escola.verifica_autenticidade');
 
 /**
+ * Agendamento on line
+ */
+Route::get('agendamento', 'Captacao\CaptacaoController@createAgendamento')->name('agendamento');
+Route::post('agendamento', 'Captacao\CaptacaoController@storeAgendamento')->name('agendamento.store');
+
+/**
  * Rotas Secretaria
  */
 Route::prefix('secretaria')
@@ -214,7 +220,7 @@ Route::prefix('secretaria')
 
                 Route::get('matriculas/requerimento/{id_matricula}', 'MatriculaController@imprimirReqMatricula')->name('matriculas.requerimento')->middleware('can:Matrícula Contrato Ver');
                 Route::get('matriculas/contrato/{id_matricula}', 'MatriculaController@imprimirContrato')->name('matriculas.contrato')->middleware('can:Matrícula Contrato Ver');
-                Route::get('matriculas/ficha/{id_aluno}', 'MatriculaController@imprimirFichaMatricula')->name('matriculas.ficha')->middleware('can:Matrícula Ficha Ver');
+                Route::get('matriculas/ficha/{id_aluno}', 'MatriculaController@imprimirFichaMatricula')->name('matriculas.ficha')->middleware('can:Matrícula Ver');
                 Route::get('matriculas/getAlunos/{id_ano_letivo}', 'MatriculaController@getAlunos')->name('matriculas.getAlunos');                                
                 Route::get('matriculas/getAlunosTurma/{id_turma}', 'MatriculaController@getAlunosTurma')->name('matriculas.getAlunosTurma');                
                 Route::get('matriculas/getValores/{id_matricula}', 'MatriculaController@getValores')->name('matriculas.getValores');
