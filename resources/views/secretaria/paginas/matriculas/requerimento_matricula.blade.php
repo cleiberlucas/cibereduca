@@ -71,10 +71,10 @@
                     </td>
                 </tr>            
                 <tr>                    
-                    <td colspan=2>
+                    <td colspan=2>                        
                         <br>
-                        <br>
-                        Ilmo. Sr. Diretor do {{mb_strToUpper($unidadeEnsino->razao_social)}}</td>
+                        Ilmo. Sr. Diretor do {{mb_strToUpper($unidadeEnsino->razao_social)}}
+                    </td>
                 </tr>
                 <tr>
                     <td colspan=2>
@@ -153,8 +153,7 @@
 
             <table>
                 <tr>
-                    <td colspan=2>
-                        <br>
+                    <td colspan=2>                        
                         OBS: Pedidos de mudança de turma ou de período, de atuais alunos, devem ser feitos através de formulário próprio, mediante a disponibilidade de vaga.
                         Casos especiais (separação judicial, alteração na guarda de menor, responsável financeiro diverso dos pais, etc.) devem ser comunicados por escrito.
                         <br>Declaro que neste ato assinei o Contrato de Prestação de Serviços Educacionais (v. verso) e tomei ciência de todas as suas cláusulas, com as quais concordo.                        
@@ -176,18 +175,19 @@
                         <center>
                             TESTEMUNHA 1
                         </center>
-                        <br>
+                        
                         Nome:
                         <br>
                         R.G.:            
                 
                     </td>
+                    <td width="50px"></td>
                     <td width="300px" >
                         <hr>
                         <center>                
                             TESTEMUNHA 2
                         </center>
-                        <br>
+                        
                         Nome:                
                         <br>
                         R.G.:
