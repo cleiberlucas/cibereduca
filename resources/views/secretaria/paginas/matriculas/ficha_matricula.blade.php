@@ -128,40 +128,219 @@
                 @break;        
 
             @endforeach {{-- fim cabeçalho da ficha --}}
-        </div>
-                
+                        
         <hr>
         <font size="3">
         @foreach ($matriculas as $index => $matricula)                    
                                 
-            <div class="row col-sm-6 ml-2 " style="outline: 1px solid black">
-                
-                <div class="row" >
-                    <div class="form-group col-sm-12 col-xs-2 mt-2 mb-0 py-0" >
-                        Matrícula Efetuada no(a) {{$matricula->turma->tipoTurma->tipo_turma}} do {{$matricula->turma->tipoTurma->subNivelEnsino->sub_nivel_ensino}},
-                        no ano de {{$matricula->turma->tipoTurma->anoLetivo->ano}}, por ter sido ______________________ na série anterior.                                
-                    </div>
-                </div>
-                <div class="row mx-auto">
-                    <div class="form-group col-sm-12 col-xs-2 mt-4 mb-0 py-0" align="center">                                
-                        <br>
-                        _________________________________________
-                        <br>
-                        Assinatura do Responsável pelo Aluno
-                        <br><br><br>
-                        _________________________________________
-                        <br>
-                        Assinatura do Diretor
-                    </div>
-                </div>                                        
-
-            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <table border="1">
+                        <tr>
+                            <td width="50%">
+                                <table >
+                                <tr>
+                                    <td>
+                                        Matrícula efetuada no(a) {{$matricula->turma->tipoTurma->tipo_turma}} do {{$matricula->turma->tipoTurma->subNivelEnsino->sub_nivel_ensino}},
+                                        no ano de {{$matricula->turma->tipoTurma->anoLetivo->ano}}, por ter sido ______________________ na série anterior.                                
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="center">
+                                        <br>
+                                        _________________________________________
+                                        <br>
+                                        Assinatura do Responsável pelo Aluno
+                                        <br><br>
+                                        _________________________________________
+                                        <br>
+                                        Assinatura do Diretor
+                                    </td>
+                                </tr>  
+                            </table>  
+                        
             
         @endforeach
-        </font>                            
+                            </td>
+                            <td width="50%">
+                                <table> 
+                                    <tr>
+                                        <td>
+                                            Matrícula Efetuada no(a) ________________ do __________________________,
+                                            no ano de ___________, por ter sido _________________ na série anterior.                                
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center">
+                                            <br>
+                                            _________________________________________
+                                            <br>
+                                            Assinatura do Responsável pelo Aluno
+                                            <br><br>
+                                            _________________________________________
+                                            <br>
+                                            Assinatura do Diretor
+                                        </td>
+                                    </tr>     
+                                </table>
+                            </td>                            
+                        </tr>    
+                        
+                        <tr>
+                            <td width="50%">
+                                <table> 
+                                    <tr>
+                                        <td>
+                                            Matrícula Efetuada no(a) ________________ do __________________________,
+                                            no ano de ___________, por ter sido _________________ na série anterior.                                
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center">
+                                            <br>
+                                            _________________________________________
+                                            <br>
+                                            Assinatura do Responsável pelo Aluno
+                                            <br><br>
+                                            _________________________________________
+                                            <br>
+                                            Assinatura do Diretor
+                                        </td>
+                                    </tr>     
+                                </table>
+                            </td>   
+
+                            <td width="50%">
+                                <table> 
+                                    <tr>
+                                        <td>
+                                            Matrícula Efetuada no(a) ________________ do __________________________,
+                                            no ano de ___________, por ter sido _________________ na série anterior.                                
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center">
+                                            <br>
+                                            _________________________________________
+                                            <br>
+                                            Assinatura do Responsável pelo Aluno
+                                            <br><br>
+                                            _________________________________________
+                                            <br>
+                                            Assinatura do Diretor
+                                        </td>
+                                    </tr>     
+                                </table>
+                            </td>   
+
+                        </tr>
+
+                        <tr>
+                            <td width="50%">
+                                <table> 
+                                    <tr>
+                                        <td>
+                                            Matrícula Efetuada no(a) ________________ do __________________________,
+                                            no ano de ___________, por ter sido _________________ na série anterior.                                
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center">
+                                            <br>
+                                            _________________________________________
+                                            <br>
+                                            Assinatura do Responsável pelo Aluno
+                                            <br><br>
+                                            _________________________________________
+                                            <br>
+                                            Assinatura do Diretor
+                                        </td>
+                                    </tr>     
+                                </table>
+                            </td>   
+
+                            <td width="50%">
+                                <table> 
+                                    <tr>
+                                        <td>
+                                            Matrícula Efetuada no(a) ________________ do __________________________,
+                                            no ano de ___________, por ter sido _________________ na série anterior.                                
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center">
+                                            <br>
+                                            _________________________________________
+                                            <br>
+                                            Assinatura do Responsável pelo Aluno
+                                            <br><br>
+                                            _________________________________________
+                                            <br>
+                                            Assinatura do Diretor
+                                        </td>
+                                    </tr>     
+                                </table>
+                            </td>   
+                            
+                        </tr>
+                        <tr>
+                            <td width="50%">
+                                <table> 
+                                    <tr>
+                                        <td>
+                                            Matrícula Efetuada no(a) ________________ do __________________________,
+                                            no ano de ___________, por ter sido _________________ na série anterior.                                
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center">
+                                            <br>
+                                            _________________________________________
+                                            <br>
+                                            Assinatura do Responsável pelo Aluno
+                                            <br><br><br>
+                                            _________________________________________
+                                            <br>
+                                            Assinatura do Diretor
+                                        </td>
+                                    </tr>     
+                                </table>
+                            </td>   
+
+                            <td width="50%">
+                                <table> 
+                                    <tr>
+                                        <td>
+                                            Matrícula Efetuada no(a) ________________ do __________________________,
+                                            no ano de ___________, por ter sido _________________ na série anterior.                                
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center">
+                                            <br>
+                                            _________________________________________
+                                            <br>
+                                            Assinatura do Responsável pelo Aluno
+                                            <br><br><br>
+                                            _________________________________________
+                                            <br>
+                                            Assinatura do Diretor
+                                        </td>
+                                    </tr>     
+                                </table>
+                            </td>   
+                            
+                        </tr>
+
+                    </table>        
+                </div>
+            </div>
+        </font>    
+    </div> 
+    </div>                       
                 {{-- &nbsp&nbsp&nbsp Série/Ano: {{$matricula->turma->nome_turma}} - {{$matricula->turma->tipoTurma->subNivelEnsino->sub_nivel_ensino ?? ''}} - {{$matricula->turma->tipoTurma->anoLetivo->ano ?? ''}} --}}
                    
-    </div>
+    
     @include('secretaria.paginas._partials.rodape_redeeduca')
 </body>
 </html>

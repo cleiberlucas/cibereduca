@@ -334,7 +334,9 @@ class MatriculaController extends Controller
                 /* 'corpoContrato' => $corpoContrato, */
                 'unidadeEnsino' =>$unidadeEnsino,
             ]);
-        }
+        }else
+            return redirect()->back()->with('atencao', 'Não há modelo de contrato configurado para o ano letivo desta matrícula.');
+        
     }
 
     //Requerimento de matrícula
@@ -382,10 +384,6 @@ class MatriculaController extends Controller
         $unidadeEnsino = new UnidadeEnsino;
         $unidadeEnsino = $unidadeEnsino->where('id_unidade_ensino', $matricula->turma->tipoTurma->anoLetivo->fk_id_unidade_ensino)->first();
         
-       /*  $pdf = PDF::loadView('secretaria.paginas.matriculas.contrato', compact('matricula', 'corpoContrato', 'unidadeEnsino')); */
-        //$pdf = PDF
-
-        /* return $pdf->setPaper('a4')->stream('contrato.pdf'); */
         return view('secretaria.paginas.matriculas.ficha_matricula', [
             'matriculas' => $matriculas,            
             'unidadeEnsino' =>$unidadeEnsino,

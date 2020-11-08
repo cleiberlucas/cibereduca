@@ -50,7 +50,7 @@
                             </div>
                             <div class="p-2"> </div>
                         </div>
-                        @include('admin.includes.alerts')
+                        
                         <hr>
                         <div class="row">
                             <div class="form-group col-sm-3">
@@ -60,7 +60,7 @@
                                 <a href="{{route('matriculas.documentos_escola', $matricula->fk_id_aluno)}}" class="btn btn-outline-primary"><i class="far fa-folder-open"></i> Declarações</a>
                             </div>
                         </div>
-
+                        @include('admin.includes.alerts')
                         <table class="table table-hover">
                             <thead>
                                 <td colspan=5>
