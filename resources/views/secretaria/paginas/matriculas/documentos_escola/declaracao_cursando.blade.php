@@ -63,7 +63,7 @@
                     ,
                     @endif
                     está regularmente matriculado(a) e cursando o(a) <b>{{$matricula->turma->tipoTurma->tipo_turma}}</b> do(a) {{$matricula->turma->tipoTurma->subNivelEnsino->sub_nivel_ensino}}
-                    no {{$unidadeEnsino->razao_social}}.                      
+                    no {{$unidadeEnsino->nome_fantasia}}.                      
                     </p>
                 </div>
             </div>
