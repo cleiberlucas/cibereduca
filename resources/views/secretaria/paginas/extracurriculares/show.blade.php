@@ -20,7 +20,7 @@
                 <li>
                     <strong>Ano Letivo:</strong> {{ $extraCurricular->ano}}
                 </li>
-                <li><strong>Título para Contrato Matrícula</strong>{{$extraCurricular->titulo_contrato}}</li>
+                <li><strong>Título para Contrato Matrícula: </strong>{{$extraCurricular->titulo_contrato}}</li>
                 <li>
                     <strong>Valor Atividade:</strong> R$ {{ number_format($extraCurricular->valor_padrao_atividade, 2, ',', '.')}}
                 </li>

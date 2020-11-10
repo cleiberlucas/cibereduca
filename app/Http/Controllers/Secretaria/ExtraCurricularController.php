@@ -58,7 +58,7 @@ class ExtraCurricularController extends Controller
         // dd($dados);
         $this->repositorio->create($dados);
 
-        return redirect()->route('extracurriculares.index');
+        return redirect()->route('extracurriculares.index')->with('sucesso', 'Atividade Extracurricular gravada com sucesso.');
     }
 
     public function show($id)
