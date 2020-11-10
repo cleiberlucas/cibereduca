@@ -122,3 +122,26 @@ function nomeMes(int $mes)
 
     return ($nomeMes[$mes]);
 }
+
+/**
+ * Recebe o número de um mês e retorna o nome
+ */
+function nomeMesMinusculo(int $mes)
+{
+    $nomeMes = array(
+        '1' => 'janeiro',
+        '2' => 'fevereiro',
+        '3' => 'março',
+        '4' => 'abril',
+        '5' => 'maio',
+        '6' => 'junho',
+        '7' => 'julho',
+        '8' => 'agosto',
+        '9' => 'setembro',
+        '10' => 'outubro',
+        '11' => 'novembro',
+        '12' => 'dezembro',
+    );
+
+    return ($nomeMes[$mes]);
+}

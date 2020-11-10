@@ -71,7 +71,7 @@
             <div class="row"></div>
                 <div class="form-group col-sm-11 col-xs-2 my-3 py-0" align="justify">
                     <p>
-                        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Diretoria do {{$unidadeEnsino->razao_social}} em {{$unidadeEnsino->cidade_uf}}, aos {{date('d')}} dias do mês de {{nomeMes(date('m'))}} de {{date('Y')}}.
+                        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Diretoria do {{$unidadeEnsino->razao_social}} em {{$unidadeEnsino->cidade_uf}}, aos {{date('d')}} dias do mês de {{nomeMesMinusculo(date('m'))}} de {{date('Y')}}.
                     </p>
                 </div>
             </div>
