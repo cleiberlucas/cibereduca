@@ -398,7 +398,13 @@ return [
                     'url'  => 'admin/tiposturmas',
                     'icon_color' => 'red',
                     'can'  => 'Padrão Turma Ver',
-                ],              
+                ],
+                [
+                    'text' => 'ExtraCurriculares',
+                    'route'  => 'extracurriculares.index',
+                    'icon_color' => 'red',
+                    'can'  => 'Tipo Atividade ExtraCurricular Ver',
+                ],
                 
                 [
                     'text'    => 'Parâmetros Gerais',

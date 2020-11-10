@@ -225,6 +225,12 @@ Route::prefix('secretaria')
                 Route::get('matriculas/getAlunosTurma/{id_turma}', 'MatriculaController@getAlunosTurma')->name('matriculas.getAlunosTurma');                
                 Route::get('matriculas/getValores/{id_matricula}', 'MatriculaController@getValores')->name('matriculas.getValores');
                 
+                /**
+                 * Rotas Atividades Extracurriculares
+                 */
+                /* Route::get('extracurriculares/getTurmas/{id}', 'ExtraCurricularController@getTurmas')->name('turmas.getTurmas'); */
+                Route::any('extracurriculares/search', 'ExtraCurricularController@search')->name('extracurriculares.search');
+                Route::resource('extracurriculares', 'ExtraCurricularController');
                  
                 /**
                  * Rotas Turmas
