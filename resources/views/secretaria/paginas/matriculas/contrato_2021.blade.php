@@ -134,13 +134,13 @@
                     <strong>VLR TOTAL MATERIAL DIDÁTICO: R$ {{number_format($matricula->valor_entrada_mat_didatico+$matricula->valor_material_didatico, 2, ',', '.') ?? ''}}</strong>                     
                 </td>
             </tr>
-
+            <?php
+            $totalContratosExtras = 0;        
+            ?>
             {{-- CONTRATOS ATIVIDADES EXTRACURRICULARES --}}
             @if (count($contratosExtraCurriculares) > 0)
 
-                <?php
-                    $totalContratosExtras = 0;        
-                ?>
+                
                 @foreach ($contratosExtraCurriculares as $index => $contratoExtraCurricular)
 
                     {{-- Somando valores dos contratos extracurriculares --}}
