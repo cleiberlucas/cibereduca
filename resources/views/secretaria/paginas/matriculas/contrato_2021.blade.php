@@ -194,7 +194,7 @@
                 <td colspan="2">
                     <hr>
                     <center>
-                        <h4>VLR TOTAL: R$ {{number_format(($matricula->valor_matricula)+($matricula->turma->tipoTurma->valor_curso)+($matricula->valor_entrada_mat_didatico)+($matricula->valor_material_didatico)+($totalContratosExtras), 2, ',', '.')}}</h4>
+                        <h4>VLR TOTAL: R$ {{number_format(($matricula->valor_matricula)+($matricula->turma->tipoTurma->valor_curso)-($matricula->valor_desconto)+($matricula->valor_entrada_mat_didatico)+($matricula->valor_material_didatico)+($totalContratosExtras), 2, ',', '.')}}</h4>
                     </center>
                 </td>
             </tr>
