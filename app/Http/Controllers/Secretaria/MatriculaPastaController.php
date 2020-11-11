@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Secretaria;
 
 use App\Http\Controllers\Controller;
+use App\Models\Secretaria\ContratoAtividadeExtraCurricular;
 use App\Models\Secretaria\Matricula;
 use Illuminate\Http\Request;
 
@@ -21,10 +22,20 @@ class MatriculaPastaController extends Controller
      */
     public function pasta($id_aluno){
         $this->authorize('Pasta Aluno Ver');   
+
         $matriculas = $this->repositorio->where('fk_id_aluno', $id_aluno)->get();
 
+        $contratosExtraCurriculares = ContratoAtividadeExtraCurricular::
+            select('fk_id_matricula', 'id_contrato_atividade_extracurricular', 'tipo_atividade_extracurricular', 'data_cancelamento')
+            ->join('tb_tipos_atividades_extracurriculares', 'fk_id_tipo_atividade_extracurricular', 'id_tipo_atividade_extracurricular')
+            ->join('tb_matriculas', 'fk_id_matricula', 'id_matricula')
+            ->join('tb_pessoas', 'id_pessoa', 'fk_id_aluno')
+            ->where('id_pessoa', $id_aluno)
+            ->get();
+
         return view('secretaria.paginas.pessoas.pasta.pasta', [
-        'matriculas' => $matriculas,        
+            'matriculas' => $matriculas,        
+            'contratosExtraCurriculares' => $contratosExtraCurriculares
         ]);
     }
 

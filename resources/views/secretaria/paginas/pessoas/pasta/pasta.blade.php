@@ -83,7 +83,9 @@
                                 <i class="fas fa-address-book"> </i> {{$matricula->turma->tipoTurma->anoLetivo->ano}}
                             </td>
                             <td>
-                                <a href="{{ route('matriculas.edit', $matricula->id_matricula) }}" class="btn btn-link">  {{$matricula->turma->nome_turma}} - {{$matricula->turma->turno->descricao_turno}} </a>                                    
+                                <a href="{{ route('matriculas.edit', $matricula->id_matricula) }}" class="btn btn-link">  {{$matricula->turma->nome_turma}} - {{$matricula->turma->turno->descricao_turno}} </a>
+                                <a href="{{ route('contratos.extracurricular.create', $matricula->id_matricula) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-caret-right"></i><i class="fas fa-caret-right"></i>  Atividades ExtraCurriculares </a>
+                                
                             </td> 
                             <td>
                                 {{$matricula->situacaoMatricula->situacao_matricula}}                                        
@@ -99,6 +101,34 @@
                             </td>
                             
                         </tr>
+                        
+                        {{-- Verificando se a matrícula tem contrato de atividade extracurricular --}}
+                        @if (count($contratosExtraCurriculares) > 0)
+                            <tr>
+                                <td colspan=2>                                                                                       
+                                <td><strong>Atividades Extracurriculares</strong> </td>
+                                <td></td>
+                            </tr>
+                            {{-- Imprimindo atividades extracurriculares --}}
+                            @foreach ($contratosExtraCurriculares as $i => $contratoExtraCurricular)    
+                                {{-- Verificando as atividades de uma matrícula, ou seja, somente de um ano letivo --}}
+                                @if ($contratoExtraCurricular->fk_id_matricula == $matricula->id_matricula)                            
+                                    <tr>
+                                        <td colspan=2></td>
+                                        <td >
+                                            {{$i+1}} - {{$contratoExtraCurricular->tipo_atividade_extracurricular}}
+                                            <a href="{{ route('contratos.extracurricular.edit', $contratoExtraCurricular->id_contrato_atividade_extracurricular) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>
+                                        </td>
+                                        @if ($contratoExtraCurricular->data_cancelamento == '')
+                                            <td>Ativo</td>                                        
+                                        @else
+                                            <td>Cancelado</td>                                    
+                                        @endif
+                                        
+                                    </tr>  
+                                @endif                              
+                            @endforeach                        
+                        @endif
                 @endforeach
 
                 </tbody>

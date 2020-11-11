@@ -231,6 +231,18 @@ Route::prefix('secretaria')
                 /* Route::get('extracurriculares/getTurmas/{id}', 'ExtraCurricularController@getTurmas')->name('turmas.getTurmas'); */
                 Route::any('extracurriculares/search', 'ExtraCurricularController@search')->name('extracurriculares.search');
                 Route::resource('extracurriculares', 'ExtraCurricularController');
+
+                /**
+                 * Rotas Contrato atividades extracurriculares
+                 */
+                Route::get('contratos_extracurriculares/create/{id_matricula}', 'ContratoExtraCurricularController@create')->name('contratos.extracurricular.create');
+                Route::post('contratos_extracurriculares/{id_contrato_extra}', 'ContratoExtraCurricularController@update')->name('contratos.extracurricular.update');                
+                Route::get('contratos_extracurriculares/{id_contrato_extra}/edit', 'ContratoExtraCurricularController@edit')->name('contratos.extracurricular.edit');                
+                /*Route::any('contratos_extracurriculares/search/contrato_extra', 'ContratoExtraCurricularController@search')->name('contratos.extracurricular.search');
+                Route::delete('contratos_extracurriculares/{id_contrato_extra}', 'ContratoExtraCurricularController@destroy')->name('contratos.extracurricular.destroy');
+                Route::get('contratos_extracurriculares/{id_contrato_extra}', 'ContratoExtraCurricularController@show')->name('contratos.extracurricular.show');*/
+                Route::post('contratos_extracurriculares', 'ContratoExtraCurricularController@store')->name('contratos.extracurricular.store');
+                /*Route::any('contratos_extracurriculares/{id_contrato_extra}/contratos', 'ContratoExtraCurricularController@index')->name('contratos.extracurricular.index')->middleware('can:Matrícula Contrato Ver'); */
                  
                 /**
                  * Rotas Turmas

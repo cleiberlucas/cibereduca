@@ -75,5 +75,9 @@
 <script>
     document.getElementById("valor_padrao_atividade").addEventListener("change", function(){
         this.value = parseFloat(this.value).toFixed(2);
-    });    
+    });  
+    ript>
+    document.getElementById("valor_padrao_material").addEventListener("change", function(){
+        this.value = parseFloat(this.value).toFixed(2);
+    });   
 </script>

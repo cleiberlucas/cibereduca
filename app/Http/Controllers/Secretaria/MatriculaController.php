@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Secretaria;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateMatricula;
 use App\Models\FormaPagamento;
+use App\Models\Secretaria\ContratoAtividadeExtraCurricular;
 use App\Models\Secretaria\CorpoContrato;
 use App\Models\Secretaria\Matricula;
 use App\Models\Secretaria\Pessoa;
@@ -334,8 +335,28 @@ class MatriculaController extends Controller
                 /* 'corpoContrato' => $corpoContrato, */
                 'unidadeEnsino' =>$unidadeEnsino,
             ]);
-        }else
+        }else  if ($matricula->turma->tipoTurma->anoLetivo->ano >= 2021){
+            $contratosExtraCurriculares = ContratoAtividadeExtraCurricular::
+                select('tb_contratos_atividades_extracurriculares.*',
+                    'tipo_atividade_extracurricular', 'titulo_contrato',
+                    'formaPagtoCurso.forma_pagamento as forma_pagto_curso',
+                    'formaPagtoMaterial.forma_pagamento as forma_pagto_material'
+                    )
+                ->join('tb_tipos_atividades_extracurriculares', 'fk_id_tipo_atividade_extracurricular', 'id_tipo_atividade_extracurricular')
+                ->leftJoin('tb_formas_pagamento as formaPagtoCurso', 'formaPagtoCurso.id_forma_pagamento', 'fk_id_forma_pagto_ativ')
+                ->leftJoin('tb_formas_pagamento as formaPagtoMaterial', 'formaPagtoMaterial.id_forma_pagamento', 'fk_id_forma_pagto_material')
+                ->where('fk_id_matricula', $id_matricula)
+                ->orderBy('data_contratacao')
+                ->get();
+                //dd($contratosExtraCurriculares);
+
+                return view('secretaria.paginas.matriculas.contrato_2021', 
+                    compact ('matricula', 'unidadeEnsino', 'contratosExtraCurriculares')
+                );
+        }else{
+
             return redirect()->back()->with('atencao', 'Não há modelo de contrato configurado para o ano letivo desta matrícula.');
+        }
         
     }
 
