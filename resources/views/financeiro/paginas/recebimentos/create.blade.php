@@ -64,7 +64,7 @@
                 <div class="row">
                     <div class="form-group col-sm-3 col-xs-4">
                         <label>* Data Pagamento:</label>
-                        <input type="date" class="form-control" required id="data_recebimento" name="data_recebimento" value="{{ $recebivel->data_vencimento ?? old('data_vencimento') }}" onBlur="calcularAcrescimos(); somarRecebiveis();"/>
+                        <input type="date" class="form-control" required id="data_recebimento" name="data_recebimento" max="{{date('Y-m-d')}}" value="{{ $recebivel->data_vencimento ?? old('data_vencimento') }}" onBlur="calcularAcrescimos(); somarRecebiveis();"/>
                     </div>
                     <div class="form-group col-sm-3 col-xs-4">
                         <label>* Data Crédito:</label>
