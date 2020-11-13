@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Captacao;
 
+use App\Http\Controllers\CaptchaServiceController;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateCaptacao;
 use App\Models\AnoLetivo;
@@ -12,6 +13,7 @@ use App\Models\Captacao\TipoCliente;
 use App\Models\Captacao\TipoDescoberta;
 use App\Models\Captacao\TipoNegociacao;
 use App\Models\Secretaria\Pessoa;
+use App\Models\UnidadeEnsino;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -29,7 +31,7 @@ class CaptacaoController extends Controller
         $this->authorize('Captação Ver');   
         
         $captacoes = $this->repositorio
-            ->select('id_captacao', 'ano', 'nome', 'aluno', 'serie_pretendida', 'tipo_negociacao')
+            ->select('id_captacao', 'ano', 'nome', 'aluno', 'serie_pretendida', 'tipo_negociacao', 'data_agenda', 'hora_agenda')
             ->join('tb_anos_letivos',  'fk_id_ano_letivo', 'id_ano_letivo')
             ->join('tb_pessoas', 'fk_id_pessoa', 'id_pessoa')
             ->join('tb_tipos_negociacao', 'fk_id_tipo_negociacao', 'id_tipo_negociacao')
@@ -93,6 +95,47 @@ class CaptacaoController extends Controller
             'tiposNegociacao' => $tiposNegociacao,
             'tiposDescoberta' => $tiposDescoberta,
         ]);
+    }
+
+    public function createAgendamento(){
+        $unidadesEnsino = new UnidadeEnsino;
+        $unidadesEnsino = $unidadesEnsino
+            ->select('id_unidade_ensino', 'nome_fantasia')
+            ->where('situacao', 1)
+            ->orderBy('nome_fantasia')
+            ->get();
+
+        $tiposCliente = new TipoCliente;
+        $tiposCliente = $tiposCliente
+            ->orderBy('tipo_cliente')
+            ->get();
+
+        $tiposDescoberta = new TipoDescoberta;
+        $tiposDescoberta = $tiposDescoberta
+            ->orderBy('tipo_descoberta')
+            ->get();
+
+        return view('captacao.paginas.agendamento_online',
+            compact('tiposCliente', 'tiposDescoberta', 'unidadesEnsino'
+            )
+        );
+    }
+
+    //Gravação agendamento on-line
+    //não tem autenticação
+    public function storeAgendamento(Request $request)
+    {                        
+        $captcha = new CaptchaServiceController;
+        $captcha->capthcaFormValidate($request);
+        
+        $request->merge(['fk_id_motivo_contato' => '4']);//agendamento
+        $request->merge(['fk_id_tipo_negociacao' => '1']);//em negociação
+
+        $dados = $request->all();  
+        //dd($request);
+        $this->repositorio->create($dados); 
+
+        return redirect()->back()->with('sucesso', 'Agendamento cadastrado com sucesso.');
     }
 
     public function store(StoreUpdateCaptacao $request)
@@ -197,6 +240,7 @@ class CaptacaoController extends Controller
             ->select('nome', 'id_pessoa',
                 'ano',
                 'id_captacao', 'aluno', 'serie_pretendida', 'telefone_1', 'telefone_2', 'email_1', 'email_2', 'data_contato', 'observacao', 'tb_captacoes.data_cadastro',
+                'data_agenda', 'hora_agenda',
                 'necessita_apoio', 'valor_matricula', 'valor_curso', 'valor_material_didatico',
                 'valor_bilingue', 'valor_robotica',
                 'tipo_cliente',

@@ -426,3 +426,10 @@ Route::put('/', 'Principal\PrincipalController@defineUnidadePadrao')->name('home
 //Auth::routes(); 
 //desabilita link para auto registro de usuário
 Auth::routes(['register' => false]);
+
+/**
+ * Captcha
+ */
+Route::get('contact-form', 'CaptchaServiceController@index');
+Route::post('captcha-validation', 'CaptchaServiceController@capthcaFormValidate');
+Route::get('reload-captcha', 'CaptchaServiceController@reloadCaptcha');

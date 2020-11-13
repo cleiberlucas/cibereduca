@@ -23,6 +23,14 @@
         </div>
         <div class="card-body">
             <ul>
+                <li><strong>Agendamento:</strong> 
+                        @if (isset($captacao->data_agenda))
+                            {{ date('d/m/Y', strtotime($captacao->data_agenda))}}
+                        @endif
+                        @if (isset($captacao->hora_agenda))
+                            - {{ date('H:i', strtotime($captacao->hora_agenda))}}  
+                        @endif
+                </li>  
                 <li><strong>Telefone: </strong> {{mascaraTelefone("(##) #####-####", $captacao->telefone_1)}} {{mascaraTelefone("(##) #####-####",$captacao->telefone2)}}
                 </li>
                 <li><strong>Email:</strong> {{$captacao->email_1}}  {{$captacao->email_2}}</li>

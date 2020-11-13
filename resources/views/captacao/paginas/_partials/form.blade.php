@@ -87,6 +87,17 @@
     </div>
 
     <div class="row">
+        <div class="form-group col-sm-3 col-xs-2">
+            <label>Agendamento para:</label>
+            <input type="date" name="data_agenda" class="form-control" value="{{$captacao->data_agenda ?? old('data_agenda') }}" >               
+        </div>   
+        <div class="form-group col-sm-2 col-xs-2">
+            <label>Horário:</label>
+            <input type="time" name="hora_agenda" min="08:00" max="17:00" class="form-control" value="{{$captacao->hora_agenda ?? old('hora_agenda') }}" >                 
+        </div>
+    </div>
+
+    <div class="row">
         <div class="form-group col-sm-4 col-xs-2">            
             <label>* Motivo Contato:</label>
             <select name="fk_id_motivo_contato"  class="form-control" required>

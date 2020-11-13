@@ -163,7 +163,8 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,                
         Barryvdh\DomPDF\ServiceProvider::class,     
-        Maatwebsite\Excel\ExcelServiceProvider::class,                
+        Maatwebsite\Excel\ExcelServiceProvider::class,    
+        Mews\Captcha\CaptchaServiceProvider::class,            
 
         /*
          * Package Service Providers...
@@ -231,6 +232,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,   
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,           
+        'Captcha' => Mews\Captcha\Facades\Captcha::class,
 
     ],
 

@@ -15,6 +15,7 @@ class Captacao extends Model
         
     protected $fillable = ['fk_id_pessoa', 'aluno', 'serie_pretendida', 'data_contato',
         'fk_id_ano_letivo', 'fk_id_tipo_cliente', 'fk_id_motivo_contato', 'fk_id_tipo_negociacao', 'fk_id_tipo_descoberta', 
+        'data_agenda', 'hora_agenda',
         'necessita_apoio', 'valor_matricula', 'valor_curso', 'valor_material_didatico', 'valor_bilingue', 'valor_robotica', 
         'data_cadastro', 'fk_id_usuario_captacao', 'observacao'];
    
@@ -60,7 +61,6 @@ class Captacao extends Model
     {
         return $this->belongsTo(MotivoContato::class, 'fk_id_motivo_contato', 'id_motivo_contato');
     }
-
     
     /**
      * Retorna Tipo Negociação
@@ -69,7 +69,6 @@ class Captacao extends Model
     {
         return $this->belongsTo(TipoNegociacao::class, 'fk_id_tipo_negociacao', 'id_tipo_negociacao');
     }
-
     
     /**
      * Retorna Motivo Contato

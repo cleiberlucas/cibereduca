@@ -33,6 +33,7 @@
                     <th>Interessado</th>                        
                     <th>Aluno</th>
                     <th>Série</th>
+                    <th>Agendamento</th>
                     <th>Situação</th>                        
                     <th width="170">Ações</th>
                 </thead>
@@ -50,6 +51,13 @@
                                 {{$captacao->aluno}}                                      
                             </td>              
                             <td>{{$captacao->serie_pretendida}}</td>
+                            <td> @if (isset($captacao->data_agenda))
+                                    {{ date('d/m/Y', strtotime($captacao->data_agenda))}}
+                                @endif
+                                @if (isset($captacao->hora_agenda))
+                                    - {{ date('H:i', strtotime($captacao->hora_agenda))}}  
+                                @endif
+                            </td>
                             <td>{{$captacao->tipo_negociacao}}</td>
                             <td style="width=10px;">
                                 <a href="{{ route('historico.create', $captacao->id_captacao) }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-paste"></i></a>
