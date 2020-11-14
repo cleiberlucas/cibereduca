@@ -14,7 +14,7 @@ class Captacao extends Model
     public $timestamps = false;
         
     protected $fillable = ['fk_id_pessoa', 'aluno', 'serie_pretendida', 'data_contato',
-        'fk_id_ano_letivo', 'fk_id_tipo_cliente', 'fk_id_motivo_contato', 'fk_id_tipo_negociacao', 'fk_id_tipo_descoberta', 
+        'fk_id_unidade_ensino', 'fk_id_ano_letivo', 'fk_id_tipo_cliente', 'fk_id_motivo_contato', 'fk_id_tipo_negociacao', 'fk_id_tipo_descoberta', 
         'data_agenda', 'hora_agenda',
         'necessita_apoio', 'valor_matricula', 'valor_curso', 'valor_material_didatico', 'valor_bilingue', 'valor_robotica', 
         'data_cadastro', 'fk_id_usuario_captacao', 'observacao'];

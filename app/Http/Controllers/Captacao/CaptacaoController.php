@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Captacao;
 
 use App\Http\Controllers\CaptchaServiceController;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Secretaria\PessoaController;
 use App\Http\Requests\StoreUpdateCaptacao;
 use App\Models\AnoLetivo;
 use App\Models\Captacao\Captacao;
@@ -32,11 +33,13 @@ class CaptacaoController extends Controller
         
         $captacoes = $this->repositorio
             ->select('id_captacao', 'ano', 'nome', 'aluno', 'serie_pretendida', 'tipo_negociacao', 'data_agenda', 'hora_agenda')
-            ->join('tb_anos_letivos',  'fk_id_ano_letivo', 'id_ano_letivo')
+            ->leftJoin('tb_anos_letivos',  'fk_id_ano_letivo', 'id_ano_letivo')
             ->join('tb_pessoas', 'fk_id_pessoa', 'id_pessoa')
-            ->join('tb_tipos_negociacao', 'fk_id_tipo_negociacao', 'id_tipo_negociacao')
-            ->where('tb_anos_letivos.fk_id_unidade_ensino', session()->get('id_unidade_ensino') )
-            ->orderBy('ano', 'desc')
+            ->leftJoin('tb_tipos_negociacao', 'fk_id_tipo_negociacao', 'id_tipo_negociacao')
+            ->where('tb_captacoes.fk_id_unidade_ensino', session()->get('id_unidade_ensino') )
+            /* ->orderBy('ano', 'desc') */
+            ->orderBy('data_agenda', 'desc')
+            ->orderBy('hora_agenda')
             ->orderBy('nome')            
             ->paginate(25);      
 
@@ -100,7 +103,7 @@ class CaptacaoController extends Controller
     public function createAgendamento(){
         $unidadesEnsino = new UnidadeEnsino;
         $unidadesEnsino = $unidadesEnsino
-            ->select('id_unidade_ensino', 'nome_fantasia')
+            ->select('id_unidade_ensino', 'nome_fantasia', 'telefone', 'email' )
             ->where('situacao', 1)
             ->orderBy('nome_fantasia')
             ->get();
@@ -126,16 +129,44 @@ class CaptacaoController extends Controller
     public function storeAgendamento(Request $request)
     {                        
         $captcha = new CaptchaServiceController;
-        $captcha->capthcaFormValidate($request);
+        $captcha->captchaFormValidate($request);
         
-        $request->merge(['fk_id_motivo_contato' => '4']);//agendamento
+        $dadosPessoa = [
+            'nome' => $request->nome,
+            'telefone_1' => somenteNumeros($request->telefone_1),
+            'email_1' => $request->email_1,
+            'fk_id_sexo' => '0',
+            'fk_id_user_cadastro' => '-1',
+            'situacao_pessoa' => '1',
+            'fk_id_user_alteracao' => '-1',
+            'fk_id_tipo_pessoa' => '2',
+        ];
+
+        //inserindo dados na tabela pessoas
+        $inserePessoa = new PessoaController(new Pessoa());
+        $inserePessoa = $inserePessoa->storeResponsavelAgendamento($dadosPessoa);
+
+        //dd($inserePessoa);
+        
+        $request->merge(['fk_id_pessoa' => $inserePessoa->id_pessoa]);//id pessoa
+        $request->merge(['fk_id_motivo_contat' => '4']);//agendamento
         $request->merge(['fk_id_tipo_negociacao' => '1']);//em negociação
+        $request->merge(['data_contato' => date('Ymd')]);
+        $request->merge(['fk_id_usuario_captacao' => '-1']);
 
         $dados = $request->all();  
-        //dd($request);
-        $this->repositorio->create($dados); 
+        //dd($dados);
+        try {            
+            $agendamento = $this->repositorio->create($dados); 
+            
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('erro', 'Desculpe-nos, ocorreu algum erro. Não foi possível fazer o seu agendamento. Favor agendar via telefone ou email.');            
+        }
+        
+        //dd($agendamento);
 
-        return redirect()->back()->with('sucesso', 'Agendamento cadastrado com sucesso.');
+        return redirect()->back()->with('sucesso', 'Agendamento cadastrado com sucesso. Dia '.date('d/m/Y', strtotime($request->data_agenda)).' às '.$request->hora_agenda);
     }
 
     public function store(StoreUpdateCaptacao $request)
@@ -248,7 +279,7 @@ class CaptacaoController extends Controller
                 'tipo_descoberta',
                 'tipo_negociacao',
                 'name')
-            ->join('tb_anos_letivos', 'fk_id_ano_letivo', 'id_ano_letivo')
+            ->leftJoin('tb_anos_letivos', 'fk_id_ano_letivo', 'id_ano_letivo')
             ->join('tb_pessoas', 'fk_id_pessoa', 'id_pessoa')          
             ->join('tb_tipos_cliente', 'fk_id_tipo_cliente', 'id_tipo_cliente')
             ->join('tb_motivos_contato', 'fk_id_motivo_contato', 'id_motivo_contato')

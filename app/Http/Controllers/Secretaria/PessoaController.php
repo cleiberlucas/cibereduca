@@ -105,24 +105,17 @@ class PessoaController extends Controller
         $dados = $request->all();
         $sit = $this->verificarSituacao($dados);
         $dados = array_merge($dados, $sit);
-        //dd($dados['fk_id_tipo_pessoa']);
-
-        /* if ($request->foto->isValid()){
-            //dd($request->foto->extension());
-            $request->file('foto')->store('pessoas');
-        } */
+        
         if ($request->hasfile('foto') && $request->foto->isValid()) {
             $dados['foto'] = $request->file('foto')->store('pessoas');
         }
         //Gravando pessoa
-        try {
-            //code...
+        try {            
             $insertPessoa = Pessoa::create($dados);
         } catch (\Throwable $th) {
             //throw $th;
             return back()->withInput()->with('atencao', 'Erro ao gravar. Verifique se já existe o cadastro desta pessoa.');
         }
-
 
         //Gravando endereço
         //Somente para Responsável
@@ -134,31 +127,30 @@ class PessoaController extends Controller
             }
         }
 
-        /* Alunos 
-            Mostra somente unidades de ensino vinculadas ao usuário logado
-        */
-        /*  if ($dados['fk_id_tipo_pessoa'] == 1){
-            $pessoas = $this->repositorio
-                                        ->join('tb_unidades_ensino', 'fk_id_unidade_ensino', 'id_unidade_ensino')
-                                        ->where('fk_id_tipo_pessoa', $dados['fk_id_tipo_pessoa'])
-                                        ->where('id_unidade_ensino', '=', User::getUnidadeEnsinoSelecionada())
-                                        ->orderBy('nome', 'asc')
-                                        ->paginate(20);
-        } */
-        /* Responsável 
-            Não mostra unidade ensino
-        */
-        /*  else
-            $pessoas = $this->repositorio->where('fk_id_tipo_pessoa', $dados['fk_id_tipo_pessoa'])
-                                        ->orderBy('nome', 'asc')
-                                        ->paginate(20); */
-
         return redirect()->back()->with('sucesso', 'Cadastro realizado com sucesso.');
+    }
 
-        /*  return view('secretaria.paginas.pessoas.index', [
-                    'pessoas' => $pessoas,
-                    'tipo_pessoa' =>  $dados['fk_id_tipo_pessoa'],
-        ])->with('sucesso', 'Cadastro realizado com sucesso.'); */
+    /* Gravando dados do responsável, enviado pelo agendamento online */
+    public function storeResponsavelAgendamento(Array $dados ){
+        //dd($dados);
+        //Gravando pessoa
+        try {            
+            $insertPessoa = Pessoa::create($dados);
+            
+        } catch (\Throwable $th) {
+            //throw $th;
+            return $th;            
+        }
+
+        //Gravando endereço
+        try {
+            $dadosEndereco = array('endereco' => '-');
+            $insertPessoa->endereco()->create($dadosEndereco);
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+        
+        return $insertPessoa;
     }
 
     public function show($id)

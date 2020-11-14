@@ -12,7 +12,7 @@ class CaptchaServiceController extends Controller
         return view('index');
     }
 
-    public function capthcaFormValidate(Request $request)
+    public function captchaFormValidate(Request $request)
     {
         $request->validate([            
             'captcha' => 'required|captcha'
