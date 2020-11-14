@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" href="favicons/favicon.ico" >
     <title>Rede Educa - Agendamento On-line</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
@@ -17,7 +18,7 @@
     <div class="container">
 
         <div class="row mt-1">        
-            <div class="col-sm-2 col-xs-2 my-1 py-1"> 
+            <div class="col-sm-2 col-xs-2 my-1 py-1" align="center"> 
                     <img src="/vendor/adminlte/dist/img/logo.png" width="60%" alt="logo">
             </div>
             <div class="col-sm-10 col-xs-2 my1 py-1 mx-auto" align="center"> 
@@ -177,19 +178,20 @@
     </div>
     
     <div class="row justify-content-center">
-        <div class="">
-            CiberEduca - Plataforma de Gestão Escolar           
-          
+        <div class="form-group col-sm-12 col-xs-2" align="center">
+            CiberEduca - Plataforma de Gestão Escolar                     
         </div>
     </div>
     <div class="row justify-content-center">
-        <div class="">
+        <div class="form-group col-sm-12 col-xs-2" align="center">
             CiberSys - Sistemas Inteligentes - cibersys.sistemas@gmail.com
         </div>
     </div>
 
-    <div class="row justify-content-center">
-        Copyright &copy; 2020-{{date('Y')}}
+    <div class="row justify-content-center" align="center">
+        <div class="form-group col-sm-12 col-xs-2">
+            Copyright &copy; 2020-{{date('Y')}}
+        </div>
     </div>
 </footer>
 

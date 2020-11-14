@@ -76,6 +76,13 @@
             <br>
             <div class="row">
                 <div class="form-check">
+                    <input class="form-check-input" type="radio" name="tipo_relatorio" id="alunos_turma_telefone" value="alunos_turma_telefone" required>
+                    <label for="alunos_turma_telefone" class="form-check-label">Alunos de uma Turma com telefone</label>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="form-check">
                     <input class="form-check-input" type="radio" name="tipo_relatorio" id="todas_matriculas" value="todas_matriculas">
                     <label for="todas_matriculas" class="form-check-label">Todos alunos matriculados</label>
                 </div>

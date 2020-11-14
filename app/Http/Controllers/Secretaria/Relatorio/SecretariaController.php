@@ -69,7 +69,29 @@ class SecretariaController extends Controller
                 ->get();
 
             return view(
-                'secretaria.paginas.relatorios.alunos_turma',
+                'secretaria.paginas.relatorios.alunos_turma', 
+                compact('turma', 'matriculas', 'unidadeEnsino'),
+            );
+        }
+        /**Alunos de uma turma com telefone*/
+        else if ($request->tipo_relatorio == 'alunos_turma_telefone') {
+            if ($request->turma == null)
+                return redirect()->back()->with('atencao', 'Escolha uma turma.');
+
+            $matriculas = $matriculas
+                ->select('aluno.nome as nome_aluno', 'resp.nome as nome_responsavel', 'resp.telefone_1', 'resp.telefone_2',
+                    'situacao_matricula')
+                ->where('fk_id_turma', $request->turma)
+                ->join('tb_pessoas as aluno', 'fk_id_aluno', 'aluno.id_pessoa')
+                ->join('tb_pessoas as resp', 'fk_id_responsavel', 'resp.id_pessoa')
+                ->join('tb_situacoes_matricula', 'fk_id_situacao_matricula', 'id_situacao_matricula')
+                ->join('users', 'tb_matriculas.fk_id_user_cadastro', 'id')    
+                ->orderBy('aluno.'.$request->ordem) 
+                ->orderBy('aluno.nome')
+                ->get();
+
+            return view(
+                'secretaria.paginas.relatorios.alunos_turma_telefone', 
                 compact('turma', 'matriculas', 'unidadeEnsino'),
             );
         }

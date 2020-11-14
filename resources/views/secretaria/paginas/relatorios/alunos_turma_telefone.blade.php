@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="shortcut icon" href="favicons/favicon.ico" >
-    <title>Turma {{$turma->nome_turma}} </title>
+    <title>Turma {{ $turma->nome_turma}} </title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     
 </head>
@@ -60,7 +60,8 @@
                     <thead class="thead-light">
                         <th>N°</th>
                         <th>Nome</th>                        
-                        <th>Data Nascimento</th>
+                        <th>Responsável</th>
+                        <th>Telefone</th>
                         <th>Situação Matrícula</th>
                     </thead>
                 
@@ -69,13 +70,27 @@
                             <tr scope="row my-1 py-1">
                                 <th scope="row">{{$index+1}}</th>
                                 <td>
-                                    {{$matricula->aluno->nome}}
+                                    {{$matricula->nome_aluno}}
                                 </td>
                                 <td>
-                                    {{date('d/m/Y', strtotime($matricula->aluno->data_nascimento))}}
+                                    {{$matricula->nome_responsavel}}
+                                </td>
+                                <td>                                    
+                                    @if (strlen($matricula->telefone_1) == 11  )
+                                        {{mascaraTelefone("(##) #####-####", $matricula->telefone_1)}}
+                                    @else
+                                        {{mascaraTelefone("(##) ####-####", $matricula->telefone_1)}}
+                                    @endif
+
+                                    @if (strlen($matricula->telefone_2) == 11  )
+                                         / {{mascaraTelefone("(##) #####-####", $matricula->telefone_2)}}
+                                    @else
+                                        / {{mascaraTelefone("(##) ####-####", $matricula->telefone_2)}}
+                                    @endif
+                                     
                                 </td>
                                 <td>
-                                    {{$matricula->situacaoMatricula->situacao_matricula}}
+                                    {{$matricula->situacao_matricula}}
                                 </td>
                             </tr>
                         @endforeach
