@@ -52,14 +52,20 @@
                     <select name="situacaoMatricula" id="situacaoMatricula" class="form-control"> 
                         <option value="99">Todas</option>
                         @foreach ($situacoesMatriculas as $situacaoMatricula)
-                            <option value="{{$situacaoMatricula->id_situacao_matricula}}"
-                                @if ($situacaoMatricula->id_situacao_matricula == 1)
-                                    selected="selected"
-                                @endif
-                                >{{$situacaoMatricula->situacao_matricula}}</option>
+                            <option value="{{$situacaoMatricula->id_situacao_matricula}}"> {{$situacaoMatricula->situacao_matricula}}</option>
                         @endforeach
                     </select>
-                </div> 
+                </div>
+                
+                <div class="form-group col-sm-3 col-xs-2">
+                    Tipo de Desconto Curso
+                    <select name="tipoDescontoCurso" id="tipoDescontoCurso" class="form-control"> 
+                        <option value="99">Todos</option>
+                        @foreach ($tiposDescontoCurso as $tipoDescontoCurso)
+                            <option value="{{$tipoDescontoCurso->id_tipo_desconto_curso}}"> {{$tipoDescontoCurso->tipo_desconto_curso}}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
             <hr>
 

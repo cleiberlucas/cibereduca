@@ -1,12 +1,16 @@
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Turma</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="shortcut icon" href="favicons/favicon.ico" >
+    <title>{{$unidadeEnsino->nome_fantasia}}-Declaração Cursando   
+    </title> 
     
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        
 </head>
 
 <style>   
@@ -37,7 +41,15 @@
                 <div class="col-sm-11 col-xs-2 my-0" >  
                     <h5><strong>Ano:</strong> {{$anoLetivo->ano}}</h5>                    
                 </div>
-            </div>           
+            </div>
+
+            @if ($tipoDescontoCurso != '' and $tipoDescontoCurso->id_tipo_desconto_curso != 99)
+                <div class="row">
+                    <div class="col-sm-11 col-xs-2 my-0" >  
+                        <h5><strong>Tipo Desconto Curso:</strong>  {{ $tipoDescontoCurso->tipo_desconto_curso}}</h5>
+                    </div>
+                </div>
+            @endif          
             
             <div class="row">
                 <div class="col-sm-11" align="center">

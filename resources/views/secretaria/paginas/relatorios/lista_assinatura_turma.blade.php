@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" href="favicons/favicon.ico" >
     <title>Turma</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     
@@ -51,11 +52,13 @@
                     <h5><strong>Turma:</strong> {{ $turma->nome_turma}} - {{$turma->turno->descricao_turno}}                    </h5>
                 </div>
             </div>
-            {{-- <div class="row">
-                <div class="col-sm-11 col-xs-2 my-0" >  
-                    <h5><strong>Localização:</strong>  {{ $turma->localizacao}}</h5>
+            @if ($tipoDescontoCurso != '' and $tipoDescontoCurso->id_tipo_desconto_curso != 99)
+                <div class="row">
+                    <div class="col-sm-11 col-xs-2 my-0" >  
+                        <h5><strong>Tipo Desconto Curso:</strong>  {{ $tipoDescontoCurso->tipo_desconto_curso}}</h5>
+                    </div>
                 </div>
-            </div> --}}
+            @endif
             <br>
             <div class="row">
                 <div class="col-sm-11" align="center">

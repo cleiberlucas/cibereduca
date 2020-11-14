@@ -7,6 +7,7 @@ use App\Models\AnoLetivo;
 use App\Models\Secretaria\Matricula;
 use App\Models\Secretaria\SituacaoMatricula;
 use App\Models\Secretaria\Turma;
+use App\Models\TipoDescontoCurso;
 use App\Models\UnidadeEnsino;
 use App\User;
 use Illuminate\Http\Request;
@@ -25,6 +26,10 @@ class SecretariaController extends Controller
         $situacoesMatriculas = $situacoesMatriculas
             ->orderBy('situacao_matricula')
             ->get();
+        
+        $tiposDescontoCurso = TipoDescontoCurso::            
+            orderBy('tipo_desconto_curso')
+            ->get();
 
         $anosLetivos = AnoLetivo::where('fk_id_unidade_ensino', '=', session()->get('id_unidade_ensino'))
             ->orderBy('ano', 'desc')
@@ -33,6 +38,7 @@ class SecretariaController extends Controller
         return view('secretaria.paginas.relatorios.index', [
             'anosLetivos' => $anosLetivos,
             'situacoesMatriculas' => $situacoesMatriculas,
+            'tiposDescontoCurso' => $tiposDescontoCurso,
         ]);
     }
 
@@ -43,10 +49,20 @@ class SecretariaController extends Controller
     {
         $this->authorize('Pessoa Ver');
 
+        $tipoDescontoCurso = '';
+
         $turma = new Turma;
         $matriculas = new Matricula;
         if ($request->situacaoMatricula != '99') // diferente de 99 é pq escolhe uma situação
             $matriculas = $matriculas->where('tb_matriculas.fk_id_situacao_matricula', $request->situacaoMatricula);            
+
+        if ($request->tipoDescontoCurso != '99'){ // diferente de 99 é pq escolhe um tipo
+            $matriculas = $matriculas->where('tb_matriculas.fk_id_tipo_desconto_curso', $request->tipoDescontoCurso);                          
+            $tipoDescontoCurso = TipoDescontoCurso::
+                select('*')
+                ->where('id_tipo_desconto_curso', $request->tipoDescontoCurso)->first();
+        }
+        //dd($tipoDescontoCurso);
 
         $unidadeEnsino = new UnidadeEnsino;
         $unidadeEnsino = $unidadeEnsino->where('id_unidade_ensino', User::getUnidadeEnsinoSelecionada())->first();
@@ -70,7 +86,7 @@ class SecretariaController extends Controller
 
             return view(
                 'secretaria.paginas.relatorios.alunos_turma', 
-                compact('turma', 'matriculas', 'unidadeEnsino'),
+                compact('turma', 'matriculas', 'unidadeEnsino', 'tipoDescontoCurso'),
             );
         }
         /**Alunos de uma turma com telefone*/
@@ -92,9 +108,10 @@ class SecretariaController extends Controller
 
             return view(
                 'secretaria.paginas.relatorios.alunos_turma_telefone', 
-                compact('turma', 'matriculas', 'unidadeEnsino'),
+                compact('turma', 'matriculas', 'unidadeEnsino', 'tipoDescontoCurso'),
             );
         }
+        /* Lista de assinaturas */
         else if ($request->tipo_relatorio == 'lista_assinatura') {
             if ($request->turma == null)
                 return redirect()->back()->with('atencao', 'Escolha uma turma.');
@@ -110,7 +127,7 @@ class SecretariaController extends Controller
 
             return view(
                 'secretaria.paginas.relatorios.lista_assinatura_turma',
-                compact('turma', 'matriculas', 'titulo'),
+                compact('turma', 'matriculas', 'titulo', 'tipoDescontoCurso'),
             );
         }
         /**Todos alunos matriculados */
@@ -130,9 +147,9 @@ class SecretariaController extends Controller
                 ->orderBy($request->ordem)
                 ->orderBy('nome')
                 ->get();
-
+            
             return view('secretaria.paginas.relatorios.todas_matriculas', 
-                compact('anoLetivo', 'matriculas', 'unidadeEnsino'),
+                compact('anoLetivo', 'matriculas', 'unidadeEnsino', 'tipoDescontoCurso'),
             );
         }
     }

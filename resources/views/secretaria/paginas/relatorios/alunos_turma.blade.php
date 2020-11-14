@@ -49,6 +49,13 @@
                     <h5><strong>Localização:</strong>  {{ $turma->localizacao}}</h5>
                 </div>
             </div>
+            @if ($tipoDescontoCurso != '' and $tipoDescontoCurso->id_tipo_desconto_curso != 99)
+                <div class="row">
+                    <div class="col-sm-11 col-xs-2 my-0" >  
+                        <h5><strong>Tipo Desconto Curso:</strong>  {{ $tipoDescontoCurso->tipo_desconto_curso}}</h5>
+                    </div>
+                </div>
+            @endif
             <br>
             <div class="row">
                 <div class="col-sm-11" align="center">
