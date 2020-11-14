@@ -149,7 +149,7 @@ class CaptacaoController extends Controller
         //dd($inserePessoa);
         
         $request->merge(['fk_id_pessoa' => $inserePessoa->id_pessoa]);//id pessoa
-        $request->merge(['fk_id_motivo_contat' => '4']);//agendamento
+        $request->merge(['fk_id_motivo_contato' => '4']);//agendamento
         $request->merge(['fk_id_tipo_negociacao' => '1']);//em negociação
         $request->merge(['data_contato' => date('Ymd')]);
         $request->merge(['fk_id_usuario_captacao' => '-1']);
