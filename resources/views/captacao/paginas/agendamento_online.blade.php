@@ -18,17 +18,15 @@
     <div class="container">
 
         <div class="row mt-1">        
-            <div class="col-sm-12 col-xs-2 my-1 py-1" align="center"> 
-                <img src="/vendor/adminlte/dist/img/logo.png" width="10%" alt="logo">
+            <div class="col-sm-2 col-xs-2 my-1 py-1" align="center"> 
+                <img src="/vendor/adminlte/dist/img/logo.png" width="60%" alt="logo">
             </div>
-        </div>
-        <div class="row mt-1">        
             <div class="col-sm-10 col-xs-2 my1 py-1 mx-auto" align="center"> 
                 
                 <div class="row mt-4">
-                    @foreach ($unidadesEnsino as $unidadeEnsino)      
+                    @foreach ($unidadesEnsino as $indunid => $unidadeEnsino)      
                         <div class="col-sm-{{12/count($unidadesEnsino)}} text-align-center">                                    
-                            {{-- <h5>{{$unidadeEnsino->nome_fantasia}}</h5>                               --}}
+                            <h5>{{$unidadeEnsino->nome_fantasia}}</h5>
                             <h6>{{mascaraTelefone("(##) ####-####", $unidadeEnsino->telefone)}} e {{mascaraTelefone("(##) #####-####", $unidadeEnsino->telefone_2)}}</h6>
                             {{-- <h6>Email: {{$unidadeEnsino->email}}</h6> --}}
                         </div>                    
@@ -36,12 +34,12 @@
                 </div>            
                 <div class="row mt-4">
                     <div class="col-sm-12 text-align-center">  
-                        <h5>Seja bem-vindo(a) ao {{$unidadeEnsino->nome_fantasia}}</h5>           
+                        <h5>Seja bem-vindo(a)!</h5>           
                         <h5>É uma alegria lhe atender.</h5>
                         <br>
-                        <h5>Agendamento de visita</h5>
+                        <h5>AGENDAMENTO DE VISITA</h5>
                     </div>
-                </div>
+             </div>
             </div>        
         </div>
 
