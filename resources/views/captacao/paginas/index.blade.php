@@ -35,7 +35,7 @@
                     <th>Série</th>
                     <th>Agendamento</th>
                     <th>Situação</th>                        
-                    <th width="170">Ações</th>
+                    <th >Ações</th>
                 </thead>
                 <tbody>   
                     @foreach ($captacoes as $index => $captacao)                       
