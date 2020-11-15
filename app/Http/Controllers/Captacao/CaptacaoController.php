@@ -172,10 +172,12 @@ class CaptacaoController extends Controller
     public function store(StoreUpdateCaptacao $request)
     {
         $this->authorize('Captação Cadastrar');   
-                
+        
+        $request->merge(['fk_id_unidade_ensino' => session()->get('id_unidade_ensino')]);
+
         $dados = $request->all();        
         $dados = array_merge($dados);
-        $dados = array_merge(['fk_id_unidade_ensino' => session()->get('id_unidade_ensino')]);
+        
        //dd($this->usuario);
         $this->repositorio->create($dados);
 
