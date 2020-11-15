@@ -156,10 +156,9 @@ class CaptacaoController extends Controller
 
         $dados = $request->all();  
         //dd($dados);
-        $agendamento = $this->repositorio->create($dados); 
+        
         try {            
-            //$agendamento = $this->repositorio->create($dados); 
-            
+            $agendamento = $this->repositorio->create($dados);             
         } catch (\Throwable $th) {
             //throw $th;
             return redirect()->back()->with('erro', 'Desculpe-nos, ocorreu algum erro. Não foi possível fazer o seu agendamento. Favor agendar via telefone ou email.');            
@@ -167,7 +166,7 @@ class CaptacaoController extends Controller
         
         //dd($agendamento);
 
-        return redirect()->back()->with('sucesso', 'Agendamento cadastrado com sucesso. Dia '.date('d/m/Y', strtotime($request->data_agenda)).' às '.$request->hora_agenda);
+        return redirect()->back()->with('sucesso', 'Agendamento cadastrado com sucesso. Dia '.date('d/m/Y', strtotime($request->data_agenda)).' às '.$request->hora_agenda).'.';
     }
 
     public function store(StoreUpdateCaptacao $request)
@@ -176,6 +175,7 @@ class CaptacaoController extends Controller
                 
         $dados = $request->all();        
         $dados = array_merge($dados);
+        $dados = array_merge(['fk_id_unidade_ensino' => session()->get('id_unidade_ensino')]);
        //dd($this->usuario);
         $this->repositorio->create($dados);
 
@@ -281,6 +281,7 @@ class CaptacaoController extends Controller
                 'tipo_negociacao',
                 'name')
             ->leftJoin('tb_anos_letivos', 'fk_id_ano_letivo', 'id_ano_letivo')
+            ->join('tb_unidades_ensino', 'tb_captacoes.fk_id_unidade_ensino', 'id_unidade_ensino')
             ->join('tb_pessoas', 'fk_id_pessoa', 'id_pessoa')          
             ->join('tb_tipos_cliente', 'fk_id_tipo_cliente', 'id_tipo_cliente')
             ->join('tb_motivos_contato', 'fk_id_motivo_contato', 'id_motivo_contato')

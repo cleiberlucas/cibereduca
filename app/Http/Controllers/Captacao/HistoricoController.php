@@ -42,7 +42,8 @@ class HistoricoController extends Controller
             'tipo_descoberta',
             'tipo_negociacao',
             'name')
-        ->join('tb_anos_letivos', 'fk_id_ano_letivo', 'id_ano_letivo')
+        ->leftJoin('tb_anos_letivos', 'fk_id_ano_letivo', 'id_ano_letivo')
+        ->join('tb_unidades_ensino', 'tb_captacoes.fk_id_unidade_ensino', 'id_unidade_ensino')
         ->join('tb_pessoas', 'fk_id_pessoa', 'id_pessoa')          
         ->join('tb_tipos_cliente', 'fk_id_tipo_cliente', 'id_tipo_cliente')
         ->join('tb_motivos_contato', 'fk_id_motivo_contato', 'id_motivo_contato')
