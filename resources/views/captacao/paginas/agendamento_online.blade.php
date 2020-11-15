@@ -17,27 +17,27 @@
 <div class="container-fluid">
     <div class="container">
 
-        <div class="row mt-1">        
+        <div class="row ">        
             <div class="col-sm-2 col-xs-2 my-1 py-1" align="center"> 
                 <img src="/vendor/adminlte/dist/img/logo.png" width="60%" alt="logo">
             </div>
             <div class="col-sm-10 col-xs-2 my1 py-1 mx-auto" align="center"> 
                 
-                <div class="row mt-4">
+                <div class="row ">
                     @foreach ($unidadesEnsino as $indunid => $unidadeEnsino)      
                         <div class="col-sm-{{12/count($unidadesEnsino)}} text-align-center">                                    
-                            <h5>{{$unidadeEnsino->nome_fantasia}}</h5>
+                            <h6>{{$unidadeEnsino->nome_fantasia}}</h6>
                             <h6>{{mascaraTelefone("(##) ####-####", $unidadeEnsino->telefone)}} e {{mascaraTelefone("(##) #####-####", $unidadeEnsino->telefone_2)}}</h6>
                             {{-- <h6>Email: {{$unidadeEnsino->email}}</h6> --}}
                         </div>                    
                     @endforeach                
                 </div>            
-                <div class="row mt-4">
+                <div class="row">
                     <div class="col-sm-12 text-align-center">  
-                        <h5>Seja bem-vindo(a)!</h5>           
-                        <h5>É uma alegria lhe atender.</h5>
-                        <br>
-                        <h5>AGENDAMENTO DE VISITA</h5>
+                        <h6>Seja bem-vindo(a)!</h6>           
+                        <h6>É uma alegria lhe atender.</h6>
+                        
+                        <h6>AGENDAMENTO DE VISITA</h6>
                     </div>
              </div>
             </div>        
