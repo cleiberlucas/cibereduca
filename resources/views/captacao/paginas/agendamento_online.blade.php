@@ -27,7 +27,7 @@
                     @foreach ($unidadesEnsino as $indunid => $unidadeEnsino)      
                         <div class="col-sm-{{12/count($unidadesEnsino)}} text-align-center">                                    
                             <h5>{{$unidadeEnsino->nome_fantasia}}</h5>                              
-                            <h6>Telefones: {{mascaraTelefone("(##) ####-####", $unidadeEnsino->telefone)}}</h6> e {{mascaraTelefone("(##) #####-####", $unidadeEnsino->telefone_2)}}</h6>
+                            <h6>Telefones: {{mascaraTelefone("(##) ####-####", $unidadeEnsino->telefone)}} e {{mascaraTelefone("(##) #####-####", $unidadeEnsino->telefone_2)}}</h6>
                             <h6>Email: {{$unidadeEnsino->email}}</h6>
                         </div>                    
                     @endforeach                
