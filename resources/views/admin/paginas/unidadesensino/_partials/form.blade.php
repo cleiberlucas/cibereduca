@@ -25,6 +25,10 @@
             <label>Telefone:</label>
             <input type="text" name="telefone" id="telefone" class="form-control" placeholder="Telefone" value="{{ $unidadeensino->telefone ?? old('telefone') }}">
         </div>
+        <div class="form-group col-sm-3 col-xs-10">
+            <label>Telefone:</label>
+            <input type="text" name="telefone_2" id="telefone_2" class="form-control" placeholder="" value="{{ $unidadeensino->telefone_2 ?? old('telefone_2') }}">
+        </div>
     </div>
 
     <div class="row">
@@ -97,6 +101,11 @@
     $(document).ready(function ($) { 
         var $fone1 = $("#telefone");
         $fone1.mask('(00) 0000-0000', {reverse: false});
+    });
+
+    $(document).ready(function ($) { 
+        var $fone1 = $("#telefone_2");
+        $fone1.mask('(00) 00000-0000', {reverse: false});
     });
 </script>
 

@@ -22,20 +22,23 @@
                 <img src="/vendor/adminlte/dist/img/logo.png" width="60%" alt="logo">
             </div>
             <div class="col-sm-10 col-xs-2 my1 py-1 mx-auto" align="center"> 
+                
                 <div class="row mt-4">
-                    <div class="col-sm-12 text-align-center">             
-                        <strong><h4>Agendamento de visita ao Colégio</h4></strong>   
+                    @foreach ($unidadesEnsino as $indunid => $unidadeEnsino)      
+                        <div class="col-sm-{{12/count($unidadesEnsino)}} text-align-center">                                    
+                            <h5>{{$unidadeEnsino->nome_fantasia}}</h5>                              
+                            <h6>Telefones: {{mascaraTelefone("(##) ####-####", $unidadeEnsino->telefone)}}</h6> e {{mascaraTelefone("(##) #####-####", $unidadeEnsino->telefone_2)}}</h6>
+                            <h6>Email: {{$unidadeEnsino->email}}</h6>
+                        </div>                    
+                    @endforeach                
+                </div>            
+                <div class="row mt-4">
+                    <div class="col-sm-12 text-align-center">  
+                        <h4>Seja bem-vindo(a) ao {{$unidadeEnsino->nome_fantasia}}</h4>           
+                        <h4>É uma alegria lhe atender.</h4>
+                        <h4>Agendamento de visita</h4>
                     </div>
-                </div>
-                <div class="row mt-4">
-                @foreach ($unidadesEnsino as $indunid => $unidadeEnsino)      
-                    <div class="col-sm-{{12/count($unidadesEnsino)}} text-align-center">                                    
-                        <h5>{{$unidadeEnsino->nome_fantasia}}</h5>                              
-                        <h6>Telefone: {{mascaraTelefone("(##) ####-####", $unidadeEnsino->telefone)}}</h6>                   
-                        <h6>Email: {{$unidadeEnsino->email}}</h6>
-                    </div>                    
-                @endforeach                
-            </div>            
+            </div>
             </div>        
         </div>
 

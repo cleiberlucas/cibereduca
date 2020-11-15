@@ -103,7 +103,7 @@ class CaptacaoController extends Controller
     public function createAgendamento(){
         $unidadesEnsino = new UnidadeEnsino;
         $unidadesEnsino = $unidadesEnsino
-            ->select('id_unidade_ensino', 'nome_fantasia', 'telefone', 'email' )
+            ->select('id_unidade_ensino', 'nome_fantasia', 'telefone', 'telefone_2', 'email' )
             ->where('situacao', 1)
             ->orderBy('nome_fantasia')
             ->get();

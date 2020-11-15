@@ -60,6 +60,7 @@ class UnidadeEnsinoController extends Controller
     {
         $request['cnpj'] = somenteNumeros($request['cnpj']);
         $request['telefone'] = somenteNumeros($request['telefone']);
+        $request['telefone_2'] = somenteNumeros($request['telefone_2']);
 
         $dados = $request->all();        
 
@@ -131,6 +132,7 @@ class UnidadeEnsinoController extends Controller
         $request->merge($sit);
         $request['cnpj'] = somenteNumeros($request['cnpj']);
         $request['telefone'] = somenteNumeros($request['telefone']);
+        $request['telefone_2'] = somenteNumeros($request['telefone_2']);
 
         $unidadeEnsino->where('id_unidade_ensino', $id)->update($request->except('_token', '_method'));
 
