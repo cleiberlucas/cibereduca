@@ -156,8 +156,9 @@ class CaptacaoController extends Controller
 
         $dados = $request->all();  
         //dd($dados);
+        $agendamento = $this->repositorio->create($dados); 
         try {            
-            $agendamento = $this->repositorio->create($dados); 
+            //$agendamento = $this->repositorio->create($dados); 
             
         } catch (\Throwable $th) {
             //throw $th;

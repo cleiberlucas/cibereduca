@@ -28,8 +28,8 @@
                     </div>
                 </div>
                 <div class="row mt-4">
-                @foreach ($unidadesEnsino as $indunid => $unidadeEnsino)                
-                    <div class="col-sm-6 text-align-center">            
+                @foreach ($unidadesEnsino as $indunid => $unidadeEnsino)      
+                    <div class="col-sm-{{12/count($unidadesEnsino)}} text-align-center">                                    
                         <h5>{{$unidadeEnsino->nome_fantasia}}</h5>                              
                         <h6>Telefone: {{mascaraTelefone("(##) ####-####", $unidadeEnsino->telefone)}}</h6>                   
                         <h6>Email: {{$unidadeEnsino->email}}</h6>
