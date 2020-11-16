@@ -131,11 +131,14 @@ class RecebivelRelatorioController extends Controller
         }
         
         if ($request->ordem){
-            $recebiveis = $recebiveis->orderBy($request->ordem);
-            dd($request->ordem);
+            $recebiveis = $recebiveis->orderBy($request->ordem);            
         }
-        
-        $recebiveis = $recebiveis->get();
+
+        $recebiveis = $recebiveis
+            ->orderBy('ano')
+            ->orderBy('descricao_conta')
+            ->orderBy('parcela')
+            ->get();
 
         return view('financeiro.paginas.recebiveis.relatorios.recebiveis',
                 compact('recebiveis')
