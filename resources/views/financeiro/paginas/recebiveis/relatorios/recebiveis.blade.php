@@ -37,53 +37,61 @@
 </style>
 
 <body>
+    <font size=1.5px>
     {{-- início tabela --}}
     <table border=1 cellspacing=0 cellpadding=2 >
         {{-- cabecalho ficha de frequencia mensal --}}
         <tr>
-            <td colspan=26 align="center">
+            <td colspan=9 align="center">
                 {{-- <strong>{{mb_strToUpper ($unidadeEnsino->nome_fantasia)}}</strong> --}}
                 <img src="/vendor/adminlte/dist/img/cabecalho.jpg" width="100%" height="80%" alt="logo"> 
             </td>
         </tr>
-
+        <tr colspan=9 align="center">
+            <td colspan=9><strong>RELATÓRIO DE RECEBÍVEIS</strong></td>
+        </tr>
+        
         <tr>
-            <td><strong>N°</strong></td>
-            <td align="center"><strong>NOME DO(A) ALUNO(A)</strong></td>
-            @for ($i = 0; $i < $qtColunasDias; $i++)
-                <td width=11px></td>
-            @endfor
+            <th><strong>N°</strong></th>            
+            <th>Aluno / Responsável</th>
+            <th>Turma</th>
+            <th>Recebível</th>
+            <th>Valor</th>
+            <th>Vencimento</th>
+            <th>Situação</th>
+            <th>Pagamento</th>
+            <th>Valor Pago</th>
         </tr>
 
         {{-- Lista de alunos --}} 
-        @foreach ($alunos as $index => $aluno)
-            <tr> 
+        @foreach ($recebiveis as $index => $recebivel)
+            <tr>               
                 <td>
                     {{$index+1}}
+                </td>                
+                <td>
+                    {{$recebivel->nome_aluno}}
+                    <br>
+                    {{$recebivel->nome_responsavel}}                
                 </td>
                 <td>
-                    {{$aluno->nome}}
+                    {{$recebivel->nome_turma}}-{{$recebivel->ano}}
                 </td> 
-                @for ($i = 0; $i < $qtColunasDias; $i++)
-                    <td></td>
-                @endfor
+                <td>{{$recebivel->descricao_conta}} {{$recebivel->parcela}}</td>                
+                <td align="right">{{number_format($recebivel->valor_total, 2, ',', '.')}}</td>
+                <td>{{date('d/m/Y', strtotime($recebivel->data_vencimento)) ?? ''}}</td>
+                <td>{{$recebivel->situacao_recebivel}}</td>
+                <td>
+                    @if ($recebivel->data_recebimento)
+                        {{date('d/m/Y', strtotime($recebivel->data_recebimento)) ?? ''}}    
+                    @endif
+                </td>
+                <td align="right">{{number_format($recebivel->valor_recebido, 2, ',', '.')}}</td>
             </tr>
-        @endforeach
-        
-        {{-- Colunas dias --}}
-        @for ($i = 1; $i <= 1; $i++)
-            <tr>
-                <td><br></td>
-                <td></td>
-                @for ($j = 0; $j < $qtColunasDias; $j++)
-                    <td></td>
-                @endfor
-                
-            </tr>       
-        @endfor
+        @endforeach        
 
     </table>{{-- fim tabela --}}
-
+    </font>
  
     <footer class="footer">        
         <div class="row my-0 py-0 mr-0 ">            

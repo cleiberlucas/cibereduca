@@ -79,29 +79,65 @@ class RecebivelRelatorioController extends Controller
 
         //alguns joins necessários, mesmo se não houver filtro
         $recebiveis = $recebiveis
+            ->select(
+                'nome_turma',
+                'ano', 
+                'aluno.nome as nome_aluno',
+                'resp.nome as nome_responsavel',
+                'descricao_conta',
+                'parcela',
+                'valor_total',
+                'data_vencimento',
+                'situacao_recebivel',
+                'forma_pagamento', 
+                'data_recebimento',
+                'valor_recebido',
+                'name')
+            ->join('tb_matriculas', 'tb_recebiveis.fk_id_matricula', 'id_matricula')
+            ->join('tb_pessoas as aluno', 'tb_matriculas.fk_id_aluno', 'aluno.id_pessoa')
+            ->join('tb_pessoas as resp', 'tb_matriculas.fk_id_responsavel', 'resp.id_pessoa')
+            ->join('tb_turmas', 'fk_id_turma', 'id_turma')
             ->join('tb_anos_letivos', 'tb_anos_letivos.fk_id_unidade_ensino', 'id_unidade_ensino')
             ->join('tb_contas_contabeis', 'fk_id_conta_contabil_principal', 'id_conta_contabil')
             ->join('tb_tipos_situacao_recebivel', 'fk_id_situacao_recebivel', 'id_situacao_recebivel')
+            ->leftJoin('tb_recebimentos', 'fk_id_recebivel', 'id_recebivel')
+            ->leftJoin('tb_formas_pagamento', 'tb_recebimentos.fk_id_forma_pagamento', 'id_forma_pagamento')
+            ->leftJoin('users', 'fk_id_usuario_recebimento', 'id')
             ;
 
-        //filtrando ano letivo        
-        if ($request->ano_letivo > 0)
-            $recebiveis = $recebiveis->where('id_ano_letivo', $request->ano_letivo);
+        /**
+         * Se preencher esses campos, não precisa verificar os demais, pq vai retornar apenas 1 resultado
+         * Código validação
+         * Número recibo
+         */
+        if (strlen($request->codigo_validacao) > 0 or strlen($request->numero_recibo) > 0){
+            if (strlen($request->codigo_validacao) > 0)
+                $recebiveis = $recebiveis->where('codigo_validacao', $request->codigo_validacao);
+            if (strlen($request->numero_recibo) > 0)
+                $recebiveis = $recebiveis->where('numero_recibo', $request->numero_recibo);
+        }        
+        else{
+            //filtrando ano letivo        
+            if ($request->ano_letivo > 0)
+                $recebiveis = $recebiveis->where('id_ano_letivo', $request->ano_letivo);
 
-        //filtrando tipo recebível (conta contábil)
-        if ($request->tipo_recebivel > 0)
-            $recebiveis = $recebiveis->where('fk_id_conta_contabil_principal', $request->tipo_recebivel);
+            //filtrando tipo recebível (conta contábil)
+            if ($request->tipo_recebivel > 0)
+                $recebiveis = $recebiveis->where('fk_id_conta_contabil_principal', $request->tipo_recebivel);
 
-        if ($request->situacao_recebivel > 0)
-            $recebiveis = $recebiveis->where('fk_id_situacao_recebivel', $request->situacao_recebivel);
+            //filtrando situação do recebível
+            if ($request->situacao_recebivel > 0)
+                $recebiveis = $recebiveis->where('fk_id_situacao_recebivel', $request->situacao_recebivel);
+        }
 
+        if ($request->ordem > 0)
+            $recebiveis = $recebiveis->orderBy($request->ordem);
         
         $recebiveis = $recebiveis->get();
 
-        return view('',
-                compact('')
-        );
-        
+        return view('financeiro.paginas.recebiveis.relatorios.recebiveis',
+                compact('recebiveis')
+        );        
 
     }
 

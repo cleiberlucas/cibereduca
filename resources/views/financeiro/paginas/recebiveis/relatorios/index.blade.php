@@ -93,8 +93,8 @@
             </div>
 
             <div class="row">
-                <div class="form-group col-sm-4 col-xs-1">
-                    <label class="col-form-label-sm py-0 my-0" for="">Forma de Pagamento</label>
+                <div class="form-group col-sm-3 col-xs-1">
+                    <label class="col-form-label-sm py-0 my-0" for="">Forma Pagamento</label>
                     <select class="form-control form-control-sm" name="forma_pagamento" id="forma_pagamento" >
                         <option value="-1"></option>                        
                         @foreach ($formasPagamento as $formaPagto)
@@ -117,13 +117,14 @@
             <div class="row">
                 <div class="form-group col-sm-3 col-xs-2">
                     <label class="col-form-label-sm py-0 my-0" for="">*Ordenação</label>
-                    <select name="ordem" id="ordem" class="form-control form-control-sm" required > 
-                        <option value="-1"></option>
-                        <option value="nome_aluno">Nome</option>
+                    <select name="ordem" id="ordem" class="form-control form-control-sm" required> 
+                        <option value=""></option>
+                        <option value="aluno.nome_aluno">Nome Aluno</option>
+                        <option value="resp.nome_resp">Nome Responsável</option>
                         <option value="data_vencimento">Data Vencimento</option>                    
                         <option value="data_pagamento">Data Pagamento</option>                    
-                        <option value="situacao">Situação</option>
-                        <option value="name">Cadastrado por</option>
+                        <option value="situacao_recebivel">Situação</option>
+                        <option value="name">Recebido por</option>
                     </select>
                 </div> 
             </div>
