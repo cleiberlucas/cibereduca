@@ -119,8 +119,8 @@
                     <label class="col-form-label-sm py-0 my-0" for="">*Ordenação</label>
                     <select name="ordem" id="ordem" class="form-control form-control-sm" required> 
                         <option value=""></option>
-                        <option value="aluno.nome_aluno">Nome Aluno</option>
-                        <option value="resp.nome_resp">Nome Responsável</option>
+                        <option value="aluno.nome">Nome Aluno</option>
+                        <option value="resp.nome">Nome Responsável</option>
                         <option value="data_vencimento">Data Vencimento</option>                    
                         <option value="data_pagamento">Data Pagamento</option>                    
                         <option value="situacao_recebivel">Situação</option>
