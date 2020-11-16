@@ -31,7 +31,7 @@
                             - {{ date('H:i', strtotime($captacao->hora_agenda))}}  
                         @endif
                 </li>  
-                <li><strong>Telefone: </strong> {{mascaraTelefone("(##) #####-####", $captacao->telefone_1)}} {{mascaraTelefone("(##) #####-####",$captacao->telefone2)}}
+                <li><strong>Telefone: </strong> {{mascaraTelefone("(##) #####-####", $captacao->telefone_1)}} {{mascaraTelefone("(##) #####-####",$captacao->telefone_2)}}
                 </li>
                 <li><strong>Email:</strong> {{$captacao->email_1}}  {{$captacao->email_2}}</li>
                 <li>
