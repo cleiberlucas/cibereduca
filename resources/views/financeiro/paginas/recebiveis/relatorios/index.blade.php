@@ -20,10 +20,9 @@
             @csrf            
             <div class="row">
                 <div class="form-group col-sm-2 col-xs-1">
-                    <label class="col-form-label-sm py-0 my-0 " for="">*Ano Letivo</label>
-                    <select class="form-control form-control-sm" name="ano_letivo" id="ano_letivo" required >
-                        <option value=""></option>
-                        <option value="0">Todos</option>
+                    <label class="col-form-label-sm py-0 my-0 " for="">Ano Letivo</label>
+                    <select class="form-control form-control-sm" name="ano_letivo" id="ano_letivo" >
+                        <option value=""></option>                        
                         @foreach ($anosLetivos as $anoLetivo)
                             <option value="{{$anoLetivo->id_ano_letivo}}">{{$anoLetivo->ano}}</option>                            
                         @endforeach
@@ -39,10 +38,9 @@
                     </select>
                 </div>
                 <div class="form-group col-sm-3 col-xs-1">
-                    <label class="col-form-label-sm py-0 my-0" for="">*Situação Recebível</label>
-                    <select class="form-control form-control-sm" name="situacao_recebivel" id="situacao_recebivel" required >
-                        <option value=""></option>
-                        <option value="0">Todas</option>
+                    <label class="col-form-label-sm py-0 my-0" for="">Situação Recebível</label>
+                    <select class="form-control form-control-sm" name="situacao_recebivel" id="situacao_recebivel" >
+                        <option value=""></option>                        
                         @foreach ($situacoesRecebivel as $sitRecebivel)
                             <option value="{{$sitRecebivel->id_situacao_recebivel}}">{{$sitRecebivel->situacao_recebivel}}</option>                            
                         @endforeach
@@ -84,11 +82,11 @@
             <div class="row">
                 <div class="form-group col-sm-3 col-xs-2">            
                     <label class="col-form-label-sm py-0 my-0"  >Pagamento de</label>
-                    <input type="date" name="data_pagamento_inicio" class="form-control form-control-sm"   value="">
+                    <input type="date" name="data_recebimento_inicio" class="form-control form-control-sm"   value="">
                 </div> 
                 <div class="form-group col-sm-3 col-xs-2">            
                     <label class="col-form-label-sm py-0 my-0" >Até</label>
-                    <input type="date" name="data_pagamento_fim" class="form-control form-control-sm"   value="">
+                    <input type="date" name="data_recebimento_fim" class="form-control form-control-sm"   value="">
                 </div> 
             </div>
 

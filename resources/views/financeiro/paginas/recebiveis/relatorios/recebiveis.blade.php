@@ -70,7 +70,7 @@
                     {{$index+1}}
                 </td>                
                 <td>
-                    {{$recebivel->nome_aluno}}
+                    {{$recebivel->nome_aluno}} 
                     <br>
                     {{$recebivel->nome_responsavel}}                
                 </td>
