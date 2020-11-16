@@ -132,7 +132,7 @@ class RecebivelRelatorioController extends Controller
         
         if ($request->ordem){
             $recebiveis = $recebiveis->orderBy($request->ordem);
-           // dd($request->ordem);
+            dd($request->ordem);
         }
         
         $recebiveis = $recebiveis->get();
