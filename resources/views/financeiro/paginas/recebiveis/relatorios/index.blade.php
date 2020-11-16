@@ -122,7 +122,7 @@
                         <option value="aluno.nome">Nome Aluno</option>
                         <option value="resp.nome">Nome Responsável</option>
                         <option value="data_vencimento">Data Vencimento</option>                    
-                        <option value="data_pagamento">Data Pagamento</option>                    
+                        <option value="data_recebimento">Data Pagamento</option>                    
                         <option value="situacao_recebivel">Situação</option>
                         <option value="name">Recebido por</option>
                     </select>
