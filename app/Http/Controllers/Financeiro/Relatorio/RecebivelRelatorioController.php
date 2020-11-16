@@ -85,6 +85,7 @@ class RecebivelRelatorioController extends Controller
                 'aluno.nome as nome_aluno',
                 'resp.nome as nome_responsavel',
                 'descricao_conta',
+                'id_recebivel',
                 'parcela',
                 'valor_total',
                 'data_vencimento',

@@ -77,7 +77,11 @@
                 <td>
                     {{$recebivel->nome_turma}}-{{$recebivel->ano}}
                 </td> 
-                <td>{{$recebivel->descricao_conta}} {{$recebivel->parcela}}</td>                
+                <td>
+                    <a href="{{route('financeiro.show', $recebivel->id_recebivel)}}" target="_blanck" class="">{{$recebivel->descricao_conta}} {{$recebivel->parcela}}</a>
+
+                    
+                </td>                
                 <td align="right">{{number_format($recebivel->valor_total, 2, ',', '.')}}</td>
                 <td>{{date('d/m/Y', strtotime($recebivel->data_vencimento)) ?? ''}}</td>
                 <td>{{$recebivel->situacao_recebivel}}</td>
