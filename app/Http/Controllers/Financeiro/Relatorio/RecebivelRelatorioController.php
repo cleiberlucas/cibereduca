@@ -129,7 +129,7 @@ class RecebivelRelatorioController extends Controller
             if ($request->situacao_recebivel > 0)
                 $recebiveis = $recebiveis->where('fk_id_situacao_recebivel', $request->situacao_recebivel);
         }
-
+        //dd($request->ordem);
         if ($request->ordem > 0)
             $recebiveis = $recebiveis->orderBy($request->ordem);
         
