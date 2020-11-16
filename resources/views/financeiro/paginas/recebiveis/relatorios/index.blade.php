@@ -61,11 +61,11 @@
             <div class="row">
                 <div class="form-group col-sm-5 col-xs-1 my-0">
                     <label class="col-form-label-sm py-0 my-0" for="">Nome Aluno(a)</label>
-                    <input type="text" name="nome_aluno" class="form-control form-control-sm"   value="">
+                    <input type="text" name="nome_aluno" minlength="3" maxlength="100" class="form-control form-control-sm"   value="">
                 </div>
                 <div class="form-group col-sm-5 col-xs-1">
                     <label class="col-form-label-sm py-0 my-0" for="">Nome Responsável</label>
-                    <input type="text" name="nome_aluno" class="form-control form-control-sm"   value="">
+                    <input type="text" name="nome_responsavel" minlength="3" maxlength="100" class="form-control form-control-sm"   value="">
                 </div>
             </div>
             <div class="row">
@@ -134,7 +134,7 @@
             
             <div class="row">
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="tipo_relatorio" id="listagem" value="listagem" required>
+                    <input class="form-check-input" type="radio" name="tipo_relatorio" id="listagem" value="listagem" required selected>
                     <label for="listagem" class="form-check-label">Listagem</label>
                 </div>
             </div>

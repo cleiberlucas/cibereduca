@@ -129,15 +129,25 @@ class RecebivelRelatorioController extends Controller
             if ($request->situacao_recebivel > 0)
                 $recebiveis = $recebiveis->where('fk_id_situacao_recebivel', $request->situacao_recebivel);
 
+            if (strlen($request->nome_aluno) > 3)
+                $recebiveis = $recebiveis->where('aluno.nome', 'like', '%'.$request->nome_aluno.'%');
+
+            if (strlen($request->nome_responsavel) > 3)
+                $recebiveis = $recebiveis->where('resp.nome', 'like', '%'.$request->nome_responsavel.'%');
+
+            //filtrando data vencimento início
             if ($request->data_vencimento_inicio != null)
                 $recebiveis = $recebiveis->where('data_vencimento', '>=', $request->data_vencimento_inicio);
 
+            //filtrando data vencimento fim
             if ($request->data_vencimento_fim != null)
                 $recebiveis = $recebiveis->where('data_vencimento', '<=', $request->data_vencimento_fim);
 
+            //filtrando data recebimento início
             if ($request->data_recebimento_inicio != null)
                 $recebiveis = $recebiveis->where('data_recebimento', '>=', $request->data_recebimento_inicio);
 
+            //filtrando data recebimento início
             if ($request->data_recebimento_fim != null)
                 $recebiveis = $recebiveis->where('data_recebimento', '<=', $request->data_recebimento_fim);
         }
