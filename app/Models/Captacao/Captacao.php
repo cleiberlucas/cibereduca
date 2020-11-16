@@ -27,12 +27,15 @@ class Captacao extends Model
                 'ano',
                 'tipo_negociacao')
             ->join('tb_pessoas', 'fk_id_pessoa', 'id_pessoa')
-            ->join('tb_anos_letivos', 'fk_id_ano_letivo', 'id_ano_letivo')
+            ->leftJoin('tb_anos_letivos', 'fk_id_ano_letivo', 'id_ano_letivo')
+            ->join('tb_unidades_ensino', 'tb_captacoes.fk_id_unidade_ensino', 'id_unidade_ensino')
             ->join('tb_tipos_negociacao', 'fk_id_tipo_negociacao', 'id_tipo_negociacao')
-            ->where('tb_anos_letivos.fk_id_unidade_ensino', session()->get('id_unidade_ensino'))
+            ->where('tb_captacoes.fk_id_unidade_ensino', session()->get('id_unidade_ensino'))            
             ->where('aluno', 'like', "%{$filtro}%")                             
-            ->orWhere('nome', 'like', "%{$filtro}%")     
-            ->orWhere('fk_id_pessoa', $filtro)       
+            ->orWhere('nome', 'like', "%{$filtro}%")                 
+            ->orderBy('data_agenda', 'desc')
+            ->orderBy('hora_agenda')
+            ->orderBy('nome') 
             ->paginate(25);
         
         return $resultado;
