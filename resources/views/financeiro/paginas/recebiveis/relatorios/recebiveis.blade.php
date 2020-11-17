@@ -20,7 +20,7 @@
         font-size: 20px;
     }
     html {
-        height: 100%;
+        height: 96%;
     }
 
     body {
@@ -41,16 +41,31 @@
     {{-- início tabela --}}
     <table border=1 cellspacing=0 cellpadding=2 >
         {{-- cabecalho ficha de frequencia mensal --}}
-        <tr>
-            <td colspan=9 align="center">
-                {{-- <strong>{{mb_strToUpper ($unidadeEnsino->nome_fantasia)}}</strong> --}}
-                <img src="/vendor/adminlte/dist/img/cabecalho.jpg" width="100%" height="80%" alt="logo"> 
+        <thead class="report-header">
+            <tr>
+                <td colspan=9 align="center">
+                    {{-- <strong>{{mb_strToUpper ($unidadeEnsino->nome_fantasia)}}</strong> --}}
+                    <img src="/vendor/adminlte/dist/img/cabecalho.jpg" width="100%" height="80%" alt="logo"> 
+                </td>
+            </tr>
+        </thead>
+        <tr align="center">
+            <td colspan=7><strong>RELATÓRIO DE RECEBÍVEIS</strong></td>
+            <td colspan=2>
+                <i>Gerado em {{date('d/m/Y H:i:s')}}</i>
             </td>
         </tr>
-        <tr colspan=9 align="center">
-            <td colspan=9><strong>RELATÓRIO DE RECEBÍVEIS</strong></td>
-        </tr>
-        
+
+        @if (isset($filtroAplicado))
+            <tr>
+                <td colspan="9">
+                    Filtro(s) aplicado(s):                    
+                    <?php echo $filtroAplicado;?>
+                </td>
+            </tr>
+            
+        @endif
+                
         <tr>
             <th><strong>N°</strong></th>            
             <th>Aluno / Responsável</th>
@@ -63,6 +78,7 @@
             <th>Valor Pago</th>
         </tr>
 
+        <?php $totalRecebido = 0;?>
         {{-- Lista de alunos --}} 
         @foreach ($recebiveis as $index => $recebivel)
             <tr>               
@@ -79,8 +95,6 @@
                 </td> 
                 <td>
                     <a href="{{route('financeiro.show', $recebivel->id_recebivel)}}" target="_blanck" class="">{{$recebivel->descricao_conta}} {{$recebivel->parcela}}</a>
-
-                    
                 </td>                
                 <td align="right">{{number_format($recebivel->valor_total, 2, ',', '.')}}</td>
                 <td>{{date('d/m/Y', strtotime($recebivel->data_vencimento)) ?? ''}}</td>
@@ -92,11 +106,20 @@
                 </td>
                 <td align="right">{{number_format($recebivel->valor_recebido, 2, ',', '.')}}</td>
             </tr>
+            <?php $totalRecebido += $recebivel->valor_recebido;?>
         @endforeach        
+        <tr>
+            <td colspan="8" align="center"><strong>TOTAL RECEBIDO</strong></td>
+            <td align="right"><strong><?php echo 'R$ '.number_format($totalRecebido, 2, ',', '.')?></strong></td>
+        </tr>
 
     </table>{{-- fim tabela --}}
-    </font>
- 
+        
+    <br>
+</font>
+    @include('secretaria.paginas._partials.rodape_redeeduca')
+
+ {{-- 
     <footer class="footer">        
         <div class="row my-0 py-0 mr-0 ">            
             <div class="col-sm-11 col-xs-2 ml-5 my-0 py-0 text-right">
@@ -108,14 +131,14 @@
             <div class="col-sm-12 text-center my-0 py-0 mx-0">        
                 <img src="/vendor/adminlte/dist/img/rodape.jpg" width="100%" height="90%" alt="logo">
             </div>
-        </div>
+        </div> --}}
         {{-- <div class="row my-0">
             <div class="col-sm-12 col-xs-2 ml-5 my-0 py-0" align="center">
                 <font size="1px">CiberSys - Sistemas Inteligentes</font>
             </div>            
         </div> --}}
 
-    </footer> 
+   {{--  </footer>  --}}
 
 </body>
 </html>
