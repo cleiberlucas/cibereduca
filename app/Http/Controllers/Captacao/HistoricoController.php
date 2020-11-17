@@ -32,7 +32,7 @@ class HistoricoController extends Controller
         $captacao = Captacao::
             select('nome', 'id_pessoa',
             'ano',
-            'id_captacao', 'aluno', 'serie_pretendida', 'telefone_1', 'telefone_2', 'email_1', 'email_2', 'data_contato', 
+            'id_captacao', 'aluno', 'serie_pretendida', 'telefone_1', 'tb_pessoas.telefone_2', 'email_1', 'email_2', 'data_contato', 
             'data_agenda', 'hora_agenda',
             'necessita_apoio', 'valor_matricula', 'valor_curso', 'valor_material_didatico',
             'valor_bilingue', 'valor_robotica',
