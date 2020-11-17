@@ -38,8 +38,12 @@
                     <th>Ações</th>
                 </thead>
                 <tbody>   
-                    @foreach ($captacoes as $index => $captacao)                       
-                        <tr>
+                    @foreach ($captacoes as $index => $captacao)         
+                        @if (date('Y-m-d') == date('Y-m-d', strtotime($captacao->data_agenda)))              
+                            <tr bgcolor="#F5D0A9">
+                        @else
+                            <tr>
+                        @endif
                             <td>{{$index+1}}</td>
                             <td>
                                 {{$captacao->ano}}
@@ -51,12 +55,9 @@
                                 {{$captacao->aluno}}                                      
                             </td>              
                             <td>{{$captacao->serie_pretendida}}</td>
-                            <td> @if (isset($captacao->data_agenda))
-                                    @if (date('Y-m-d') == date('Y-m-d', strtotime($captacao->data_agenda)))
-                                        <strong><font color="orange">{{ date('d/m/Y', strtotime($captacao->data_agenda))}}</font></strong>
-                                    @else
-                                        {{ date('d/m/Y', strtotime($captacao->data_agenda))}}
-                                    @endif
+                            <td> 
+                                @if (isset($captacao->data_agenda))                                    
+                                    {{ date('d/m/Y', strtotime($captacao->data_agenda))}}
                                 @endif
                                 @if (isset($captacao->hora_agenda))
                                     {{ date('H:i', strtotime($captacao->hora_agenda))}}  
