@@ -351,7 +351,7 @@ return [
                     'route'  => 'recebiveis.relatorios.index',
                     'icon' => 'far fa-file-alt',
                     'icon_color' => 'blue',
-                    'can'   => 'Bloqueado',
+                    'can'   => 'Recebível Ver',
                 ],
             ],
         ],
