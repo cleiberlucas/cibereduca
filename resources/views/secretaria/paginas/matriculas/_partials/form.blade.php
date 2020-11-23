@@ -179,6 +179,10 @@
             <label>Quantidade parcelas</label>
             <input type="number" name="qt_parcelas_mat_didatico" class="form-control"  value="{{ $matricula->qt_parcelas_mat_didatico ?? old('qt_parcelas_mat_didatico') }}">
         </div>
+        <div class="form-group col-sm-3 col-xs-2">            
+            <label>Vencimento 1ª parcela</label>
+            <input type="date" name="data_venc_parcela_um_mat_didatico" class="form-control" value="{{ $matricula->data_venc_parcela_um_mat_didatico ?? old('data_venc_parcela_um_mat_didatico') }}">
+        </div> 
         
         <div class="form-group col-sm-3 col-xs-2">            
             <label>Forma de Pagamento</label>
