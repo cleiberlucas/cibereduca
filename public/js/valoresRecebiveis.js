@@ -48,6 +48,7 @@ $(document).ready(function(){
 
                 document.getElementById('qt_parcelas_mat_didatico').value = qt_parcelas_mat_didatico;
                 document.getElementById('valor_material_didatico').value = valor_material_didatico;
+                document.getElementById('data_venc_parcela_um_mat_didatico').value = response['data'][i].data_venc_parcela_um_mat_didatico;
 
                // data_venc = new Date(response['data'][i].data_venc_parcela_um);
                 document.getElementById('data_venc_parcela_um').value = response['data'][i].data_venc_parcela_um;
@@ -59,6 +60,15 @@ $(document).ready(function(){
                 }
                 else{
                   alert("Defina o vencimento da primeira parcela do curso no contrato do aluno.");
+                  //return;
+                }
+
+                var data_venc_parcela_um_mat_didatico = '';
+                if (typeof response['data'][i].data_venc_parcela_um_mat_didatico != "undefined"){
+                  data_venc_parcela_um_mat_didatico = response['data'][i].data_venc_parcela_um_mat_didatico;                  
+                }
+                else{
+                  alert("Defina o vencimento da primeira parcela do MATERIAL DIDÁTICO no contrato do aluno.");
                   //return;
                 }
 
@@ -89,7 +99,8 @@ $(document).ready(function(){
                 informacoes += '<b>Valor contrato</b>: '+ (valor_contrato) +' (curso '+valor_curso+' e desconto '+valor_desconto+')';
                 informacoes += ' | '+qt_parcelas_curso+' Parcelas  com 1° Vencimento em '+formataData(data_venc_parcela_um) +'<br>';
 
-                informacoes += '<b>Material Didático</b>: '+valor_material_didatico+' em '+qt_parcelas_mat_didatico+' parcelas.<br>';
+                informacoes += '<b>Material Didático</b>: '+valor_material_didatico+' em '+qt_parcelas_mat_didatico+' ';
+                informacoes += 'Parcelas  com 1° Vencimento em '+formataData(data_venc_parcela_um_mat_didatico) +'<br>';
 
                 informacoes += '<b>Observações</b>: '+obs_matricula;
 

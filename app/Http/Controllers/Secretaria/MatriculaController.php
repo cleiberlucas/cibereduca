@@ -465,7 +465,7 @@ class MatriculaController extends Controller
                                             'qt_parcelas_curso',
                                             'data_venc_parcela_um',
                                             'tb_matriculas.valor_material_didatico',
-                                            'qt_parcelas_mat_didatico',
+                                            'qt_parcelas_mat_didatico', 'data_venc_parcela_um_mat_didatico',
                                             'obs_matricula',
                                             )   
                                 ->join('tb_turmas', 'tb_turmas.id_turma', 'tb_matriculas.fk_id_turma')                               

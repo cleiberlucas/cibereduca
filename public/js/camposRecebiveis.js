@@ -42,7 +42,7 @@ $(document).ready(function(){
           var qt_parcelas = document.getElementById('qt_parcelas_mat_didatico').value;
           var valor_principal = document.getElementById('valor_material_didatico').value;
           var valor_desconto = '';
-          var data_venc = document.getElementById('data_venc_parcela_um').value;
+          var data_venc = document.getElementById('data_venc_parcela_um_mat_didatico').value;
 //            console.log('campos rec data venc = '+data_venc);        
         }
 

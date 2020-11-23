@@ -39,9 +39,10 @@
             <input type="hidden" class="" id="valor_desconto" name="valor_desconto" value="">
             <input type="hidden" class="" id="qt_parcelas_curso" name="qt_parcelas_curso" value="">
             <input type="hidden" class="" id="data_venc_parcela_um" name="data_venc_parcela_um" value="">
-
+            
             <input type="hidden" class="" id="valor_material_didatico" name="valor_material_didatico" value="">
             <input type="hidden" class="" id="qt_parcelas_mat_didatico" name="qt_parcelas_mat_didatico" value="">
+            <input type="hidden" class="" id="data_venc_parcela_um_mat_didatico" name="data_venc_parcela_um_mat_didatico" value="">
                         
             <div class="form-group">
                 <div class="row">
