@@ -314,7 +314,7 @@ class DiarioController extends Controller
                 ->select('fk_id_matricula', 'fk_id_disciplina', 'nota_media', 'total_faltas')
                 ->join('tb_matriculas', 'fk_id_matricula', 'id_matricula')
                 ->where('fk_id_turma', $request->turma)            
-                ->where('tb_resultados_alunos_periodos.fk_id_periodo_letivo', $request->periodo)            
+                ->where('tb_resultados_alunos_periodos.fk_id_periodo_letivo', $request->periodo)                        
                 ->get();
 
             //dd($resultados);

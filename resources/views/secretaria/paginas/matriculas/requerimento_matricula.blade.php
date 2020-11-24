@@ -178,7 +178,7 @@
                         
                         Nome:
                         <br>
-                        R.G.:            
+                        CPF:            
                 
                     </td>
                     <td width="50px"></td>
@@ -190,7 +190,7 @@
                         
                         Nome:                
                         <br>
-                        R.G.:
+                        CPF:
                         
                     </td>
                 </tr>

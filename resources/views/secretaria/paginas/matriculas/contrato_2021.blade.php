@@ -305,14 +305,14 @@
                                 <br>
                                 <hr>                                
                                 Nome: <br>                                
-                                R.G.:                                         
+                                CPF:                                         
                             </td>
                             <td width="50px"></td>
                             <td width="300px">
                                 <br>
                                 <hr>                                
                                 Nome: <br>                                
-                                R.G.:                                         
+                                CPF:                                         
                             </td>
                         </tr>
                     </table>

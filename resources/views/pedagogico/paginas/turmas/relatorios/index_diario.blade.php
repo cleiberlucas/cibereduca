@@ -19,6 +19,10 @@
 
 @section('content')
 
+<?php 
+ini_set('memory_limit', '2048M');
+?>
+
     <div class="container-fluid">
 
         @include('admin.includes.alerts')
@@ -200,7 +204,7 @@
                     </div>
                     <div class="row my-3 ml-5">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="tipo_relatorio" id="avaliacoes_bimestre_todas_disciplinas" value="avaliacoes_bimestre_todas_disciplinas" disabled>
+                            <input class="form-check-input" type="radio" name="tipo_relatorio" id="avaliacoes_bimestre_todas_disciplinas" value="avaliacoes_bimestre_todas_disciplinas" >
                             <label for="avaliacoes_bimestre_todas_disciplinas" class="form-check-label">Resultado Bimestral - Avaliações todas disciplinas</label>
                         </div>
                     </div>
