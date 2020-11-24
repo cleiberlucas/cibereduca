@@ -10,7 +10,7 @@
 
 <style>
     html {
-        height: 100%;
+        height: 95%;
     }
 
     body {
@@ -42,11 +42,14 @@
     }
 
 </style>
-
 <body>
-    <div class="container-fluid">        
         
+    <div class="container-fluid">        
+  
         @foreach ($disciplinas as $disciplina)
+
+
+      
             @include('secretaria.paginas._partials.cabecalho_redeeduca')        
             <div class="container">        
             
@@ -175,12 +178,16 @@
                     </div>
                 </div>
             </div>
-
-            @include('secretaria.paginas._partials.rodape_redeeduca')
+        
             
-            <div style="page-break-after: always"></div>        
+            <br><br><br><br><br><br><br><br><br><br><br><br><br>
 
+        
+        @include('secretaria.paginas._partials.rodape_redeeduca')
+            
+        <div style="page-break-after: always"></div>         
+    
         @endforeach            
     </div>
-</body>
+    </body>
 </html>
