@@ -64,7 +64,7 @@
 
                     <div class="row">
                         <div class="form-group col-sm-8 col-xs-2 my-0 py-0">
-                            <strong>Nome do aluno(a): {{$matricula->aluno->nome}}  </strong>
+                            <strong>Nome do(a) aluno(a): {{$matricula->aluno->nome}}  </strong>
                         </div>
                     </div>
                     <div class="row">
