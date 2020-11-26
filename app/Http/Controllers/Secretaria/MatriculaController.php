@@ -105,8 +105,12 @@ class MatriculaController extends Controller
         /* $sit = $this->verificarSituacao($dados);
         $dados = array_merge($dados, $sit); */
         //dd($request->fk_id_turma);
-        $this->repositorio->create($dados);
-
+        try{
+            $this->repositorio->create($dados);
+        } catch(\Throwable $qe) {
+            return redirect()->back()->with('erro', 'Não foi possível gravar a matrícula. Possivelmente, o aluno já esteja matriculado nesta turma.');
+        }
+        
         return redirect()->route('matriculas.index', $request->fk_id_turma)->with('sucesso', 'Matrícula efetuada com sucesso.');
     }
 

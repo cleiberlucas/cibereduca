@@ -218,6 +218,9 @@ class FinanceiroController extends Controller
                     'fk_id_situacao_recebivel' => $dados['fk_id_situacao_recebivel'],
                     
                 ); 
+                if ($dados['valor_total'][$index] <= 0)
+                    return redirect()->back()->with('erro', 'Verifique o valor total da parcela.');
+
                // dd($insert);
                 $this->repositorio->create($insert);
             }
