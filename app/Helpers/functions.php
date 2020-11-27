@@ -145,3 +145,16 @@ function nomeMesMinusculo(int $mes)
 
     return ($nomeMes[$mes]);
 }
+
+function verificaIntervaloHora($dateInterval, $startDate, $endDate) {
+    $dateInterval = new DateTime($dateInterval);
+    $startDate = new DateTime($startDate);
+    $endDate = new DateTime($endDate);
+  
+    $startDate->format('Y-m-d H:i:s.uO'); 
+    $endDate->format('Y-m-d H:i:s.uO'); 
+  
+    return  ($dateInterval->getTimestamp() >= $startDate->getTimestamp() &&
+    $dateInterval->getTimestamp() <= $endDate->getTimestamp());  
+
+  } 

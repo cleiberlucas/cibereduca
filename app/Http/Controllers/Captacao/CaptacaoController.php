@@ -130,6 +130,9 @@ class CaptacaoController extends Controller
     {                        
         $captcha = new CaptchaServiceController;
         $captcha->captchaFormValidate($request);
+
+        if (!verificaIntervaloHora($request->hora_agenda, '08:30:00', '10:40:00') and !verificaIntervaloHora($request->hora_agenda, '13:30:00', '17:30:00'))
+            return redirect()->back()->with('atencao', 'Horário informado não disponível para agendamento: '. $request->hora_agenda);
         
         $dadosPessoa = [
             'nome' => $request->nome,

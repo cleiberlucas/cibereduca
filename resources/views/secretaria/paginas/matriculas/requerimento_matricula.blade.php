@@ -146,10 +146,16 @@
                             <br>
                             b) As parcelas de 2 a {{$matricula->qt_parcelas_curso+1}} no valor de R$ 
                             {{number_format(($matricula->turma->tipoTurma->valor_curso-$matricula->valor_desconto)/$matricula->qt_parcelas_curso, 2, ',', '.') }} 
-                            cada, que serão pagas sucessivamente nos meses de {{nomeMes(date('m', strtotime($matricula->data_venc_parcela_um) ) )}} 
-                            a {{nomeMes(date('m', strtotime($matricula->data_venc_parcela_um))+$matricula->qt_parcelas_curso-1) }}  
-                            de {{date('Y', strtotime($matricula->data_venc_parcela_um)) }}, 
-                            com vencimento todo dia  {{date('d', strtotime($matricula->data_venc_parcela_um)) }}.
+                            cada, que serão pagas sucessivamente nos meses de 
+                            @if (isset($matricula->data_venc_parcela_um))
+                                {{nomeMes(date('m', strtotime($matricula->data_venc_parcela_um) ) )}}     
+                                a {{nomeMes(date('m', strtotime($matricula->data_venc_parcela_um))+$matricula->qt_parcelas_curso-1) }}  
+                                de {{date('Y', strtotime($matricula->data_venc_parcela_um)) }}, 
+                                com vencimento todo dia  {{date('d', strtotime($matricula->data_venc_parcela_um)) }}.
+                            @endif
+                            
+
+                            
                         @endif                                 
                     </td>
                 </tr>

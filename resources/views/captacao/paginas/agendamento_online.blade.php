@@ -133,7 +133,7 @@
                 <div class="form-group col-sm-2 col-xs-2">
                     <label>* Horário:</label>
                     <input type="time" name="hora_agenda" min="08:00" max="19:00" class="form-control" value="{{ old('hora_agenda') }}" required>     
-                    <small>Das 8h às 19h.</small>   
+                    <small>Das 8h30 às 10h40 ou 13h30 às 17h30.</small>   
                 </div>   
 
                 <div class="form-group col-sm-4 col-xs-2">            
