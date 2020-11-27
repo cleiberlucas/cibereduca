@@ -26,6 +26,7 @@ class Pessoa extends Model
                             'fk_id_tipo_doc_identidade', 
                             'doc_identidade', 
                             'data_nascimento', 
+                            'naturalidade',
                             'fk_id_sexo',
                             'telefone_1', 
                             'telefone_2', 

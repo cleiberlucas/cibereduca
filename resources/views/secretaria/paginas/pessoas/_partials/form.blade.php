@@ -36,6 +36,11 @@
         </div>            
     </div>
 
+    <div class="form-group col-sm-4 col-xs-12">
+        <label>Naturalidade:</label>
+        <input type="text" name="naturalidade" maxlength="80" class="form-control" placeholder="" value="{{ $pessoa->naturalidade ?? old('naturalidade') }}">
+    </div>
+
     <div class="form-group col-sm-2 col-xs-2">            
         <label>Sexo</label>
         <select name="fk_id_sexo" id="fk_id_sexo" class="form-control">            

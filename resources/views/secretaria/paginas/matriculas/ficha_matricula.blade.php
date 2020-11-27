@@ -69,7 +69,11 @@
                     </div>
                     <div class="row">
                         <div class="form-group col-sm-6 col-xs-2 my-0 py-0">                    
-                            Data de Nascimento: {{date('d/m/Y', strtotime($matricula->aluno->data_nascimento))}} &nbsp&nbsp&nbsp Sexo: {{$matricula->aluno->sexo->sexo}}
+                            Data de Nascimento: {{date('d/m/Y', strtotime($matricula->aluno->data_nascimento))}} 
+                            &nbsp&nbsp&nbsp 
+                            Naturalidade: {{$matricula->aluno->naturalidade}}
+                            &nbsp&nbsp&nbsp 
+                            Sexo: {{$matricula->aluno->sexo->sexo}}
                         </div>
                         {{-- <div class="form-group col-sm-4 col-xs-2 my-0 py-0">
                             Cidade: &nbsp&nbsp&nbsp&nbsp UF:

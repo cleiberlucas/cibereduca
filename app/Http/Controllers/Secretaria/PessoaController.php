@@ -257,6 +257,7 @@ class PessoaController extends Controller
                         'cpf',
                         'doc_identidade',
                         'data_nascimento',
+                        'naturalidade',
                         'foto',
                         'fk_id_tipo_doc_identidade',
                         'obs_pessoa',

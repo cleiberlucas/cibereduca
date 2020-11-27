@@ -101,6 +101,8 @@
                         <br>
                         Data nascimento: {{date('d/m/Y', strtotime($matricula->aluno->data_nascimento))}}
                         &nbsp;&nbsp;
+                        Naturalidade: {{$matricula->aluno->naturalidade}}
+                        &nbsp;&nbsp;
                         Sexo: {{$matricula->aluno->sexo->sexo}}                        
                         <br>
                         <strong>Nome do pai:</strong> {{$matricula->aluno->pai}}                    

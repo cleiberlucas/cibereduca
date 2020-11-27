@@ -45,6 +45,9 @@
                     <strong>Data Nascimento:</strong> {{date('d/m/Y', strtotime($pessoa->data_nascimento))}}
                 </li>
                 <li>
+                    <strong>Naturalidade:</strong> {{$pessoa->naturalidade ?? ''}}
+                </li>
+                <li>
                     <strong>Pai:</strong> {{$pessoa->pai}}
                 </li>
                 <li>
