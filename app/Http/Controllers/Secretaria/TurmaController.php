@@ -123,8 +123,14 @@ class TurmaController extends Controller
     {
         $filtros = $request->except('_token');
         $turmas = $this->repositorio->search($request->filtro);
-
+        
         $matriculas = new Matricula;
+
+       /*  dd($request->filtro);
+        $totalMatriculas = 0;
+        if (is_int($request->filtro)) */
+            $totalMatriculas = $matriculas->totalMatriculasAno($request->filtro);
+
         $quantVagas = [];
 
         foreach ($turmas as $turma)
@@ -134,6 +140,7 @@ class TurmaController extends Controller
             'turmas' => $turmas,
             'filtros' => $filtros,
             'quantVagas' => $quantVagas,
+            'totalMatriculas' => $totalMatriculas,
         ]);
     }
 

@@ -45,7 +45,7 @@ class Matricula extends Model
 
     public function totalMatriculasAno($ano)
     {
-        $quant = $this->join('tb_turmas', 'id_turma', 'fk_id_tipo_turma')            
+        $quant = $this->join('tb_turmas', 'id_turma', 'fk_id_turma')            
             ->join('tb_tipos_turmas', 'id_tipo_turma', 'fk_id_tipo_turma')
             ->join('tb_anos_letivos', 'id_ano_letivo', 'fk_id_ano_letivo')
             ->where('ano', $ano)
