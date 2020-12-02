@@ -29,7 +29,7 @@ class RecebivelRelatorioController extends Controller
     *Chama interface p Escolha dos campos p filtro e gerar relatório */
     public function index()
     {
-        $this->authorize('Recebível Ver');   
+        $this->authorize('Recebível Relatório');   
 
         /* $idUnidade = User::getUnidadeEnsinoSelecionada(); */
         /* $perfilUsuario = new User;        
