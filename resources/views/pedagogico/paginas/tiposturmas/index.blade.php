@@ -48,6 +48,14 @@
                     @endforeach
                 </tbody>
             </table>
+            <div class="card-footer">
+                @if (isset($filtros))
+                {!! $tiposTurmas->appends($filtros)->links()!!}
+                @else
+                    {!! $tiposTurmas->links()!!}    
+                @endif
+                
+            </div>
         </div>
     </div>
 @stop
