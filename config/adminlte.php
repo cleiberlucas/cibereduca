@@ -319,7 +319,14 @@ return [
                             'icon_color' => 'yellow',
                             'can'  => 'Nota Ver',
                         ],
-                    ],
+                    ],                   
+                ],
+                [
+                    'text' => 'Resultado Final',                                
+                    'route' => 'resultadofinal.index.turmas',
+                    'icon' => 'fas fa-clipboard-check',
+                    'icon_color' => 'yellow',
+                    'can'  => 'Resultado Final Cadastrar',
                 ],
                 [
                     'text' => 'Relatórios',

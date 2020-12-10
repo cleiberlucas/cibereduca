@@ -34,7 +34,8 @@
                 <i class="fas fa-ban"></i> - Período fechado
             </font>   
         </div>
-        <div>@include('admin.includes.alerts')</div>
+        <div> @include('admin.includes.alerts') </div>
+
         {{-- Abas de Períodos --}}
         <ul class="nav nav-tabs nav-pills nav-fill justify-content-center" role="tablist">
             @foreach ($turmaPeriodosLetivos as $index => $turmaPeriodoLetivo)                 

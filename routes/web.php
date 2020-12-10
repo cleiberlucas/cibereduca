@@ -126,9 +126,7 @@ Route::prefix('pedagogico')
                 /**
                  * Rotas Notas
                  */
-
-                route::get('turmas/nota/{id_nota_avaliacao}', 'NotaController@remover')->name('turmas.nota.remover');
-               // route::any('turmas/notas/updatetodas', 'NotaController@atualizarTodasNotas')->name('turmas.notas.updatetodas');
+                route::get('turmas/nota/{id_nota_avaliacao}', 'NotaController@remover')->name('turmas.nota.remover');               
                 route::any('turmas/notas/updatenotasturma', 'NotaController@atualizarNotasTurma')->name('turmas.notas.updatenotasturma');
                 route::put('turmas/nota/{id_nota_avaliacao}', 'NotaController@update')->name('turmas.notas.update');
                 Route::get('turmas/nota/{id_nota_avaliacao}/edit', 'NotaController@edit')->name('turmas.nota.edit');
@@ -146,6 +144,19 @@ Route::prefix('pedagogico')
                 Route::post('turmas/relatorios/diario/frequencia_branco', 'Relatorio\DiarioController@frequenciaFichaBranco')->name('turmas.relatorios.diarios.frequencia_branco');
 
                 Route::get('frequencia/export/', 'Relatorio\DiarioController@frequenciaExcel')->name('frequencia.excel');
+
+                /**
+                 * Rotas Resultado Final
+                 */
+                /*route::get('resultadofinal/nota/{id_nota_avaliacao}', 'ResultadoFinalController@remover')->name('resultadofinal.nota.remover');
+                route::any('resultadofinal/notas/updatenotasturma', 'ResultadoFinalController@atualizarNotasTurma')->name('resultadofinal.notas.updatenotasturma');
+                route::put('resultadofinal/nota/{id_nota_avaliacao}', 'ResultadoFinalController@update')->name('resultadofinal.notas.update');
+                Route::get('resultadofinal/nota/{id_nota_avaliacao}/edit', 'ResultadoFinalController@edit')->name('resultadofinal.nota.edit');*/
+                Route::any('resultadofinal/notas/search', 'ResultadoFinalController@search')->name('resultadofinal.search');
+                //Route::get('resultadofinal/nota/{id_matricula}/showaluno', 'ResultadoFinalController@notaShowAluno')->name('resultadofinal.notas.showaluno');
+                Route::post('resultadofinal/notas', 'ResultadoFinalController@store')->name('resultadofinal.store');
+                route::any('resultadofinal/{id}/turmas', 'ResultadoFinalController@index')->name('resultadofinal.index');
+                route::get('resultadofinal/turmas', 'ResultadoFinalController@indexResultadoFinal')->name('resultadofinal.index.turmas')->middleware('can:Resultado Final Ver');
         });
 
 /**
