@@ -102,6 +102,10 @@ class ResultadoFinalController extends Controller
             //Somente disciplinas vinculadas à grade curricular da turma            
             $disciplinasTurma = $disciplinasTurma->disciplinasTurma($id_turma);            
         } 
+
+       // dd($disciplinasTurma);
+        if (count($disciplinasTurma) <= 0 or !$disciplinasTurma)
+            return redirect()->back()->with('atencao', 'Não há grade curricular cadastrada para esta turma.');
         
         $tiposResultados = TipoResultadoFinal::where('situacao', 1)->get();
 
