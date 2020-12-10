@@ -148,10 +148,10 @@
                             {{number_format(($matricula->turma->tipoTurma->valor_curso-$matricula->valor_desconto)/$matricula->qt_parcelas_curso, 2, ',', '.') }} 
                             cada, que serão pagas sucessivamente nos meses de 
                             @if (isset($matricula->data_venc_parcela_um))
-                                {{nomeMes(date('m', strtotime($matricula->data_venc_parcela_um) ) )}} / {{date('Y', strtotime($matricula->data_venc_parcela_um)) }}    
+                                {{nomeMes(date('m', strtotime($matricula->data_venc_parcela_um) ) )}}/{{date('Y', strtotime($matricula->data_venc_parcela_um)) }}    
                                 a {{nomeMes(date('m', strtotime($matricula->data_venc_parcela_um))+$matricula->qt_parcelas_curso-1) }}  
                                 de 
-                                @if (date('m', strtotime($matricula->data_venc_parcela_um))+$matricula->qt_parcelas_curso-1) > 12)
+                                @if ( (date('m', strtotime($matricula->data_venc_parcela_um))+$matricula->qt_parcelas_curso-1) > 12)
                                     {{date('Y', strtotime($matricula->data_venc_parcela_um))+1 }},     
                                 @else
                                     {{date('Y', strtotime($matricula->data_venc_parcela_um)) }}, 
