@@ -5,12 +5,8 @@ namespace App\Http\Controllers\Pedagogico;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateNota;
 use App\Models\GradeCurricular;
-use App\Models\Pedagogico\Avaliacao;
-use App\Models\Pedagogico\Nota;
-use App\Models\Pedagogico\ResultadoAlunoPeriodo;
 use App\Models\Pedagogico\ResultadoFinal;
 use App\Models\Pedagogico\TipoResultadoFinal;
-use App\Models\Pedagogico\TurmaPeriodoLetivo;
 use App\Models\Secretaria\Matricula;
 use App\Models\Secretaria\Turma;
 use App\User;
@@ -25,8 +21,7 @@ class ResultadoFinalController extends Controller
         
     public function __construct(ResultadoFinal $resultadoFinal)
     {
-        $this->repositorio = $resultadoFinal;        
-        //$this->resultadoAlunoPeriodo = new ResultadoAlunoPeriodo;
+        $this->repositorio = $resultadoFinal;                
     }
 
     /**
@@ -85,13 +80,14 @@ class ResultadoFinalController extends Controller
     /**
      * Gera abas de períodos letivos e disciplinas para lançamento de notas
      */
-    public function index($id_turma)
+    public function index($id_turma, $mensagem = null)
     {
         $this->authorize('Resultado Final Cadastrar');   
+        //dd($id_turma);
 
         $turma = Turma::where('id_turma', $id_turma)->first();
-
-        //$idTipoTurma = $turma->fk_id_tipo_turma;
+        if (!$turma)
+            return redirect()->back()->with('erro', 'Turma não encontrada');
         
         $perfilUsuario = new User;        
         $perfilUsuario = $perfilUsuario->getPerfilUsuarioUnidadeEnsino(User::getUnidadeEnsinoSelecionada(), Auth::id());
@@ -113,11 +109,17 @@ class ResultadoFinalController extends Controller
             ->select(DB::raw('fk_id_matricula, fk_id_disciplina'), DB::raw('sum(nota_media) as media, sum(total_faltas) as faltas'))
             ->groupBy(DB::raw('fk_id_matricula') )
             ->groupBy(DB::raw('fk_id_disciplina') )
-            ->join('tb_matriculas', 'fk_id_matricula', 'id_matricula') 
+            ->join('tb_matriculas', 'fk_id_matricula', 'id_matricula')             
             ->where('fk_id_turma', $id_turma)           
             ->get();
+
+        $resultadosFinaisTurma = $this->repositorio
+            ->select('tb_resultado_final.*')
+            ->join('tb_matriculas', 'fk_id_matricula', 'id_matricula')
+            ->where('fk_id_turma', $id_turma)
+            ->get();
             
-        //dd($resultadosPeriodos);
+        //dd($resultadosFinaisTurma);
 
         return view('pedagogico.paginas.resultadofinal.index', [
             'id_turma' => $id_turma,
@@ -126,10 +128,11 @@ class ResultadoFinalController extends Controller
             'turma' => $turma,  
             'resultados' => $resultadosPeriodos,    
             'tiposResultados' => $tiposResultados,
+            'resultadosFinais' => $resultadosFinaisTurma,
+            'sucesso' => $mensagem,
            
         ]); 
     }
-
     
     public function store(StoreUpdateNota $request)
     {
@@ -174,131 +177,41 @@ class ResultadoFinalController extends Controller
        
         return redirect()->route('resultadofinal.index.turmas')->with('sucesso', 'Resultados Finais lançados com sucesso.');        
     }
-    
 
-    public function edit($id_nota)
+    public function edit($fk_id_matricula)
     {
-        $nota = $this->repositorio->where('id_nota_avaliacao', $id_nota)                                    
-                                    ->first();
-        
-        //dd($nota);
-        return view('pedagogico.paginas.turmas.notas.edit', [
-            'notaAluno' => $nota,
-            
+        $resultadoFinal = $this->repositorio->where('fk_id_matricula', $fk_id_matricula)
+            ->first();
+
+        $matricula = new Matricula;
+        $matricula = $matricula->where('id_matricula', $fk_id_matricula)->first();
+
+        if (!$matricula)
+            return redirect()->back()->with('erro', 'Resultado final não encontrado');
+
+        $tiposResultados = TipoResultadoFinal::where('situacao', 1)->get();
+
+        //dd($matricula);
+        return view('pedagogico.paginas.resultadofinal.edit', [
+            'resultadoFinal' => $resultadoFinal,
+            'matricula' => $matricula,
+            'tiposResultados' => $tiposResultados,
         ]);
     }
 
     public function update(StoreUpdateNota $request, $id)
     {        
-        $this->authorize('Nota Alterar');
+        $this->authorize('Resultado Final Alterar');
         
-        $nota = $this->repositorio->where('id_nota_avaliacao', $id)->first();
+        $resultadoFinal = $this->repositorio->where('id_resultado_final', $id)->first();
         
-        if (!$nota)
-            return redirect()->back();
+        if (!$resultadoFinal)
+            return redirect()->back()->with('erro', 'Resultado final não encontrado');
       
-        $nota->where('id_nota_avaliacao', $id)->update($request->except('_token', '_method'));
+        $resultadoFinal->where('id_resultado_final', $id)->update($request->except('_token', '_method', 'id_turma'));
 
-        //$periodoLetivo = $this->repositorio->getPeriodoLetivo($id, $nota->fk_id_matricula, $nota->matricula->fk_id_turma, $nota->avaliacao->fk_id_periodo_letivo);
-
-        /**Preparando array p atualizar a nota média do aluno */
-        $dadosNota = array(['fk_id_periodo_letivo' => $nota->avaliacao->fk_id_periodo_letivo,                                 
-                                'fk_id_matricula' => $nota->fk_id_matricula,
-                                'fk_id_disciplina' => $nota->avaliacao->fk_id_disciplina
-        ]);
-        
-        //Atualizar a nota média do aluno X período X disciplina
-        $this->gravarNotasAlunoPeriodoDisciplina($dadosNota);
-
-        return $this->notaShowAluno($nota->fk_id_matricula, 'Nota alterada com sucesso.');
+        return $this->index($request->id_turma, 'Resultado Final alterado com sucesso.');
     }
-
-    public function notaShowAluno($id_matricula, $mensagem = null)
-    {        
-        $this->authorize('Nota Alterar');
-        $notasAluno = $this->repositorio->getNotasAluno($id_matricula)->first();
-        
-        if (!$notasAluno){
-            $id_turma = Matricula::select('fk_id_turma')->where('id_matricula', $id_matricula)->first();            
-            return redirect()->route('turmas.notas', $id_turma->fk_id_turma)->with('info', 'Não há nota lançada para este aluno.');              
-        }
-        
-        $id_turma = $notasAluno->matricula->fk_id_turma;
-        $id_tipo_turma = $notasAluno->matricula->turma->fk_id_tipo_turma;
-
-        //Todos os períodos que possuem avaliacao cadastrada
-        $periodosTurma = $this->repositorio->getPeriodosTurma($id_tipo_turma);
-
-        //Todas as avaliações cadastradas para a turma
-        $avaliacoesTurma = $this->repositorio->getAvaliacoesTurma($id_tipo_turma);
-        
-        $idUnidade = User::getUnidadeEnsinoSelecionada();
-        $perfilUsuario = new User;        
-        $perfilUsuario = $perfilUsuario->getPerfilUsuarioUnidadeEnsino($idUnidade, Auth::id());
-        
-        $disciplinasTurma = new GradeCurricular;
-        /* Perfil de professor: carregar somente disciplinas vinculadas a ele */
-        if ($perfilUsuario->fk_id_perfil == 2){
-            $disciplinasTurma = $disciplinasTurma->disciplinasTurmaProfessor($id_turma, Auth::id());
-        }
-        /* para os outros perfis libera todas as disciplinas */
-        else{            
-            //Somente disciplinas vinculadas à grade curricular da turma            
-            $disciplinasTurma = $disciplinasTurma->disciplinasTurma($id_turma);            
-        }  
-        
-        $notasAluno = $this->repositorio->getNotasAluno($id_matricula);
-
-        $dadosAluno = new Matricula;
-        $dadosAluno = $dadosAluno->where('id_matricula', $id_matricula)->first();
-
-        $turmaPeriodoLetivo = new TurmaPeriodoLetivo;
-        
-        return view('pedagogico.paginas.turmas.notas.showaluno', [
-                    'id_turma'              => $id_turma,
-                    'periodosTurma'         => $periodosTurma,
-                    'turmaPeriodosLetivos' => $turmaPeriodoLetivo->getTurmaPeriodosLetivos($id_turma), 
-                    'gradeCurricular'       => $disciplinasTurma,
-                    'avaliacoesTurma'       => $avaliacoesTurma,
-                    'notasAluno'            => $notasAluno,
-                    'dadosAluno'            => $dadosAluno,
-                    'sucesso'               => $mensagem,
-
-        ]);
-    } 
-
-    /**
-     * Remover nota
-     */
-    public function remover($id_nota)
-    {
-        $this->authorize('Nota Remover');   
-        
-        $notaAluno = $this->repositorio->where('id_nota_avaliacao', $id_nota, )->first();
-
-       // $turmaPeriodoLetivo = $this->repositorio->getTurmaPeriodoLetivo($id_nota, $notaAluno->fk_id_matricula, $notaAluno->matricula->fk_id_turma, $notaAluno->avaliacao->fk_id_periodo_letivo);
-        
-        if (!$notaAluno)
-            return redirect()->back();
-
-
-
-       /**Preparando array p atualizar a nota média do aluno */
-        $dadosNota = array([
-                            'fk_id_periodo_letivo' => $notaAluno->avaliacao->fk_id_periodo_letivo, 
-                            'fk_id_matricula' => $notaAluno->fk_id_matricula,
-                            'fk_id_disciplina' => $notaAluno->avaliacao->fk_id_disciplina
-        ]);
-
-        $id_matricula = $notaAluno->fk_id_matricula;
-
-        $notaAluno= $this->repositorio->where('id_nota_avaliacao', $id_nota, )->delete();        
-
-        //Atualizar a nota média do aluno X período X disciplina
-        $this->gravarNotasAlunoPeriodoDisciplina($dadosNota);
-        
-        return $this->notaShowAluno($id_matricula)->with('sucesso', 'Nota removida com sucesso.');
-    } 
 
     public function search(Request $request)
     {

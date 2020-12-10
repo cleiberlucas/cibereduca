@@ -93,44 +93,25 @@
                                     <div class="form-group col-sm-1 col-xs-2">
                                         <strong>{{$index+1}}  </strong>                                                                  
                                     </div>
-                                    <div class="form-group col-sm-4 col-xs-2">                                                    
-                                        {{-- <a href="{{route('turmas.notas.showaluno', [$turmaMatricula->id_matricula])}}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a> --}}
+                                    <div class="form-group col-sm-4 col-xs-2">                                                                                            
                                         {{$turmaMatricula->nome}}
                                     </div>       
                                     <div class="form-group col-sm-4 col-xs-2">
                                         <?php 
                                             foreach ($resultados as $resultado){
-                                                if ($resultado->fk_id_matricula == $turmaMatricula->id_matricula and $resultado->fk_id_disciplina == $disciplinaTurma->fk_id_disciplina){
-                                                
-                                                        echo number_format($resultado->media/4, 1, ',', '.');
-                                                        echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-                                                        echo $resultado->faltas;
-                                                
-                                                    break;
-                                                
+                                                if ($resultado->fk_id_matricula == $turmaMatricula->id_matricula and $resultado->fk_id_disciplina == $disciplinaTurma->fk_id_disciplina){                                                
+                                                    echo number_format($resultado->media/4, 1, ',', '.');
+                                                    echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+                                                    echo $resultado->faltas;
+                                            
+                                                    break;                                                
                                                 }
                                             }
                                         ?>
                                     </div>   
-                                    
-                                    
-                                    {{-- Libera lançamento de notas somente se o período estiver aberto --}}
-                                    {{--  @if ($turmaPeriodoLetivo->situacao == 1)   
-                                        <div class="form-group col-sm-2 col-xs-2">
-                                            <input type="number" name="nota[]" id="nota[{{$turmaPeriodoLetivo->id_periodo_letivo}}{{$disciplinaTurma->fk_id_disciplina}}{{$turmaMatricula->id_matricula}}]" step="0.010" min=0 max=10 class="form-control">
-                                        </div>  
-                                    @endif    --}}  
 
                                 </div>
-                            @endforeach {{-- fim listagem alunos --}}
-                            {{-- <div class="row">
-                                <div class="form-group col-sm-10 col-xs-1" align="left">
-                                    <font color='green'>
-                                        Utilize os ícones <i class="fas fa-edit"></i> para alterar as notas de um aluno.
-                                    </font>
-                                </div>
-                            </div>
-                             --}}
+                            @endforeach {{-- fim listagem alunos --}}                           
                             
                         </form>                                            
                     </div>                                    
@@ -148,7 +129,17 @@
                 @csrf                                         
                 <input type="hidden" name="fk_id_disciplina" value={{$disciplinaTurma->fk_id_disciplina}}>
                 <input type="hidden" name="fk_id_user" value={{Auth::id()}}>         
-                <input type="hidden" name="fk_id_turma" value={{$id_turma}}>        
+                <input type="hidden" name="fk_id_turma" value={{$id_turma}}>     
+                
+                 <div class="row">
+                    <div class="form-group col-sm-10 col-xs-1" align="left">
+                        <font color='green'>
+                            Utilize os ícones <i class="fas fa-edit"></i> para alterar o resultado final de um aluno.
+                        </font>
+                    </div>
+                </div>
+                            
+
                 @foreach ($turmaMatriculas as $index => $turmaMatricula)
 
                     {{-- Cabeçalho da tabela --}}
@@ -174,7 +165,7 @@
                             <strong>{{$index+1}}  </strong>                                                                  
                         </div>
                         <div class="form-group col-sm-4 col-xs-2">                                                    
-                            {{-- <a href="{{route('turmas.notas.showaluno', [$turmaMatricula->id_matricula])}}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a> --}}
+                            <a href="{{route('resultadofinal.edit', [$turmaMatricula->id_matricula])}}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>
                             {{$turmaMatricula->nome}}
                         </div>       
                         
@@ -183,9 +174,18 @@
                                 <option value=""></option>
                                 @foreach ($tiposResultados as $tipoResultado)
                                     <option value="{{$tipoResultado->id_tipo_resultado_final }} "
-                                        @if ($tipoResultado->padrao == 1)
-                                            selected="selected"
-                                        @endif
+                                        <?php
+                                            $resultadoGravado = false;
+                                            foreach ($resultadosFinais as $key => $resultadoFinal) {
+                                                if ($resultadoFinal->fk_id_matricula == $turmaMatricula->id_matricula and $resultadoFinal->fk_id_tipo_resultado_final == $tipoResultado->id_tipo_resultado_final){
+                                                    echo 'selected="selected"';
+                                                    $resultadoGravado = true;
+                                                    break;
+                                                }
+                                            }                                        
+                                            if ($resultadoGravado == false and $tipoResultado->padrao == 1)
+                                                echo 'selected="selected"';
+                                        ?>
                                     >{{$tipoResultado->tipo_resultado_final}}
                                     
                                     </option>                                

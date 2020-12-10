@@ -149,10 +149,10 @@ Route::prefix('pedagogico')
                  * Rotas Resultado Final
                  */
                 /*route::get('resultadofinal/nota/{id_nota_avaliacao}', 'ResultadoFinalController@remover')->name('resultadofinal.nota.remover');
-                route::any('resultadofinal/notas/updatenotasturma', 'ResultadoFinalController@atualizarNotasTurma')->name('resultadofinal.notas.updatenotasturma');
-                route::put('resultadofinal/nota/{id_nota_avaliacao}', 'ResultadoFinalController@update')->name('resultadofinal.notas.update');
-                Route::get('resultadofinal/nota/{id_nota_avaliacao}/edit', 'ResultadoFinalController@edit')->name('resultadofinal.nota.edit');*/
-                Route::any('resultadofinal/notas/search', 'ResultadoFinalController@search')->name('resultadofinal.search');
+                route::any('resultadofinal/notas/updatenotasturma', 'ResultadoFinalController@atualizarNotasTurma')->name('resultadofinal.notas.updatenotasturma');*/
+                route::put('resultadofinal/aluno/{id_nota_avaliacao}', 'ResultadoFinalController@update')->name('resultadofinal.update');
+                Route::get('resultadofinal/aluno/{id_nota_avaliacao}/edit', 'ResultadoFinalController@edit')->name('resultadofinal.edit');
+                Route::any('resultadofinal/result/search', 'ResultadoFinalController@search')->name('resultadofinal.search');
                 //Route::get('resultadofinal/nota/{id_matricula}/showaluno', 'ResultadoFinalController@notaShowAluno')->name('resultadofinal.notas.showaluno');
                 Route::post('resultadofinal/notas', 'ResultadoFinalController@store')->name('resultadofinal.store');
                 route::any('resultadofinal/{id}/turmas', 'ResultadoFinalController@index')->name('resultadofinal.index');
