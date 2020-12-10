@@ -119,6 +119,7 @@ function nomeMes(int $mes)
         '11' => 'Novembro',
         '12' => 'Dezembro',
         '13' => 'Janeiro',
+        '14' => 'Fevereiro',
     );
 
     return ($nomeMes[$mes]); 
@@ -142,6 +143,8 @@ function nomeMesMinusculo(int $mes)
         '10' => 'outubro',
         '11' => 'novembro',
         '12' => 'dezembro',
+        '13' => 'janeiro',
+        '14' => 'fevereiro',
     );
 
     return ($nomeMes[$mes]);
