@@ -74,8 +74,9 @@
                     </div>
                     <?php
                         foreach ($matriculas as $indMatricula => $matricula) {
+                            $i = $indMatricula+1;
                             echo '<div class="row">';
-                                echo '<div class="col-sm-1 border border-dark border-top-0"><strong>'.$indMatricula++.'</strong></div>';                                        
+                                echo '<div class="col-sm-1 border border-dark border-top-0"><strong>'.$i.'</strong></div>';                                        
                                 echo '<div class="col-sm-4 border border-dark border-left-0 border-top-0">'.$matricula->nome.'</div>';
                                 foreach ($periodosLetivos as $periodoLetivo) {                                        
                                     echo '<div class="col px-0 text-center border border-dark border-left-0 border-top-0">';
