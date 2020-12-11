@@ -50,22 +50,19 @@
             @foreach ($gradeCurricular as $indexGradeCurricular => $disciplina)
                 @include('secretaria.paginas._partials.cabecalho_redeeduca')
                 <div class="container">   
-                    {{-- Dados turma --}}
-                    @foreach ($matriculas as $indMatriculas => $matricula)
-                        @if ($indMatriculas == 1)                                        
-                        <div class="row ">                            
-                            <div class="col text-center">
-                            <strong><h4>Médias Bimestrais - {{$disciplina->disciplina}}</h4></strong>                            
-                        </div>            
-                        <div class="row"></div>            
-                            <div class="col-sm-12 text-center">
-                                <h5>Ano Letivo: {{$matricula->turma->tipoTurma->anoLetivo->ano}} &nbsp;&nbsp;&nbsp; Série: {{$matricula->turma->nome_turma}} 
-                                    &nbsp;&nbsp;&nbsp;
-                                    Turno: {{$matricula->turma->turno->descricao_turno}} </h5>
-                            </div>     
-                        </div>                                       
-                        @endif
-                    @endforeach
+                    {{-- Dados turma --}}                    
+                    <div class="row ">                            
+                        <div class="col text-center">
+                        <strong><h4>Médias Bimestrais - {{$disciplina->disciplina}}</h4></strong>                            
+                    </div>            
+                    <div class="row"></div>            
+                        <div class="col-sm-12 text-center">
+                            <h5>Ano Letivo: {{$turma->tipoTurma->anoLetivo->ano}} &nbsp;&nbsp;&nbsp; Série: {{$turma->nome_turma}} 
+                                &nbsp;&nbsp;&nbsp;
+                                Turno: {{$turma->turno->descricao_turno}} </h5>
+                        </div>     
+                    </div>                                       
+                        
                     <div class="row">
                         <div class="col-sm-1 border border-dark"><strong>Nº</strong></div>
                         <div class="col-sm-4 border border-dark border-left-0"><strong>Aluno(a)</strong></div>
@@ -79,7 +76,7 @@
                         foreach ($matriculas as $indMatricula => $matricula) {
                             echo '<div class="row">';
                                 echo '<div class="col-sm-1 border border-dark border-top-0"><strong>'.$indMatricula++.'</strong></div>';                                        
-                                echo '<div class="col-sm-4 border border-dark border-left-0 border-top-0">'.$matricula->aluno->nome.'</div>';
+                                echo '<div class="col-sm-4 border border-dark border-left-0 border-top-0">'.$matricula->nome.'</div>';
                                 foreach ($periodosLetivos as $periodoLetivo) {                                        
                                     echo '<div class="col px-0 text-center border border-dark border-left-0 border-top-0">';
                                     /* imprimindo média do bimestre */

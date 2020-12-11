@@ -195,7 +195,14 @@ class DiarioController extends Controller
             Médias bimestrais dos alunos
              */
         else if($request->tipo_relatorio == 'medias_bimestres'){
-            $alunos = $alunos->where('fk_id_turma', $request->turma )->get();
+            /* $alunos = $alunos
+                ->where('fk_id_turma', $request->turma)
+                ->orderBy('')
+                ->get(); */
+                $alunos = $alunos->getAlunosTurma($request->turma);
+
+            $turma = new Turma;
+            $turma = $turma->where('id_turma', $request->turma)->first();
 
             $disciplinas = new GradeCurricular;
             $disciplinas = $disciplinas->disciplinasTurma($request->turma);
@@ -218,6 +225,7 @@ class DiarioController extends Controller
 
             return view('pedagogico.paginas.turmas.relatorios.medias_bimestres', [
                 'matriculas' => $alunos,
+                'turma' => $turma,
                 'unidadeEnsino' => $unidadeEnsino,
                 'gradeCurricular' => $disciplinas,
                 'periodosLetivos' => $periodosLetivos,
