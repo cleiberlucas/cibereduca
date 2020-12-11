@@ -230,7 +230,21 @@ ini_set('memory_limit', '2048M');
                 </div>
 
                 {{-- Relatórios anuais --}}
-                <div role="tabpanel" class="tab-pane" id="anual">                     
+                <div role="tabpanel" class="tab-pane" id="anual">    
+                    <div class="row my-3 ml-5">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="tipo_relatorio" id="ficha_individual_turma" value="ficha_individual_turma" disabled>
+                            <label for="ficha_individual_turma" class="form-check-label">Ficha Individual - Turma</label>                                                        
+                        </div>
+                    </div>  
+                    <div class="row my-3 ml-5">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="tipo_relatorio" id="medias_bimestres" value="medias_bimestres" >
+                            <label for="medias_bimestres" class="form-check-label">Médias todos bimestres</label>
+                            <br>
+                            <small>(todas disciplinas)</small>
+                        </div>
+                    </div>               
                     <div class="row my-3 ml-5">
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="tipo_relatorio" id="resultado_semestre" value="resultado_semestre" disabled >

@@ -184,7 +184,7 @@ class Matricula extends Model
     }
 
     /**
-     * Ler permissões livres para um perfil
+     * 
      */
     public function documentosNaoEntregues($filtro = null)
     {

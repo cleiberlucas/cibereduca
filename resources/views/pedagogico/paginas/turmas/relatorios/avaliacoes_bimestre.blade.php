@@ -47,9 +47,7 @@
     <div class="container-fluid">        
   
         @foreach ($disciplinas as $disciplina)
-
-
-      
+        
             @include('secretaria.paginas._partials.cabecalho_redeeduca')        
             <div class="container">        
             

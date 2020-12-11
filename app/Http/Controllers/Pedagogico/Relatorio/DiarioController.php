@@ -110,7 +110,7 @@ class DiarioController extends Controller
 
             $alunos = $alunos->getAlunosTurma($request->turma);
 
-            //Le resultados de NOTAS E FALTAS do bimestre de 1 turma
+            //Le resultados de NOTAS E FALTAS de todos bimestres de 1 turma
             $resultados = new ResultadoAlunoPeriodo;
             $resultados = $resultados->getResultadosTurma($request->turma); 
             //dd($resultados);
@@ -119,7 +119,6 @@ class DiarioController extends Controller
         /* Gera boletim*/
         if ($request->tipo_relatorio == 'boletim_aluno' or $request->tipo_relatorio == 'boletim_turma') {
             $this->authorize('Nota Ver');
-
             
             $disciplinas = new GradeCurricular;
             $disciplinas = $disciplinas->disciplinasTurma($request->turma);
@@ -156,6 +155,77 @@ class DiarioController extends Controller
                 'matriculas' => $alunos,
             ]);
         } */
+
+        /**
+         * Ficha individual - imprime o RESULTADO FINAL de todos alunos da turma
+         */
+        else if($request->tipo_relatorio == 'ficha_individual_turma'){
+            $alunos = $alunos->where('fk_id_turma', $request->turma )->get();
+
+            $disciplinas = new GradeCurricular;
+            $disciplinas = $disciplinas->disciplinasTurma($request->turma);
+
+            $periodosLetivos = $periodosLetivos->getPeriodosLetivosAno($request->anoLetivo);
+
+            //Le resultados de NOTAS E FALTAS de todos bimestres de 1 turma
+            $resultados = new ResultadoAlunoPeriodo;
+            $resultados = $resultados->getResultadosTurma($request->turma); 
+
+            //Lê os resultados e calcula a média anual
+            //Todos os alunos da turma
+            $notasMedias = DB::table('tb_resultados_alunos_periodos')        
+                ->select(DB::raw('fk_id_matricula, fk_id_disciplina'), DB::raw('sum(nota_media)/4 as media, sum(total_faltas) as faltas'))
+                ->groupBy(DB::raw('fk_id_matricula') )
+                ->groupBy(DB::raw('fk_id_disciplina') )
+                ->join('tb_matriculas', 'fk_id_matricula', 'id_matricula')             
+                ->where('fk_id_turma', $request->turma)           
+                ->get();
+            //dd($notasMedias);
+
+            return view('pedagogico.paginas.turmas.relatorios.ficha_individual', [
+                'matriculas' => $alunos,
+                'unidadeEnsino' => $unidadeEnsino,
+                'gradeCurricular' => $disciplinas,
+                'periodosLetivos' => $periodosLetivos,
+                'resultados' => $resultados,
+                'notasMedias' => $notasMedias,
+            ]);
+        }
+            /* Resultado anual todas as disciplinas
+            Médias bimestrais dos alunos
+             */
+        else if($request->tipo_relatorio == 'medias_bimestres'){
+            $alunos = $alunos->where('fk_id_turma', $request->turma )->get();
+
+            $disciplinas = new GradeCurricular;
+            $disciplinas = $disciplinas->disciplinasTurma($request->turma);
+
+            $periodosLetivos = $periodosLetivos->getPeriodosLetivosAno($request->anoLetivo);
+
+            //Le resultados de NOTAS E FALTAS de todos bimestres de 1 turma
+            $resultados = new ResultadoAlunoPeriodo;
+            $resultados = $resultados->getResultadosTurma($request->turma); 
+
+            //Lê os resultados e calcula a média anual
+            //Todos os alunos da turma
+            $notasMedias = DB::table('tb_resultados_alunos_periodos')        
+                ->select(DB::raw('fk_id_matricula, fk_id_disciplina'), DB::raw('sum(nota_media)/4 as media, sum(total_faltas) as faltas'))
+                ->groupBy(DB::raw('fk_id_matricula') )
+                ->groupBy(DB::raw('fk_id_disciplina') )
+                ->join('tb_matriculas', 'fk_id_matricula', 'id_matricula')             
+                ->where('fk_id_turma', $request->turma)           
+                ->get();
+
+            return view('pedagogico.paginas.turmas.relatorios.medias_bimestres', [
+                'matriculas' => $alunos,
+                'unidadeEnsino' => $unidadeEnsino,
+                'gradeCurricular' => $disciplinas,
+                'periodosLetivos' => $periodosLetivos,
+                'resultados' => $resultados,
+                'notasMedias' => $notasMedias,
+                
+            ]); 
+        }
                 /* Conteúdo lecionado bimestral - UMA DISCIPLINA*/
         else if($request->tipo_relatorio == 'conteudo_bimestral_disciplina'){
             if ($request->disciplina == null)
