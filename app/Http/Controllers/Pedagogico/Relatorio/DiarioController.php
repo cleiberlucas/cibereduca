@@ -161,7 +161,15 @@ class DiarioController extends Controller
          * Ficha individual - imprime o RESULTADO FINAL de todos alunos da turma
          */
         else if($request->tipo_relatorio == 'ficha_individual_turma'){
-            $alunos = $alunos->where('fk_id_turma', $request->turma )->get();
+            //$alunos = $alunos->where('fk_id_turma', $request->turma )->get();
+            $alunos = $alunos
+                ->select('nome', 'pai', 'mae', 'data_nascimento',
+                    'sexo')
+                ->join('tb_pessoas', 'fk_id_aluno', 'id_pessoa')
+                ->join('tb_sexo', 'fk_id_sexo', 'id_sexo')                
+                ->where( 'fk_id_turma', $request->turma)
+                ->orderBy('nome')
+                ->get();
 
             $disciplinas = new GradeCurricular;
             $disciplinas = $disciplinas->disciplinasTurma($request->turma);
@@ -204,6 +212,7 @@ class DiarioController extends Controller
                 'cargaHorariaAnual' => $cargaHorariaTurma,
                 'resultadosFinais' => $resultadoFinal,
                 'mediaAprovacao' => $mediaAprovacao,
+                'turma' => $turma,
             ]);
         }
             /* Resultado anual todas as disciplinas

@@ -55,29 +55,29 @@
                             <div class="col-sm-12 border border-dark border-right-0 border-top-0 border-bottom-0">
                                 <div class="row">
                                     <div class="mt-2 col-sm-12 text-center border border-dark border-top-0 border-right-0 border-left-0">
-                                        <i><strong><h4>FICHA INDIVIDUAL - {{$matricula->turma->tipoTurma->subNivelEnsino->sub_nivel_ensino}}</h4></strong></i>
+                                        <i><strong><h4>FICHA INDIVIDUAL - {{$turma->sub_nivel_ensino}}</h4></strong></i>
                                     </div>
                                 </div>
                                 <div class="row">          
                                     <div class="my-2 col-sm-12">                                     
-                                        Aluno(a):<strong> {{$matricula->aluno->nome}}</strong>
-                                        &nbsp;&nbsp;&nbsp;&nbsp; Sexo: {{$matricula->aluno->sexo->sexo}}
+                                        Aluno(a):<strong> {{$matricula->nome}}</strong>
+                                        &nbsp;&nbsp;&nbsp;&nbsp; Sexo: {{$matricula->sexo}}
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-sm-12">Data nascimento: {{date('d/m/Y', strtotime($matricula->aluno->data_nascimento))}}</div>
+                                    <div class="col-sm-12">Data nascimento: {{date('d/m/Y', strtotime($matricula->data_nascimento))}}</div>
                                 </div>
                                 <div class="row">
-                                    <div class="my-2 col-sm-12">Naturalidade: {{$matricula->aluno->naturalidade}}</div>
+                                    <div class="my-2 col-sm-12">Naturalidade: {{$matricula->naturalidade}}</div>
                                 </div>
                                 <div class="row">
-                                    <div class="mb-2 col-sm-12">Filiação: {{$matricula->aluno->pai}} e {{$matricula->aluno->mae}}</div>
+                                    <div class="mb-2 col-sm-12">Filiação: {{$matricula->pai}} e {{$matricula->mae}}</div>
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-12 border border-dark border-bottom-0 border-right-0 border-left-0">
-                                        <strong>Ano Letivo: {{$matricula->turma->tipoTurma->anoLetivo->ano}} &nbsp;&nbsp;&nbsp; Série: {{$matricula->turma->nome_turma}}                                         
+                                        <strong>Ano Letivo: {{$turma->ano}} &nbsp;&nbsp;&nbsp; Série: {{$turma->nome_turma}}                                         
                                             &nbsp;&nbsp;&nbsp;
-                                            Turno: {{$matricula->turma->turno->descricao_turno}}</div></strong>
+                                            Turno: {{$turma->descricao_turno}}</div></strong>
                                 </div>
                             </div>
                         </div>  {{-- fim dados alunos --}}
