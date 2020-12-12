@@ -51,20 +51,18 @@
                 @include('secretaria.paginas._partials.cabecalho_redeeduca')
                     <div class="container">
                         {{-- Dados aluno --}}
-                        <div class="row border border-dark">
-                            <div class="mx-0 px-0 my-0 py-0 col-sm-2 text-center">
-                                <strong><i>Carimbo do Colégio</i></strong>                                
-                            </div>
-                            <div class="col-sm-10 border border-dark border-right-0 border-top-0 border-bottom-0">
+                        <div class="row border border-dark">                            
+                            <div class="col-sm-12 border border-dark border-right-0 border-top-0 border-bottom-0">
                                 <div class="row">
                                     <div class="mt-2 col-sm-12 text-center border border-dark border-top-0 border-right-0 border-left-0">
-                                        <i><strong><h4>FICHA INDIVIDUAL</h4></strong></i>
+                                        <i><strong><h4>FICHA INDIVIDUAL - {{$matricula->turma->tipoTurma->subNivelEnsino->sub_nivel_ensino}}</h4></strong></i>
                                     </div>
                                 </div>
                                 <div class="row">          
                                     <div class="my-2 col-sm-12">                                     
                                         Aluno(a):<strong> {{$matricula->aluno->nome}}</strong>
-                                        &nbsp;&nbsp;&nbsp;&nbsp; Sexo: {{$matricula->aluno->sexo->sexo}}</div>
+                                        &nbsp;&nbsp;&nbsp;&nbsp; Sexo: {{$matricula->aluno->sexo->sexo}}
+                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-12">Data nascimento: {{date('d/m/Y', strtotime($matricula->aluno->data_nascimento))}}</div>
@@ -76,15 +74,16 @@
                                     <div class="mb-2 col-sm-12">Filiação: {{$matricula->aluno->pai}} e {{$matricula->aluno->mae}}</div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-sm-12 border border-dark border-bottom-0 border-right-0 border-left-0">Ano Letivo: {{$matricula->turma->tipoTurma->anoLetivo->ano}} &nbsp;&nbsp;&nbsp; Série: {{$matricula->turma->nome_turma}} 
-                                        &nbsp;&nbsp;&nbsp;
-                                        Turno: {{$matricula->turma->turno->descricao_turno}}</div>
+                                    <div class="col-sm-12 border border-dark border-bottom-0 border-right-0 border-left-0">
+                                        <strong>Ano Letivo: {{$matricula->turma->tipoTurma->anoLetivo->ano}} &nbsp;&nbsp;&nbsp; Série: {{$matricula->turma->nome_turma}}                                         
+                                            &nbsp;&nbsp;&nbsp;
+                                            Turno: {{$matricula->turma->turno->descricao_turno}}</div></strong>
                                 </div>
                             </div>
                         </div>  {{-- fim dados alunos --}}
                         
                         <div class="row ">
-                            <div class="mx-0 px-0 my-0 py-0 col-sm-2 border border-dark border-top-0 text-center"><strong><i>ATIVIDADES</i></strong>                                </div>                            
+                            <div class="my-0 py-5 col-sm-2 border border-dark border-top-0  text-center"><strong><i>ATIVIDADES</i></strong>                                </div>                            
                             {{-- Cabeçalho disciplinas --}}
                             @foreach ($gradeCurricular as $disciplina)
                                 <div class="col foo font-cabecalho text-center border border-dark  border-right-0" >{{$disciplina->disciplina}}</div>                                
@@ -121,10 +120,14 @@
                                                         and $resultado->fk_id_periodo_letivo == $periodoLetivo->id_periodo_letivo 
                                                         and $resultado->fk_id_matricula == $matricula->id_matricula){
                                                             $existeNota = true;      
-                                                            if ($resultado->nota_media < 10)                                                      
+                                                            if ($resultado->nota_media < 10){
+                                                                if (number_format($resultado->nota_media, 1, ',', '.') < $mediaAprovacao)
+                                                                    echo '<font color="red">';
                                                                 echo number_format($resultado->nota_media, 1, ',', '.');
+                                                            }
                                                             else
                                                                 echo $resultado->nota_media;
+                                                                echo '</font>';
                                                         break;
                                                     }
                                                 }
@@ -178,11 +181,15 @@
                                                 if($notaMedia->fk_id_disciplina == $disciplina->id_disciplina                                             
                                                     and $notaMedia->fk_id_matricula == $matricula->id_matricula){
                                                         echo '<strong>';
-                                                        if ($notaMedia->media < 10 )                                          
+                                                        if ($notaMedia->media < 10 ){                                          
+                                                            if (number_format($notaMedia->media, 1, ',', '.') < $mediaAprovacao)
+                                                                echo '<font color="red">';
                                                             echo number_format($notaMedia->media, 1, ',', '.');
+                                                        }
                                                         else {
                                                             echo $notaMedia->media;
                                                         }
+                                                        echo '</font>';
                                                         echo '</strong>';
                                                     break;
                                                 }
@@ -220,12 +227,16 @@
                                                 if($notaMedia->fk_id_disciplina == $disciplina->id_disciplina                                             
                                                     and $notaMedia->fk_id_matricula == $matricula->id_matricula){     
                                                         echo '<strong>';
-                                                        if ($notaMedia->media < 10 )                                          
+                                                            if ($notaMedia->media < 10 ){                                          
+                                                            if (number_format($notaMedia->media, 1, ',', '.') < $mediaAprovacao)
+                                                                echo '<font color="red">';
                                                             echo number_format($notaMedia->media, 1, ',', '.');
+                                                        }
                                                         else {
                                                             echo $notaMedia->media;
-                                                        }               
-                                                        echo '</strong>'                                                                                      ;
+                                                        }
+                                                        echo '</font>';
+                                                        echo '</strong>';                                                                                      ;
                                                     break;
                                                 }
                                             }
@@ -248,8 +259,11 @@
                                                 $existeFalta = false;
                                                 if($notaMedia->fk_id_disciplina == $disciplina->id_disciplina                                             
                                                     and $notaMedia->fk_id_matricula == $matricula->id_matricula){
-                                                                                               
-                                                        echo "<strong>$notaMedia->faltas</strong>";
+                                                        if ($notaMedia->faltas > 0)
+                                                            echo "<strong>$notaMedia->faltas</strong>";
+                                                        else {
+                                                            echo '-';
+                                                        }
                                                     break;
                                                 }
                                             }
@@ -262,11 +276,18 @@
                         </div>
                         <div class="row ">
                             <div class="mx-0 px-0 my-0 py-1 col-sm-2 border border-dark border-top-0 text-center"><strong><i>Carga Horária</i></strong></div> 
-                            <div class=" col-sm-10 border border-dark border-top-0 border-left-0"></div>
+                            <div class="py-1 col-sm-10 border border-dark border-top-0 border-left-0 text-right">{{$cargaHorariaAnual}}</div>
                         </div>
                         <div class="row ">
                             <div class="mx-0 px-0 my-0 py-1 col-sm-2 border border-dark border-top-0 text-center"><strong><i>Resultado Final</i></strong></div> 
-                            <div class=" col-sm-10 border border-dark border-top-0 border-left-0"> </div>
+                            <div class=" col-sm-10 border border-dark border-top-0 border-left-0 text-right">
+                                @foreach ($resultadosFinais as $resultadoFinal)
+                                    @if ($resultadoFinal->fk_id_matricula == $matricula->id_matricula)
+                                        <strong>{{$resultadoFinal->tipo_resultado_final}}</strong>
+                                        @break
+                                    @endif                                
+                                @endforeach    
+                            </div>
                         </div>
                         <div class="row ">
                             <div class="my-0 py-5 col-sm-2 border border-dark border-top-0 border-bottom-0 text-center"><strong><i>OBS.:</i></strong></div> 
@@ -276,13 +297,11 @@
                             <div class="col-sm-12 text-right border  border-dark">{{$unidadeEnsino->cidade_uf}}, <?php echo date('d/m/Y'); ?></div>
                         </div>
                         <div class="row ">
-                            <div class="mt-0 pt-5 col-sm-6 border border-dark border-top-0 text-center"><br><br><strong>Diretor(a)</strong></div> 
+                            <div class="mt-0 pt-5 col-sm-6 border border-dark border-top-0 border-rigth-0 text-center"><br><br><strong>Diretor(a)</strong></div> 
                             <div class="mt-0 pt-5 col-sm-6 border border-dark border-top-0 text-center"><br><br><strong>Secretário(a)</strong></div> 
                         </div>
                         <div class="row">
-                            <div class="col">
-                                A
-                            </div>
+                            <div class="col">&nbsp;</div>
                         </div>
                     </div>                    
                 <div style="page-break-after: always"></div>                    

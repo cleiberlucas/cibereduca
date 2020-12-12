@@ -12,6 +12,7 @@ use App\Models\Pedagogico\Avaliacao;
 use App\Models\Pedagogico\ConteudoLecionado;
 use App\Models\Pedagogico\Nota;
 use App\Models\Pedagogico\ResultadoAlunoPeriodo;
+use App\Models\Pedagogico\ResultadoFinal;
 use App\Models\PeriodoLetivo;
 use App\Models\Secretaria\Disciplina;
 use App\Models\Secretaria\Matricula;
@@ -182,6 +183,17 @@ class DiarioController extends Controller
                 ->get();
             //dd($notasMedias);
 
+            $cargaHorariaTurma = new Turma;
+            $cargaHorariaTurma = $cargaHorariaTurma->getCargaHorariaTurma($request->turma);
+            //dd($cargaHorariaTurma);
+
+            $resultadoFinal = new ResultadoFinal;
+            $resultadoFinal = $resultadoFinal
+                ->join('tb_matriculas', 'fk_id_matricula', 'id_matricula')
+                ->join('tb_tipos_resultado_final', 'fk_id_tipo_resultado_final', 'id_tipo_resultado_final')
+                ->where('fk_id_turma', $request->turma)
+                ->get();
+
             return view('pedagogico.paginas.turmas.relatorios.ficha_individual', [
                 'matriculas' => $alunos,
                 'unidadeEnsino' => $unidadeEnsino,
@@ -189,6 +201,9 @@ class DiarioController extends Controller
                 'periodosLetivos' => $periodosLetivos,
                 'resultados' => $resultados,
                 'notasMedias' => $notasMedias,
+                'cargaHorariaAnual' => $cargaHorariaTurma,
+                'resultadosFinais' => $resultadoFinal,
+                'mediaAprovacao' => $mediaAprovacao,
             ]);
         }
             /* Resultado anual todas as disciplinas

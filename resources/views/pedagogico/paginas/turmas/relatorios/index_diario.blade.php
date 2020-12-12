@@ -233,7 +233,7 @@ ini_set('memory_limit', '2048M');
                 <div role="tabpanel" class="tab-pane" id="anual">    
                     <div class="row my-3 ml-5">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="tipo_relatorio" id="ficha_individual_turma" value="ficha_individual_turma" disabled>
+                            <input class="form-check-input" type="radio" name="tipo_relatorio" id="ficha_individual_turma" value="ficha_individual_turma" >
                             <label for="ficha_individual_turma" class="form-check-label">Ficha Individual - Turma</label>                                                        
                         </div>
                     </div>  

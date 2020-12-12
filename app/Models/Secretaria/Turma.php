@@ -107,5 +107,18 @@ class Turma extends Model
         
         return $periodosLetivos;
     }   
+
+     /**
+     * Retorna o total da CARGA HORÁRIA DE UMA TURMA
+     * Soma as cargas horárias de todas as disciplinas
+     */
+    public function getCargaHorariaTurma($id_turma)
+    {
+        return $this::                        
+            join('tb_grades_curriculares', 'tb_grades_curriculares.fk_id_tipo_turma', 'tb_turmas.fk_id_tipo_turma')            
+            ->where('id_turma', $id_turma)
+            ->sum('carga_horaria_anual')            
+            ;
+    }
    
 }
