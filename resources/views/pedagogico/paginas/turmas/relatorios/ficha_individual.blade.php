@@ -65,7 +65,7 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-sm-12">Data nascimento: {{date('d/m/Y', strtotime($matricula->data_nascimento))}}</div>
+                                    <div class="col-sm-12">Data de nascimento: {{date('d/m/Y', strtotime($matricula->data_nascimento))}}</div>
                                 </div>
                                 <div class="row">
                                     <div class="my-2 col-sm-12">Naturalidade: {{$matricula->naturalidade}}</div>
