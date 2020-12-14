@@ -92,7 +92,17 @@ class DiarioController extends Controller
         //Consultar apenas um aluno da turma
         if ($request->tipo_relatorio == 'boletim_aluno') {
             $alunos = $alunos->getMatriculaAluno($request->fk_id_matricula); 
-           
+
+            $resultadosFinais = new ResultadoFinal;
+            $resultadosFinais = $resultadosFinais
+                ->select('tb_resultado_final.*', 
+                    'tipo_resultado_final', 'id_tipo_resultado_final' )
+                ->join('tb_matriculas', 'fk_id_matricula', 'id_matricula')
+                ->join('tb_tipos_resultado_final', 'fk_id_tipo_resultado_final', 'id_tipo_resultado_final')
+                ->where('fk_id_turma', $request->turma)
+                ->where('id_matricula', $request->fk_id_matricula)
+                ->get();
+
             if ($request->fk_id_matricula == null)
                 return redirect()->back()->with('atencao', 'Escolha um aluno.');
 
@@ -135,6 +145,7 @@ class DiarioController extends Controller
                 'periodosLetivos' => $periodosLetivos,
                 'resultados'    => $resultados,
                 'mediaAprovacao' => $mediaAprovacao,
+                'resultadosFinais' => $resultadosFinais,
             ]);
         } /* else if ($request->tipo_relatorio == 'aprendizagem') {
             if ($request->disciplina == null)

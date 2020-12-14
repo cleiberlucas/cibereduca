@@ -232,7 +232,20 @@
                     @endforeach {{-- fim array periodos letivos --}}
                     <div class="col-sm-1 col-xs-2 border border-dark border-top-0 border-bottom-0 border-right-0"> </div>
                     <div class="col-sm-1 col-xs-2 border border-dark border-top-0 border-bottom-0 "> </div>
-                    <div class="col-sm-1 col-xs-2 border-0"> Cursando </div>                    
+                    <div class="col-sm-1 col-xs-2 border-0">
+                    <?php
+                        $existeResultadoFinal = false;
+                        foreach ($resultadosFinais as $resultadoFinal) {
+                            if ($resultadoFinal->fk_id_matricula == $matricula->id_matricula ){
+                                echo $resultadoFinal->tipo_resultado_final;
+                                $existeResultadoFinal = true;
+                                break;
+                            }
+                        }
+                        if ($existeResultadoFinal == false)
+                            echo "Cursando";
+                    ?>
+                    </div>                    
                 </div>
             @endforeach
             <div class="row border border-dark ">
