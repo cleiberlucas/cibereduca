@@ -119,6 +119,16 @@ class DiarioController extends Controller
             $atualizarMedia = new NotaController(new Nota);
             $atualizarMedia->atualizarNotasTurma($request->turma);
 
+            $resultadosFinais = new ResultadoFinal;
+            $resultadosFinais = $resultadosFinais
+                ->select('tb_resultado_final.*', 
+                    'tipo_resultado_final', 'id_tipo_resultado_final' )
+                ->join('tb_matriculas', 'fk_id_matricula', 'id_matricula')
+                ->join('tb_tipos_resultado_final', 'fk_id_tipo_resultado_final', 'id_tipo_resultado_final')
+                ->where('fk_id_turma', $request->turma)                
+                ->get();
+
+
             $alunos = $alunos->getAlunosTurma($request->turma);
 
             //Le resultados de NOTAS E FALTAS de todos bimestres de 1 turma
