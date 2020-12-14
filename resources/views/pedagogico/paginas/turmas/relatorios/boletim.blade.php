@@ -265,9 +265,9 @@
             </div>              
         </div>
         {{-- Quebra página a cada 2 boletins --}}
-        {{-- @if ($indexMatricula % 2 == 1) --}}
+        @if ($indexMatricula % 2 == 1)
             <div style="page-break-after: always"></div>        
-        {{-- @endif --}}
+        @endif
     @endforeach {{-- Fim array alunos --}}   
     
 </body>
