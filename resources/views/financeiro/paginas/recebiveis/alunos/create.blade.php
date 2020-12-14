@@ -40,6 +40,9 @@
             <input type="hidden" class="" id="qt_parcelas_curso" name="qt_parcelas_curso" value="">
             <input type="hidden" class="" id="data_venc_parcela_um" name="data_venc_parcela_um" value="">
             
+            <input type="hidden" class="" id="valor_entrada_mat_didatico" name="valor_entrada_mat_didatico" value="">            
+            <input type="hidden" class="" id="data_pagto_mat_didatico" name="data_pagto_mat_didatico" value="">
+
             <input type="hidden" class="" id="valor_material_didatico" name="valor_material_didatico" value="">
             <input type="hidden" class="" id="qt_parcelas_mat_didatico" name="qt_parcelas_mat_didatico" value="">
             <input type="hidden" class="" id="data_venc_parcela_um_mat_didatico" name="data_venc_parcela_um_mat_didatico" value="">
@@ -81,9 +84,12 @@
         </form>
     </div>
 
-    <script type="text/javascript" src="{!!asset('/js/utils.js')!!}"></script>
-    <script type="text/javascript" src="{!!asset('/js/valoresRecebiveis.js')!!}"></script>
-    <script type="text/javascript" src="{!!asset('/js/camposRecebiveis.js')!!}"></script>
+    <?php $versao_rand = rand();?>
+    
+
+    <script type="text/javascript" src="/js/utils.js?v=<?php echo urlencode(base64_decode((str_shuffle('cibereduca'))))?>&<?php echo $versao_rand ?>"></script>
+    <script type="text/javascript" src="/js/valoresRecebiveis.js?v=<?php echo urlencode(base64_decode((str_shuffle('cibereduca'))))?>&<?php echo $versao_rand ?>"></script>
+    <script type="text/javascript" src="/js/camposRecebiveis.js?v=<?php echo urlencode(base64_decode((str_shuffle('cibereduca'))))?>&<?php echo $versao_rand ?>"></script>
     
     <script>
         $(document).ready(function(){

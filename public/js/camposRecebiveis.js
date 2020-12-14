@@ -12,6 +12,7 @@ $(document).ready(function(){
       document.getElementById("campos").innerHTML = "";
       
       var id_matricula = $('#fk_id_matricula').val();
+      var tipo_lacto = '';
       //caso não tenha escolhido a turma
       if (id_matricula < 1){
         alert('Escolha uma turma.');
@@ -38,12 +39,26 @@ $(document).ready(function(){
 //            console.log('campos rec data venc = '+data_venc);        
         }
          //escolheu lançar material didático
-        else if (id_conta_contabil == 3){          
-          var qt_parcelas = document.getElementById('qt_parcelas_mat_didatico').value;
-          var valor_principal = document.getElementById('valor_material_didatico').value;
-          var valor_desconto = '';
-          var data_venc = document.getElementById('data_venc_parcela_um_mat_didatico').value;
-//            console.log('campos rec data venc = '+data_venc);        
+        else if (id_conta_contabil == 3){         
+          tipo_lacto = prompt('Lançamento Material Didático. Informe:\n "E"-Entrada ou \n "P"-Parcelas').toUpperCase();
+          //Lançamento das parcelas
+          if (tipo_lacto == 'P'){
+            var qt_parcelas = document.getElementById('qt_parcelas_mat_didatico').value;
+            var valor_principal = document.getElementById('valor_material_didatico').value;
+            var valor_desconto = '';
+            var data_venc = document.getElementById('data_venc_parcela_um_mat_didatico').value;
+  //            console.log('campos rec data venc = '+data_venc);        
+          }
+          //Lançamento da entrada
+          else if (tipo_lacto == 'E'){
+            var qt_parcelas = 1;
+            var valor_principal = document.getElementById('valor_entrada_mat_didatico').value;
+            var valor_desconto = '';
+            var data_venc = document.getElementById('data_pagto_mat_didatico').value;
+          }
+          else{
+            alert('Informe "E" para Entrada ou "P" para Parcelas.');
+          }
         }
 
         //Verificando se a quantidade de parcelas foi definida
@@ -56,7 +71,11 @@ $(document).ready(function(){
             $('#campos').append('<div class="row mt-5 pt-5">');
               $('#campos').append('<div class="form-group col-sm-3 col-xs-2"> <label>Valor '+i+':</label> <input type="number" step="0.010" class="form-control" required name="valor_principal['+i+']"  id="valor_principal['+i+']" value="'+(valor_principal/qt_parcelas).toFixed(2)+'" onBlur="recalcularValor(\'valor_principal['+i+']\', \'valor_desconto_principal['+i+']\', \'valor_desconto_principal['+i+']\', \'valor_total['+i+']\')"/> </div>');
               $('#campos').append('<div class="form-group col-sm-3 col-xs-2"> <label>Valor desconto '+i+':</label> <input type="number" step="0.010" class="form-control" name="valor_desconto_principal['+i+']" id="valor_desconto_principal['+i+']" value="'+(valor_desconto/qt_parcelas).toFixed(2)+'" onBlur="recalcularValor(\'valor_principal['+i+']\', \'valor_desconto_principal['+i+']\', \'valor_desconto_principal['+i+']\', \'valor_total['+i+']\')" /> </div>');
-              $('#campos').append('<div class="form-group col-sm-2 col-xs-2"> <label>N° Parcela:</label> <input type="text" class="form-control" maxlength="5" size="5" required name="parcela['+i+']" value="'+i+'/'+qt_parcelas+'" /> </div>');
+
+              if (tipo_lacto == "E")              
+                $('#campos').append('<div class="form-group col-sm-2 col-xs-2"> <label>N° Parcela:</label> <input type="text" class="form-control" maxlength="10" size="10" required name="parcela['+i+']" value="Entrada" /> </div>');
+              else
+                $('#campos').append('<div class="form-group col-sm-2 col-xs-2"> <label>N° Parcela:</label> <input type="text" class="form-control" maxlength="10" size="10" required name="parcela['+i+']" value="'+i+'/'+qt_parcelas+'" /> </div>');
               
               //calculando datas dos próximos vencimentos
               if (i> 1){              

@@ -39,12 +39,18 @@ $(document).ready(function(){
                 var valor_desconto = response['data'][i].valor_desconto;
                 var valor_contrato = valor_curso - valor_desconto;
 
+                var valor_entrada_mat_didatico = response['data'][i].valor_entrada_mat_didatico;
+                var data_pagto_mat_didatico = response['data'][i].data_pagto_mat_didatico;
+
                 var qt_parcelas_mat_didatico = response['data'][i].qt_parcelas_mat_didatico;
                 var valor_material_didatico = response['data'][i].valor_material_didatico;
 
                 document.getElementById('valor_matricula').value = valor_matricula;
                 document.getElementById('valor_curso').value = valor_curso;
                 document.getElementById('valor_desconto').value = valor_desconto;
+                
+                document.getElementById('valor_entrada_mat_didatico').value = valor_entrada_mat_didatico;
+                document.getElementById('data_pagto_mat_didatico').value = response['data'][i].data_pagto_mat_didatico;
 
                 document.getElementById('qt_parcelas_mat_didatico').value = qt_parcelas_mat_didatico;
                 document.getElementById('valor_material_didatico').value = valor_material_didatico;

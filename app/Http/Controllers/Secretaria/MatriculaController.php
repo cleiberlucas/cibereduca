@@ -469,6 +469,7 @@ class MatriculaController extends Controller
                                             'qt_parcelas_curso',
                                             'data_venc_parcela_um',
                                             'tb_matriculas.valor_material_didatico',
+                                            'data_pagto_mat_didatico', 'valor_entrada_mat_didatico',
                                             'qt_parcelas_mat_didatico', 'data_venc_parcela_um_mat_didatico',
                                             'obs_matricula',
                                             )   
