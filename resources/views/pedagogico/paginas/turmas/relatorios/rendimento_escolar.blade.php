@@ -71,7 +71,7 @@
                     <?php $total_faltas; 
                     /* varrendo array p imprimir media e falta de um aluno */                                         
                         foreach ($gradeCurricular as $disciplina){
-                            echo '<div class="col px-0 font-cabecalho  border border-dark text-center">';
+                            echo '<div px-0 class="col px-0 font-cabecalho  border border-dark text-center">';
                             foreach ($resultados as $resultado){
                                 if ($resultado->fk_id_matricula == $matricula->id_matricula
                                     and $resultado->fk_id_disciplina == $disciplina->fk_id_disciplina){                                    
