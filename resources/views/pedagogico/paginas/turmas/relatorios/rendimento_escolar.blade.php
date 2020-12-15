@@ -60,7 +60,7 @@
                 <div class="col border border-dark"><strong>Nº</strong></div>
                 <div class="col-sm-2 border border-dark"><strong>Aluno(a)</strong></div>
                 @foreach ($gradeCurricular as $disciplina)
-                    <div class="col pl-0 foo font-cabecalho  border border-dark">{{$disciplina->disciplina}}</div>                                
+                    <div class="col px-0 foo font-cabecalho  border border-dark">{{$disciplina->disciplina}}</div>                                
                 @endforeach
                 <div class="col  foo font-cabecalho  border border-dark">Faltas</div>
             </div>
@@ -71,12 +71,12 @@
                     <?php $total_faltas; 
                     /* varrendo array p imprimir media e falta de um aluno */                                         
                         foreach ($gradeCurricular as $disciplina){
-                            echo '<div class="col pl-0 font-cabecalho  border border-dark text-center">';
+                            echo '<div class="col px-0 font-cabecalho  border border-dark text-center">';
                             foreach ($resultados as $resultado){
                                 if ($resultado->fk_id_matricula == $matricula->id_matricula
                                     and $resultado->fk_id_disciplina == $disciplina->fk_id_disciplina){                                    
                                     if ($resultado->nota_media > 0) {
-                                        if($resultado->nota_media >= $mediaAprovacao)
+                                        if(number_format($resultado->nota_media, 1, ',', '.') >= $mediaAprovacao)
                                             echo number_format($resultado->nota_media, 1, ',', '.');
                                         else
                                             echo '<font color="red"> '.number_format($resultado->nota_media, 1, ',', '.').'  </font>';                                    
