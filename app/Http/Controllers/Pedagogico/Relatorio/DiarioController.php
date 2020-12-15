@@ -93,13 +93,24 @@ class DiarioController extends Controller
         if ($request->tipo_relatorio == 'boletim_aluno') {
             $alunos = $alunos->getMatriculaAluno($request->fk_id_matricula); 
 
-            $resultadosFinais = new ResultadoFinal;
-            $resultadosFinais = $resultadosFinais
-                ->select('tb_resultado_final.*', 
-                    'tipo_resultado_final', 'id_tipo_resultado_final' )
+            $resultadoFinal = new ResultadoFinal;
+            $resultadoFinal = $resultadoFinal
+                ->select(
+                    'tipo_resultado_final',  )
                 ->join('tb_matriculas', 'fk_id_matricula', 'id_matricula')
                 ->join('tb_tipos_resultado_final', 'fk_id_tipo_resultado_final', 'id_tipo_resultado_final')
                 ->where('fk_id_turma', $request->turma)
+                ->where('id_matricula', $request->fk_id_matricula)
+                ->first();
+
+            //Lê os resultados e calcula a média anual
+            //Todos os alunos da turma
+            $notasMediasAnual = DB::table('tb_resultados_alunos_periodos')        
+                ->select(DB::raw('fk_id_matricula, fk_id_disciplina'), DB::raw('sum(nota_media)/4 as media, sum(total_faltas) as faltas'))
+                ->groupBy(DB::raw('fk_id_matricula') )
+                ->groupBy(DB::raw('fk_id_disciplina') )
+                ->join('tb_matriculas', 'fk_id_matricula', 'id_matricula')             
+                ->where('fk_id_turma', $request->turma)           
                 ->where('id_matricula', $request->fk_id_matricula)
                 ->get();
 
@@ -119,15 +130,24 @@ class DiarioController extends Controller
             $atualizarMedia = new NotaController(new Nota);
             $atualizarMedia->atualizarNotasTurma($request->turma);
 
-            $resultadosFinais = new ResultadoFinal;
-            $resultadosFinais = $resultadosFinais
-                ->select('tb_resultado_final.*', 
-                    'tipo_resultado_final', 'id_tipo_resultado_final' )
+            $resultadoFinal = new ResultadoFinal;
+            $resultadoFinal = $resultadoFinal
+                ->select(
+                    'tipo_resultado_final' )
                 ->join('tb_matriculas', 'fk_id_matricula', 'id_matricula')
                 ->join('tb_tipos_resultado_final', 'fk_id_tipo_resultado_final', 'id_tipo_resultado_final')
                 ->where('fk_id_turma', $request->turma)                
-                ->get();
+                ->first();
 
+                //Lê os resultados e calcula a média anual
+            //Todos os alunos da turma
+            $notasMediasAnual = DB::table('tb_resultados_alunos_periodos')        
+                ->select(DB::raw('fk_id_matricula, fk_id_disciplina'), DB::raw('sum(nota_media)/4 as media, sum(total_faltas) as faltas'))
+                ->groupBy(DB::raw('fk_id_matricula') )
+                ->groupBy(DB::raw('fk_id_disciplina') )
+                ->join('tb_matriculas', 'fk_id_matricula', 'id_matricula')             
+                ->where('fk_id_turma', $request->turma)                           
+                ->get();
 
             $alunos = $alunos->getAlunosTurma($request->turma);
 
@@ -155,7 +175,8 @@ class DiarioController extends Controller
                 'periodosLetivos' => $periodosLetivos,
                 'resultados'    => $resultados,
                 'mediaAprovacao' => $mediaAprovacao,
-                'resultadosFinais' => $resultadosFinais,
+                'resultadoFinal' => $resultadoFinal,
+                'notasMediasAnual' => $notasMediasAnual,
             ]);
         } /* else if ($request->tipo_relatorio == 'aprendizagem') {
             if ($request->disciplina == null)

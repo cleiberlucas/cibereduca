@@ -19,17 +19,13 @@
     }
 </style>
 <body>
-    @foreach ($matriculas as $indexMatricula => $matricula)
+    <?php foreach ($matriculas as $indexMatricula => $matricula){ ?>
         {{-- Cabeçalho --}}
         <div class="container border border-primary rounded">
             <div class="row">
-                <div class="col-sm-2 col-xs-2 my-1 py-1"> 
-                    <img src="/vendor/adminlte/dist/img/logo.png" width="60%" alt="logo">
-                </div>
-                <div class="col-sm-10 text-center">
-                    <strong><h4>{{mb_strToUpper($unidadeEnsino->razao_social)}}</h4></strong>
-                    <h5>BOLETIM ESCOLAR</h5>
-                    
+                <div class="col-sm-2 col-xs-2 my-1 py-1"><img src="/vendor/adminlte/dist/img/logo.png" width="60%" alt="logo"></div>
+                <div class="col-sm-10 text-center"><strong><h4>{{mb_strToUpper($unidadeEnsino->razao_social)}}</h4></strong>
+                    <h5>BOLETIM ESCOLAR</h5>                    
                     <h6>-{{$turma->ano}}-</h6>
                 </div>
             </div>
@@ -37,20 +33,14 @@
         {{-- Dados aluno --}}
         <div class="container border border-dark">
             <div class="row ">
-                <div class="col-sm-12 col-xs-2 mt-2">
-                    <strong>ALUNO(A): {{$matricula->nome}}</strong>
-                </div>
+                <div class="col-sm-12 col-xs-2 mt-2"><strong>ALUNO(A): {{$matricula->nome}}</strong></div>
             </div>
             <div class="row mb-2">
-                <div class="col-sm-5 col-xs-2">
-                    <strong>Turma: {{$turma->nome_turma}} - {{$turma->descricao_turno}}</strong>
-                </div>
+                <div class="col-sm-5 col-xs-2"><strong>Turma: {{$turma->nome_turma}} - {{$turma->descricao_turno}}</strong></div>
                {{--  <div class="col-sm-3 col-xs-2">
                     <strong>Turno: {{$matricula->turma->turno->descricao_turno}}</strong>
                 </div> --}}
-                <div class="col-sm-4 col-xs-2">
-                    <strong>Curso: {{$turma->sub_nivel_ensino}}</strong>
-                </div>               
+                <div class="col-sm-4 col-xs-2"><strong>Curso: {{$turma->sub_nivel_ensino}}</strong></div>               
             </div>
         </div>
         {{-- Notas --}}
@@ -58,81 +48,58 @@
             <div class="row font-cabecalho  text-center">
                 <div class="col-sm-12 col-xs-2 border border-dark border-top-0 border-bottom-0">
                     <div class="row border-dark">
-                        <div class="col-sm-3 col-xs-2 ">
-                            <strong>Disciplinas</strong>
-                        </div>                        
+                        <div class="col-sm-3 col-xs-2 "><strong>Disciplinas</strong></div>                        
                         {{-- Colunas Períodos letivos --}}
-                        @foreach ($periodosLetivos as $indexPeriodo => $periodoLetivo)                                                
+                        <?php foreach ($periodosLetivos as $indexPeriodo => $periodoLetivo){       ?>                                         
                             <div class="col-sm-1 col-xs-2 border-dark border-bottom-0">                        
                                 <div class="row text-center ">
-                                    <div class="col-sm-12 col-xs-2 px-0 border border-dark border-right-0 border-top-0">
-                                        <strong>{{$periodoLetivo->periodo_letivo}} </strong>
-                                    </div>
+                                    <div class="col-sm-12 col-xs-2 px-0 border border-dark border-right-0 border-top-0"><strong>{{$periodoLetivo->periodo_letivo}} </strong></div>
                                 </div>
                                 <div class="row text-center border-dark">
-                                    <div class="col-sm-6 col-xs-2 border border-dark border-top-0 border-right-0">
-                                        <strong>N</strong>
-                                    </div>
-                                    <div class="col-sm-6 col-xs-2  border border-dark border-top-0 border-right-0 ">
-                                        <strong>F</strong>
-                                    </div>
+                                    <div class="col-sm-6 col-xs-2 border border-dark border-top-0 border-right-0"><strong>N</strong></div>
+                                    <div class="col-sm-6 col-xs-2  border border-dark border-top-0 border-right-0 "><strong>F</strong></div>
                                 </div>                   
                             </div> 
-                            @if ($indexPeriodo == 1 )
+                            <?php if ($indexPeriodo == 1 ) { ?>
                                 <div class="col-sm-1 col-xs-2  border border-dark border-top-0 border-right-0"> 
                                     <div class="row  text-center">
                                         <div class="col-sm-12 col-xs-2 ">
                                             <div class="row  ">
-                                            <div class="col-sm-6 col-xs-2 px-1 py-2  border border-dark border-top-0 border-left-0 border-bottom-0">
-                                                <strong>RS1</strong>
+                                                <div class="col-sm-6 col-xs-2 px-1 py-2  border border-dark border-top-0 border-left-0 border-bottom-0"><strong>RS1</strong></div>
+                                                <div class="col-sm-6 col-xs-2 px-1 py-2"><strong>MS1</strong></div>
                                             </div>
-                                            <div class="col-sm-6 col-xs-2 px-1 py-2">
-                                                <strong>MS1</strong>
-                                            </div>
-                                        </div>
                                         </div>
                                     </div>
                                 </div>    
-                            @endif
-
-                            @if ($indexPeriodo == 3)                            
+                            <?php } ?>
+                            <?php if ($indexPeriodo == 3){ ?>
                                 <div class="col-sm-1 col-xs-2 border border-dark border-top-0 border-right-0"> 
                                     <div class="row  ">
                                         <div class="col-sm-12 col-xs-2 ">
                                             <div class="row  ">
-                                            <div class="col-sm-6 col-xs-2 px-1 py-2  border border-dark border-top-0 border-left-0 border-bottom-0">
-                                                <strong>RS2</strong>
+                                                <div class="col-sm-6 col-xs-2 px-1 py-2  border border-dark border-top-0 border-left-0 border-bottom-0"><strong>RS2</strong></div>
+                                                <div class="col-sm-6 col-xs-2 px-1 py-2"><strong>MS2</strong></div>
                                             </div>
-                                            <div class="col-sm-6 col-xs-2 px-1 py-2">
-                                                <strong>MS2</strong>
-                                            </div>
-                                        </div>
                                         </div>
                                     </div>
                                 </div>                             
-                            @endif
-                        @endforeach {{-- fim colunas períodos letivos --}}
-                        <div class="col-sm-1 col-xs-2 px-0 border border-dark border-top-0">
-                            <strong>Média Final MRF</strong>
-                        </div>
-                        <div class="col-sm-1 col-xs-2 border border-dark border-top-0 border-left-0">
-                            <strong>Total de Faltas</strong>
-                        </div>
-                        <div class="col-sm-1 col-xs-2 border border-dark border-top-0 border-left-0 border-right-0 ">
-                            <strong>Resultado Final RF</strong>
-                        </div>
+                            <?php } ?>
+                        <?php } ?> {{-- fim colunas períodos letivos --}}
+                        <div class="col-sm-1 col-xs-2 px-0 border border-dark border-top-0"><strong>Média Final MRF</strong></div>
+                        <div class="col-sm-1 col-xs-2 border border-dark border-top-0 border-left-0"><strong>Total de Faltas</strong></div>
+                        <div class="col-sm-1 col-xs-2 border border-dark border-top-0 border-left-0 border-right-0 "><strong>Resultado Final RF</strong></div>
                     </div>
                 </div>
             </div>
             {{-- Linhas disciplinas --}}
-            @foreach ($disciplinas as $disciplina)
+            <?php foreach ($disciplinas as $disciplina){ ?>
                 <div class="row font-cabecalho border border-dark border-bottom-0 ">
                     <div class="col-sm-3 col-xs-2 ml-0 px-0 " > {{$disciplina->disciplina}} </div>
                     <?php 
                         $total_ms1 = 0;
                         $total_ms2 = 0;
                     ?>
-                    @foreach ($periodosLetivos as $indexPeriodo => $periodoLetivo)
+                    <?php foreach ($periodosLetivos as $indexPeriodo => $periodoLetivo) { ?>
                         <?php
                             $achou_resultado = false;
                             $total_faltas_periodo = '-';
@@ -143,8 +110,6 @@
                                 {{-- Varrendo array p imprimir NOTA MÉDIA E FALTAS--}}   
                                 <?php                                
                                 foreach ($resultados as $indexResult => $resultado){
-                                    //if ($indexResult == 0)
-                                      
                                     if ($periodoLetivo->id_periodo_letivo == $resultado->fk_id_periodo_letivo
                                         and $disciplina->id_disciplina == $resultado->fk_id_disciplina
                                         and $matricula->id_matricula == $resultado->fk_id_matricula){     
@@ -184,7 +149,7 @@
                             </div>
                         </div>
                         {{-- Mostrar RS1 E MS1 --}}
-                        @if ($indexPeriodo == 1 )
+                        <?php if ($indexPeriodo == 1 ) {?>
                             <div class="col-sm-1 col-xs-2 border border-dark border-top-0 border-right-0 border-bottom-0"> 
                                 <div class="row  ">
                                     <div class="col-sm-12 col-xs-2 ">
@@ -207,8 +172,8 @@
                                     </div>
                                 </div>
                             </div>                                
-                        @endif
-                        @if ($indexPeriodo == 3)                        
+                        <?php } ?>
+                        <?php if ($indexPeriodo == 3) { ?>
                             <div class="col-sm-1 col-xs-2 border border-dark border-top-0 border-right-0 border-bottom-0"> 
                                 <div class="row  ">
                                     <div class="col-sm-12 col-xs-2 ">
@@ -228,26 +193,56 @@
                                     </div>
                                 </div>
                             </div>                          
-                        @endif
-                    @endforeach {{-- fim array periodos letivos --}}
-                    <div class="col-sm-1 col-xs-2 border border-dark border-top-0 border-bottom-0 border-right-0"> </div>
-                    <div class="col-sm-1 col-xs-2 border border-dark border-top-0 border-bottom-0 "> </div>
-                    <div class="col-sm-1 col-xs-2 border-0">
-                    <?php
-                        $existeResultadoFinal = false;
-                        foreach ($resultadosFinais as $resultadoFinal) {
-                            if ($resultadoFinal->fk_id_matricula == $matricula->id_matricula ){
-                                echo $resultadoFinal->tipo_resultado_final;
-                                $existeResultadoFinal = true;
-                                break;
+                        <?php } ?>
+                    <?php } ?> {{-- fim array periodos letivos --}}                    
+                    {{-- Média final --}}                                        
+                    <?php     
+                        /* se não tem resultado final lançado, imprime divs vazias - média e total de faltas */
+                        if (! isset($resultadoFinal) ){
+                            echo '<div class="col-sm-1 col-xs-2 border border-dark border-top-0 border-bottom-0 border-right-0 text-center"></div>';
+                            echo '<div class="col-sm-1 col-xs-2 border border-dark border-top-0 border-bottom-0 "></div>';
+                        }
+                        /* só imprime a média anual e faltas se existir resultado final */                                       
+                        if (isset($resultadoFinal) ){
+                            foreach ($notasMediasAnual as $notaMediaAnual) {                                
+                                if ($notaMediaAnual->fk_id_matricula == $matricula->id_matricula and $notaMediaAnual->fk_id_disciplina == $disciplina->id_disciplina ){
+                                    /* MEDIA ANUAL */
+                                    
+                                    echo '<div class="col-sm-1 col-xs-2 border border-dark border-top-0 border-bottom-0 border-right-0 text-center">';
+                                    echo '<b>';
+                                    if (number_format($notaMediaAnual->media, 1) >= $mediaAprovacao)                                        
+                                        echo number_format($notaMediaAnual->media, 1, ',', '.');                                        
+                                    
+                                    else 
+                                        echo '<font color="red">'.number_format($notaMediaAnual->media, 1, ',', '.').'</font>';
+                                    
+                                    echo '</div>';//fim div média anual
+
+                                    /* TOTAL FALTAS ANUAL */
+                                    echo '<div class="col-sm-1 col-xs-2 border border-dark border-top-0 border-bottom-0 text-center">';    
+                                    if ($notaMediaAnual->faltas > 0) 
+                                        echo $notaMediaAnual->faltas;
+                                    else 
+                                        echo '-';
+                                    
+                                    echo '</b>';
+                                    echo '</div>';//fim div faltas
+
+                                    break;
+                                }
                             }
                         }
-                        if ($existeResultadoFinal == false)
-                            echo "Cursando";
+                    ?>                    
+                    <div class="col-sm-1 col-xs-2 border-0 text-center">
+                    <?php                       
+                    if (isset($resultadoFinal) )
+                        echo $resultadoFinal->tipo_resultado_final;
+                    else
+                        echo "Cursando";
                     ?>
                     </div>                    
                 </div>
-            @endforeach
+            <?php } ?> {{-- fim disciplinas --}}
             <div class="row border border-dark ">
                 <div class="col-sm-12 col-xs-2">
                     <font size="2px">
@@ -258,30 +253,23 @@
             </div>              
             <div class="row ">
                 <div class="col text-center mt-2">
-                    <font color=blue>
-                    <strong>CONHECIMENTO PARA O MUNDO. VALORES PARA A VIDA.</strong>
-                    </font>
+                    <font color=blue><strong>CONHECIMENTO PARA O MUNDO. VALORES PARA A VIDA.</strong></font>
                 </div>            
             </div>  
             <div class="row">
                 <div class="col text-right">
-                    <font size="1px">
-                        <i>CiberEduca - Plataforma de Gestão Escolar</i>
-                    </font>
+                    <font size="1px"><i>CiberEduca - Plataforma de Gestão Escolar</i></font>
                 </div>        
             </div>
             <div class="row border-0">
-                <div class="col border-0">                
-                    <hr>
-                    <br>
-                </div>
+                <div class="col border-0"><hr><br></div>
             </div>              
         </div>
         {{-- Quebra página a cada 2 boletins --}}
         @if ($indexMatricula % 2 == 1)
             <div style="page-break-after: always"></div>        
         @endif
-    @endforeach {{-- Fim array alunos --}}   
+    <?php } ?> {{-- Fim array alunos --}}   
     
 </body>
 </html>
