@@ -58,20 +58,20 @@
         <div class="container">
             <div class="row mt-3 text-center">
                 <div class="col border border-dark"><strong>Nº</strong></div>
-                <div class="col-sm-3 border border-dark"><strong>Alunos</strong></div>
+                <div class="col-sm-2 border border-dark"><strong>Aluno(a)</strong></div>
                 @foreach ($gradeCurricular as $disciplina)
-                    <div class="col  foo font-cabecalho  border border-dark" >{{$disciplina->disciplina}}</div>                                
+                    <div class="col pl-0 foo font-cabecalho  border border-dark">{{$disciplina->disciplina}}</div>                                
                 @endforeach
-                <div class="col  foo font-cabecalho  border border-dark" >Faltas</div>
+                <div class="col  foo font-cabecalho  border border-dark">Faltas</div>
             </div>
             @foreach ($matriculas as $index => $matricula)
                 <div class="row py-0">
                     <div class="col font-cabecalho  text-center border border-dark">{{str_pad($index+1, 2, '0', STR_PAD_LEFT)}}</div>
-                    <div class="col-sm-3 font-cabecalho  border border-dark">{{$matricula->nome}}</div>                    
+                    <div class="col-sm-2 px-0 font-cabecalho  border border-dark">{{$matricula->nome}}</div>                    
                     <?php $total_faltas; 
                     /* varrendo array p imprimir media e falta de um aluno */                                         
                         foreach ($gradeCurricular as $disciplina){
-                            echo '<div class="col font-cabecalho  border border-dark text-center" >';
+                            echo '<div class="col pl-0 font-cabecalho  border border-dark text-center">';
                             foreach ($resultados as $resultado){
                                 if ($resultado->fk_id_matricula == $matricula->id_matricula
                                     and $resultado->fk_id_disciplina == $disciplina->fk_id_disciplina){                                    
