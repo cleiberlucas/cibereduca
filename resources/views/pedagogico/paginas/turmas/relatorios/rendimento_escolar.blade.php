@@ -60,7 +60,7 @@
                 <div class="col border border-dark"><strong>Nº</strong></div>
                 <div class="col-sm-2 border border-dark"><strong>Aluno(a)</strong></div>
                 @foreach ($gradeCurricular as $disciplina)
-                    <div class="col px-0 foo font-cabecalho  border border-dark">{{$disciplina->disciplina}}</div>                                
+                    <div class="col px-0 foo font-cabecalho  border border-dark text-center">{{$disciplina->disciplina}}</div>                                
                 @endforeach
                 <div class="col px-0  foo font-cabecalho  border border-dark">Faltas</div>
             </div>
