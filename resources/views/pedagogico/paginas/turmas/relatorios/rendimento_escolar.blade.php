@@ -40,111 +40,75 @@
       max-width: 100vw;
       width:30px;
     }
-
 </style>
-
 <body>
     <div class="container-fluid">
         <div class="container">
             @include('secretaria.paginas._partials.cabecalho_redeeduca')    
             <div class="mt-0 pt-0 text-center">                
                 <h5>Avaliação do Rendimento Escolar</h5>
-            </div>
-            
+            </div>            
             <div class="row">
                 <div class="col-sm-5">
-                    <h6>{{$turma->nome_turma}} - {{$turma->sub_nivel_ensino}} - {{$turma->descricao_turno}}</h6>
-                    
+                    <h6>{{$turma->nome_turma}} - {{$turma->sub_nivel_ensino}} - {{$turma->descricao_turno}}</h6>                    
                     <h6>{{$periodoLetivo->periodo_letivo}}/{{$periodoLetivo->anoLetivo->ano}}</h6>
                 </div>
             </div>
-        </div>
-            
+        </div>            
         <div class="container">
-            <div class="row mt-3 text-center ">
-
-                <div class="larg-div-n  border border-dark">
-                    <strong>Nº</strong>
-                </div>
-
-                <div class="col-sm-3 border border-dark">
-                    <strong>Alunos</strong>
-                </div>
-
+            <div class="row mt-3 text-center">
+                <div class="col border border-dark"><strong>Nº</strong></div>
+                <div class="col-sm-3 border border-dark"><strong>Alunos</strong></div>
                 @foreach ($gradeCurricular as $disciplina)
-                    <div class="  foo font-cabecalho  border border-dark" >
-                        {{$disciplina->disciplina}}                        
-                    </div>                                
+                    <div class="col  foo font-cabecalho  border border-dark" >{{$disciplina->disciplina}}</div>                                
                 @endforeach
-                <div class="  foo font-cabecalho  border border-dark" >
-                    Faltas
-                </div>
+                <div class="col  foo font-cabecalho  border border-dark" >Faltas</div>
             </div>
-
             @foreach ($matriculas as $index => $matricula)
-                <div class="row py-0 " >
-                    <div class="larg-div-n font-cabecalho  pl-2 pr-1 text-center border border-dark ">
-                        {{str_pad($index+1, 2, '0', STR_PAD_LEFT)}}
-                    </div>
-                    <div class="font-cabecalho col-sm-3  border border-dark ">
-                        {{$matricula->nome}}
-                    </div>                    
-                    
-                    <?php $total_faltas; ?>
-                    {{-- varrendo array p imprimir media e falta de um aluno --}}
-                    @foreach ($gradeCurricular as $disciplina)
-                        <div class="font-cabecalho  border border-dark text-center " style="width: 38px;">
-                        @foreach ($resultados as $resultado)
-                            @if ($resultado->fk_id_matricula == $matricula->id_matricula
-                                and $resultado->fk_id_disciplina == $disciplina->fk_id_disciplina)
-                                
-                                @if ($resultado->nota_media > 0)                                    
-                                    @if($resultado->nota_media >= $mediaAprovacao)
-                                        <strong> {{number_format($resultado->nota_media, 1, ',', '.')}} </strong> 
-                                    @else
-                                        <font color="red"><strong> {{number_format($resultado->nota_media, 1, ',', '.')}} </strong> </font>
-                                    @endif
-                                @endif
-                                <?php $total_faltas = $resultado->total_faltas; ?>
-                                @break;
-                            @endif
-                        @endforeach  
-                    </div>                       
-                    @endforeach
-
-                    <div class="font-cabecalho  border border-dark text-center" style="width: 38px;">
+                <div class="row py-0">
+                    <div class="col font-cabecalho  text-center border border-dark">{{str_pad($index+1, 2, '0', STR_PAD_LEFT)}}</div>
+                    <div class="col-sm-3 font-cabecalho  border border-dark">{{$matricula->nome}}</div>                    
+                    <?php $total_faltas; 
+                    /* varrendo array p imprimir media e falta de um aluno */                                         
+                        foreach ($gradeCurricular as $disciplina){
+                            echo '<div class="col font-cabecalho  border border-dark text-center" >';
+                            foreach ($resultados as $resultado){
+                                if ($resultado->fk_id_matricula == $matricula->id_matricula
+                                    and $resultado->fk_id_disciplina == $disciplina->fk_id_disciplina){                                    
+                                    if ($resultado->nota_media > 0) {
+                                        if($resultado->nota_media >= $mediaAprovacao)
+                                            echo number_format($resultado->nota_media, 1, ',', '.');
+                                        else
+                                            echo '<font color="red"> '.number_format($resultado->nota_media, 1, ',', '.').'  </font>';                                    
+                                    }                                
+                                $total_faltas = $resultado->total_faltas; 
+                                break;                            
+                                }
+                            }
+                        echo '</div>';
+                        }
+                    ?>
+                    <div class="col font-cabecalho  border border-dark text-center" style="width: 38px;">
                         <?php echo $total_faltas ?? ''; ?>
                     </div>
-
                 </div>
-
             @endforeach {{-- fim matriculas --}}
-
             <div class="row mt-4">
-                <div class="col-sm-5 text-center">
-                    ________ Aulas previstas
-                </div>
-                <div class="col-sm-5 text-center">
-                    ________ Aulas dadas
-                </div>
+                <div class="col-sm-6 text-center">________ Aulas previstas</div>
+                <div class="col-sm-6 text-center">________ Aulas dadas</div>
             </div>
-
             <div class="row mt-4">
-                <div class="col-sm-5 text-center">
-                    _________________________________________________
+                <div class="col-sm-6 text-center">_________________________________________________
                     <br>
                     Professor(a)
                 </div>
-                <div class="col-sm-5 text-center">
-                    _________________________________________________
+                <div class="col-sm-6 text-center">_________________________________________________
                     <br>
                     Coordenador(a)
                 </div>
             </div>
-        </div>
-        
+        </div>        
     </div>
-    @include('secretaria.paginas._partials.rodape_redeeduca')
-    
+    @include('secretaria.paginas._partials.rodape_redeeduca')    
 </body>
 </html>
