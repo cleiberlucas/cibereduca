@@ -62,7 +62,7 @@
                 @foreach ($gradeCurricular as $disciplina)
                     <div class="col px-0 foo font-cabecalho  border border-dark">{{$disciplina->disciplina}}</div>                                
                 @endforeach
-                <div class="col  foo font-cabecalho  border border-dark">Faltas</div>
+                <div class="col px-0  foo font-cabecalho  border border-dark">Faltas</div>
             </div>
             @foreach ($matriculas as $index => $matricula)
                 <div class="row py-0">
@@ -88,7 +88,7 @@
                         echo '</div>';
                         }
                     ?>
-                    <div class="col font-cabecalho  border border-dark text-center" style="width: 38px;">
+                    <div class="col px-0 font-cabecalho  border border-dark text-center">
                         <?php echo $total_faltas ?? ''; ?>
                     </div>
                 </div>
