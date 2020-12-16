@@ -267,6 +267,10 @@ class DiarioController extends Controller
                 ->get(); */
                 $alunos = $alunos->getAlunosTurma($request->turma);
 
+            //atualizar notas médias antes de rodar os boletins
+            $atualizarMedia = new NotaController(new Nota);
+            $atualizarMedia->atualizarNotasTurma($request->turma);
+
             $turma = new Turma;
             $turma = $turma->where('id_turma', $request->turma)->first();
 
@@ -297,6 +301,53 @@ class DiarioController extends Controller
                 'periodosLetivos' => $periodosLetivos,
                 'resultados' => $resultados,
                 'notasMedias' => $notasMedias,
+                'mediaAprovacao' => $mediaAprovacao,                
+            ]); 
+        }
+         /* Resultado anual 1: médias todas as disciplinas e todos os períodos            
+            */
+        else if($request->tipo_relatorio == 'resultado_anual_1'){
+            /* $alunos = $alunos
+                ->where('fk_id_turma', $request->turma)
+                ->orderBy('')
+                ->get(); */
+            $alunos = $alunos->getAlunosTurma($request->turma);
+
+            //atualizar notas médias antes de rodar os boletins
+            /* $atualizarMedia = new NotaController(new Nota);
+            $atualizarMedia->atualizarNotasTurma($request->turma); */
+
+            $turma = new Turma;
+            $turma = $turma->where('id_turma', $request->turma)->first();
+
+            $disciplinas = new GradeCurricular;
+            $disciplinas = $disciplinas->disciplinasTurma($request->turma);
+
+            $periodosLetivos = $periodosLetivos->getPeriodosLetivosAno($request->anoLetivo);
+
+            //Le resultados de NOTAS E FALTAS de todos bimestres de 1 turma
+            $resultados = new ResultadoAlunoPeriodo;
+            $resultados = $resultados->getResultadosTurma($request->turma); 
+
+            //Lê os resultados e calcula a média anual
+            //Todos os alunos da turma
+            $notasMedias = DB::table('tb_resultados_alunos_periodos')        
+                ->select(DB::raw('fk_id_matricula, fk_id_disciplina'), DB::raw('sum(nota_media)/4 as media, sum(total_faltas) as faltas'))
+                ->groupBy(DB::raw('fk_id_matricula') )
+                ->groupBy(DB::raw('fk_id_disciplina') )
+                ->join('tb_matriculas', 'fk_id_matricula', 'id_matricula')             
+                ->where('fk_id_turma', $request->turma)           
+                ->get();
+
+            return view('pedagogico.paginas.turmas.relatorios.resultado_anual_1', [
+                'matriculas' => $alunos,
+                'turma' => $turma,
+                'unidadeEnsino' => $unidadeEnsino,
+                'gradeCurricular' => $disciplinas,
+                'periodosLetivos' => $periodosLetivos,
+                'resultados' => $resultados,
+                'notasMedias' => $notasMedias,
+                'mediaAprovacao' => $mediaAprovacao,
                 
             ]); 
         }
@@ -371,11 +422,10 @@ class DiarioController extends Controller
         
             if ($request->periodo == null)
                 return redirect()->back()->with('atencao', 'Escolha um período Letivo.');
-
                 
             //atualizar notas médias antes de rodar os boletins
             $atualizarMedia = new NotaController(new Nota);
-            $atualizarMedia->atualizarNotasTurma($request->turma);
+            $atualizarMedia->atualizarNotasTurmaPeriodo($request->turma, $request->periodo);
 
             $alunos = $alunos->getAlunosTurma($request->turma);
 
@@ -479,9 +529,9 @@ class DiarioController extends Controller
             if ($request->periodo == null)
                 return redirect()->back()->with('atencao', 'Escolha um período Letivo.');
 
-            //atualizar notas médias antes de rodar
+            //atualizar notas médias antes de rodar o relatorio
             $atualizarMedia = new NotaController(new Nota);
-            $atualizarMedia->atualizarNotasTurma($request->turma);
+            $atualizarMedia->atualizarNotasTurmaPeriodo($request->turma, $request->periodo);
 
             $alunos = $alunos->getAlunosTurma($request->turma);
 

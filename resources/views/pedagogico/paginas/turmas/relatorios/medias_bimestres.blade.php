@@ -86,7 +86,7 @@
                                             and $resultado->fk_id_periodo_letivo == $periodoLetivo->id_periodo_letivo
                                             and $resultado->fk_id_disciplina == $disciplina->id_disciplina){
                                                 if ($resultado->nota_media < 10){
-                                                    if (number_format($resultado->nota_media, 1, ',', '.') < 6)
+                                                    if (number_format($resultado->nota_media, 1, ',', '.') < $mediaAprovacao)
                                                         echo '<font color="red">';
                                                     echo '<strong>'.number_format($resultado->nota_media, 1, ',', '.').'</strong>';
                                                     echo '</font>';

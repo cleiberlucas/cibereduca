@@ -252,23 +252,17 @@
                 </div>
             </div>              
             <div class="row ">
-                <div class="col text-center mt-2">
-                    <font color=blue><strong>CONHECIMENTO PARA O MUNDO. VALORES PARA A VIDA.</strong></font>
-                </div>            
+                <div class="col text-center mt-2"><font color=blue><strong>CONHECIMENTO PARA O MUNDO. VALORES PARA A VIDA.</strong></font></div>            
             </div>  
             <div class="row">
-                <div class="col text-right">
-                    <font size="1px"><i>CiberEduca - Plataforma de Gestão Escolar</i></font>
-                </div>        
+                <div class="col text-right"><font size="1px"><i>CiberEduca - Plataforma de Gestão Escolar</i></font></div>        
             </div>
-            <div class="row border-0">
-                <div class="col border-0"><hr><br></div>
-            </div>              
+            <div class="row border-0"><div class="col border-0"><hr><br></div></div>              
         </div>
         {{-- Quebra página a cada 2 boletins --}}
-        @if ($indexMatricula % 2 == 1)
+       {{--  @if ($indexMatricula % 2 == 1) --}}
             <div style="page-break-after: always"></div>        
-        @endif
+        {{-- @endif --}}
     <?php } ?> {{-- Fim array alunos --}}   
     
 </body>
