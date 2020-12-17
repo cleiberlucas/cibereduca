@@ -11,6 +11,7 @@ use App\Models\GradeCurricular;
 use App\Models\Pedagogico\Avaliacao;
 use App\Models\Pedagogico\ConteudoLecionado;
 use App\Models\Pedagogico\Nota;
+use App\Models\Pedagogico\RecuperacaoFinal;
 use App\Models\Pedagogico\ResultadoAlunoPeriodo;
 use App\Models\Pedagogico\ResultadoFinal;
 use App\Models\PeriodoLetivo;
@@ -237,6 +238,13 @@ class DiarioController extends Controller
             $cargaHorariaTurma = $cargaHorariaTurma->getCargaHorariaTurma($request->turma);
             //dd($cargaHorariaTurma);
 
+            $recuperacoesFinais = new RecuperacaoFinal;
+            $recuperacoesFinais = $recuperacoesFinais
+                ->select('tb_recuperacoes_finais.*')
+                ->join('tb_matriculas', 'fk_id_matricula', 'id_matricula')
+                ->where('fk_id_turma', $request->turma)
+                ->get();
+
             $resultadoFinal = new ResultadoFinal;
             $resultadoFinal = $resultadoFinal
                 ->join('tb_matriculas', 'fk_id_matricula', 'id_matricula')
@@ -252,6 +260,7 @@ class DiarioController extends Controller
                 'resultados' => $resultados,
                 'notasMedias' => $notasMedias,
                 'cargaHorariaAnual' => $cargaHorariaTurma,
+                'recuperacoesFinais' => $recuperacoesFinais,
                 'resultadosFinais' => $resultadoFinal,
                 'mediaAprovacao' => $mediaAprovacao,
                 'turma' => $turma,

@@ -9,7 +9,7 @@
             <a href="#" class="">Pedagógico</a>
         </li>               
         <li class="breadcrumb-item active" >
-            <a href="#" class="">Recuperação Final</a>
+            <a href="{{ route('recuperacaofinal.index') }}" class="">Recuperação Final</a>
         </li>
     </ol>
     <h3>Recuperações Finais <a href="{{ route('recuperacaofinal.create')}}" class="btn btn-success"> <i class="fas fa-plus-square"></i> Cadastrar</a></h3>    
@@ -19,7 +19,7 @@
     <div class="container-fluid">
         @include('admin.includes.alerts')
         <div class="card-header">
-            <form action="{{ '#' }}" method="POST" class="form form-inline">
+            <form action="{{ route('recuperacaofinal.search') }}" method="POST" class="form form-inline">
                 @csrf                
                 <input type="text" name="filtro" placeholder="Nome Aluno" class="form-control" value="{{ $filtros['filtro'] ?? '' }}">
                 <button type="submit" class="btn btn-outline-secondary"><i class="fas fa-filter"></i></button>
@@ -35,6 +35,7 @@
                         <th>Turma</th>
                         <th>Disciplina</th>                        
                         <th>Nota</th>                        
+                        <th>Data</th>
                         <th >Ações</th>
                     </thead>
                     <tbody>                        
@@ -56,10 +57,13 @@
                                 <td>
                                     {{number_format($recuperacaoFinal->nota, 1, ',', '.')}}                                    
                                 </td> 
-                                     
+                                <td>
+                                @if (isset($recuperacaoFinal->data_aplicacao))
+                                    {{date('d/m/Y', strtotime($recuperacaoFinal->data_aplicacao)) }}</td>
+                                @endif                                     
                                 <td style="width=10px;">
-                                    {{-- <a href="{{ route('tiposturmas.avaliacoes.edit', $avaliacao->id_avaliacao) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>                                    
-                                    <a href="{{ route('tiposturmas.avaliacoes.show', $avaliacao->id_avaliacao) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-eye"></i></a> --}}
+                                    <a href="{{ route('recuperacaofinal.edit', $recuperacaoFinal->id_recuperacao_final) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>                                    
+                                    <a href="{{ route('recuperacaofinal.destroy', $recuperacaoFinal->id_recuperacao_final) }} " class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></a>
                                 </td>                                
                             </tr>
                         @endforeach

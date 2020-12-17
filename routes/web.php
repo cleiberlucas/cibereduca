@@ -151,8 +151,9 @@ Route::prefix('pedagogico')
                  /**
                  * Rotas Tipos Avaliação
                  */
-                Route::any('recuperacaofinal/search', 'RecuperacaoFinalController@search')->name('recuperacaofinal.search');
+                Route::any('recuperacaofinal/search', 'RecuperacaoFinalController@search')->name('recuperacaofinal.search');                
                 Route::resource('recuperacaofinal', 'RecuperacaoFinalController');
+                Route::get('recuperacaofinal/{id_recuperacao}/destroy', 'RecuperacaoFinalController@destroy')->name('recuperacaofinal.destroy');
 
                 /* route::put('recuperacaofinal/{id_recuperacao}', 'RecuperacaoFinalController@update')->name('recuperacaofinal.update');
                 Route::get('recuperacaofinal/{id_recuperacao}/edit', 'RecuperacaoFinalController@edit')->name('recuperacaofinal.edit');

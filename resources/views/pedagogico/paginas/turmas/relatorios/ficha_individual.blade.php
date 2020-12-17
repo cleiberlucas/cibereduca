@@ -208,13 +208,26 @@
                                 <div class="row">                                    
                                     <?php
                                         foreach ($gradeCurricular as $disciplina) {
-                                            echo '<div class="col py-2 text-center font-cabecalho border border-dark border-top-0 border-left-0">-</div>';                                                
+                                            echo '<div class="col py-2 text-center font-cabecalho border border-dark border-top-0 border-left-0">';
+                                            $existeRecuperacao = false;
+                                            foreach ($recuperacoesFinais as $recuperacaoFinal) {
+                                                if ($recuperacaoFinal->fk_id_matricula == $matricula->id_matricula
+                                                    and $recuperacaoFinal->fk_id_disciplina == $disciplina->id_disciplina) {
+                                                        echo '<b>'.number_format($recuperacaoFinal->nota, 1, ',', '.').'</b>';
+                                                        $existeRecuperacao = true;
+                                                        break;                                                    
+                                                }
+                                                # code...
+                                            }
+                                            if (!$existeRecuperacao)
+                                                echo '-';
+                                            echo '</div>'                                   ;
                                         }                                        
                                     ?>
                                 </div>
                             </div>
                         </div>
-                        <div class="row ">
+                        <div class="row">
                             <div class="mx-0 px-0 my-0 py-1 col-sm-2 border border-dark border-top-0 text-center"><strong><i>Média Final</i></strong></div> 
                             <div class=" col-sm-10">
                                 <div class="row">
@@ -227,13 +240,25 @@
                                                 if($notaMedia->fk_id_disciplina == $disciplina->id_disciplina                                             
                                                     and $notaMedia->fk_id_matricula == $matricula->id_matricula){     
                                                         echo '<strong>';
-                                                            if ($notaMedia->media < 10 ){                                          
-                                                            if (number_format($notaMedia->media, 1, ',', '.') < $mediaAprovacao)
-                                                                echo '<font color="red">';
-                                                            echo number_format($notaMedia->media, 1, ',', '.');
+
+                                                        //verificando se tem nota de recuperação final
+                                                        //se tiver, deve somar à media anual e recalcular a média final.
+                                                        $existeRecuperacao = false;
+                                                        foreach ($recuperacoesFinais as $recuperacaoFinal) {
+                                                            if ($recuperacaoFinal->fk_id_matricula == $matricula->id_matricula
+                                                                and $recuperacaoFinal->fk_id_disciplina == $disciplina->id_disciplina) {
+                                                                    $mediaFinal = ($recuperacaoFinal->nota + $notaMedia->media) / 2;
+                                                                    echo number_format($mediaFinal, 1, ',', '.');
+                                                                    $existeRecuperacao = true;
+                                                                    break;
+                                                            }
                                                         }
-                                                        else {
-                                                            echo $notaMedia->media;
+                                                        if (!$existeRecuperacao){
+                                                            if ($notaMedia->media < 10 ){                                          
+                                                                if (number_format($notaMedia->media, 1, ',', '.') < $mediaAprovacao)
+                                                                    echo '<font color="red">';
+                                                                echo number_format($notaMedia->media, 1, ',', '.');
+                                                            }
                                                         }
                                                         echo '</font>';
                                                         echo '</strong>';                                                                                      ;

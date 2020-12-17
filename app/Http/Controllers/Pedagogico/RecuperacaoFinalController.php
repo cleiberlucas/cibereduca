@@ -44,8 +44,7 @@ class RecuperacaoFinalController extends Controller
         $recuperacoesFinais = $this->repositorio->search($request->filtro);
                 
         return view('pedagogico.paginas.recuperacaofinal.index', [
-                    'avaliacoes' => $recuperacoesFinais,  
-                    'tipoTurma'  => $request->id_tipo_turma,   
+                    'recuperacoesFinais' => $recuperacoesFinais,                      
                     'filtros'    => $filtros,               
         ]);
     }
@@ -86,85 +85,44 @@ class RecuperacaoFinalController extends Controller
         return redirect()->route('recuperacaofinal.index')->with('sucesso', 'Recuperação final cadastrada com sucesso.');
     }
 
-    public function show($id)
-    {
-        $this->authorize('Avaliação Ver');   
-        $avaliacao = $this->repositorio                            
-                            ->where('id_avaliacao', $id)                            
-                            ->first();
-        //dd($avaliacao);
-
-        if (!$avaliacao)
-            return redirect()->back();
-
-        return view('pedagogico.paginas.recuperacaofinal.show', [
-            'avaliacao' => $avaliacao
-        ]);
-    }
-
     public function destroy($id)
     {
-        $this->authorize('Avaliação Remover');
+        $this->authorize('Recuperação Final Remover');
 
-        $avaliacao = $this->repositorio->where('id_avaliacao', $id)->first();
+        $recuperacaoFinal = $this->repositorio->where('id_recuperacao_final', $id)->first();
 
-        if (!$avaliacao)
-            return redirect()->back();
+        if (!$recuperacaoFinal)
+            return redirect()->back()->with('erro', 'Recuperação final não encontrada.');
 
         try {
-            $avaliacao->where('id_avaliacao', $id)->delete();
+            $recuperacaoFinal->where('id_recuperacao_final', $id)->delete();
         } catch (QueryException $qe) {
-            return redirect()->back()->with('error', 'Existe nota lançada para esta avaliação. Não é possível excluir. ');            
+            return redirect()->back()->with('error', 'Houve erro ao excluir.');            
         }
-        return redirect()->route('recuperacaofinal', $avaliacao->fk_id_tipo_turma);
+        return redirect()->route('recuperacaofinal.index', $recuperacaoFinal->fk_id_tipo_turma)->with('sucesso', 'Recuperação final excluída com sucesso.');
     }
 
     public function edit($id)
     {       
-        $this->authorize('Avaliação Alterar');
+        $this->authorize('Recuperação Final Alterar');
 
-        $avaliacao = $this->repositorio->where('id_avaliacao', $id)->first();
-        //dd($avaliacao);
-             
-        if (!$avaliacao)
-            return redirect()->back();
+        $recuperacaoFinal = $this->repositorio->getRecuperacaoFinal($id);
         
-        $id_tipo_turma = $avaliacao->fk_id_tipo_turma;
-
-        $periodosLetivos = new PeriodoLetivo;
-        $periodosLetivos = $periodosLetivos->join('tb_tipos_turmas', 'tb_tipos_turmas.fk_id_ano_letivo', 'tb_periodos_letivos.fk_id_ano_letivo')                                            
-                                            ->where('id_tipo_turma', $id_tipo_turma)
-                                            ->where('tb_periodos_letivos.situacao', '1')
-                                            ->orderBy('periodo_letivo')->get();
-
-        $gradeCurricular = new GradeCurricular();
-        $gradeCurricular = $gradeCurricular->disciplinasTipoTurma($id_tipo_turma);
-        //dd($gradeCurricular);
-        $tiposAvaliacao = new TipoAvaliacao;
-        $tiposAvaliacao = $tiposAvaliacao->getTiposAvaliacao(1);
-        $tipoTurma = TipoTurma::where('id_tipo_turma', $id_tipo_turma)->first();
-        
-        return view('pedagogico.paginas.recuperacaofinal.edit',[
-                    'avaliacao' => $avaliacao,    
-                    'tipoTurma' => $tipoTurma,
-                    'periodosLetivos' => $periodosLetivos,
-                    'gradeCurricular' => $gradeCurricular,
-                    'tiposAvaliacao'  => $tiposAvaliacao,
-        ]);
+        return view('pedagogico.paginas.recuperacaofinal.edit',
+            compact('recuperacaoFinal')                    
+        );
     }
 
-    public function update(StoreUpdateAvaliacao $request, $id)
+    public function update(Request $request, $id)
     {
-        $avaliacao = $this->repositorio->where('id_avaliacao', $id)->first();
+        $recuperacaoFinal = $this->repositorio->where('id_recuperacao_final', $id)->first();
 
-        if (!$avaliacao)
-            return redirect()->back();
+        if (!$recuperacaoFinal)
+            return redirect()->back()->with('erro', 'Recuperação final não encontrada.');
         
-        $avaliacao->where('id_avaliacao', $id)->update($request->except('_token', '_method'));
+        $recuperacaoFinal->where('id_recuperacao_final', $id)->update($request->except('_token', '_method'));
 
-        return redirect()->route( 'recuperacaofinal', $avaliacao->fk_id_tipo_turma) ;
+        return redirect()->route( 'recuperacaofinal.index')->with('sucesso', 'Recuperação final alterada com sucesso.') ;
     }
-
-
 
 }
