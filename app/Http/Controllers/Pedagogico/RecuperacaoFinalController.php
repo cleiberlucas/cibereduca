@@ -28,7 +28,7 @@ class RecuperacaoFinalController extends Controller
      */
     public function index()
     {
-        $this->authorize('Recuperação Cadastrar');   
+        $this->authorize('Recuperação Final Ver');   
 
         $recuperacoesFinais = $this->repositorio->getTodosRecuperacoesFinais();
                 
