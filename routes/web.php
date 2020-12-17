@@ -146,6 +146,21 @@ Route::prefix('pedagogico')
                 Route::get('frequencia/export/', 'Relatorio\DiarioController@frequenciaExcel')->name('frequencia.excel');
 
                 /**
+                 * Rotas recuperação Final
+                */
+                 /**
+                 * Rotas Tipos Avaliação
+                 */
+                Route::any('recuperacaofinal/search', 'RecuperacaoFinalController@search')->name('recuperacaofinal.search');
+                Route::resource('recuperacaofinal', 'RecuperacaoFinalController');
+
+                /* route::put('recuperacaofinal/{id_recuperacao}', 'RecuperacaoFinalController@update')->name('recuperacaofinal.update');
+                Route::get('recuperacaofinal/{id_recuperacao}/edit', 'RecuperacaoFinalController@edit')->name('recuperacaofinal.edit');
+                Route::any('recuperacaofinalt/search', 'RecuperacaoFinalController@search')->name('recuperacaofinal.search');                
+                Route::post('recuperacaofinal/matricula', 'RecuperacaoFinalController@store')->name('recuperacaofinal.store');
+                route::any('recuperacaofinal', 'RecuperacaoFinalController@index')->name('recuperacaofinal.index');                 */
+
+                /**
                  * Rotas Resultado Final
                  */
                 /*route::get('resultadofinal/nota/{id_nota_avaliacao}', 'ResultadoFinalController@remover')->name('resultadofinal.nota.remover');

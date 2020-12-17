@@ -319,6 +319,12 @@ return [
                             'icon_color' => 'yellow',
                             'can'  => 'Nota Ver',
                         ],
+                        [
+                            'text' => 'Recuperação Final',                                
+                            'route' => 'recuperacaofinal.index',
+                            'icon_color' => 'yellow',
+                            'can'  => 'Recuperação Final Ver',
+                        ],
                     ],                   
                 ],
                 [
