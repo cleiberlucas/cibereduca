@@ -206,7 +206,7 @@ class DiarioController extends Controller
         else if($request->tipo_relatorio == 'ficha_individual_turma'){
             //$alunos = $alunos->where('fk_id_turma', $request->turma )->get();
             $alunos = $alunos
-                ->select('id_matricula', 'nome', 'pai', 'mae', 'data_nascimento',
+                ->select('id_matricula', 'nome', 'pai', 'mae', 'data_nascimento', 'naturalidade', 
                     'sexo')
                 ->join('tb_pessoas', 'fk_id_aluno', 'id_pessoa')
                 ->join('tb_sexo', 'fk_id_sexo', 'id_sexo')                
