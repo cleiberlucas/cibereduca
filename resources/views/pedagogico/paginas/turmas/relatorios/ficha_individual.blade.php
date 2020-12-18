@@ -259,6 +259,8 @@
                                                                     echo '<font color="red">';
                                                                 echo number_format($notaMedia->media, 1, ',', '.');
                                                             }
+                                                            else 
+                                                                echo $notaMedia->media;                                                            
                                                         }
                                                         echo '</font>';
                                                         echo '</strong>';                                                                                      ;
