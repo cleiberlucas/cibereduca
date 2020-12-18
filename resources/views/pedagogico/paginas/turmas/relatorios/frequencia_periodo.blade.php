@@ -124,6 +124,14 @@
             </div>{{-- fim container --}}
             {{-- @include('secretaria.paginas._partials.rodape_redeeduca') --}}
             {{-- próxima página --}}
+            <footer class="footer">        
+                <div class="row my-0 py-0 mr-0 ">            
+                    <div class="col-sm-11 col-xs-2 ml-5 my-0 py-0 text-right">
+                        <font size="1px">CiberEduca - Plataforma de Gestão Escolar</font>
+                    </div>         
+                </div>
+            </footer>
+            
             <div style="page-break-after: always"></div>
         @endforeach
     </div>
