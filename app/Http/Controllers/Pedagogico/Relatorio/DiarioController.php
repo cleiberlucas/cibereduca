@@ -598,7 +598,7 @@ class DiarioController extends Controller
         }
 
         /* Imprime ficha de frequência COM dados das frequencias 
-            Somente dados da turma, disciplina e aluno
+            Somente dados da turma, UMA disciplina e aluno
         */ else if ($request->tipo_relatorio == 'freq_mensal_disciplina') {
             $this->authorize('Frequência Ver');
 
@@ -615,13 +615,15 @@ class DiarioController extends Controller
 
             $diasFrequencias = DB::table('tb_frequencias')
                 ->select(DB::Raw('DAY(data_aula) dia'))
-                ->join('tb_turmas_periodos_letivos', 'tb_frequencias.fk_id_periodo_letivo', 'tb_turmas_periodos_letivos.fk_id_periodo_letivo')
+                ->join('tb_matriculas', 'fk_id_matricula', 'id_matricula')
                 ->where('fk_id_turma', $request->turma)
                 ->where('fk_id_disciplina', $request->disciplina)
                 ->whereMonth('data_aula', '=', $request->mes)
                 ->groupBy('dia')
                 /* ->orderBy('data_aula') */
                 ->get();
+
+            //dd($diasFrequencias);
 
             $frequencias = DB::table('tb_frequencias')
                 ->join('tb_turmas_periodos_letivos', 'tb_frequencias.fk_id_periodo_letivo', 'tb_turmas_periodos_letivos.fk_id_periodo_letivo')
@@ -645,7 +647,65 @@ class DiarioController extends Controller
                 'qtColunasDias' => count($diasFrequencias),
 
             ]);
-        } else {
+        } 
+         /* Imprime ficha de frequência COM dados das frequencias 
+            Somente dados da turma, TODAS disciplina e um período letivo
+        */ else if ($request->tipo_relatorio == 'frequencia_periodo') {
+            $this->authorize('Frequência Ver');
+            
+            if ($request->disciplina_periodo == null)
+                return redirect()->back()->with('atencao', 'Escolha um período letivo.');
+
+            $alunos = $alunos->getAlunosTurma($request->turma);
+
+            $disciplinas = new GradeCurricular;
+            $disciplinas = $disciplinas->disciplinasTurma($request->turma);
+
+            $periodoLetivo = new PeriodoLetivo;
+            $periodoLetivo = $periodoLetivo
+                ->select('periodo_letivo', 'data_inicio', 'data_fim')
+                ->where('id_periodo_letivo', $request->disciplina_periodo)
+                ->first();
+
+            //dd($periodoLetivo);
+
+            $diasFrequencias = DB::table('tb_frequencias')
+                ->select(DB::Raw('fk_id_disciplina, MONTH(data_aula) mes, DAY(data_aula) dia'))
+                ->join('tb_matriculas', 'fk_id_matricula', 'id_matricula')
+                ->where('fk_id_turma', $request->turma)
+                ->whereBetween('data_aula', array($periodoLetivo->data_inicio, $periodoLetivo->data_fim))
+                ->groupBy('fk_id_disciplina')
+                ->groupBy('mes')
+                ->groupBy('dia')
+                ->get();
+
+            //dd($diasFrequencias);
+
+            $frequencias = DB::table('tb_frequencias')
+                ->select(DB::raw('tb_frequencias.*, 
+                    sigla_frequencia'))
+                ->join('tb_matriculas', 'fk_id_matricula', 'id_matricula')
+                ->join('tb_tipos_frequencia', 'fk_id_tipo_frequencia', 'id_tipo_frequencia')
+                ->where('fk_id_turma', $request->turma)
+                ->whereBetween('data_aula', array($periodoLetivo->data_inicio, $periodoLetivo->data_fim))                
+                ->orderBy('data_aula')
+                ->get();
+
+             //dd($frequencias);
+
+            return view('pedagogico.paginas.turmas.relatorios.frequencia_periodo', [
+                'unidadeEnsino' => $unidadeEnsino,
+                'turma' => $turma,                
+                'periodoLetivo' => $periodoLetivo,
+                'alunos'    => $alunos,
+                'disciplinas' => $disciplinas,
+                'diasFrequencias' => $diasFrequencias,
+                'frequencias' =>   $frequencias,
+                'qtColunasDias' => count($diasFrequencias),
+
+            ]);
+        }
+        else {
             return redirect()->back()->with('atencao', 'Escolha um tipo de relatório.');
         }
     }

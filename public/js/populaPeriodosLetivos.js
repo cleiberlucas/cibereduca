@@ -13,6 +13,7 @@ $(document).ready(function(){
       // Empty the dropdown
       $('#periodo').find('option').not(':first').remove();
       $('#conteudo_periodo').find('option').not(':first').remove();      
+      $('#disciplina_periodo').find('option').not(':first').remove();
   
       // AJAX request 
       $.ajax({
@@ -37,6 +38,7 @@ $(document).ready(function(){
 
               $("#periodo").append(option);
               $("#conteudo_periodo").append(option); 
+              $("#disciplina_periodo").append(option); 
             }
           }
 

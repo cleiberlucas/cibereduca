@@ -117,17 +117,30 @@ ini_set('memory_limit', '2048M');
                 {{-- Frequências --}}            
                 <div role="tabpanel" class="tab-pane" id="frequencia"> 
                     <font color="blue">
+                        
+                    <div class="row my-3 ml-5">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="tipo_relatorio" id="frequencia_periodo" value="frequencia_periodo" >
+                            <label for="frequencia_periodo" class="form-check-label">Ficha Período Letivo - Todas Disciplinas</label>
+                        </div>
+                        <div class="form-group col-sm-3 col-xs-2">
+                            <font color="blue">Período Letivo</font>                                
+                            <select name="disciplina_periodo" id="disciplina_periodo" class="form-control"> 
+                                <option value=""></option>
+                            </select>
+                        </div>
+                    </div>
                     <div class="row my-3 ml-5">
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="tipo_relatorio" id="freq_mensal_disciplina" value="freq_mensal_disciplina" >
-                            <label for="freq_mensal_disciplina" class="form-check-label">Ficha Mensal disciplina</label>
+                            <label for="freq_mensal_disciplina" class="form-check-label">Ficha Mensal Disciplina</label>
                         </div>
                     </div>
 
                     <div class="row my-3 ml-5">
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="tipo_relatorio" id="freq_mensal_branco" value="freq_mensal_branco" >
-                            <label for="freq_mensal_branco" class="form-check-label">Ficha Mensal disciplina - em branco</label>
+                            <label for="freq_mensal_branco" class="form-check-label">Ficha Mensal Disciplina - em branco</label>
                         </div>
                     </div>
 
@@ -286,12 +299,13 @@ ini_set('memory_limit', '2048M');
         </form>
     </div>
 
-    <script type="text/javascript" src="{!!asset('/js/populaTurmas.js')!!}"></script>
-    <script type="text/javascript" src="{!!asset('/js/populaAlunosTurma.js')!!}"></script>
-    <script type="text/javascript" src="{!!asset('/js/populaMeses.js')!!}"></script>
-    {{-- <script type="text/javascript" src="{!!asset('/js/populaPeriodos.js')!!}"></script> --}}
-    <script type="text/javascript" src="{!!asset('/js/populaDisciplinas.js')!!}"></script>
-    <script type="text/javascript" src="{!!asset('/js/populaPeriodosLetivos.js')!!}"></script>
+    <?php $versao_rand = rand();?>
+
+    <script type="text/javascript" src="/js/populaTurmas.js?v=<?php echo urlencode(base64_decode((str_shuffle('cibereduca'))))?>&<?php echo $versao_rand ?>"></script>
+    <script type="text/javascript" src="/js/populaAlunosTurma.js?v=<?php echo urlencode(base64_decode((str_shuffle('cibereduca'))))?>&<?php echo $versao_rand ?>"></script>
+    <script type="text/javascript" src="/js/populaMeses.js?v=<?php echo urlencode(base64_decode((str_shuffle('cibereduca'))))?>&<?php echo $versao_rand ?>"></script>    
+    <script type="text/javascript" src="/js/populaDisciplinas.js?v=<?php echo urlencode(base64_decode((str_shuffle('cibereduca'))))?>&<?php echo $versao_rand ?>"></script>
+    <script type="text/javascript" src="/js/populaPeriodosLetivos.js?v=<?php echo urlencode(base64_decode((str_shuffle('cibereduca'))))?>&<?php echo $versao_rand ?>"></script>
     
     <script>
         $(document).ready(function(){
