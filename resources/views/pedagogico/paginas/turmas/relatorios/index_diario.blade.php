@@ -246,6 +246,19 @@ ini_set('memory_limit', '2048M');
                 <div role="tabpanel" class="tab-pane" id="anual">    
                     <div class="row my-3 ml-5">
                         <div class="form-check">
+                            <input class="form-check-input" type="radio" name="tipo_relatorio" id="ficha_individual_aluno" value="ficha_individual_aluno" >
+                            <label for="ficha_individual_aluno" class="form-check-label">Ficha Individual - Aluno</label>                                                        
+                        </div>
+                        <div class="form-group ml-3 col-sm-4 col-xs-2">
+                            Aluno
+                            <select name="ficha_indiv_aluno" id="ficha_indiv_aluno" class="form-control"> 
+                                <option value=""></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row my-3 ml-5">
+                        <div class="form-check">
                             <input class="form-check-input" type="radio" name="tipo_relatorio" id="ficha_individual_turma" value="ficha_individual_turma" >
                             <label for="ficha_individual_turma" class="form-check-label">Ficha Individual - Turma</label>                                                        
                         </div>
@@ -303,6 +316,7 @@ ini_set('memory_limit', '2048M');
 
     <script type="text/javascript" src="/js/populaTurmas.js?v=<?php echo urlencode(base64_decode((str_shuffle('cibereduca'))))?>&<?php echo $versao_rand ?>"></script>
     <script type="text/javascript" src="/js/populaAlunosTurma.js?v=<?php echo urlencode(base64_decode((str_shuffle('cibereduca'))))?>&<?php echo $versao_rand ?>"></script>
+    <script type="text/javascript" src="/js/populaAlunosFichaTurma.js?v=<?php echo urlencode(base64_decode((str_shuffle('cibereduca'))))?>&<?php echo $versao_rand ?>"></script>
     <script type="text/javascript" src="/js/populaMeses.js?v=<?php echo urlencode(base64_decode((str_shuffle('cibereduca'))))?>&<?php echo $versao_rand ?>"></script>    
     <script type="text/javascript" src="/js/populaDisciplinas.js?v=<?php echo urlencode(base64_decode((str_shuffle('cibereduca'))))?>&<?php echo $versao_rand ?>"></script>
     <script type="text/javascript" src="/js/populaPeriodosLetivos.js?v=<?php echo urlencode(base64_decode((str_shuffle('cibereduca'))))?>&<?php echo $versao_rand ?>"></script>

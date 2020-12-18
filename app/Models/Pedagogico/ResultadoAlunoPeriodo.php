@@ -28,6 +28,20 @@ class ResultadoAlunoPeriodo extends Model
     }
 
     /**
+     * Consulta lançamento de resultado de FALTA OU NOTA para um aluno
+     * @param $id_turma
+     * @return array
+     */
+    public function getResultadosAluno($id_matricula)
+    {
+        return $this  
+            ->select('tb_resultados_alunos_periodos.*')                      
+            ->join('tb_matriculas', 'fk_id_matricula', 'id_matricula')
+            ->where('fk_id_matricula', $id_matricula)            
+            ->get();
+    }
+
+    /**
      * Consulta lançamento de resultado de FALTA OU NOTA para uma turma
      * @param $id_turma
      * @return array

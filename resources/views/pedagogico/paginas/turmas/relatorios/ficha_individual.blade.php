@@ -338,6 +338,7 @@
                             </div>         
                         </div>
                     </footer>       
+                    
                 <div style="page-break-after: always"></div>                    
             @endforeach {{-- Fim array alunos --}}   
             

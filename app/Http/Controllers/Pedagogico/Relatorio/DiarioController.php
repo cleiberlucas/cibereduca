@@ -203,6 +203,72 @@ class DiarioController extends Controller
         /**
          * Ficha individual - imprime o RESULTADO FINAL de todos alunos da turma
          */
+        else if ($request->tipo_relatorio == 'ficha_individual_aluno'){
+            //$alunos = $alunos->where('fk_id_turma', $request->turma )->get();
+            $alunos = $alunos
+                ->select('id_matricula', 'nome', 'pai', 'mae', 'data_nascimento', 'naturalidade', 
+                    'sexo')
+                ->join('tb_pessoas', 'fk_id_aluno', 'id_pessoa')
+                ->join('tb_sexo', 'fk_id_sexo', 'id_sexo')                
+                ->where('id_matricula', $request->ficha_indiv_aluno)                                
+                ->get();
+
+            $disciplinas = new GradeCurricular;
+            $disciplinas = $disciplinas->disciplinasTurma($request->turma);
+
+            $periodosLetivos = $periodosLetivos->getPeriodosLetivosAno($request->anoLetivo);
+
+            //Le resultados de NOTAS E FALTAS de todos bimestres de 1 turma
+            $resultados = new ResultadoAlunoPeriodo;
+            $resultados = $resultados->getResultadosAluno($request->ficha_indiv_aluno); 
+
+            //Lê os resultados e calcula a média anual
+            //Todos os alunos da turma
+            $notasMedias = DB::table('tb_resultados_alunos_periodos')        
+                ->select(DB::raw('fk_id_matricula, fk_id_disciplina'), DB::raw('sum(nota_media)/4 as media, sum(total_faltas) as faltas'))
+                ->groupBy(DB::raw('fk_id_matricula') )
+                ->groupBy(DB::raw('fk_id_disciplina') )
+                ->join('tb_matriculas', 'fk_id_matricula', 'id_matricula')             
+                ->where('fk_id_matricula', $request->ficha_indiv_aluno)           
+                ->get();
+            //dd($notasMedias);
+
+            $cargaHorariaTurma = new Turma;
+            $cargaHorariaTurma = $cargaHorariaTurma->getCargaHorariaTurma($request->turma);
+            //dd($cargaHorariaTurma);
+
+            $recuperacoesFinais = new RecuperacaoFinal;
+            $recuperacoesFinais = $recuperacoesFinais
+                ->select('tb_recuperacoes_finais.*')
+                ->join('tb_matriculas', 'fk_id_matricula', 'id_matricula')
+                ->where('fk_id_matricula', $request->ficha_indiv_aluno)
+                ->get();
+
+            $resultadoFinal = new ResultadoFinal;
+            $resultadoFinal = $resultadoFinal
+                ->join('tb_matriculas', 'fk_id_matricula', 'id_matricula')
+                ->join('tb_tipos_resultado_final', 'fk_id_tipo_resultado_final', 'id_tipo_resultado_final')
+                ->where('fk_id_matricula', $request->ficha_indiv_aluno)
+                ->get();
+
+            return view('pedagogico.paginas.turmas.relatorios.ficha_individual', [
+                'matriculas' => $alunos,
+                'unidadeEnsino' => $unidadeEnsino,
+                'gradeCurricular' => $disciplinas,
+                'periodosLetivos' => $periodosLetivos,
+                'resultados' => $resultados,
+                'notasMedias' => $notasMedias,
+                'cargaHorariaAnual' => $cargaHorariaTurma,
+                'recuperacoesFinais' => $recuperacoesFinais,
+                'resultadosFinais' => $resultadoFinal,
+                'mediaAprovacao' => $mediaAprovacao,
+                'turma' => $turma,
+            ]);
+        }
+
+        /**
+         * Ficha individual - imprime o RESULTADO FINAL de todos alunos da turma
+         */
         else if($request->tipo_relatorio == 'ficha_individual_turma'){
             //$alunos = $alunos->where('fk_id_turma', $request->turma )->get();
             $alunos = $alunos
