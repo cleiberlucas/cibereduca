@@ -330,7 +330,14 @@
                         <div class="row">
                             <div class="col">&nbsp;</div>
                         </div>
-                    </div>                    
+                    </div>             
+                    <footer class="footer">        
+                        <div class="row my-0 py-0 mr-0 ">            
+                            <div class="col-sm-11 col-xs-2 ml-5 my-0 py-0 text-right">
+                                <font size="1px">CiberEduca - Plataforma de Gestão Escolar</font>
+                            </div>         
+                        </div>
+                    </footer>       
                 <div style="page-break-after: always"></div>                    
             @endforeach {{-- Fim array alunos --}}   
             
