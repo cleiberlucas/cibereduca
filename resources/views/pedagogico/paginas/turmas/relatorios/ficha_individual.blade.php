@@ -86,7 +86,7 @@
                             <div class="my-0 py-5 col-sm-2 border border-dark border-top-0  text-center"><strong><i>ATIVIDADES</i></strong>                                </div>                            
                             {{-- Cabeçalho disciplinas --}}
                             @foreach ($gradeCurricular as $disciplina)
-                                <div class="col foo font-cabecalho text-center border border-dark  border-right-0" >{{$disciplina->disciplina}}</div>                                
+                                <div class="col px-0 foo font-cabecalho text-center border border-dark  border-right-0" >{{$disciplina->disciplina}}</div>                                
                             @endforeach
                         </div>
 
@@ -113,7 +113,8 @@
                                         {{-- Varrendo disciplinas e resultados --}}
                                         <?php
                                             foreach ($gradeCurricular as $disciplina) {
-                                                echo '<div class="col text-center font-cabecalho border border-dark border-top-0 border-left-0">';
+                                                echo '<div class="col px-0 text-center font-cabecalho border border-dark border-top-0 border-left-0">';
+                                                    
                                                 foreach ($resultados as $resultado) {
                                                     $existeNota = false;
                                                     if($resultado->fk_id_disciplina == $disciplina->id_disciplina 
@@ -175,7 +176,7 @@
                                     {{-- Varrendo média anual --}}
                                     <?php
                                         foreach ($gradeCurricular as $disciplina) {
-                                            echo '<div class="col py-2 text-center font-cabecalho border border-dark border-top-0 border-left-0">';
+                                            echo '<div class="col py-2 px-0 text-center font-cabecalho border border-dark border-top-0 border-left-0">';
                                             foreach ($notasMedias as $notaMedia) {
                                                 $existeFalta = false;
                                                 if($notaMedia->fk_id_disciplina == $disciplina->id_disciplina                                             
@@ -208,7 +209,7 @@
                                 <div class="row">                                    
                                     <?php
                                         foreach ($gradeCurricular as $disciplina) {
-                                            echo '<div class="col py-2 text-center font-cabecalho border border-dark border-top-0 border-left-0">';
+                                            echo '<div class="col py-2 px-0 text-center font-cabecalho border border-dark border-top-0 border-left-0">';
                                             $existeRecuperacao = false;
                                             foreach ($recuperacoesFinais as $recuperacaoFinal) {
                                                 if ($recuperacaoFinal->fk_id_matricula == $matricula->id_matricula
@@ -234,7 +235,7 @@
                                     {{-- Varrendo média anual --}}
                                     <?php
                                         foreach ($gradeCurricular as $disciplina) {
-                                            echo '<div class="col py-2 text-center font-cabecalho border border-dark border-top-0 border-left-0">';
+                                            echo '<div class="col py-2 px-0 text-center font-cabecalho border border-dark border-top-0 border-left-0">';
                                             foreach ($notasMedias as $notaMedia) {
                                                 $existeFalta = false;
                                                 if($notaMedia->fk_id_disciplina == $disciplina->id_disciplina                                             
