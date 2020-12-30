@@ -96,6 +96,8 @@ class SecretariaController extends Controller
             if ($request->turma == null)
                 return redirect()->back()->with('atencao', 'Escolha uma turma.');
 
+            $anoLetivo = AnoLetivo::where('id_ano_letivo', $request->anoLetivo)->first();
+
             $matriculas = $matriculas
                 ->select('aluno.nome as nome_aluno', 'resp.nome as nome_responsavel', 'resp.telefone_1', 'resp.telefone_2',
                     'situacao_matricula')
@@ -110,7 +112,7 @@ class SecretariaController extends Controller
 
             return view(
                 'secretaria.paginas.relatorios.alunos_telefone', 
-                compact('turma', 'matriculas', 'unidadeEnsino', 'tipoDescontoCurso'),
+                compact('turma', 'matriculas', 'unidadeEnsino', 'tipoDescontoCurso', 'anoLetivo'),
             );
         }
         /* Lista de assinaturas */
