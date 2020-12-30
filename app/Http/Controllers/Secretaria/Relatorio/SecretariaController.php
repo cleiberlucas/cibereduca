@@ -77,6 +77,8 @@ class SecretariaController extends Controller
             if ($request->turma == null)
                 return redirect()->back()->with('atencao', 'Escolha uma turma.');
 
+            $anoLetivo = AnoLetivo::where('id_ano_letivo', $request->anoLetivo)->first();
+
             $matriculas = $matriculas->where('fk_id_turma', $request->turma)
                 ->join('tb_pessoas', 'fk_id_aluno', 'id_pessoa')
                 ->join('users', 'tb_matriculas.fk_id_user_cadastro', 'id')    
@@ -86,7 +88,7 @@ class SecretariaController extends Controller
 
             return view(
                 'secretaria.paginas.relatorios.alunos_turma', 
-                compact('turma', 'matriculas', 'unidadeEnsino', 'tipoDescontoCurso'),
+                compact('turma', 'matriculas', 'unidadeEnsino', 'tipoDescontoCurso', 'anoLetivo'),
             );
         }
         /**Alunos de uma turma com telefone*/
@@ -107,7 +109,7 @@ class SecretariaController extends Controller
                 ->get();
 
             return view(
-                'secretaria.paginas.relatorios.alunos_turma_telefone', 
+                'secretaria.paginas.relatorios.alunos_telefone', 
                 compact('turma', 'matriculas', 'unidadeEnsino', 'tipoDescontoCurso'),
             );
         }
@@ -150,6 +152,30 @@ class SecretariaController extends Controller
             
             return view('secretaria.paginas.relatorios.todas_matriculas', 
                 compact('anoLetivo', 'matriculas', 'unidadeEnsino', 'tipoDescontoCurso'),
+            );
+        }
+        /**Todos alunos matriculados com TELEFONE*/
+        else if ($request->tipo_relatorio == 'todas_matriculas_telefone') {
+            
+            $anoLetivo = AnoLetivo::where('id_ano_letivo', $request->anoLetivo)->first();
+
+            $matriculas = $matriculas
+                ->select('aluno.nome as nome_aluno', 'resp.nome as nome_responsavel', 'resp.telefone_1', 'resp.telefone_2',
+                    'situacao_matricula')                
+                ->join('tb_pessoas as aluno', 'fk_id_aluno', 'aluno.id_pessoa')
+                ->join('tb_pessoas as resp', 'fk_id_responsavel', 'resp.id_pessoa')
+                ->join('tb_situacoes_matricula', 'fk_id_situacao_matricula', 'id_situacao_matricula')
+                ->join('users', 'tb_matriculas.fk_id_user_cadastro', 'id')    
+                ->join('tb_turmas', 'fk_id_turma', 'id_turma')                
+                ->join('tb_tipos_turmas', 'fk_id_tipo_turma', 'id_tipo_turma')
+                ->where('fk_id_ano_letivo', $request->anoLetivo)
+                ->orderBy('aluno.'.$request->ordem) 
+                ->orderBy('aluno.nome')
+                ->get();
+
+            return view(
+                'secretaria.paginas.relatorios.alunos_telefone', 
+                compact('matriculas', 'unidadeEnsino', 'tipoDescontoCurso', 'anoLetivo'),
             );
         }
     }

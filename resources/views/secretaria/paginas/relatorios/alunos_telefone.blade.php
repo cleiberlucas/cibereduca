@@ -5,7 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="shortcut icon" href="favicons/favicon.ico" >
-    <title>Turma {{ $turma->nome_turma}} </title>
+    @if (isset($turma))
+        <title>Turma {{ $turma->nome_turma}} </title>    
+    @else
+        <title>Ano Letivo {{ $anoLetivo->ano}} </title>
+    @endif
+    
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     
 </head>
@@ -36,19 +41,22 @@
             @include('secretaria.paginas._partials.cabecalho_redeeduca')
             <div class="row mt-0 pt-0">
                 <div class="col-sm-11 col-xs-2 my-0" >  
-                    <h5><strong>Ano:</strong> {{$turma->tipoTurma->anoLetivo->ano}}</h5>                    
+                    <h5><strong>Ano Letivo:</strong> {{$anoLetivo->ano}}</h5>                    
                 </div>
             </div>
-            <div class="row">
-                <div class="col-sm-11 col-xs-2 my-0" >  
-                    <h5><strong>Turma:</strong> {{ $turma->nome_turma}} - {{$turma->turno->descricao_turno}}                    </h5>
+            @if (isset($turma))
+                <div class="row">
+                    <div class="col-sm-11 col-xs-2 my-0" >  
+                        <h5><strong>Turma:</strong> {{ $turma->nome_turma}} - {{$turma->turno->descricao_turno}}                    </h5>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-11 col-xs-2 my-0" >  
-                    <h5><strong>Localização:</strong>  {{ $turma->localizacao}}</h5>
+                <div class="row">
+                    <div class="col-sm-11 col-xs-2 my-0" >  
+                        <h5><strong>Localização:</strong>  {{ $turma->localizacao}}</h5>
+                    </div>
                 </div>
-            </div>
+            @endif
+           
             @if ($tipoDescontoCurso != '' and $tipoDescontoCurso->id_tipo_desconto_curso != 99)
                 <div class="row">
                     <div class="col-sm-11 col-xs-2 my-0" >  

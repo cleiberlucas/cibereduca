@@ -96,6 +96,13 @@
             <br>
             <div class="row">
                 <div class="form-check">
+                    <input class="form-check-input" type="radio" name="tipo_relatorio" id="todas_matriculas_telefone" value="todas_matriculas_telefone">
+                    <label for="todas_matriculas_telefone" class="form-check-label">Todos alunos matriculados com telefone</label>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="form-check">
                     <input class="form-check-input" type="radio" name="tipo_relatorio" id="todos_alunos" value="todos_alunos" disabled>
                     <label for="todos_alunos" class="form-check-label">Todos alunos cadastrados</label>
                 </div>
