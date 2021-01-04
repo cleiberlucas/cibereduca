@@ -485,7 +485,10 @@ class MatriculaController extends Controller
         exit;
     }
 
-
+    /**
+     * Geração de login em massa para todos os responsáveis cadastrados
+     * utilizado somente pelo desenvolvedor Cleiber
+     */
     public function gerarUserTodos()
     {
         $resps = new Pessoa;
@@ -525,6 +528,63 @@ class MatriculaController extends Controller
             }
                 
         }
+    }
+
+    /**
+     * Geração de login para pessoa cadastrada (responsável ou aluno)     
+     */
+    public function gerarLogin($id_pessoa)
+    {
+        
+        $resp = new Pessoa;
+        $resp = $resp
+            ->select('nome', 'email_1', 'cpf')            
+            ->where('id_pessoa', $id_pessoa)            
+            /* ->whereNotNull('cpf') */
+            ->first();
+        
+        if ($resp->cpf == null){
+            //dd($resp->cpf);
+            return redirect()->back()->with('atencao', 'Verifique se esta pessoa possui CPF cadastrado.');
+        }
+
+        //verificando se a pessoa já possui login cadastrado
+        $user = new User;
+        $user = $user->where('email', $resp->cpf)->first();
+
+        if ($user)
+            return redirect()->back()->with('atencao', 'Esta pessoa já possui login cadastrado.');
+        
+
+        $userController = new UserController(new User);
+        $userUnidadeController = new UserUnidadeEnsinoController(new User, new UnidadeEnsino);
+
+        $unidadesEnsino = array('0' => User::getUnidadeEnsinoSelecionada());
+        
+        $dadosUser = array('name' => $resp->nome,
+            'email' => $resp->cpf,
+            'password' => $resp->cpf);
+        try{
+            $idRespUser = $userController->storeRespUser($dadosUser);            
+
+            if ($idRespUser > 0){
+
+                //vinculando à unidade de ensino                     
+                $userUnidadeController->vincularUnidadesRespUser($unidadesEnsino, $idRespUser);
+
+                //atribuindo perfil 6 = RESPONSAVEL
+                $userPerfil = array(                        
+                    'fk_id_perfil' => 6,                         
+                );
+                $userUnidadeController->updateRespUser($userPerfil, $idRespUser);                    
+            }
+
+        } catch(\Throwable $qe) {
+            //return redirect()->back()->with('erro', 'Erro ao gerar user. Verifique se o CPF está cadastrado.'.$qe);
+        }
+        
+        return redirect()->back()->with('sucesso', 'Login cadastrado com sucesso.');
+    
     }
 
     /**
