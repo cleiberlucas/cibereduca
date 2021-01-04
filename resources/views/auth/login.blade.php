@@ -38,7 +38,7 @@
                                                     <strong>{{ $message }}</strong>
                                                 </span>
                                             @enderror
-                                            <span>*Caso seja pai/responsável, informe o CPF.</span>                                      
+                                            <span>*Caso seja pai/responsável, informe o seu CPF.</span>                                      
                                         </div>
                                         
                                     </div>

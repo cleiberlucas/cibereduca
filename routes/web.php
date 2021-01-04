@@ -228,8 +228,7 @@ Route::prefix('secretaria')
                  * Rotas Matrículas
                  */
                 //geração de senha para todos usuários
-                /* Route::any('matriculas/gerarSenhaTodos', 'MatriculaController@gerarUserTodos')->name('matriculas.gerarusertodos'); */
-                Route::any('matriculas/gerarLogin/{id_user}', 'MatriculaController@gerarLogin')->name('matriculas.gerarlogin');
+                /* Route::any('matriculas/gerarSenhaTodos', 'MatriculaController@gerarUserTodos')->name('matriculas.gerarusertodos'); */                
 
                 Route::get('matriculas/create/{id_turma}', 'MatriculaController@create')->name('matriculas.create');
                 Route::put('matriculas/{id_turma}', 'MatriculaController@update')->name('matriculas.update');
@@ -286,6 +285,7 @@ Route::prefix('secretaria')
                 /*
                 *Rotas Pessoas
                 */
+                Route::any('pessoas/gerarLogin/{id_user}', 'PessoaController@gerarLogin')->name('pessoas.gerarlogin');
                 Route::get('pessoas/create/aluno', 'PessoaController@create')->name('pessoas.create.aluno');
                 Route::get('pessoas/create/responsavel', 'PessoaController@create')->name('pessoas.create.responsavel');
                 Route::put('pessoas/{id_pessoa}', 'PessoaController@update')->name('pessoas.update');
