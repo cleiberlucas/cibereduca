@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Secretaria\Relatorio;
 use App\Http\Controllers\Controller;
 use App\Models\AnoLetivo;
 use App\Models\Secretaria\Matricula;
+use App\Models\Secretaria\Pessoa;
 use App\Models\Secretaria\SituacaoMatricula;
 use App\Models\Secretaria\Turma;
 use App\Models\TipoDescontoCurso;
@@ -72,7 +73,7 @@ class SecretariaController extends Controller
             $turma = $turma->where('id_turma', $request->turma)->first();
         }
 
-        /**Alunos de uma turma */
+        /**Alunos de uma turma  */
         if ($request->tipo_relatorio == 'alunos_turma') {
             if ($request->turma == null)
                 return redirect()->back()->with('atencao', 'Escolha uma turma.');
@@ -179,6 +180,18 @@ class SecretariaController extends Controller
                 'secretaria.paginas.relatorios.alunos_telefone', 
                 compact('matriculas', 'unidadeEnsino', 'tipoDescontoCurso', 'anoLetivo'),
             );
+        }
+        //Todos responsáveis cadatrados
+        else if ($request->tipo_relatorio == 'todos_responsaveis'){
+            $responsaveis = new Pessoa;
+            $responsaveis = $responsaveis
+                ->select('nome', 'cpf', 'email_1', 'telefone_1', 'telefone_2')
+                ->where('fk_id_tipo_pessoa', 2)
+                ->orderBy($request->ordem)
+                ->get();
+
+            return view('secretaria.paginas.relatorios.todos_responsaveis',
+                compact('responsaveis', 'unidadeEnsino'));
         }
     }
 }

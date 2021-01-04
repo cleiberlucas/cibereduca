@@ -117,6 +117,13 @@
                 <div class="form-group col-sm-6">
                     Título da lista: <input type="text" class="form-control" name="titulo_lista" > </div>
             </div>
+            <br>
+            <div class="row">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="tipo_relatorio" id="todos_responsaveis" value="todos_responsaveis" >
+                    <label for="todos_responsaveis" class="form-check-label">Todos responsáveis cadastrados</label>
+                </div>
+            </div>
 
             <br>
             <div class="row">
