@@ -515,7 +515,7 @@ class MatriculaController extends Controller
 
                     //atribuindo perfil 5 = PAI/RESPONSAVEL
                     $userPerfil = array(                        
-                        'fk_id_perfil' => 5,                         
+                        'fk_id_perfil' => 6,                         
                      );
                     $userUnidadeController->updateRespUser($userPerfil, $idRespUser);                    
                 }

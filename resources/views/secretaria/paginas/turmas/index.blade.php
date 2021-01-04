@@ -16,7 +16,7 @@
     <div class="row">
         <div class="form-group col-sm-9 col-sx-2">
             <h3>Turmas <a href="{{ route('turmas.create') }}" class="btn btn-success"> <i class="fas fa-plus-square"></i> Cadastrar</a></h3>    
-            <h3><a href="{{ route('matriculas.gerarusertodos') }}" class="btn btn-success"> <i class="fas fa-plus-square"></i> Gerar senhas</a></h3>    
+            {{-- <h3><a href="{{ route('matriculas.gerarusertodos') }}" class="btn btn-success"> <i class="fas fa-plus-square"></i> Gerar senhas</a></h3>     --}}
         </div>
         <div class="form-group col-sm-3 col-sx-2">
             @if (isset($totalMatriculas) and $totalMatriculas > 0)
@@ -102,8 +102,8 @@
     </div>
 
     <script>
-        /* $(document).ready(function(){
+        $(document).ready(function(){
               $(".alert").slideDown(300).delay(5000).slideUp(300);
-        }); */    
+        });    
     </script>
 @stop
