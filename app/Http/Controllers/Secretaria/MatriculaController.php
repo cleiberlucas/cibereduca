@@ -493,7 +493,7 @@ class MatriculaController extends Controller
             ->select('nome', 'email_1', 'cpf')
             ->where('fk_id_tipo_pessoa', 2)
             /* ->where('id_pessoa', '<=', 25) */
-            ->whereNotNull('email_1')
+            ->whereNotNull('cpf')
             ->get();
 
         $userController = new UserController(new User);
