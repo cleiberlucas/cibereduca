@@ -42,6 +42,21 @@ class UserController extends Controller
         return redirect()->route('users.index');
     }
 
+    public function storeRespUser($request )
+    {
+        $dados = $request;
+
+        $existe = $this->repositorio->where('email', $dados['email'])->first();
+        $createUser = 0;
+        
+        if (!$existe){
+            $dados['password'] = bcrypt($dados['password']); // encrypt password
+            $createUser = $this->repositorio->create($dados)->id;
+        }
+
+        return $createUser;
+    }
+
     public function show($id)
     {
         $this->authorize('Usuário Ver');       

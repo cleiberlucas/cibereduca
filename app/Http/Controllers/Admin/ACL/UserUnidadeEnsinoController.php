@@ -78,6 +78,8 @@ class UserUnidadeEnsinoController extends Controller
         if (!$user)
             return redirect()->back();
 
+        //dd($request);
+
         if (!$request->unidadesEnsino || count($request->unidadesEnsino) == 0){
             return redirect()
                     ->back()
@@ -88,6 +90,25 @@ class UserUnidadeEnsinoController extends Controller
         $user->unidadesEnsino()->attach($request->unidadesEnsino); 
 
         return redirect()->route('users.unidadesensino', $user->id);
+    }
+
+    public function vincularUnidadesRespUser($unidadesEnsino, $id)
+    {
+        $user = $this->user->where('id', $id)->first();
+
+        if (!$user)
+            return redirect()->back()->with('erro', 'usuário não encontrado.'.$id);
+
+       /*  if (!$request->unidadesEnsino || count($request->unidadesEnsino) == 0){
+            return redirect()
+                    ->back()
+                    ->with('info', 'Escolha pelo menos uma Unidade de Ensino.');
+        } */
+
+        //dd($request->unidadesEnsino);
+        $user->unidadesEnsino()->attach($unidadesEnsino); 
+
+        //return redirect()->route('users.unidadesensino', $user->id);
     }
 
     public function update(StoreUpdateUserUnidadeEnsino $request, $id)
@@ -105,6 +126,24 @@ class UserUnidadeEnsinoController extends Controller
         $userUnidade->where('id_usuario_unidade_ensino', $id)->update($request->except('_token', '_method'));
 
         return redirect()->route('users.unidadesensino', $userUnidade->user->id);
+    }
+
+    //Atualizando perfil RESPONSÁVEL
+    public function updateRespUser($request, $id)
+    {
+        $userUnidade = UserUnidadeEnsino::where('fk_id_user', $id)->first();
+
+        if (!$userUnidade)
+            return redirect()->back()->with('erro', 'Usuário não encontrado para atribuir perfil.');
+        
+       /*  $sit = $this->verificarSituacao($request->all());
+        
+        $request->merge($sit); */
+
+       // dd($userUnidade);
+        $userUnidade->where('fk_id_user', $id)->update($request);
+
+        //return redirect()->route('users.unidadesensino', $userUnidade->user->id);
     }
 
     public function removerUnidadesUser($id, $id_unidade_ensino)

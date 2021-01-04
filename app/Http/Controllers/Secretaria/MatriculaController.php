@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Secretaria;
 
+use App\Http\Controllers\Admin\ACL\UserController;
+use App\Http\Controllers\Admin\ACL\UserUnidadeEnsinoController;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateMatricula;
 use App\Models\FormaPagamento;
@@ -10,6 +12,7 @@ use App\Models\Secretaria\CorpoContrato;
 use App\Models\Secretaria\Matricula;
 use App\Models\Secretaria\Pessoa;
 use App\Models\Secretaria\Turma;
+use App\Models\Secretaria\UserUnidadeEnsino;
 use App\Models\TipoDescontoCurso;
 use App\Models\SituacaoMatricula;
 use App\Models\TipoAtendimentoEspecializado;
@@ -480,6 +483,48 @@ class MatriculaController extends Controller
 
         echo json_encode($valores);
         exit;
+    }
+
+
+    public function gerarUserTodos()
+    {
+        $resps = new Pessoa;
+        $resps = $resps
+            ->select('nome', 'email_1', 'cpf')
+            ->where('fk_id_tipo_pessoa', 2)
+            /* ->where('id_pessoa', '<=', 25) */
+            ->whereNotNull('email_1')
+            ->get();
+
+        $userController = new UserController(new User);
+        $userUnidadeController = new UserUnidadeEnsinoController(new User, new UnidadeEnsino);
+
+        $unidadesEnsino = array('0' => User::getUnidadeEnsinoSelecionada());
+        foreach ($resps as $resp){
+            $dadosUser = array('name' => $resp->nome,
+                'email' => $resp->cpf,
+                'password' => $resp->cpf);
+            try{
+                $idRespUser = $userController->storeRespUser($dadosUser);
+                //dd($idRespUser);
+
+                if ($idRespUser > 0){
+
+                    //vinculando à unidade de ensino                     
+                    $userUnidadeController->vincularUnidadesRespUser($unidadesEnsino, $idRespUser);
+
+                    //atribuindo perfil 5 = PAI/RESPONSAVEL
+                    $userPerfil = array(                        
+                        'fk_id_perfil' => 5,                         
+                     );
+                    $userUnidadeController->updateRespUser($userPerfil, $idRespUser);                    
+                }
+
+            } catch(\Throwable $qe) {
+                return redirect()->back()->with('erro', 'Erro ao gerar user.'.$qe);
+            }
+                
+        }
     }
 
     /**
