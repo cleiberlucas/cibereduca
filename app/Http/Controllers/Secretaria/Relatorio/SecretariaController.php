@@ -187,7 +187,7 @@ class SecretariaController extends Controller
             $responsaveis = $responsaveis
                 ->select('nome', 'cpf', 'email_1', 'telefone_1', 'telefone_2')
                 ->where('fk_id_tipo_pessoa', 2)
-                ->orderBy($request->ordem)
+                ->orderBy('nome')
                 ->get();
 
             return view('secretaria.paginas.relatorios.todos_responsaveis',
