@@ -39,7 +39,7 @@
             @include('secretaria.paginas._partials.cabecalho_redeeduca')
             <div class="row mt-0 pt-0">
                 <div class="col-sm-11 col-xs-2 my-0" >  
-                    <h5><strong>Ano:</strong> {{$anoLetivo->ano}}</h5>                    
+                    <h5><strong>Ano Letivo:</strong> {{$anoLetivo->ano}}</h5>                    
                 </div>
             </div>
 
@@ -62,6 +62,7 @@
                         <th>N°</th>
                         <th>Nome</th>                        
                         <th>Turma</th>
+                        <th>Data nascimento</th>
                         <th>Situação</th>
                         <th>Matriculado por</th>
                     </thead>
@@ -75,6 +76,9 @@
                                 </td>
                                 <td>
                                     {{$matricula->nome_turma}} - {{$matricula->descricao_turno}}
+                                </td>
+                                <td>
+                                    {{date('d/m/Y', strtotime($matricula->data_nascimento))}}
                                 </td>
                                 <td>
                                     {{$matricula->situacao_matricula}}
