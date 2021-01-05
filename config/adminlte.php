@@ -243,6 +243,7 @@ return [
             'text'    => ' Secretaria',
             'icon' => 'fas fa-fw fa-school',
             'icon_color' => 'green',
+            'can'   => 'Secretaria Ver',
             'submenu' => [
                 [
                     'text' => 'Turmas/Matrículas',
@@ -286,6 +287,7 @@ return [
             'text'    => 'Pedagógico',
             'icon'    => 'fas fa-chalkboard-teacher',
             'icon_color' => 'yellow',
+            'can'  => 'Pedagógico Ver',
             'submenu' => [
                 [
                     'text'    => 'Diários',
@@ -368,24 +370,33 @@ return [
                 ],
             ],
         ],
-        ['text'    => 'Captação',
-        'icon'    => 'fas fa-plus',                        
-        'icon_color' => 'orange',            
-        'can'  => 'Captação Ver',
-        'submenu' => [
-            [
-                'text' => 'Captações',
-                'route'  => 'captacao.index',
-                'icon' => 'fas fa-plus-circle',
-                'icon_color' => 'orange',
-                'can'  => 'Captação Ver',
+        [
+            'text'    => 'Captação',
+            'icon'    => 'fas fa-plus',                        
+            'icon_color' => 'orange',            
+            'can'  => 'Captação Ver',
+            'submenu' => [
+                [
+                    'text' => 'Captações',
+                    'route'  => 'captacao.index',
+                    'icon' => 'fas fa-plus-circle',
+                    'icon_color' => 'orange',
+                    'can'  => 'Captação Ver',
+                ],
             ],
         ],
-    ],
+        [
+            'text'    => 'Opção Educacional',
+            'route'  => 'captacao.index',
+            'icon'    => 'fas fa-book-reader',                        
+            'icon_color' => 'green',            
+            'can'  => 'Opção Educacional Responsável',
+        ],
         [
             'text'    => 'Configurações',
             'icon'    => 'fas fa-fw fa-cogs',
             'icon_color' => 'red',   
+            'can'  => 'Configurações Ver',
                    
             'submenu' => [
                 [
