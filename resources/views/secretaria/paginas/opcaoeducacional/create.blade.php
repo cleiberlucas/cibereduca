@@ -21,7 +21,6 @@
     <div class="card">
         <form action="{{ route('opcaoeducacional.store')}}" class="form" method="POST">
             @csrf
-                  
             
             <div class="container-fluid">
                 @include('admin.includes.alerts')

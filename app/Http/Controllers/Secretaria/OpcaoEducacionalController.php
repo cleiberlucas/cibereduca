@@ -9,10 +9,8 @@ use App\Models\Secretaria\Matricula;
 use App\Models\Secretaria\OpcaoEducacional;
 use App\Models\Secretaria\UserUnidadeEnsino;
 use App\Models\UnidadeEnsino;
-use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use PhpParser\Node\Stmt\TryCatch;
 
 class OpcaoEducacionalController extends Controller
 {
@@ -77,8 +75,7 @@ class OpcaoEducacionalController extends Controller
             ->join('tb_anos_letivos', 'id_ano_letivo', 'fk_id_ano_letivo')
             ->join('users', 'email', 'resp.cpf')
             ->where('id', Auth::id())
-            ->where('tb_anos_letivos.fk_id_unidade_ensino', session()->get('id_unidade_ensino') )         
-            /* ->where('resp.cpf', 'name'  )    */
+            ->where('tb_anos_letivos.fk_id_unidade_ensino', session()->get('id_unidade_ensino') )                     
             ->orderBy('nome_turma')
             ->orderBy('aluno')
             ->paginate(25);      
@@ -103,6 +100,7 @@ class OpcaoEducacionalController extends Controller
                 'resp.nome as responsavel',
                 'resp.cpf',
                 'aluno.nome as aluno',
+                'aluno.data_nascimento',
                 'sexo',
                 'tb_turmas.nome_turma',
                 'descricao_turno',
@@ -363,5 +361,4 @@ class OpcaoEducacionalController extends Controller
                     'filtros' => $filtros,
         ]);
     }
-
 }
