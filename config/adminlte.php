@@ -395,15 +395,14 @@ return [
         ],
         /* Menu da escola */
         [
-            'text'    => 'Opção Educacional',
-            'route'  => 'captacao.index',
+            'text'    => 'Opção Educacional',            
             'icon'    => 'fas fa-book-reader',                        
             'icon_color' => 'green',            
             'can'  => 'Opção Educacional Ver',
             'submenu' => [
                 [
-                    'text' => 'Cadastrar',
-                    'route'  => 'captacao.index',                    
+                    'text' => 'Listagem',
+                    'route'  => 'opcaoeducacional.index',                    
                     'icon_color' => 'green',
                     'can'  => '',
                 ],

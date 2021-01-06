@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\OpcaoEducacional;
+namespace App\Models\Secretaria;
 
 use Illuminate\Database\Eloquent\Model;
 

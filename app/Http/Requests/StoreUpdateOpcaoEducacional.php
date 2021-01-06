@@ -26,7 +26,7 @@ class StoreUpdateOpcaoEducacional extends FormRequest
         return [
             'fk_id_matricula'   => "required",                                    
             'opcao_educacional' => "required",
-            'fk_id_user'        => 'required',            
+            'fk_id_usuario'        => 'required',            
                      
         ];    
     }

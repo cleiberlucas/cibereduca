@@ -307,6 +307,22 @@ Route::prefix('secretaria')
                 Route::get('/', 'DisciplinaController@index')->name('secretaria.index');
 
                 /**
+                 * Rotas disciplinas
+                 */
+                Route::any('disciplinas/search', 'DisciplinaController@search')->name('disciplinas.search');
+                Route::resource('disciplinas', 'DisciplinaController');
+
+                Route::get('/', 'DisciplinaController@index')->name('secretaria.index');
+                
+                /**
+                 * Rotas Opção Educacional1
+                 */
+                Route::any('opcaoeducacional/search', 'OpcaoEducacionalController@search')->name('opcaoeducacional.search');
+                Route::resource('opcaoeducacional', 'OpcaoEducacionalController');
+                Route::get('opcaoeducacional/{id_opcao}/delete', 'OpcaoEducacionalController@destroy')->name('opcaoeducacional.destroy');
+                Route::get('opcaoeducacional/print/{id_opcao}', 'OpcaoEducacionalController@imprimir')->name('opcaoeducacional.print');
+
+                /**
                  * Rotas relatórios secretaria
                  */
                 Route::get('relatorios', 'Relatorio\SecretariaController@index')->name('secretaria.relatorios.index')->middleware('can:Pessoa Ver');
