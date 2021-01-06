@@ -32,7 +32,7 @@
                                 session()->put('id_unidade_ensino', $unidadeEnsino->id_unidade_ensino);    
                             }                            
                         ?>
-                    @elseif(count($unidadesEnsino) < 1)                            
+                    @elseif(count($unidadesEnsino) < 1 and Auth::id() != null)                             
                         <h4>O seu acesso ao sistema não foi concluído! </h4>
                         <h4>Favor entrar em contato com a secretaria do Colégio.</h4>
                     @endif
@@ -47,7 +47,7 @@
                     @endif      
                     
             </div>  
-            @if (count($unidadesEnsino) > 1)   
+            @if (count($unidadesEnsino) > 1 )   
                 <div class="form-group col-sm-1 col-xs-2">                 
                     <button type="submit" class="btn btn-success"><i class="fas fa-check-double"></i></button>
                 </div>
