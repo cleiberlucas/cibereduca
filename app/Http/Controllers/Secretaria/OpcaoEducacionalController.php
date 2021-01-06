@@ -5,9 +5,14 @@ namespace App\Http\Controllers\Secretaria;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateOpcaoEducacional;
 use App\Models\AnoLetivo;
+use App\Models\Secretaria\Matricula;
 use App\Models\Secretaria\OpcaoEducacional;
+use App\Models\Secretaria\UserUnidadeEnsino;
 use App\Models\UnidadeEnsino;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use PhpParser\Node\Stmt\TryCatch;
 
 class OpcaoEducacionalController extends Controller
 {
@@ -40,17 +45,58 @@ class OpcaoEducacionalController extends Controller
             ->orderBy('nome_turma')
             ->orderBy('aluno')
             ->paginate(25);      
-
-        //dd($captacoes);
+        
+        $perfil = new UserUnidadeEnsino;
+        $perfil = $perfil
+            ->select('fk_id_perfil')
+            ->where('fk_id_user', Auth::id())
+            ->first();
                 
         return view('secretaria.paginas.opcaoeducacional.index', 
-            compact('opcoesEducacionais')
+            compact('opcoesEducacionais', 'perfil')
+        );
+    }
+
+    public function indexResponsavel()
+    {
+        $this->authorize('Opção Educacional Responsável');   
+        
+        $opcoesEducacionais = $this->repositorio
+            ->select('tb_opcoes_educacionais.*',
+                'resp.nome as responsavel',
+                'aluno.nome as aluno',
+                'aluno.data_nascimento',
+                'tb_turmas.nome_turma',
+                'tb_anos_letivos.ano', 
+                )                
+            ->join('tb_matriculas', 'id_matricula', 'fk_id_matricula')        
+            ->join('tb_pessoas as resp', 'resp.id_pessoa', 'fk_id_responsavel')
+            ->join('tb_pessoas as aluno', 'aluno.id_pessoa', 'fk_id_aluno')            
+            ->join('tb_turmas', 'id_turma', 'fk_id_turma')            
+            ->join('tb_tipos_turmas', 'id_tipo_turma', 'fk_id_tipo_turma')
+            ->join('tb_anos_letivos', 'id_ano_letivo', 'fk_id_ano_letivo')
+            ->join('users', 'email', 'resp.cpf')
+            ->where('id', Auth::id())
+            ->where('tb_anos_letivos.fk_id_unidade_ensino', session()->get('id_unidade_ensino') )         
+            /* ->where('resp.cpf', 'name'  )    */
+            ->orderBy('nome_turma')
+            ->orderBy('aluno')
+            ->paginate(25);      
+
+            $perfil = new UserUnidadeEnsino;
+            $perfil = $perfil
+                ->select('fk_id_perfil')
+                ->where('fk_id_user', Auth::id())
+                ->first();
+                
+        return view('secretaria.paginas.opcaoeducacional.index', 
+            compact('opcoesEducacionais', 'perfil')
         );
     }
 
     public function imprimir($id)
     {
-        $this->authorize('Opção Educacional Ver');   
+       // $this->authorize('Opção Educacional Ver');   
         
         $opcaoEducacional = $this->repositorio
             ->select('tb_opcoes_educacionais.*',
@@ -92,7 +138,7 @@ class OpcaoEducacionalController extends Controller
         );
     }    
 
-     public function create()
+    public function create()
     {       
         $this->authorize('Opção Educacional Cadastrar');
 
@@ -109,18 +155,58 @@ class OpcaoEducacionalController extends Controller
         ]);
     }
 
+    public function createResponsavel()
+    {       
+        $this->authorize('Opção Educacional Responsável');
+
+        $alunos = new Matricula;
+        $alunos = $alunos
+            ->select(
+                'id_matricula',
+                'aluno.nome as aluno',
+                'nome_turma',
+                'ano')
+            ->join('tb_pessoas as resp', 'resp.id_pessoa', 'fk_id_responsavel') 
+            ->join('tb_pessoas as aluno', 'aluno.id_pessoa', 'fk_id_aluno')            
+            ->join('tb_turmas', 'id_turma', 'fk_id_turma')            
+            ->join('tb_tipos_turmas', 'id_tipo_turma', 'fk_id_tipo_turma')
+            ->join('tb_anos_letivos', 'id_ano_letivo', 'fk_id_ano_letivo')
+            ->join('users', 'email', 'resp.cpf')            
+            ->where('id', Auth::id())
+            ->where('ano', '2021')
+            ->orderBy('aluno')
+            ->get();
+
+        return view('secretaria.paginas.opcaoeducacional.create_resp', 
+            compact('alunos')            
+        );
+    }
 
     public function store(StoreUpdateOpcaoEducacional $request)
     {
-        $this->authorize('Opção Educacional Cadastrar');   
+       // $this->authorize('Opção Educacional Cadastrar');   
               
         $dados = $request->all();        
         $dados = array_merge($dados);
         
-       //dd($this->usuario);
-        $this->repositorio->create($dados);
+       try{
+            $this->repositorio->create($dados);
+       } catch (\Throwable $th) {                
+            return redirect()->back()->with('atencao', 'Já existe opção educacional cadastrada para esta matrícula.');
+       }
 
-        return redirect()->route('opcaoeducacional.index')->with('sucesso', 'Opção Educacional cadastrada com sucesso.');
+       $perfil = new UserUnidadeEnsino;
+       $perfil = $perfil
+        ->select('fk_id_perfil')
+        ->where('fk_id_user', Auth::id())
+        ->first();
+
+        //acesso para o colégio
+        if ($perfil->fk_id_perfil != 6)
+            return redirect()->route('opcaoeducacional.index')->with('sucesso', 'Opção Educacional cadastrada com sucesso.');
+        //acesso para responsável
+        else
+            return redirect()->route('opcaoeducacional.responsavel')->with('sucesso', 'Opção Educacional cadastrada com sucesso.');
     }
 
     public function destroy($id)
@@ -144,7 +230,7 @@ class OpcaoEducacionalController extends Controller
             'aluno.nome as aluno',
             'tb_turmas.nome_turma',
             'tb_anos_letivos.ano')
-            ->join('tb_matriculas', 'id_matricula', 'fk_id_matricula')                    
+            ->join('tb_matriculas', 'id_matricula', 'fk_id_matricula')                               
             ->join('tb_pessoas as aluno', 'aluno.id_pessoa', 'fk_id_aluno')
             ->join('tb_turmas', 'id_turma', 'fk_id_turma')
             ->join('tb_tipos_turmas', 'id_tipo_turma', 'fk_id_tipo_turma')
@@ -170,9 +256,38 @@ class OpcaoEducacionalController extends Controller
         ]);        
     }
 
+    public function editResponsavel($id)
+    {
+        //$this->authorize('Opção Educacional Alterar');
+        $opcaoEducacional = $this->repositorio
+            ->select('tb_opcoes_educacionais.*',            
+            'aluno.nome as aluno',
+            'tb_turmas.nome_turma',
+            'tb_anos_letivos.ano')
+            ->join('tb_matriculas', 'id_matricula', 'fk_id_matricula')       
+            ->join('tb_pessoas as resp', 'resp.id_pessoa', 'fk_id_responsavel')               
+            ->join('tb_pessoas as aluno', 'aluno.id_pessoa', 'fk_id_aluno')
+            ->join('tb_turmas', 'id_turma', 'fk_id_turma')
+            ->join('tb_tipos_turmas', 'id_tipo_turma', 'fk_id_tipo_turma')
+            ->join('tb_anos_letivos', 'id_ano_letivo', 'fk_id_ano_letivo')
+            ->join('users', 'email', 'resp.cpf')            
+            ->where('id', Auth::id())
+            ->where('tb_anos_letivos.fk_id_unidade_ensino', session()->get('id_unidade_ensino') )
+            ->where('id_opcao_educacional', $id)            
+            ->first();
+             
+        if (!$opcaoEducacional)
+            return redirect()->back()->with('erro', 'Esta matrícula não está vinculada a você.');
+
+        return view('secretaria.paginas.opcaoeducacional.edit_resp', [
+            'opcaoEducacional' => $opcaoEducacional,           
+            
+        ]);        
+    }
+
     public function update(StoreUpdateOpcaoEducacional $request, $id)
     {      
-        $this->authorize('Opção Educacional Alterar');   
+        //$this->authorize('Opção Educacional Alterar');   
 
         $opcaoEducacional = $this->repositorio->where('id_opcao_educacional', $id)->first();     
         if (!$opcaoEducacional)
@@ -180,7 +295,17 @@ class OpcaoEducacionalController extends Controller
                     
         $opcaoEducacional->where('id_opcao_educacional', $id)->update($request->except('_token', '_method'));
 
-        return redirect()->route('opcaoeducacional.index')->with('sucesso', 'Opção Educacional alterada com sucesso.');
+        $perfil = new UserUnidadeEnsino;
+        $perfil = $perfil
+         ->select('fk_id_perfil')
+         ->where('fk_id_user', Auth::id())
+         ->first();
+ 
+         //acesso para o colégio
+        if ($perfil->fk_id_perfil != 6)         
+            return redirect()->route('opcaoeducacional.index')->with('sucesso', 'Opção Educacional alterada com sucesso.');
+        else
+            return redirect()->route('opcaoeducacional.responsavel')->with('sucesso', 'Opção Educacional alterada com sucesso.');
     }
 
     /* public function show($id)

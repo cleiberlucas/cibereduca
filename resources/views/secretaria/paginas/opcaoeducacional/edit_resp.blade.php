@@ -5,7 +5,7 @@
 @section('content_header')
     <ol class="breadcrumb">
         <li class="breadcrumb-item active" >
-            <a href="{{ route('opcaoeducacional.index') }} " class="">Opção Educacional</a>
+            <a href="{{ route('opcaoeducacional.responsavel') }} " class="">Opção Educacional</a>
         </li>
         <li class="breadcrumb-item active" >
             <a href="#" class="">Editar</a>
@@ -33,7 +33,7 @@
                 </div>
             </div>
             
-            @include('secretaria.paginas.opcaoeducacional._partials.form')
+            @include('secretaria.paginas.opcaoeducacional._partials.form_resp')
         </form>
     </div>
 @endsection

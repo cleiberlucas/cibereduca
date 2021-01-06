@@ -99,7 +99,6 @@
                         aceito(amos) a realização de aulas, provas e exercícios por meio de plataforma digital.
                         Assumo(imos) o compromisso de prestar assistência doméstica ao(à) o aluno(a) incentivando(a) e
                         apoiando(a) para o progresso do aprendizado.
-
                     </p>
                 </div>
             </div>
@@ -112,6 +111,12 @@
                         acesso à internet doméstica e disponibilização de computador, tablet ou smartphone é
                         responsabilidade da família.
                     </p>
+                    @if (isset($opcaoEducacional->observacao))
+                        <p>
+                            Observações: {{$opcaoEducacional->observacao}}
+                        </p>
+                        
+                    @endif
                     
                     <font size="3px">Este termo foi gravado por {{$opcaoEducacional->name}}, em {{ date('d/m/Y', strtotime($opcaoEducacional->data_hora))}}, utilizando autenticação de login e senha.  </font>
                 </div>
@@ -134,7 +139,8 @@
                         <hr>            
                         <b>                                    
                             {{$unidadeEnsino->razao_social}} <br>
-                            {{mascaraCpfCnpj('##.###.###/####-##', $unidadeEnsino->cnpj)}}
+                            {{-- {{mascaraCpfCnpj('##.###.###/####-##', $unidadeEnsino->cnpj)}} --}}
+                            <br>
                             
                         </b>            
                     </td>

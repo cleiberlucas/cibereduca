@@ -5,11 +5,21 @@
 @section('content_header')
     <ol class="breadcrumb">
         <li class="breadcamb-item">
-            <a href="">Opção Educacional</a>
+            <a href="">Opção Educacional 2021</a>
         </li>
     </ol>
     
-    <h3>Opção Educacional <a href="{{ route('opcaoeducacional.create') }}" class="btn btn-success"><i class="fas fa-plus-square"></i> Cadastrar</a></h3>
+    <h3>Opção Educacional 
+        {{-- Botão para responsável --}}
+        @if ($perfil->fk_id_perfil == 6)
+            <a href="{{ route('opcaoeducacional.create.resp') }}" class="btn btn-success"><i class="fas fa-plus-square"></i> Cadastrar</a>    
+        {{-- Botão para colégio --}}
+        @else
+            <a href="{{ route('opcaoeducacional.create') }}" class="btn btn-success"><i class="fas fa-plus-square"></i> Cadastrar </a>
+        @endif
+        
+    
+    </h3>
 @stop
 
 @section('content')
@@ -17,13 +27,13 @@
     @include('admin.includes.alerts')
     
     <div class="card">
-        <div class="card-header">
+        {{-- <div class="card-header">
             <form action="{{ route('opcaoeducacional.search') }}" method="POST" class="form form-inline">
                 @csrf
             <input type="text" name="filtro" size="30" placeholder="Informe responsável ou aluno" class="form-control" value="{{ $filtros['filtro'] ?? '' }}">
                 <button type="submit"class="btn btn-outline-secondary"><i class="fas fa-filter"></i></button>
             </form>
-        </div>
+        </div> --}}
         <div class="card-body">
             <table class="table table-responsive table-condensed table-hover">
                 
@@ -55,11 +65,18 @@
                                 Remoto
                             @endif    
                             </td>                       
-                            <td>                                
-                                <a href="{{ route('opcaoeducacional.edit', $opcaoEducacional->id_opcao_educacional) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>
+                            <td>                            
+                                @if ($perfil->fk_id_perfil != 6)
+                                    <a href="{{ route('opcaoeducacional.edit', $opcaoEducacional->id_opcao_educacional) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>
+                                @else
+                                    <a href="{{ route('opcaoeducacional.edit.resp', $opcaoEducacional->id_opcao_educacional) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>
+                                @endif
+                                
                                 <a href="{{ route('opcaoeducacional.print', $opcaoEducacional->id_opcao_educacional) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-print"></i></a>
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <a href="{{ route('opcaoeducacional.destroy', $opcaoEducacional->id_opcao_educacional) }}" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></a>
+                                @if ($perfil->fk_id_perfil != 6)
+                                    <a href="{{ route('opcaoeducacional.destroy', $opcaoEducacional->id_opcao_educacional) }}" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></a>
+                                @endif
                             </td>
                             
                         </tr>

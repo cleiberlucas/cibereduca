@@ -24,7 +24,7 @@
                   
             
             <div class="container-fluid">
-
+                @include('admin.includes.alerts')
             <div class="row">
 
                 <div class="form-group col-sm-2 col-xs-2">            

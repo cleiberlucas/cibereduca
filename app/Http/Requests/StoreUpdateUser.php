@@ -28,7 +28,7 @@ class StoreUpdateUser extends FormRequest
         
         $rules = [
             'name' => ['required', 'string', 'min:3', 'max:255'],
-            'email' => ['required', 'string', 'email', 'min:3', 'max:255', "unique:users,email,{$id},id"],
+            'email' => ['required', 'string', 'min:3', 'max:255', "unique:users,email,{$id},id"],
             'password' => ['required', 'string', 'min:6', 'max:16'],
         ];
 

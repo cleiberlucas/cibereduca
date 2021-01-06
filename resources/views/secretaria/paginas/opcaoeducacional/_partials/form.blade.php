@@ -1,7 +1,7 @@
     
     <input type="hidden" name="fk_id_usuario" value={{Auth::id()}}>
 
-    @include('admin.includes.alerts')
+   
     @csrf
     
     <div class="row ml-3">                        

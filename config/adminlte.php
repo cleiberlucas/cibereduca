@@ -388,7 +388,7 @@ return [
         /* Menu somente para o responsável */
         [
             'text'    => 'Opção Educacional',
-            'route'  => 'captacao.index',
+            'route'  => 'opcaoeducacional.responsavel',
             'icon'    => 'fas fa-book-reader',                        
             'icon_color' => 'green',            
             'can'  => 'Opção Educacional Responsável',

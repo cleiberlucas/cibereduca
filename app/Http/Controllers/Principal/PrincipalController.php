@@ -20,7 +20,7 @@ class PrincipalController extends Controller
         $unidadesEnsino = UnidadeEnsino::where('situacao', '=', '1')
                         ->where('situacao_vinculo', '=', '1')                         
                         ->where('tb_usuarios_unidade_ensino.fk_id_user', '=', Auth::id())        
-                        ->join('tb_usuarios_unidade_ensino', 'fk_id_unidade_ensino', 'id_unidade_ensino')                                    
+                        ->join('tb_usuarios_unidade_ensino', 'fk_id_unidade_ensino', 'id_unidade_ensino')                                                            
                         ->get();
                         
         return view('principal.paginas.home.index',[

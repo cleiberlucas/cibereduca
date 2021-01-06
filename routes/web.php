@@ -316,11 +316,18 @@ Route::prefix('secretaria')
                 
                 /**
                  * Rotas Opção Educacional1
-                 */
+                */                
                 Route::any('opcaoeducacional/search', 'OpcaoEducacionalController@search')->name('opcaoeducacional.search');
-                Route::resource('opcaoeducacional', 'OpcaoEducacionalController');
-                Route::get('opcaoeducacional/{id_opcao}/delete', 'OpcaoEducacionalController@destroy')->name('opcaoeducacional.destroy');
+                Route::get('opcaoeducacional/create', 'OpcaoEducacionalController@create')->name('opcaoeducacional.create');
+                Route::get('opcaoeducacional/create/resp', 'OpcaoEducacionalController@createResponsavel')->name('opcaoeducacional.create.resp');
+                route::get('opcaoeducacional/{id_opcao}/delete', 'OpcaoEducacionalController@destroy')->name('opcaoeducacional.destroy');
+                Route::put('opcaoeducacional/{id_opcao}', 'OpcaoEducacionalController@update')->name('opcaoeducacional.update');
+                route::get('opcaoeducacional/{id_opcao}', 'OpcaoEducacionalController@edit')->name('opcaoeducacional.edit');
+                route::get('opcaoeducacional/resp/{id_opcao}', 'OpcaoEducacionalController@editResponsavel')->name('opcaoeducacional.edit.resp');
+                Route::post('opcaoeducacional/store', 'OpcaoEducacionalController@store')->name('opcaoeducacional.store');
+                route::any('opcaoeducacional', 'OpcaoEducacionalController@index')->name('opcaoeducacional.index');
                 Route::get('opcaoeducacional/print/{id_opcao}', 'OpcaoEducacionalController@imprimir')->name('opcaoeducacional.print');
+                Route::any('opcaoeducacional/responsavel/index', 'OpcaoEducacionalController@indexResponsavel')->name('opcaoeducacional.responsavel');
 
                 /**
                  * Rotas relatórios secretaria
