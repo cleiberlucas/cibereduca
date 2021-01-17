@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title_postfix', ' Recebíveis')
+@section('title_postfix', ' Boletos')
 
 @section('content_header')
     <ol class="breadcrumb">        
@@ -10,6 +10,9 @@
         <li class="breadcrumb-item active" >            
             <a href="{{ route('financeiro.index') }} " class=""> Recebíveis</a>
         </li>
+        <li class="breadcrumb-item active" >            
+            <a href="#" class=""> Boletos</a>
+        </li>
     </ol>    
 @stop
 
@@ -17,41 +20,49 @@
     <div class="container-fluid">
         @include('admin.includes.alerts')
         <div class="card-header">
-           
-            <form action="{{ route('recebivel.aluno.search') }}" method="POST" class="form form-inline">
+            <h4>Boletos aluno(a)</h4>
+            <div class="row">
+                <div class="col-sm my-3">                                
+                    <strong>{{$aluno->nome}}</strong>  <a href="{{ route('boleto.create', $aluno->id_pessoa) }}" class="btn btn-success"><i class="fas fa-plus-square"></i> Lançar Boleto</a>                              
+                </div>                
+            </div> 
+            {{-- <form action="{{ route('recebivel.aluno.search') }}" method="POST" class="form form-inline">
                 @csrf
                 <input type="text" name="filtro" placeholder="Nome" class="form-control" value="{{ $filtros['filtro'] ?? '' }}">                
                 <button type="submit" class="btn btn-outline-secondary"><i class="fas fa-filter"></i></button>
-            </form>
+            </form> --}}
         </div>
         <div class="table-responsive">
             <table class="table table-hover">
                 <thead>
                     <th scope="col">#</th>
-                    <th scope="col">Aluno(a)</th>                        
+                    <th scope="col">Data Vencimento</th>        
+                    <th scope="col">Valor</th>        
+                    <th scope="col">Data Pagamento</th>                        
                     <th scope="col">Situação</th>
                     <th scope="col">Ações</th>                    
                 </thead>
-                <tbody>              
-                    
-                    @foreach ($pessoas as $index => $pessoa)
-                    
+                <tbody>                                  
+                    @foreach ($boletos as $index => $boleto)
                         <tr>
                             <th scope="row">{{$index+1}}</th>
                             <td>
-                                {{-- ALUNO - link p ficha financeira do aluno --}}                                    
-                                <a href="{{ route('financeiro.indexAluno', $pessoa->id_pessoa) }}" class="btn btn-sm btn-link"> {{$pessoa->nome}}</a>    
-                            </td>                                 
+                                {{date('d/m/Y', strtotime($boleto->data_vencimento))}}
+                            </td>    
                             <td>
-                                @if ($pessoa->situacao_pessoa == 1)
-                                    <b>Ativo</b>
-                                @else
-                                    Inativo                                        
-                                @endif                                    
+                                {{number_format($boleto->valor_total, 2, ',', '.')}}    
+                            </td>                             
+                            <td>
+                                @if (isset($boleto->data_pagamento))
+                                    {{date('d/m/Y', strtotime($boleto->data_pagamento))}}    
+                                @endif                                
+                            </td>           
+                            <td>
+                                
                             </td>  
                             <td>
                                 {{-- Link para todos os boletos de um aluno em qq ano letivo --}}
-                                <a href="{{ route('boleto.indexAluno', $pessoa->id_pessoa) }}" class="btn btn-sm btn-outline-dark"><i class="fas fa-barcode"></i></a>
+                                {{-- <a href="{{ route('boleto.indexAluno', $boleto->id_pessoa) }}" class="btn btn-sm btn-outline-dark"><i class="fas fa-barcode"></i></a> --}}
                             </td>                                                                           
                         </tr>
                     @endforeach
@@ -59,9 +70,9 @@
             </table>
             <div class="card-footer">
                 @if (isset($filtros))
-                    {!! $pessoas->appends($filtros)->links()!!}
+                    {!! $boletos->appends($filtros)->links()!!}
                 @else
-                    {!! $pessoas->links()!!}     
+                    {!! $boletos->links()!!}     
                 @endif                    
             </div>
         </div>

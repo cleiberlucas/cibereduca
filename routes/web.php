@@ -46,8 +46,6 @@ Route::prefix('financeiro')
                 Route::any('recebivel/searchAluno', 'FinanceiroController@searchAluno')->name('recebivel.aluno.search');
                 Route::any('recebivel/search', 'FinanceiroController@search')->name('recebivel.search');
 
-               
-
                 /**
                  * Rotas Financeiro RECEBIMENTO
                  */                
@@ -55,6 +53,14 @@ Route::prefix('financeiro')
                 Route::get('recebimento/create/{id_recebivel}', 'RecebimentoController@create')->name('recebimento.create');
                 Route::get('recebimento/recibo/{id_recebivel}', 'RecebimentoController@recibo')->name('recebimento.recibo');
                 Route::get('recebimento/destroy/{id_recebivel}', 'RecebimentoController@destroy')->name('recebimento.destroy');
+
+                Route::resource('boleto', 'BoletoController');
+                route::any('aluno/{id_aluno}', 'BoletoController@indexAluno')->name('boleto.indexAluno');
+                Route::get('create/boleto/{id_aluno}', 'BoletoController@create')->name('boleto.create');     
+                /* Route::post('store/boleto', 'BoletoController@store')->name('boleto.store');            */
+                /*Route::get('recebivel/destroy/{id_aluno}', 'BoletoController@destroy')->name('boleto.destroy');   
+                Route::any('recebivel/searchAluno', 'BoletoController@searchAluno')->name('recebivel.aluno.search');
+                Route::any('recebivel/search', 'BoletoController@search')->name('recebivel.search'); */
 
         });
 /**

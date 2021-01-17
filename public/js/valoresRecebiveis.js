@@ -12,7 +12,7 @@ $(document).ready(function(){
 
         // ID matrícula
         var id_matricula = $('#fk_id_matricula').val();
-        //console.log("id matrícula "+id_matricula);
+        console.log("id matrícula "+id_matricula);
         // Empty the dropdown
         document.getElementById('valores').innerHTML = '';
         //$('#valores').innerHTML = '';
@@ -36,7 +36,10 @@ $(document).ready(function(){
 
                 var valor_matricula = response['data'][i].valor_matricula;                
                 var valor_curso = response['data'][i].valor_curso;
-                var valor_desconto = response['data'][i].valor_desconto;
+                var valor_desconto = 0;
+                if (response['data'][i].valor_desconto)
+                  var valor_desconto = response['data'][i].valor_desconto;
+
                 var valor_contrato = valor_curso - valor_desconto;
 
                 var valor_entrada_mat_didatico = response['data'][i].valor_entrada_mat_didatico;
