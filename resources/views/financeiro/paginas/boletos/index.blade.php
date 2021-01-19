@@ -32,42 +32,47 @@
                 <button type="submit" class="btn btn-outline-secondary"><i class="fas fa-filter"></i></button>
             </form> --}}
         </div>
-        <div class="table-responsive">
-            <table class="table table-hover">
-                <thead>
-                    <th scope="col">#</th>
-                    <th scope="col">Data Vencimento</th>        
-                    <th scope="col">Valor</th>        
-                    <th scope="col">Data Pagamento</th>                        
-                    <th scope="col">Situação</th>
-                    <th scope="col">Ações</th>                    
-                </thead>
-                <tbody>                                  
-                    @foreach ($boletos as $index => $boleto)
-                        <tr>
-                            <th scope="row">{{$index+1}}</th>
-                            <td>
-                                {{date('d/m/Y', strtotime($boleto->data_vencimento))}}
-                            </td>    
-                            <td>
-                                {{number_format($boleto->valor_total, 2, ',', '.')}}    
-                            </td>                             
-                            <td>
-                                @if (isset($boleto->data_pagamento))
-                                    {{date('d/m/Y', strtotime($boleto->data_pagamento))}}    
-                                @endif                                
-                            </td>           
-                            <td>
-                                
-                            </td>  
-                            <td>
-                                {{-- Link para todos os boletos de um aluno em qq ano letivo --}}
-                                {{-- <a href="{{ route('boleto.indexAluno', $boleto->id_pessoa) }}" class="btn btn-sm btn-outline-dark"><i class="fas fa-barcode"></i></a> --}}
-                            </td>                                                                           
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+        <form action="{{ route('boleto.imprimir')}}" class="form" name="form" method="POST">
+            @csrf 
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <th scope="col">#</th>
+                        <th scope="col">Data Vencimento</th>        
+                        <th scope="col">Valor</th>        
+                        <th scope="col">Data Pagamento</th>                        
+                        <th scope="col">Situação</th>
+                        <th scope="col">Ações</th>                    
+                    </thead>
+                    <tbody>                                  
+                        @foreach ($boletos as $index => $boleto)
+                            <tr>
+                                <th> <input type="checkbox" name="id_boleto[]" value="{{$boleto->id_boleto}}" checked></th>
+                                <td>
+                                    {{date('d/m/Y', strtotime($boleto->data_vencimento))}}
+                                </td>    
+                                <td>
+                                    {{number_format($boleto->valor_total, 2, ',', '.')}}    
+                                </td>                             
+                                <td>
+                                    @if (isset($boleto->data_pagamento))
+                                        {{date('d/m/Y', strtotime($boleto->data_pagamento))}}    
+                                    @endif                                
+                                </td>           
+                                <td>
+                                    
+                                </td>  
+                                <td>
+                                    {{-- impressão do boleto --}}
+                                  
+                                    {{-- Link para todos os boletos de um aluno em qq ano letivo --}}
+                                    {{-- <a href="{{ route('boleto.indexAluno', $boleto->id_pessoa) }}" class="btn btn-sm btn-outline-dark"><i class="fas fa-barcode"></i></a> --}}
+                                </td>                                                                           
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
             <div class="card-footer">
                 @if (isset($filtros))
                     {!! $boletos->appends($filtros)->links()!!}
@@ -75,7 +80,14 @@
                     {!! $boletos->links()!!}     
                 @endif                    
             </div>
-        </div>
+
+            <div class="row ">
+                <div class="form-group col-sm-4 col-xs-2">                         
+                    <button type="submit" class="btn btn-success"><i class="fas fa-print"></i> Imprimir boleto(s)</button>            
+                </div>
+            </div>
+        </form>
+        
     </div>
 
     <script>

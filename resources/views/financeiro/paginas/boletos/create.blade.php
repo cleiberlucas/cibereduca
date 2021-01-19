@@ -39,6 +39,7 @@
                         <th scope="col">Recebível</th>                        
                         <th scope="col">Parcela</th>                        
                         <th scope="col">Valor R$</th>
+                        <th scope="col">Desconto R$</th>
                         <th scope="col">Vencimento</th>
                         <th scope="col">Ações</th>                    
                     </thead>
@@ -50,7 +51,8 @@
                                 </td>
                                 <td>{{$recebivel->descricao_conta}} - {{$recebivel->tipo_turma}} - {{$recebivel->ano}}</td>
                                 <td>{{$recebivel->parcela}}</td>
-                                <td>{{number_format($recebivel->valor_total, 2, ',', '.')}}</td>
+                                <td>{{number_format($recebivel->valor_principal, 2, ',', '.')}}</td>
+                                <td>{{number_format($recebivel->valor_desconto_principal, 2, ',', '.')}}</td>
                                 <td>{{date('d/m/Y', strtotime($recebivel->data_vencimento))}}</td>
                                 <td></td>
                             </tr>                            

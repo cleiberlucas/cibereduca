@@ -10,6 +10,7 @@
     "require": {
         "php": "^7.2.5",
         "barryvdh/laravel-dompdf": "^0.8.6",
+        "eduardokum/laravel-boleto": "^0.8.9",
         "facade/ignition": "^2.5",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^1.0",

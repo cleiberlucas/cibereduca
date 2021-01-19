@@ -83,6 +83,7 @@ class SecretariaController extends Controller
             $matriculas = $matriculas->where('fk_id_turma', $request->turma)
                 ->join('tb_pessoas', 'fk_id_aluno', 'id_pessoa')
                 ->join('users', 'tb_matriculas.fk_id_user_cadastro', 'id')    
+                ->leftJoin('tb_opcoes_educacionais', 'fk_id_matricula', 'id_matricula')
                 ->orderBy($request->ordem) 
                 ->orderBy('nome')
                 ->get();

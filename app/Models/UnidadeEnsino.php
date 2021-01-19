@@ -33,4 +33,10 @@ class UnidadeEnsino extends Model
                     ->where('situacao', '=', 1)->get();
     }
 
+    public function getUnidadeEnsino($id_unidade_ensino)
+    {
+        return $this->where('id_unidade_ensino', '=', $id_unidade_ensino)
+            ->first();
+    }
+
 }

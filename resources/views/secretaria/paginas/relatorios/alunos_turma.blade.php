@@ -68,6 +68,7 @@
                         <th>N°</th>
                         <th>Nome</th>                        
                         <th>Data Nascimento</th>
+                        <th>Opção Educacional</th>
                         <th>Situação Matrícula</th>
                     </thead>
                 
@@ -80,6 +81,13 @@
                                 </td>
                                 <td>
                                     {{date('d/m/Y', strtotime($matricula->aluno->data_nascimento))}}
+                                </td>
+                                <td>
+                                    @if ($matricula->opcao_educacional == 1)
+                                        Híbrido
+                                    @elseif($matricula->opcao_educacional == 2)
+                                        Remoto
+                                    @endif
                                 </td>
                                 <td>
                                     {{$matricula->situacaoMatricula->situacao_matricula}}
