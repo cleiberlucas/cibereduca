@@ -32,7 +32,7 @@
                 <button type="submit" class="btn btn-outline-secondary"><i class="fas fa-filter"></i></button>
             </form> --}}
         </div>
-        <form action="{{ route('boleto.imprimir')}}" class="form" name="form" method="POST">
+        <form action="{{ route('boletos.imprimir')}}" class="form" name="form" method="POST">
             @csrf 
             <div class="table-responsive">
                 <table class="table table-hover">
@@ -46,7 +46,17 @@
                     </thead>
                     <tbody>                                  
                         @foreach ($boletos as $index => $boleto)
-                            <tr>
+                            <?php
+                            $hoje = date('Y-m-d');
+                            /* Pago */
+                            if ($boleto->fk_id_situacao_registro == 4)
+                                echo '<tr bgcolor="#cef6d8">';
+                            /* Em atraso */
+                            elseif ($boleto->fk_id_situacao_registro <= 3 and strtotime($boleto->data_vencimento) < strtotime($hoje))
+                                echo '<tr bgcolor="#F8E0E0">';
+                            else 
+                                echo '<tr>';
+                            ?>
                                 <th> <input type="checkbox" name="id_boleto[]" value="{{$boleto->id_boleto}}" checked></th>
                                 <td>
                                     {{date('d/m/Y', strtotime($boleto->data_vencimento))}}
@@ -55,16 +65,21 @@
                                     {{number_format($boleto->valor_total, 2, ',', '.')}}    
                                 </td>                             
                                 <td>
-                                    @if (isset($boleto->data_pagamento))
-                                        {{date('d/m/Y', strtotime($boleto->data_pagamento))}}    
+                                    @if (isset($boleto->data_recebimento))
+                                        {{date('d/m/Y', strtotime($boleto->data_recebimento))}}    
                                     @endif                                
                                 </td>           
                                 <td>
-                                    
+                                    {{$boleto->situacao_registro}}
                                 </td>  
                                 <td>
-                                    {{-- impressão do boleto --}}
-                                  
+                                    <a href="{{ route('boleto.imprimir', $boleto->id_boleto) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-print"></i></a>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    {{-- Só permite excluir se não foi pago --}}
+                                    @if ($boleto->fk_id_situacao_registro != 4)
+                                        <a href="{{ route('boleto.destroy', $boleto->id_boleto) }}" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></a>
+                                    @endif
+                                    
                                     {{-- Link para todos os boletos de um aluno em qq ano letivo --}}
                                     {{-- <a href="{{ route('boleto.indexAluno', $boleto->id_pessoa) }}" class="btn btn-sm btn-outline-dark"><i class="fas fa-barcode"></i></a> --}}
                                 </td>                                                                           
@@ -83,7 +98,7 @@
 
             <div class="row ">
                 <div class="form-group col-sm-4 col-xs-2">                         
-                    <button type="submit" class="btn btn-success"><i class="fas fa-print"></i> Imprimir boleto(s)</button>            
+                    <button type="submit" class="btn btn-info"><i class="fas fa-print"></i> Imprimir boletos selecionados</button>            
                 </div>
             </div>
         </form>

@@ -58,9 +58,10 @@ Route::prefix('financeiro')
                 Route::resource('boleto', 'BoletoController');
                 route::any('aluno/{id_aluno}', 'BoletoController@indexAluno')->name('boleto.indexAluno');
                 Route::get('create/boleto/{id_aluno}', 'BoletoController@create')->name('boleto.create');     
-                Route::post('imprimir/boleto', 'BoletoController@imprimirBoleto')->name('boleto.imprimir');           
-                /*Route::get('recebivel/destroy/{id_aluno}', 'BoletoController@destroy')->name('boleto.destroy');   
-                Route::any('recebivel/searchAluno', 'BoletoController@searchAluno')->name('recebivel.aluno.search');
+                Route::post('imprimir/boleto', 'BoletoController@imprimirBoletos')->name('boletos.imprimir');           
+                Route::get('boleto/destroy/{id_boleto}', 'BoletoController@destroy')->name('boleto.destroy');   
+                Route::get('boleto/imprimir/{id_boleto}', 'BoletoController@imprimirBoleto')->name('boleto.imprimir');   
+                /*Route::any('recebivel/searchAluno', 'BoletoController@searchAluno')->name('recebivel.aluno.search');
                 Route::any('recebivel/search', 'BoletoController@search')->name('recebivel.search'); */
 
                 //Geração de remessa

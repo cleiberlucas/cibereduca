@@ -27,7 +27,11 @@ class Boleto extends Model
         'fk_id_situacao_registro',
         'data_geracao',        
         'fk_id_usuario_cadastro',
-        'instrucoes',
+        'instrucoes_dados_aluno',
+        'instrucoes_recebiveis',
+        'instrucoes_desconto',
+        'instrucoes_multa_juros',
+        'instrucoes_outros',
     ];
    
 }

@@ -32,9 +32,14 @@
         <div class="row">
             <div class="col-sm my-3">            
                 <strong>Aluno(a): {{$aluno->nome}}</strong>  <a href="{{ route('financeiro.create', $aluno->id_pessoa) }}" class="btn btn-success"><i class="fas fa-plus-square"></i> Lançar recebível</a>  
-            </div>                
-        </div>       
-        </div>
+            </div>                            
+        </div>     
+        <div class="row">
+            <div class="col-sm">
+                <a href="{{ route('boleto.indexAluno', $aluno->id_pessoa) }}" class="btn btn-info"><i class="fas fa-barcode"></i> Boletos</a>  
+            </div>    
+        </div>  
+        <br>
         <div class="table-responsive">
             <table class="table  table-hover">
                 <thead>

@@ -56,7 +56,7 @@
                             </td>  
                             <td>
                                 {{-- Link para todos os boletos de um aluno em qq ano letivo --}}
-                               {{--  <a href="{{ route('boleto.indexAluno', $pessoa->id_pessoa) }}" class="btn btn-sm btn-outline-dark"><i class="fas fa-barcode"></i></a> --}}
+                                <a href="{{ route('boleto.indexAluno', $pessoa->id_pessoa) }}" class="btn btn-sm btn-outline-dark"><i class="fas fa-barcode"></i></a>
                             </td>                                                                           
                         </tr>
                     @endforeach

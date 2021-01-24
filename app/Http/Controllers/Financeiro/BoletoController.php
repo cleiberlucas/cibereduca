@@ -19,6 +19,7 @@ use Eduardokum\LaravelBoleto\Pessoa as LaravelBoletoPessoa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use PhpParser\Node\Stmt\TryCatch;
 
 class BoletoController extends Controller
 {
@@ -40,19 +41,23 @@ class BoletoController extends Controller
         $boletos = $this->repositorio
             ->select('id_boleto','tb_boletos.data_vencimento',
                 'tb_boletos.valor_total',
-                /* 'tb_recebimentos.data_recebimento', */
+                'situacao_registro', 'fk_id_situacao_registro',
+                'data_recebimento'
                 )
             ->join('tb_boletos_recebiveis', 'id_boleto', 'fk_id_boleto')
             ->join('tb_recebiveis', 'tb_boletos_recebiveis.fk_id_recebivel', 'id_recebivel')
             ->leftJoin('tb_recebimentos', 'tb_recebimentos.fk_id_recebivel', 'id_recebivel')
             ->join( 'tb_matriculas', 'tb_recebiveis.fk_id_matricula', 'id_matricula')
             ->join('tb_pessoas', 'fk_id_aluno', 'id_pessoa')
-            ->where('fk_id_aluno', $id_aluno)            
-            /* ->orderBy('id_matricula', 'desc') */
-            ->groupBy('id_boleto')
+            ->join('tb_situacoes_registro', 'fk_id_situacao_registro', 'id_situacao_registro')
+            ->where('fk_id_aluno', $id_aluno)     
+            ->where('fk_id_situacao_registro', '!=', 5) /* não listar boletos excluídos */                 
             ->groupBy('tb_boletos.data_vencimento')
+            ->groupBy('id_boleto')
             ->groupBy('tb_boletos.valor_total')
-            /* ->orderBy('tb_boletos.data_vencimento') */
+            ->groupBy('situacao_registro')
+            ->groupBy('fk_id_situacao_registro')
+            ->groupBy('data_recebimento')            
             ->paginate(25)
             ;
 
@@ -126,7 +131,7 @@ class BoletoController extends Controller
 
         $dadoBancario = new DadoBancario;
         $dadoBancario = $dadoBancario
-            ->select('id_dado_bancario')
+            ->select('id_dado_bancario', 'instrucao_multa_juros')
             ->where('fk_id_unidade_ensino', '=', User::getUnidadeEnsinoSelecionada())   
             ->first();
 
@@ -135,7 +140,7 @@ class BoletoController extends Controller
         $dadosPagador = new Recebivel;
         $dadosPagador = $dadosPagador
             ->select('resp.nome as nome_pagador', 'resp.cpf as cpf_cnpj_pagador',
-                'aluno.id_pessoa as id_aluno',
+                'aluno.id_pessoa as id_aluno', 'aluno.nome as nome_aluno',
                 'endereco', 'complemento', 'numero as numero_pagador', 'bairro as bairro_pagador', 'cep as cep_pagador',
                 'cidade as cidade_pagador', 'sigla as uf_pagador')
             ->join('tb_matriculas', 'fk_id_matricula', 'id_matricula')
@@ -148,6 +153,7 @@ class BoletoController extends Controller
             ->first();
        // dd($dadosPagador->nome_pagador);
 
+       
         //Agrupando boletos por data de vencimento
         //somando valor principal e valor desconto
         $somasBoletos = DB::table('tb_recebiveis')        
@@ -159,12 +165,52 @@ class BoletoController extends Controller
         //dd($somasBoletos);
 
         foreach($somasBoletos as $somaBoleto){
+
+            //gravando recebiveis de um boleto
+            //para relacionar boleto X recebiveis
+           /*  $dadosRecebivel = new Recebivel;
+            $dadosRecebivel = $dadosRecebivel
+                ->select('id_recebivel')
+                ->whereIn('id_recebivel', $request->fk_id_recebivel)
+                ->where('data_vencimento', $somaBoleto->data_vencimento)
+                ->get(); */
+            //dd($dadosRecebivel);
+
+           
+            $recebiveis = new Recebivel;
+            $recebiveis = $recebiveis
+                    ->select('descricao_conta', 
+                        'tipo_turma', 'ano', 
+                        'id_recebivel', 'parcela', 'valor_principal', 'valor_desconto_principal', 'valor_total', 'data_vencimento', 'obs_recebivel',
+                        'id_pessoa', 'nome')                    
+                    ->Join('tb_matriculas', 'fk_id_matricula', 'id_matricula')
+                    ->join('tb_pessoas', 'id_pessoa', 'fk_id_aluno')
+                    ->join('tb_turmas', 'fk_id_turma', 'id_turma')
+                    ->join('tb_tipos_turmas', 'fk_id_tipo_turma', 'id_tipo_turma')
+                    ->join('tb_anos_letivos', 'fk_id_ano_letivo', 'id_ano_letivo')
+                    ->join('tb_contas_contabeis', 'fk_id_conta_contabil_principal', 'id_conta_contabil')
+                    ->join('tb_tipos_situacao_recebivel', 'fk_id_situacao_recebivel', 'id_situacao_recebivel')            
+                    ->whereIn('id_recebivel', $request->fk_id_recebivel)
+                    ->where('data_vencimento', $somaBoleto->data_vencimento)                          
+                    ->orderBy('descricao_conta')
+                    ->get();
+        
+            $infoRecebivel = '';
+            foreach($recebiveis as $recebivel){
+                //lendo recebíveis do boleto para gravar nas instruções do boleto
+                $infoRecebivel.= $recebivel->tipo_turma.' '.$recebivel->ano.' - '.$recebivel->descricao_conta.' Parc. '.$recebivel->parcela.' R$ '.number_format($recebivel->valor_principal, 2, ',', '.')." | \r\n";
+            }
+
+            $infoDesconto = '';
+            if ($somaBoleto->valor_desconto_total > 0)
+                $infoDesconto = 'Desconto de R$ '.number_format($somaBoleto->valor_desconto_total, 2, ',', '.').' para pagamento até '.date('d/m/Y', strtotime($somaBoleto->data_vencimento)).'.';
+
             //gerar array com dados do boleto para gravar
             $boleto = array(
                 'fk_id_dado_bancario' => $dadoBancario->id_dado_bancario,
                 'nome_pagador' => $dadosPagador->nome_pagador,
                 'cpf_cnpj_pagador' => $dadosPagador->cpf_cnpj_pagador,
-                'endereco_pagador' => $dadosPagador->endereco.' '.$dadosPagador->complemento,
+                'endereco_pagador' => $dadosPagador->endereco.' '.$dadosPagador->complemento.' N° '.$dadosPagador->numero_pagador,
                 'bairro_pagador' => $dadosPagador->bairro_pagador,
                 'cidade_pagador' => $dadosPagador->cidade_pagador,
                 'uf_pagador' => $dadosPagador->uf_pagador,
@@ -174,28 +220,23 @@ class BoletoController extends Controller
                 'valor_desconto' => $somaBoleto->valor_desconto_total,
                 'data_desconto' => $somaBoleto->data_vencimento,
                 'fk_id_situacao_registro' => 1,
-                'fk_id_usuario_cadastro' => Auth::id(),                
+                'fk_id_usuario_cadastro' => Auth::id(),               
+                'instrucoes_dados_aluno' => 'Aluno(a): '.$dadosPagador->nome_aluno,
+                'instrucoes_recebiveis' => $infoRecebivel,
+                'instrucoes_desconto' => $infoDesconto,
+                'instrucoes_multa_juros' => $dadoBancario->instrucao_multa_juros,
+                'instrucoes_outros' => 'NÃO PAGÁVEL TESTE TESTE TESTE TESTE', 
 
             );
             //dd($boleto);
 
             //Lançando boleto na base
             $boletoGravado = $this->repositorio->create($boleto);           
-            
-            //gravando recebiveis de um boleto
-            //para relacionar boleto X recebiveis
-            $dadosRecebivel = new Recebivel;
-            $dadosRecebivel = $dadosRecebivel
-                ->select('id_recebivel')
-                ->whereIn('id_recebivel', $request->fk_id_recebivel)
-                ->where('data_vencimento', $somaBoleto->data_vencimento)
-                ->get();
-            //dd($dadosRecebivel);
 
-            foreach ($dadosRecebivel as $dadoRecebivel){
+            foreach ($recebiveis as $recebivel){
                 $dadosBoletoRecebivel = array(
                     "fk_id_boleto" => $boletoGravado->id_boleto,
-                    "fk_id_recebivel" => $dadoRecebivel->id_recebivel,
+                    "fk_id_recebivel" => $recebivel->id_recebivel,
                 );
 
                 $boletoRecebivel = new BoletoRecebivel;
@@ -232,9 +273,9 @@ class BoletoController extends Controller
        
     }
 
-   public function imprimirBoleto(Request $boletos)
+   public function imprimirBoletos(Request $boletos)
    {
-
+    $this->authorize('Boleto Ver');
     //dd($boletos->id_boleto);
     $dadosUnidadeEnsino = new UnidadeEnsino;
     $dadosUnidadeEnsino = $dadosUnidadeEnsino->getUnidadeEnsino(User::getUnidadeEnsinoSelecionada());
@@ -259,8 +300,7 @@ class BoletoController extends Controller
     $dadosBoletos = $this->repositorio
         ->whereIn('id_boleto', $boletos->id_boleto)
         ->get();
-    //dd($boletos->id_boleto);
-       
+    //dd($boletos->id_boleto);       
 
         $boletosBancoob = array();
        foreach ($dadosBoletos as $indBoleto => $boleto)
@@ -278,6 +318,7 @@ class BoletoController extends Controller
 
             $bancoob
                 ->setLogo('vendor/adminlte/dist/img/logo_boleto.png')
+                ->setLocalPagamento($dadoBancario->local_pagamento)
                 ->setDataVencimento(Carbon::parse($boleto->data_vencimento))
                 ->setDataDocumento(Carbon::parse(date('Y-m-d', strtotime($boleto->data_geracao))))                
                 ->setValor($boleto->valor_total)
@@ -291,28 +332,10 @@ class BoletoController extends Controller
                 ->setAgencia($dadoBancario->agencia)
                 ->setConvenio($dadoBancario->convenio)
                 ->setConta($dadoBancario->conta);              
-                
+           
+            $bancoob ->setDescricaoDemonstrativo([$boleto->instrucoes_dados_aluno, $boleto->instrucoes_recebiveis, $boleto->instrucoes_desconto]);
 
-            $infoDesconto = '';
-            if ($boleto->valor_desconto > 0)
-                $infoDesconto = 'Desconto de R$ '.number_format($boleto->valor_desconto, 2, ',', '.').' para pagamento até '.date('d/m/Y', strtotime($boleto->data_desconto)).'.';
-
-            $dadosRecebiveis = $recebiveis->getRecebiveisBoleto($boleto->id_boleto);
-            
-            $infoRecebivel = '';
-            foreach ($dadosRecebiveis as $indRec => $dadoRecebivel)
-            {
-                if ($indRec == 0)
-                    $dadosAluno = 'Aluno(a): '.$dadoRecebivel->nome;
-                
-                $infoRecebivel.= $dadoRecebivel->tipo_turma.' '.$dadoRecebivel->ano.' - '.$dadoRecebivel->descricao_conta.' Parc. '.$dadoRecebivel->parcela.' R$ '.number_format($dadoRecebivel->valor_principal, 2, ',', '.')." | \r\n";
-            }
-
-            $bancoob ->setDescricaoDemonstrativo([$dadosAluno, $infoRecebivel, $infoDesconto]);
-
-            $bancoob ->setInstrucoes([$infoDesconto, 'NÃO PAGÁVEL TESTE TESTE TESTE TESTE', 'Após o vencimento, multa de 2% e juros de 1% ao mês.']);
-
-            // You can add more ``Demonstrativos`` or ``Instrucoes`` on this way:
+            $bancoob ->setInstrucoes([$boleto->instrucoes_desconto, $boleto->instrucoes_outros, $boleto->instrucoes_multa_juros]);
 
             //$bancoob->addDescricaoDemonstrativo('demonstrativo 4');
             
@@ -323,11 +346,110 @@ class BoletoController extends Controller
 
        $boletoHtml->addBoletos($boletosBancoob);
 
-        $boletoHtml->showPrint();
+        //$boletoHtml->showPrint();
         $boletoHtml->hideInstrucoes();        
         return $boletoHtml->gerarBoleto();        
    }
 
+   public function imprimirBoleto($id_boleto)
+   {
+    $this->authorize('Boleto Ver');
+    //dd($boletos->id_boleto);
+    $dadosUnidadeEnsino = new UnidadeEnsino;
+    $dadosUnidadeEnsino = $dadosUnidadeEnsino->getUnidadeEnsino(User::getUnidadeEnsinoSelecionada());
+
+    $dadoBancario = new DadoBancario;
+    $dadoBancario = $dadoBancario
+        ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())
+        ->first();
+    
+    $recebiveis = new Recebivel;
+
+    $beneficiario = new LaravelBoletoPessoa;
+
+    $beneficiario->setDocumento(mascaraCpfCnpj('##.###.###/####-##', $dadosUnidadeEnsino->cnpj))
+        ->setNome($dadosUnidadeEnsino->razao_social)
+        ->setCep(mascaraCEP('#####-###', $dadosUnidadeEnsino->cep))
+        ->setEndereco($dadosUnidadeEnsino->endereco_boleto)
+        ->setBairro($dadosUnidadeEnsino->bairro)
+        ->setUf($dadosUnidadeEnsino->uf)
+        ->setCidade($dadosUnidadeEnsino->cidade);
+
+    $boleto = $this->repositorio
+        ->where('id_boleto', $id_boleto)
+        ->first();
+    //dd($boletos->id_boleto);       
+
+        $boletosBancoob = array();
+           $pagador = new LaravelBoletoPessoa;
+            $pagador->setDocumento(mascaraCpfCnpj('###.###.###-##', $boleto->cpf_cnpj_pagador))
+                ->setNome($boleto->nome_pagador)
+                ->setCep(mascaraCEP('#####-###', $boleto->cep_pagador))
+                ->setEndereco($boleto->endereco_pagador)
+                ->setBairro($boleto->bairro_pagador)
+                ->setUf($boleto->uf_pagador)
+                ->setCidade($boleto->cidade_pagador);
+            //dd($boleto);
+            $bancoob = new Bancoob;
+
+            $bancoob
+                ->setLogo('vendor/adminlte/dist/img/logo_boleto.png')
+                ->setLocalPagamento($dadoBancario->local_pagamento)
+                ->setDataVencimento(Carbon::parse($boleto->data_vencimento))
+                ->setDataDocumento(Carbon::parse(date('Y-m-d', strtotime($boleto->data_geracao))))                
+                ->setValor($boleto->valor_total)
+                ->setDesconto($boleto->valor_desconto)
+                ->setDataDesconto(Carbon::parse(date('Y-m-d', strtotime($boleto->data_desconto))))
+                ->setNumero($boleto->id_boleto)
+                ->setNumeroDocumento($boleto->id_boleto)
+                ->setPagador($pagador)
+                ->setBeneficiario($beneficiario)
+                ->setCarteira($dadoBancario->carteira)
+                ->setAgencia($dadoBancario->agencia)
+                ->setConvenio($dadoBancario->convenio)
+                ->setConta($dadoBancario->conta);              
+           
+            $bancoob ->setDescricaoDemonstrativo([$boleto->instrucoes_dados_aluno, $boleto->instrucoes_recebiveis, $boleto->instrucoes_desconto]);
+
+            $bancoob ->setInstrucoes([$boleto->instrucoes_desconto, $boleto->instrucoes_outros, $boleto->instrucoes_multa_juros]);
+
+            //$bancoob->addDescricaoDemonstrativo('demonstrativo 4');
+            
+            $boletosBancoob[0] = $bancoob;           
+       
+       //dd($boletosBancoob);
+       $boletoHtml = new Html();
+
+       $boletoHtml->addBoletos($boletosBancoob);
+
+        //$boletoHtml->showPrint();
+        $boletoHtml->hideInstrucoes();        
+        return $boletoHtml->gerarBoleto();        
+   }
+
+   /* Exclusão lógica de boleto */
+   public function destroy($id_boleto)
+   {
+        $this->authorize('Boleto Remover');
+        $boletoExclui = $this->repositorio
+            ->where('id_boleto', $id_boleto)
+            ->first();
+
+        if (!$boletoExclui)
+            return redirect()->back()->with('erro', 'Boleto não encontrado para exclusão.');
+
+        try {
+            $boletoExclui = $this->repositorio
+            ->where('id_boleto', $id_boleto)
+            ->where('fk_id_situacao_registro', '!=', '4') /* não permite excluir boleto pago */
+            ->update(['fk_id_situacao_registro' => '5']);
+
+        } catch (\Throwable $th) {
+             return redirect()->back()->with('erro', 'Não foi possível excluir o boleto.');
+        }
+        
+        return redirect()->back()->with('sucesso', 'Boleto excluído com sucesso.');
+   }
 
     /* public function destroy($fk_id_recebivel)
     {

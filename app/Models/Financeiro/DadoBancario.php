@@ -22,6 +22,8 @@ class DadoBancario extends Model
         'especie',
         'protesto',
         'pagamento_apos_vencimento',
+        'instrucoes_multa_juros',
+        'local_pagamento',
         
     ];
    
