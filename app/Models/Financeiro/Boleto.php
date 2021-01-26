@@ -32,6 +32,10 @@ class Boleto extends Model
         'instrucoes_desconto',
         'instrucoes_multa_juros',
         'instrucoes_outros',
+        'juros',
+        'multa',
+        'juros_apos',
+        'dias_baixa_automatica',
     ];
    
 }

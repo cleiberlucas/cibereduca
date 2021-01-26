@@ -80,9 +80,9 @@ class BoletoController extends Controller
             ->where('id_pessoa', $id_aluno)
             ->first();
 
-        $recebivel = new Recebivel;
+        $recebiveis = new Recebivel;
        
-        $recebiveis = $recebivel
+        $recebiveis = $recebiveis
             ->select('descricao_conta', 
                 'tipo_turma', 'ano', 
                 'id_recebivel', 'parcela', 'valor_principal', 'valor_desconto_principal', 'valor_total', 'data_vencimento', 'obs_recebivel',
@@ -96,7 +96,7 @@ class BoletoController extends Controller
             ->join('tb_tipos_situacao_recebivel', 'fk_id_situacao_recebivel', 'id_situacao_recebivel')
             ->leftJoin('tb_recebimentos', 'fk_id_recebivel', 'id_recebivel')            
             ->where('fk_id_aluno', $id_aluno)
-            ->where('fk_id_situacao_recebivel', 1) /* situacao 1 = boleto lançado */
+            ->where('fk_id_situacao_recebivel', 1) /* situacao 1 = a receber */
             ->where('data_vencimento', '>=', date('Y-m-d'))
             ->orderBy('ano', 'desc')
             ->orderBy('data_vencimento')
@@ -105,6 +105,30 @@ class BoletoController extends Controller
 
         if (!$recebiveis)
             return redirect()->back()->with('erro', 'Recebível não encontrado.');
+
+        $recebiveisVencidos = new Recebivel;
+       
+        $recebiveisVencidos = $recebiveisVencidos
+            ->select('descricao_conta', 
+                'tipo_turma', 'ano', 
+                'id_recebivel', 'parcela', 'valor_principal', 'valor_desconto_principal', 'valor_total', 'data_vencimento', 'obs_recebivel',
+                'id_pessoa', 'nome')
+            ->rightJoin('tb_matriculas', 'fk_id_matricula', 'id_matricula')
+            ->join('tb_pessoas', 'id_pessoa', 'fk_id_aluno')
+            ->join('tb_turmas', 'fk_id_turma', 'id_turma')
+            ->join('tb_tipos_turmas', 'fk_id_tipo_turma', 'id_tipo_turma')
+            ->join('tb_anos_letivos', 'fk_id_ano_letivo', 'id_ano_letivo')
+            ->join('tb_contas_contabeis', 'fk_id_conta_contabil_principal', 'id_conta_contabil')
+            ->join('tb_tipos_situacao_recebivel', 'fk_id_situacao_recebivel', 'id_situacao_recebivel')
+            ->leftJoin('tb_recebimentos', 'fk_id_recebivel', 'id_recebivel')            
+            ->where('fk_id_aluno', $id_aluno)
+            ->where('fk_id_situacao_recebivel', 1) /* situacao 1 = a receber */
+            ->where('data_vencimento', '<', date('Y-m-d'))
+            ->orderBy('ano', 'desc')
+            ->orderBy('data_vencimento')
+            ->orderBy('descricao_conta')
+            ->paginate(25);
+
         /* 
         $correcoes = new Correcao;
         $correcoes = $correcoes
@@ -117,7 +141,7 @@ class BoletoController extends Controller
             ->get();
          */
         return view('financeiro.paginas.boletos.create',
-            compact('aluno', 'recebiveis', )
+            compact('aluno', 'recebiveis', 'recebiveisVencidos' )
         );
     }
 
@@ -127,11 +151,12 @@ class BoletoController extends Controller
         $this->authorize('Boleto Cadastrar');
         
         //recebendo array de id_recebivel
-        $dados = $request->all();
+        if (!$request->fk_id_recebivel)
+            return redirect()->back()->with('atencao', 'Selecione pelo menos 1 recebível.');
 
         $dadoBancario = new DadoBancario;
         $dadoBancario = $dadoBancario
-            ->select('id_dado_bancario', 'instrucao_multa_juros')
+            ->select('id_dado_bancario', 'instrucao_multa_juros', 'juros', 'multa', 'juros_apos', 'dias_baixa_automatica')
             ->where('fk_id_unidade_ensino', '=', User::getUnidadeEnsinoSelecionada())   
             ->first();
 
@@ -175,7 +200,6 @@ class BoletoController extends Controller
                 ->where('data_vencimento', $somaBoleto->data_vencimento)
                 ->get(); */
             //dd($dadosRecebivel);
-
            
             $recebiveis = new Recebivel;
             $recebiveis = $recebiveis
@@ -205,6 +229,11 @@ class BoletoController extends Controller
             if ($somaBoleto->valor_desconto_total > 0)
                 $infoDesconto = 'Desconto de R$ '.number_format($somaBoleto->valor_desconto_total, 2, ',', '.').' para pagamento até '.date('d/m/Y', strtotime($somaBoleto->data_vencimento)).'.';
 
+            $infoOutros = 'NÃO PAGÁVEL TESTE TESTE TESTE TESTE. ';
+            
+            if ($dadoBancario->dias_baixa_automatica > 0)
+                $infoOutros.= 'Pagável em até '.$dadoBancario->dias_baixa_automatica.' dias após o vencimento.';
+
             //gerar array com dados do boleto para gravar
             $boleto = array(
                 'fk_id_dado_bancario' => $dadoBancario->id_dado_bancario,
@@ -225,7 +254,11 @@ class BoletoController extends Controller
                 'instrucoes_recebiveis' => $infoRecebivel,
                 'instrucoes_desconto' => $infoDesconto,
                 'instrucoes_multa_juros' => $dadoBancario->instrucao_multa_juros,
-                'instrucoes_outros' => 'NÃO PAGÁVEL TESTE TESTE TESTE TESTE', 
+                'instrucoes_outros' => $infoOutros, 
+                'juros' => $dadoBancario->juros,
+                'multa' => $dadoBancario->multa,
+                'juros_apos' => $dadoBancario->juros_apos,
+                'dias_baixa_automatica' => $dadoBancario->dias_baixa_automatica,
 
             );
             //dd($boleto);
@@ -273,6 +306,7 @@ class BoletoController extends Controller
        
     }
 
+    /* Impressão de vários boletos (botão) */
    public function imprimirBoletos(Request $boletos)
    {
     $this->authorize('Boleto Ver');
@@ -285,8 +319,6 @@ class BoletoController extends Controller
         ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())
         ->first();
     
-    $recebiveis = new Recebivel;
-
     $beneficiario = new LaravelBoletoPessoa;
 
     $beneficiario->setDocumento(mascaraCpfCnpj('##.###.###/####-##', $dadosUnidadeEnsino->cnpj))
@@ -309,11 +341,10 @@ class BoletoController extends Controller
             $pagador->setDocumento(mascaraCpfCnpj('###.###.###-##', $boleto->cpf_cnpj_pagador))
                 ->setNome($boleto->nome_pagador)
                 ->setCep(mascaraCEP('#####-###', $boleto->cep_pagador))
-                ->setEndereco($boleto->endereco_pagador)
-                ->setBairro($boleto->bairro_pagador)
+                ->setEndereco($boleto->endereco_pagador.' - '.$boleto->bairro_pagador)                
                 ->setUf($boleto->uf_pagador)
                 ->setCidade($boleto->cidade_pagador);
-            //dd($boleto);
+           // dd($boleto);
             $bancoob = new Bancoob;
 
             $bancoob
@@ -331,7 +362,10 @@ class BoletoController extends Controller
                 ->setCarteira($dadoBancario->carteira)
                 ->setAgencia($dadoBancario->agencia)
                 ->setConvenio($dadoBancario->convenio)
-                ->setConta($dadoBancario->conta);              
+                ->setConta($dadoBancario->conta)       
+                ->setJuros($boleto->juros)      
+                ->setMulta($boleto->multa) 
+                ->setJurosApos($boleto->juros_apos);
            
             $bancoob ->setDescricaoDemonstrativo([$boleto->instrucoes_dados_aluno, $boleto->instrucoes_recebiveis, $boleto->instrucoes_desconto]);
 
@@ -351,6 +385,7 @@ class BoletoController extends Controller
         return $boletoHtml->gerarBoleto();        
    }
 
+   /* Impressão de 1 boleto (link) */
    public function imprimirBoleto($id_boleto)
    {
     $this->authorize('Boleto Ver');
@@ -363,8 +398,6 @@ class BoletoController extends Controller
         ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())
         ->first();
     
-    $recebiveis = new Recebivel;
-
     $beneficiario = new LaravelBoletoPessoa;
 
     $beneficiario->setDocumento(mascaraCpfCnpj('##.###.###/####-##', $dadosUnidadeEnsino->cnpj))
@@ -385,8 +418,7 @@ class BoletoController extends Controller
             $pagador->setDocumento(mascaraCpfCnpj('###.###.###-##', $boleto->cpf_cnpj_pagador))
                 ->setNome($boleto->nome_pagador)
                 ->setCep(mascaraCEP('#####-###', $boleto->cep_pagador))
-                ->setEndereco($boleto->endereco_pagador)
-                ->setBairro($boleto->bairro_pagador)
+                ->setEndereco($boleto->endereco_pagador.' - '.$boleto->bairro_pagador)                          
                 ->setUf($boleto->uf_pagador)
                 ->setCidade($boleto->cidade_pagador);
             //dd($boleto);
@@ -407,7 +439,10 @@ class BoletoController extends Controller
                 ->setCarteira($dadoBancario->carteira)
                 ->setAgencia($dadoBancario->agencia)
                 ->setConvenio($dadoBancario->convenio)
-                ->setConta($dadoBancario->conta);              
+                ->setConta($dadoBancario->conta)
+                ->setJuros($boleto->juros)       
+                ->setMulta($boleto->multa)
+                ->setJurosApos($boleto->juros_apos);
            
             $bancoob ->setDescricaoDemonstrativo([$boleto->instrucoes_dados_aluno, $boleto->instrucoes_recebiveis, $boleto->instrucoes_desconto]);
 

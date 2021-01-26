@@ -26,7 +26,7 @@
         </div>
         <div class="row">
             <div class="col">
-                {{-- <a href="{{ route('remessa.bancoob.gerar') }}" class="btn btn-sm btn-link"> Gerar remessa</a>  --}}
+                <a href="{{ route('remessa.bancoob.gerar') }}" class="btn btn-sm btn-link"> Gerar remessa</a> 
             </div>
         </div>
         <div class="table-responsive">
