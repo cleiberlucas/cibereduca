@@ -24,11 +24,6 @@
                 <button type="submit" class="btn btn-outline-secondary"><i class="fas fa-filter"></i></button>
             </form>
         </div>
-        <div class="row">
-            <div class="col">
-                <a href="{{ route('remessa.bancoob.gerar') }}" class="btn btn-sm btn-link"> Gerar remessa</a> 
-            </div>
-        </div>
         <div class="table-responsive">
             <table class="table table-hover">
                 <thead>

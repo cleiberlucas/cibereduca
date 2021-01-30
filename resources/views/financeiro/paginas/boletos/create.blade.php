@@ -18,6 +18,10 @@
     </ol>    
 @stop
 
+<style>
+    .acrescimo {font-size:80%; }
+</style>
+
 @section('content')
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -46,7 +50,7 @@
         </ul>
         <div class="tab-content">
             {{-- Aba recebível a vencer --}}                
-            <div role="tabpanel" class="tab-pane active" id="recebivel_vencer">     
+            <div role="tabpanel" class="tab-pane " id="recebivel_vencer">     
                 <form action="{{ route('boleto.store')}}" class="form" name="form" method="POST">
                     @csrf 
                     <div class="table-responsive">
@@ -114,35 +118,46 @@
             </div>
         
             {{-- Aba recebíves VENCIDOS--}}                
-            <div role="tabpanel" class="tab-pane" id="recebivel_vencido">     
+            <div role="tabpanel" class="tab-pane active" id="recebivel_vencido">     
                 <form action="{{ route('boleto.store')}}" class="form" name="form" method="POST">
                     @csrf 
+                    
+                    @foreach ($correcoes as $index => $correcao)
+                        <input type="hidden" class="" id="fk_id_conta_contabil_acrescimo[{{$index}}]" name="fk_id_conta_contabil_acrescimo[{{$index}}]" value="{{$correcao->fk_id_conta_contabil}}">  
+                        <input type="hidden" class="" id="indice_correcao[{{$index}}]" name="indice_correcao[{{$index}}]" value="{{$correcao->indice_correcao}}">  
+                        <input type="hidden" class="" id="aplica_correcao[{{$index}}]" name="aplica_correcao[{{$index}}]" value="{{$correcao->aplica_correcao}}">  
+                    @endforeach
+
                     <div class="table-responsive">
                         <table class="table table-hover">
                             <thead>
                                 <th scope="col">#</th>
-                                <th scope="col">Recebível</th>                        
-                                <th scope="col">Parcela</th>                        
+                                <th scope="col">Recebível</th>                                                                              
+                                <th scope="col">Vencimento</th>
                                 <th scope="col">Valor R$</th>
                                 <th scope="col">Desconto R$</th>
-                                <th scope="col">Vencimento</th>
+                                <th scope="col">Principal</th>
                                 <th scope="col">Novo Vencimento</th>                    
                             </thead>
                             <tbody>     
-                                @foreach ($recebiveisVencidos as $recebivelVencido)
+                                @foreach ($recebiveisVencidos as $indRecVencido => $recebivelVencido)
+                                    
                                     <tr bgcolor="#F8E0E0">
-                                        <td>
-                                            <input type="checkbox" name="fk_id_recebivel[]" value="{{$recebivelVencido->id_recebivel}}" >
-                                        </td>
-                                        <td>{{$recebivelVencido->descricao_conta}} - {{$recebivelVencido->tipo_turma}} - {{$recebivelVencido->ano}}</td>
-                                        <td>{{$recebivelVencido->parcela}}</td>
-                                        <td>{{number_format($recebivelVencido->valor_principal, 2, ',', '.')}}</td>
-                                        <td>{{number_format($recebivelVencido->valor_desconto_principal, 2, ',', '.')}}</td>
-                                        <td>{{date('d/m/Y', strtotime($recebivelVencido->data_vencimento))}}</td>
-                                        <td><input type="date" class="form-control" required id="novo_vencimento[]" min="{{date('Y-m-d')}}" name="novo_vencimento[]" value="" onBlur=""/>
-
-                                        </td>
-                                    </tr>                            
+                                        <td><input type="checkbox" name="fk_id_recebivel_vencido[{{$indRecVencido}}]" id="fk_id_recebivel_vencido[{{$indRecVencido}}]" value="{{$recebivelVencido->id_recebivel}}"></td>
+                                        <td>{{$recebivelVencido->descricao_conta}} - {{$recebivelVencido->tipo_turma}} - {{$recebivelVencido->ano}} - Parc. {{$recebivelVencido->parcela}}</td>
+                                        <td><input type="date" class="form-control" readonly id="data_vencimento[{{$indRecVencido}}]" name="data_vencimento[{{$indRecVencido}}]" value="{{$recebivelVencido->data_vencimento}}"/></td>                                                                                
+                                        <td><input type="number" step="0.010" class="form-control" required readonly id="valor_principal[{{$indRecVencido}}]" name="valor_principal[{{$indRecVencido}}]" value="{{ $recebivelVencido->valor_principal ?? old('valor_principal') }}"/></td>
+                                        <td><input type="number" step="0.010" class="form-control" name="valor_desconto_principal[{{$indRecVencido}}]" id="valor_desconto_principal[{{$indRecVencido}}]" value="{{$recebivelVencido->valor_desconto_principal ?? old('valor_desconto_principal')}}" onBlur="recalcularValor('valor_principal[{{$indRecVencido}}]', 'valor_desconto_principal[{{$indRecVencido}}]', 'valor_desconto_principal[{{$indRecVencido}}]', 'valor_total[{{$indRecVencido}}]'); calcularAcrescimos({{$indRecVencido}}); ; somarRecebiveis({{$indRecVencido}});" /></td>
+                                        <td><input type="number" step="0.010" class="form-control" required readonly id="valor_total[{{$indRecVencido}}]" name="valor_total[{{$indRecVencido}}]" value="{{ $recebivelVencido->valor_total ?? old('valor_total') }}"/></td>
+                                        <td><input type="date" class="form-control" required id="novo_vencimento[{{$indRecVencido}}]" min="{{date('Y-m-d')}}" name="novo_vencimento[{{$indRecVencido}}]" value="" onBlur="calcularAcrescimos({{$indRecVencido}}); somarRecebiveis({{$indRecVencido}});"/></td>
+                                    </tr>          
+                                    <tr bgcolor="#F8E0E0">
+                                        <td colspan=7>
+                                            <div class="row acrescimo" id="multa{{$indRecVencido}}"></div>
+                                            <div class="row acrescimo" id="juro{{$indRecVencido}}"></div>
+                                            <div class="row" id="total_boleto{{$indRecVencido}}"></div>
+                                        </td>    
+                                    </tr>                  
                                 @endforeach
                             </tbody>
                         </table>
@@ -164,8 +179,8 @@
                     <br>
                     <div class="row">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="forma_geracao" id="boletos_vencimento" value="boletos_vencimento" required checked>
-                            <label for="boletos_vencimento" class="form-check-label">Boletos agrupados: recebíveis com mesmo vencimento, em 1 boleto.</label>
+                            <input class="form-check-input" type="radio" name="forma_geracao" id="boleto_vencimento" value="boleto_vencimento" required checked>
+                            <label for="boleto_vencimento" class="form-check-label">Boletos agrupados: recebíveis com Novos Vencimentos iguais, em 1 boleto.</label>
                         </div>
                     </div>
                     <br>
@@ -180,9 +195,13 @@
             </div>
         </div>
 
-            
-
     </div>
+
+    <?php $versao_rand = rand();?>
+
+    <script type="text/javascript" src="/js/camposAcrescimosBoleto.js?v=<?php echo urlencode(base64_decode((str_shuffle('cibereduca'))))?>&<?php echo $versao_rand ?>"></script>
+    <script type="text/javascript" src="/js/utils.js?v=<?php echo urlencode(base64_decode((str_shuffle('cibereduca'))))?>&<?php echo $versao_rand ?>"></script>
+
     <script>
         $(document).ready(function(){
               $(".alert").slideDown(300).delay(5000).slideUp(300);

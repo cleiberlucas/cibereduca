@@ -30,6 +30,7 @@ return [
     ],
     'boolean'        => 'O campo :attribute deve conter o valor verdadeiro ou falso.',
     'confirmed'      => 'A confirmação para o campo :attribute não coincide.',
+    'cpf'            => 'CPF inválido.',
     'date'           => 'O campo :attribute não contém uma data válida.',
     'date_equals'    => 'O campo :attribute deve ser uma data igual a :date.',
     'date_format'    => 'A data informada para o campo :attribute não respeita o formato :format.',

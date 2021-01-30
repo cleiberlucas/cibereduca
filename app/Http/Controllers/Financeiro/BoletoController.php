@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateBoleto;
 use App\Models\Financeiro\Boleto;
 use App\Models\Financeiro\BoletoRecebivel;
+use App\Models\Financeiro\Correcao;
 use App\Models\Financeiro\DadoBancario;
 use App\Models\Financeiro\Recebivel;
 use App\Models\Secretaria\Pessoa;
 use App\Models\UnidadeEnsino;
 use App\User;
+use App\Utils\CpfValidation;
 use Carbon\Carbon;
 use Eduardokum\LaravelBoleto\Boleto\Banco\Bancoob;
 use Eduardokum\LaravelBoleto\Boleto\Render\Html;
@@ -72,7 +74,7 @@ class BoletoController extends Controller
      * Abre interfaace para lançamento de boleto
      */
     public function create($id_aluno){
-        $this->authorize('Boleto Cadastrar');   
+        $this->authorize('Boleto Lançar');   
        
         $aluno = new Pessoa;
         $aluno = $aluno
@@ -80,7 +82,19 @@ class BoletoController extends Controller
             ->where('id_pessoa', $id_aluno)
             ->first();
 
-        $recebiveis = new Recebivel;
+        if (!$aluno)
+            return redirect()->back()->with('erro', 'Aluno não encontrado.');
+
+        /* $dadoBancario = new DadoBancario;
+        $dadoBancario = $dadoBancario
+            ->select('juros', 'multa', 'juros_apos')
+            ->where('fk_id_unidade_ensino', '=', User::getUnidadeEnsinoSelecionada())   
+            ->first();
+
+        if (!$dadoBancario)
+            return redirect()->back()->with('erro', 'Configurações de multa e juros não cadastradas nos dados bancários da Unidade de Ensinoo.'); */
+
+        $recebiveis = new Recebivel;            
        
         $recebiveis = $recebiveis
             ->select('descricao_conta', 
@@ -129,7 +143,7 @@ class BoletoController extends Controller
             ->orderBy('descricao_conta')
             ->paginate(25);
 
-        /* 
+        
         $correcoes = new Correcao;
         $correcoes = $correcoes
             ->select('descricao_conta', 'fk_id_conta_contabil',
@@ -139,9 +153,12 @@ class BoletoController extends Controller
             ->where('aplica_correcao', '1')
             ->where('fk_id_unidade_ensino', '=', User::getUnidadeEnsinoSelecionada())
             ->get();
-         */
+
+        if (!$correcoes)
+            return redirect()->back()->with('erro', 'Correções de multa e juros não cadastradas nas configurações da Unidade de Ensinoo.');
+        
         return view('financeiro.paginas.boletos.create',
-            compact('aluno', 'recebiveis', 'recebiveisVencidos' )
+            compact('aluno', 'recebiveis', 'recebiveisVencidos', 'correcoes' )
         );
     }
 
@@ -160,6 +177,9 @@ class BoletoController extends Controller
             ->where('fk_id_unidade_ensino', '=', User::getUnidadeEnsinoSelecionada())   
             ->first();
 
+        if(!$dadoBancario)
+            return redirect()->back()->with('erro', 'Dados bancários não configurados.');
+
        // dd($dadoBancario);
 
         $dadosPagador = new Recebivel;
@@ -172,12 +192,28 @@ class BoletoController extends Controller
             ->join('tb_pessoas as resp', 'fk_id_responsavel', 'resp.id_pessoa')
             ->join('tb_pessoas as aluno', 'fk_id_aluno', 'aluno.id_pessoa')
             ->join('tb_enderecos', 'fk_id_pessoa', 'resp.id_pessoa')
-            ->join('tb_cidades', 'fk_id_cidade', 'id_cidade')
-            ->join('tb_estados', 'fk_id_estado', 'id_estado')
+            ->leftJoin('tb_cidades', 'fk_id_cidade', 'id_cidade')
+            ->leftJoin('tb_estados', 'fk_id_estado', 'id_estado')
             ->where('id_recebivel', $request->fk_id_recebivel[0])
             ->first();
-       // dd($dadosPagador->nome_pagador);
 
+        if (!$dadosPagador)
+            return redirect()->back()->with('erro', 'Erro ao pesquisar o responsável (pagador). Favor entrar em contato com a CiberSys.');
+
+        if (!$dadosPagador->bairro_pagador)
+            return redirect()->back()->with('erro', 'Bairro do responsável não cadastrado. Completar o endereço do responsável.');
+
+        if (!$dadosPagador->cidade_pagador)
+            return redirect()->back()->with('erro', 'Cidade do responsável não cadastrada. Completar o endereço do responsável.');
+
+        if (!$dadosPagador->cep_pagador or strlen($dadosPagador->cep_pagador) < 8 or substr($dadosPagador->cep_pagador, 0, 5) == '00000')
+            return redirect()->back()->with('erro', 'CEP do responsável não cadastrado ou incompleto. Completar o endereço do responsável.');
+        //dd($dadosPagador);
+
+        $validaCpf = new CpfValidation();
+        $validaCpf = $validaCpf->validate('', $dadosPagador->cpf_cnpj_pagador, '', '');
+        if (!$validaCpf)
+            return redirect()->back()->with('erro', 'CPF do responsável inválido. Corrigir o cadastro do responsável. Boletos não foram gerados.');
        
         //Agrupando boletos por data de vencimento
         //somando valor principal e valor desconto
@@ -186,6 +222,9 @@ class BoletoController extends Controller
             ->groupBy(DB::raw('data_vencimento'))                
             ->whereIn('id_recebivel', $request->fk_id_recebivel)                           
             ->get();
+
+        if(!$somasBoletos)
+        return redirect()->back()->with('erro', 'Não foi possível somar os boletos. Favor entrar em contato com a CiberSys.');
 
         //dd($somasBoletos);
 
@@ -234,6 +273,10 @@ class BoletoController extends Controller
             if ($dadoBancario->dias_baixa_automatica > 0)
                 $infoOutros.= 'Pagável em até '.$dadoBancario->dias_baixa_automatica.' dias após o vencimento.';
 
+            //Verificando e recalculandoe o vencimento que caiu em feriado ou final de semana
+            $vencimento_verificado = $this->recalcularVencimento($somaBoleto->data_vencimento);
+            //dd($vencimento_verificado);
+
             //gerar array com dados do boleto para gravar
             $boleto = array(
                 'fk_id_dado_bancario' => $dadoBancario->id_dado_bancario,
@@ -245,9 +288,9 @@ class BoletoController extends Controller
                 'uf_pagador' => $dadosPagador->uf_pagador,
                 'cep_pagador' => $dadosPagador->cep_pagador,
                 'valor_total' => $somaBoleto->valor_principal_total,
-                'data_vencimento' => $somaBoleto->data_vencimento,
+                'data_vencimento' => $vencimento_verificado,
                 'valor_desconto' => $somaBoleto->valor_desconto_total,
-                'data_desconto' => $somaBoleto->data_vencimento,
+                'data_desconto' => $vencimento_verificado,
                 'fk_id_situacao_registro' => 1,
                 'fk_id_usuario_cadastro' => Auth::id(),               
                 'instrucoes_dados_aluno' => 'Aluno(a): '.$dadosPagador->nome_aluno,
@@ -329,9 +372,16 @@ class BoletoController extends Controller
         ->setUf($dadosUnidadeEnsino->uf)
         ->setCidade($dadosUnidadeEnsino->cidade);
 
+    //dd($boletos);
+    if(!$boletos->id_boleto)
+        return redirect()->back()->with('atencao', 'Selecione pelo menos 1 boleto.');
+
     $dadosBoletos = $this->repositorio
         ->whereIn('id_boleto', $boletos->id_boleto)
         ->get();
+    
+    if(!$dadosBoletos)
+        return redirect()->back()->with('erro', 'Boleto não encontrado.');
     //dd($boletos->id_boleto);       
 
         $boletosBancoob = array();
@@ -513,4 +563,128 @@ class BoletoController extends Controller
         return redirect()->back();
 
     } */
+
+    
+    /*     
+        Autor: Wellington Rodrigues -> U r S o L o U c O     
+        MSN: ursolouco@msn.com 
+        Função: vencimento_calculado()       
+        Argumentos: 1 ($data) Deve ser passado no formato YYYY-mm-dd 
+        Utilização: Livre - Mantenha os créditos ao Autor     
+        Retorno: Data calculada no formato YYYY-mm-dd 
+    */
+      // Retornar uma array, com os indices dia, mes e ano.
+    public function recalcularVencimento($data)
+    { 			        
+        list($ano, $mes, $dia) = explode("-", $data);   
+        $ret = '';        
+        
+        //vencimento original no sábado - converte p segunda
+        if(date("w", mktime(0,0,0, $mes, $dia, $ano)) == "6"){   
+            $ret = date("Y-m-d", mktime(0,0,0,$mes, ($dia + 2), $ano));  											
+        }       
+        //vencimento original no domingo - converte p segunda
+        elseif(date("w",mktime(0,0,0, $mes, $dia, $ano)) == "0"){ 
+            $ret = date("Y-m-d", mktime(0, 0, 0, $mes, ($dia + 1), $ano)); 							
+        }       
+        //demais dias mantém
+        else{   
+            $ret = date("Y-m-d", mktime(0, 0, 0, $mes, $dia, $ano)); 
+        }       
+        
+        $vencimento_tmp = strtotime($ret);
+        $ano_tmp = substr($ret, 0,4);
+        $mes_tmp = substr($ret, 5,2);
+        $dia_tmp = substr($ret, 8,2);   
+
+     // print "vencimento tmp ". date('Y-m-d', $vencimento_tmp);
+        //dd($vencimento_tmp);
+    
+        //verificando se o vencimento é feriado
+        foreach($this->dias_feriados($ano_tmp) as $a)
+        {                
+            //echo date("Y-m-d",$a).'<br>';						 
+            //Verificar se o novo vencimento caiu em feriado	
+            //print "<br>Feriado ". date($ano_tmp."-m-d",$a);					
+            if ( date("Y-m-d",$vencimento_tmp) == date($ano_tmp."-m-d",$a)){
+               // print "Encontrou feriado ". date($ano_tmp."-m-d",$a);
+                if(date("w", mktime(0,0,0, $mes_tmp, $dia_tmp, $ano_tmp)) == "5"){  //se o feriado for sexta-feira, altera o vencimento original p segunda
+                    $dia_tmp = $dia_tmp+3;
+                    $ret = date("Y-m-d", mktime(0,0,0,$mes_tmp, $dia_tmp, $ano_tmp));  
+                }					
+                elseif(date("w", mktime(0,0,0, $mes_tmp, $dia_tmp, $ano_tmp)) >= "1" and date("w", mktime(0,0,0, $mes_tmp, $dia_tmp, $ano_tmp)) <= "4"){  //feriado de segunda a quinta
+                    $dia_tmp++;
+                    $ret = date("Y-m-d", mktime(0,0,0,$mes_tmp, $dia_tmp, $ano_tmp));  
+                }
+               
+               // break;
+            }
+            $vencimento_tmp = strtotime($ret);
+        }
+        
+       // $ano_atual = date("Y", time());        
+        $vencimento = strtotime($ret); // vencimento nunca � em final de semana
+        
+        $ano_venc_tmp = date("Y",$vencimento);
+        if ( ''.date("Y",$vencimento).date("m",$vencimento).date("d",$vencimento).'' == ''.$ano_venc_tmp."1231"){ // se vencimento = 31/12/anovenc
+                
+            if(date("w", mktime(0,0,0, 12, 31, $ano_venc_tmp)) == "0" ) // se 31/12/anotual = domingo
+                $ret = $ano_venc_tmp."-12-28"; // vence em 28/12/anoatual (quinta-feira)     PORQUE O �LTIMO DIA �TIL DO ANO N�O TEM EXPEDIENTE BANC�RIO
+                
+            elseif(date("w", mktime(0,0,0, 12, 31, $ano_venc_tmp)) == "1") // se 31/12/anotual = segunda
+                $ret = $ano_venc_tmp."-12-28"; // vence em 28/12/anoatual (sexta-feira)     PORQUE O �LTIMO DIA �TIL DO ANO N�O TEM EXPEDIENTE BANC�RIO
+                
+            elseif(date("w", mktime(0,0,0, 12, 31, $ano_venc_tmp)) >= "2" AND date("w", mktime(0,0,0, 12, 31, $ano_venc_tmp)) <= "5") // se 31/12/anotual = ter�a A SEXTA
+                $ret = $ano_venc_tmp."-12-30"; // vence em 30/12/anoatual (dia anterior)     PORQUE O �LTIMO DIA �TIL DO ANO N�O TEM EXPEDIENTE BANC�RIO
+            
+            elseif(date("w", mktime(0,0,0, 12, 31, $ano_venc_tmp)) == "6") // se 31/12/anotual = s�bado
+                $ret = $ano_venc_tmp."-12-29"; // vence em 29/12/anoatual (quinta-feira)    PORQUE O �LTIMO DIA �TIL DO ANO N�O TEM EXPEDIENTE BANC�RIO
+        }
+
+       /*  $ret_vetor['ano'] = substr($ret, 0, 4);
+        $ret_vetor['mes'] = substr($ret, 5, 2);
+        $ret_vetor['dia'] = substr($ret, 8, 2);	 */	
+
+        return $ret;
+    }     
+
+    public function dias_feriados($ano = null)
+    {
+		if ($ano === null){
+			$ano = intval(date('Y'));
+		}
+
+        $pascoa     = easter_date($ano); // Limite de 1970 ou após 2037 da easter_date PHP consulta http://www.php.net/manual/pt_BR/function.easter-date.php
+        //echo "pascoa ".date('Y-m-d', $pascoa);
+		$dia_pascoa = date('j', $pascoa);
+		$mes_pascoa = date('n', $pascoa);
+		$ano_pascoa = date('Y', $pascoa);
+
+		$feriados = array(
+            // Datas Fixas dos feriados Nacionail Basileiras
+            mktime(0, 0, 0, 1,  1,   $ano), // Confraternização Universal - Lei nº 662, de 06/04/49
+            mktime(0, 0, 0, 4,  21,  $ano), // Tiradentes - Lei nº 662, de 06/04/49
+            mktime(0, 0, 0, 5,  1,   $ano), // Dia do Trabalhador - Lei nº 662, de 06/04/49
+            mktime(0, 0, 0, 9,  7,   $ano), // Dia da Independência - Lei nº 662, de 06/04/49
+            mktime(0, 0, 0, 10,  12, $ano), // N. S. Aparecida - Lei nº 6802, de 30/06/80
+            mktime(0, 0, 0, 11,  2,  $ano), // Todos os santos - Lei nº 662, de 06/04/49
+            mktime(0, 0, 0, 11, 15,  $ano), // Proclamação da republica - Lei nº 662, de 06/04/49
+            mktime(0, 0, 0, 12, 25,  $ano), // Natal - Lei nº 662, de 06/04/49
+            
+            //mktime(0, 0, 0, 11, 30,  $ano), // Dia do evangélico em Brasília
+            mktime(0, 0, 0, 8, 1,  $ano), // Aniversário de Formosa
+
+            // These days have a date depending on easter
+            mktime(0, 0, 0, $mes_pascoa, $dia_pascoa - 47,  $ano_pascoa),//2ºfeira Carnaval
+            mktime(0, 0, 0, $mes_pascoa, $dia_pascoa - 46,  $ano_pascoa),//3ºfeira Carnaval	
+            mktime(0, 0, 0, $mes_pascoa, $dia_pascoa - 2 ,  $ano_pascoa),//6ºfeira Santa  
+            mktime(0, 0, 0, $mes_pascoa, $dia_pascoa     ,  $ano_pascoa),//Pascoa
+            mktime(0, 0, 0, $mes_pascoa, $dia_pascoa + 60,  $ano_pascoa),//Corpus Christi
+		);
+
+        sort($feriados);
+                
+		return $feriados;
+    }
+
 }

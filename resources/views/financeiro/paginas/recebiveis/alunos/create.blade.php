@@ -84,8 +84,7 @@
         </form>
     </div>
 
-    <?php $versao_rand = rand();?>
-    
+    <?php $versao_rand = rand();?>    
 
     <script type="text/javascript" src="/js/utils.js?v=<?php echo urlencode(base64_decode((str_shuffle('cibereduca'))))?>&<?php echo $versao_rand ?>"></script>
     <script type="text/javascript" src="/js/valoresRecebiveis.js?v=<?php echo urlencode(base64_decode((str_shuffle('cibereduca'))))?>&<?php echo $versao_rand ?>"></script>

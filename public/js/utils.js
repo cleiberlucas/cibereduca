@@ -86,7 +86,11 @@ function recalcularValor(campo_valor_principal, campo_valor_desconto, campo_desc
   //console.log('Recalculando Valor .');
  // console.log("Recebeu "+valor_principal+" e "+valor_desconto);
  valor_principal = parseFloat(document.getElementById(''+campo_valor_principal).value);
- valor_desconto = parseFloat(document.getElementById(''+campo_valor_desconto).value);
+ valor_desconto = 0;
+ if (document.getElementById(''+campo_valor_desconto).value > 0)
+    valor_desconto = parseFloat(document.getElementById(''+campo_valor_desconto).value);
+    
+ console.log('valor desconto '+valor_desconto);
   if (valor_desconto > valor_principal){
     alert('O valor do desconto não pode ser maior que o valor principal. Principal: '+valor_principal+ 'Desconto: '+valor_desconto);
     document.getElementById(''+campo_desconto).value = 0;

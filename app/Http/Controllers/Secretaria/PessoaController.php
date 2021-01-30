@@ -284,7 +284,7 @@ class PessoaController extends Controller
         return view('secretaria.paginas.pessoas.index', [
             'tipo_pessoa' => $pessoa->fk_id_tipo_pessoa,
             'pessoas'     => $pessoas,
-        ]);
+        ])->with('sucesso', 'Dados alterados com sucesso.');
     }
 
     /**

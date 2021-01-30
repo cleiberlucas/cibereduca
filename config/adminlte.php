@@ -362,6 +362,20 @@ return [
                     'can'  => 'Recebível Ver',
                 ],
                 [
+                    'text' => 'Remessas',
+                    'route'  => 'remessa.index',
+                    'icon' => 'fas fa-barcode',
+                    'icon_color' => 'blue',
+                    'can'  => 'Remessa Ver',
+                ],
+                [
+                    'text' => 'Retornos',
+                    'route'  => 'retorno.index',
+                    'icon' => 'fas fa-barcode',
+                    'icon_color' => 'blue',
+                    'can'  => 'Retorno Ver',
+                ],
+                [
                     'text' => 'Relatórios',
                     'route'  => 'recebiveis.relatorios.index',
                     'icon' => 'far fa-file-alt',
