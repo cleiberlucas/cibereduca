@@ -22,21 +22,12 @@ class StoreUpdateRetorno extends FormRequest
      * @return array
      */
     public function rules()
-    {        
-        //$id = $this->segment(3);
+    {
+        
+        $id = $this->segment(3);
     
         return [
-            'fk_id_unidade_ensino'  => 'required',
-            'data_retorno'       => 'required',
-            'sequencial_retorno_banco'        => "required",            
-            'fk_id_user_retorno'  => "required",
-            'nome_arquivo'  => "required",                           
-        ];    
-    }
-
-    public function messages()
-    {        
-        return [           
+            
             
         ];    
     }

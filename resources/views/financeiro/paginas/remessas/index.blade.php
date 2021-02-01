@@ -33,6 +33,7 @@
                     <thead>
                         <th scope="col">Nº</th>
                         <th scope="col">Data Geração</th>                                
+                        <th scop="col">Arquivo</th>
                         <th scope="col">Situação</th>
                         {{-- <th scope="col">Ações</th>                --}}     
                     </thead>
@@ -40,8 +41,11 @@
                         @foreach ($remessas as $index => $remessa)                            
                             <tr>
                                 <th>{{$remessa->id_remessa}}</th>
+                                <td>                                    
+                                    {{date('d/m/Y - H:i:s', strtotime($remessa->data_remessa))}}
+                                </td>
                                 <td>
-                                    {{date('d/m/Y H:i:s', strtotime($remessa->data_remessa))}}
+                                    <a href="/storage/{{$remessa->nome_arquivo}}" download="{{$remessa->nome_arquivo}}">Baixar</a>    
                                 </td>    
                                 <td>           
                                     {{$remessa->situacao_remessa}}                         

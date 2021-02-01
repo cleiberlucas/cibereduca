@@ -70,8 +70,6 @@ class RemessaController extends Controller
             ->setUf($dadosUnidadeEnsino->uf)
             ->setCidade($dadosUnidadeEnsino->cidade);
             
-       
-
         $remessaBancoob = new Cnab240BancoBancoob(
             [
                 'agencia'   => $dadoBancario->agencia,
@@ -97,14 +95,13 @@ class RemessaController extends Controller
                 ->setCidade($boleto->cidade_pagador);
 
             $bancoob = new Bancoob;
-
             $bancoob
                  ->setLogo('vendor/adminlte/dist/img/logo_boleto.png') 
                 ->setDataVencimento(Carbon::parse($boleto->data_vencimento))
                 ->setDataDocumento(Carbon::parse(date('Y-m-d', strtotime($boleto->data_geracao))))                
                 ->setMulta($boleto->multa) // 2%
                 ->setJuros($boleto->juros) // 1%               
-                ->setJurosApos($boleto->juros_apos) // aplica juros após X dias do vencimento
+                ->setJurosApos($boleto->juros_apos) // aplica juros após X dias do vencimento ???
                 ->setValor($boleto->valor_total)
                 ->setDesconto($boleto->valor_desconto)                
                 ->setDataDesconto(Carbon::parse($boleto->data_desconto))
@@ -130,7 +127,11 @@ class RemessaController extends Controller
     
         }
 
-        $remessa = $this->repositorio->create(['fk_id_unidade_ensino' => User::getUnidadeEnsinoSelecionada()]);
+        $nomeArquivo = 'remessa_bancoob_'.date('YmdHis').'.txt';
+
+        $remessa = $this->repositorio
+            ->create(['fk_id_unidade_ensino' => User::getUnidadeEnsinoSelecionada(),
+                    'nome_arquivo' => 'boletos/remessas/'.$nomeArquivo]);
 
         $remessaBancoob->setIdremessa($remessa->id_remessa);
        
@@ -141,14 +142,19 @@ class RemessaController extends Controller
         $situacaoBoleto = new Boleto;
         $situacaoBoleto->whereIn('id_boleto', $idBoletos)->update(['fk_id_situacao_registro' => 2]);
 
-        $nomeArquivo = 'remessa_bancoob_'.date('YmdHis').'.txt';
+       
 
-        $arquivo = $remessaBancoob->save(__DIR__. DIRECTORY_SEPARATOR . 'arquivos' . DIRECTORY_SEPARATOR . $nomeArquivo);
+        //$remessaBancoob->save(__DIR__. DIRECTORY_SEPARATOR . 'arquivos' . DIRECTORY_SEPARATOR . $nomeArquivo);
+        $remessaBancoob->save('storage/boletos/remessas' . DIRECTORY_SEPARATOR . $nomeArquivo);
 
-        $remessaBancoob->download($nomeArquivo);
+        
 
          //relacionando remessa X boletos na tabela tb_remessas_boletos
         $remessa->remessaBoletos()->attach($idBoletos);
+
+        //return $this->index()->with('sucesso', 'Remessa gerada com sucesso.');
+
+        $remessaBancoob->download($nomeArquivo);
 
     }
 

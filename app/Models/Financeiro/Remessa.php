@@ -15,6 +15,7 @@ class Remessa extends Model
         'data_remessa',
         'fk_id_situacao_remessa',         
         'fk_id_unidade_ensino',
+        'nome_arquivo',
     ];
    
     /**

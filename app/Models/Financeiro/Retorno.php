@@ -12,11 +12,11 @@ class Retorno extends Model
     public $timestamps = false;
         
     protected $fillable = [
-        'data_retorno',
-        'sequencial_retorno_banco',         
-        'data_processamento',
         'fk_id_unidade_ensino',
-        'fk_id_user_retorno',        
+        'data_retorno',
+        'sequencial_retorno_banco',                  
+        'fk_id_usuario_retorno',    
+        'nome_arquivo',
     ];
    
     /**

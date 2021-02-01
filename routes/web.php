@@ -71,6 +71,8 @@ Route::prefix('financeiro')
                  //Processar
                  Route::any('retorno/bancoob', 'RetornoController@processarRetornoBancoob')->name('retorno.bancoob.processar');
                  route::any('retorno', 'RetornoController@index')->name('retorno.index');
+                 Route::get('retorno/create', 'RetornoController@create')->name('retorno.create');
+                 Route::any('retorno/store', 'RetornoController@store')->name('retorno.store');
 
 
         });
