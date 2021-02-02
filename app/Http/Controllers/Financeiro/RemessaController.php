@@ -28,6 +28,7 @@ class RemessaController extends Controller
 
     public function index()
     {
+        $this->authorize('Remessa Ver');
         $remessas = $this->repositorio
             ->where('fk_id_unidade_ensino', User::getUnidadeEnsinoSelecionada())
             ->join('tb_situacoes_remessa', 'fk_id_situacao_remessa', 'id_situacao_remessa')
@@ -39,8 +40,8 @@ class RemessaController extends Controller
     }
 
     public function gerarRemessaBancoob()
-    {        
-        //require 'autoload.php';
+    {                
+        $this->authorize('Remessa Cadastrar');
         $boletosRemessa = new Boleto;
         $boletosRemessa = $boletosRemessa     
             ->select('tb_boletos.*')       
@@ -123,8 +124,7 @@ class RemessaController extends Controller
 
             $boletosBancoob[$indBoleto] = $bancoob;
 
-            $idBoletos[$indBoleto] = $boleto->id_boleto;
-    
+            $idBoletos[$indBoleto] = $boleto->id_boleto;    
         }
 
         $nomeArquivo = 'remessa_bancoob_'.date('YmdHis').'.txt';

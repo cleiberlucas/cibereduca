@@ -171,6 +171,8 @@ class BoletoController extends Controller
         if (!$request->fk_id_recebivel)
             return redirect()->back()->with('atencao', 'Selecione pelo menos 1 recebível.');
 
+       // dd($request->fk_id_recebivel);
+
         $dadoBancario = new DadoBancario;
         $dadoBancario = $dadoBancario
             ->select('id_dado_bancario', 'instrucao_multa_juros', 'juros', 'multa', 'juros_apos', 'dias_baixa_automatica')
@@ -196,6 +198,7 @@ class BoletoController extends Controller
             ->leftJoin('tb_estados', 'fk_id_estado', 'id_estado')
             ->where('id_recebivel', $request->fk_id_recebivel[0])
             ->first();
+           // dd($dadosPagador);
 
         if (!$dadosPagador)
             return redirect()->back()->with('erro', 'Erro ao pesquisar o responsável (pagador). Favor entrar em contato com a CiberSys.');
@@ -213,18 +216,25 @@ class BoletoController extends Controller
         $validaCpf = new CpfValidation();
         $validaCpf = $validaCpf->validate('', $dadosPagador->cpf_cnpj_pagador, '', '');
         if (!$validaCpf)
-            return redirect()->back()->with('erro', 'CPF do responsável inválido. Corrigir o cadastro do responsável. Boletos não foram gerados.');
+            return redirect()->back()->with('erro', 'CPF do responsável inválido. Corrigir o cadastro do responsável. Os boletos não foram gerados.');
        
         //Agrupando boletos por data de vencimento
         //somando valor principal e valor desconto
-        $somasBoletos = DB::table('tb_recebiveis')        
-            ->select(DB::raw('data_vencimento'), DB::raw('sum(valor_principal) as valor_principal_total, sum(valor_desconto_principal) as valor_desconto_total'))
-            ->groupBy(DB::raw('data_vencimento'))                
-            ->whereIn('id_recebivel', $request->fk_id_recebivel)                           
-            ->get();
+        //Para recebíveis A VENCER
+        if (!$request->fk_id_conta_contabil_acrescimo)
+            $somasBoletos = DB::table('tb_recebiveis')        
+                ->select(DB::raw('data_vencimento'), DB::raw('sum(valor_principal) as valor_principal_total, sum(valor_desconto_principal) as valor_desconto_total'))
+                ->groupBy(DB::raw('data_vencimento'))                
+                ->whereIn('id_recebivel', $request->fk_id_recebivel)                           
+                ->get();
+        /* Para recebíveis VENCIDOS */
+        else
+        {
+
+        }
 
         if(!$somasBoletos)
-        return redirect()->back()->with('erro', 'Não foi possível somar os boletos. Favor entrar em contato com a CiberSys.');
+            return redirect()->back()->with('erro', 'Não foi possível somar os boletos. Favor entrar em contato com a CiberSys.');
 
         //dd($somasBoletos);
 
@@ -253,8 +263,7 @@ class BoletoController extends Controller
                     ->join('tb_anos_letivos', 'fk_id_ano_letivo', 'id_ano_letivo')
                     ->join('tb_contas_contabeis', 'fk_id_conta_contabil_principal', 'id_conta_contabil')
                     ->join('tb_tipos_situacao_recebivel', 'fk_id_situacao_recebivel', 'id_situacao_recebivel')            
-                    ->whereIn('id_recebivel', $request->fk_id_recebivel)
-                    ->where('data_vencimento', $somaBoleto->data_vencimento)                          
+                    ->whereIn('id_recebivel', $request->fk_id_recebivel)                    
                     ->orderBy('descricao_conta')
                     ->get();
         
@@ -273,8 +282,8 @@ class BoletoController extends Controller
             if ($dadoBancario->dias_baixa_automatica > 0)
                 $infoOutros.= 'Pagável em até '.$dadoBancario->dias_baixa_automatica.' dias após o vencimento.';
 
-            //Verificando e recalculandoe o vencimento que caiu em feriado ou final de semana
-            $vencimento_verificado = $this->recalcularVencimento($somaBoleto->data_vencimento);
+            //Verificando e recalculando o vencimento que caiu em feriado ou final de semana
+            $vencimento_verificado = recalcularVencimento($somaBoleto->data_vencimento);
             //dd($vencimento_verificado);
 
             //gerar array com dados do boleto para gravar
@@ -565,126 +574,5 @@ class BoletoController extends Controller
     } */
 
     
-    /*     
-        Autor: Wellington Rodrigues -> U r S o L o U c O     
-        MSN: ursolouco@msn.com 
-        Função: vencimento_calculado()       
-        Argumentos: 1 ($data) Deve ser passado no formato YYYY-mm-dd 
-        Utilização: Livre - Mantenha os créditos ao Autor     
-        Retorno: Data calculada no formato YYYY-mm-dd 
-    */
-      // Retornar uma array, com os indices dia, mes e ano.
-    public function recalcularVencimento($data)
-    { 			        
-        list($ano, $mes, $dia) = explode("-", $data);   
-        $ret = '';        
-        
-        //vencimento original no sábado - converte p segunda
-        if(date("w", mktime(0,0,0, $mes, $dia, $ano)) == "6"){   
-            $ret = date("Y-m-d", mktime(0,0,0,$mes, ($dia + 2), $ano));  											
-        }       
-        //vencimento original no domingo - converte p segunda
-        elseif(date("w",mktime(0,0,0, $mes, $dia, $ano)) == "0"){ 
-            $ret = date("Y-m-d", mktime(0, 0, 0, $mes, ($dia + 1), $ano)); 							
-        }       
-        //demais dias mantém
-        else{   
-            $ret = date("Y-m-d", mktime(0, 0, 0, $mes, $dia, $ano)); 
-        }       
-        
-        $vencimento_tmp = strtotime($ret);
-        $ano_tmp = substr($ret, 0,4);
-        $mes_tmp = substr($ret, 5,2);
-        $dia_tmp = substr($ret, 8,2);   
-
-     // print "vencimento tmp ". date('Y-m-d', $vencimento_tmp);
-        //dd($vencimento_tmp);
-    
-        //verificando se o vencimento é feriado
-        foreach($this->dias_feriados($ano_tmp) as $a)
-        {                
-            //echo date("Y-m-d",$a).'<br>';						 
-            //Verificar se o novo vencimento caiu em feriado	
-            //print "<br>Feriado ". date($ano_tmp."-m-d",$a);					
-            if ( date("Y-m-d",$vencimento_tmp) == date($ano_tmp."-m-d",$a)){
-               // print "Encontrou feriado ". date($ano_tmp."-m-d",$a);
-                if(date("w", mktime(0,0,0, $mes_tmp, $dia_tmp, $ano_tmp)) == "5"){  //se o feriado for sexta-feira, altera o vencimento original p segunda
-                    $dia_tmp = $dia_tmp+3;
-                    $ret = date("Y-m-d", mktime(0,0,0,$mes_tmp, $dia_tmp, $ano_tmp));  
-                }					
-                elseif(date("w", mktime(0,0,0, $mes_tmp, $dia_tmp, $ano_tmp)) >= "1" and date("w", mktime(0,0,0, $mes_tmp, $dia_tmp, $ano_tmp)) <= "4"){  //feriado de segunda a quinta
-                    $dia_tmp++;
-                    $ret = date("Y-m-d", mktime(0,0,0,$mes_tmp, $dia_tmp, $ano_tmp));  
-                }
-               
-               // break;
-            }
-            $vencimento_tmp = strtotime($ret);
-        }
-        
-       // $ano_atual = date("Y", time());        
-        $vencimento = strtotime($ret); // vencimento nunca � em final de semana
-        
-        $ano_venc_tmp = date("Y",$vencimento);
-        if ( ''.date("Y",$vencimento).date("m",$vencimento).date("d",$vencimento).'' == ''.$ano_venc_tmp."1231"){ // se vencimento = 31/12/anovenc
-                
-            if(date("w", mktime(0,0,0, 12, 31, $ano_venc_tmp)) == "0" ) // se 31/12/anotual = domingo
-                $ret = $ano_venc_tmp."-12-28"; // vence em 28/12/anoatual (quinta-feira)     PORQUE O �LTIMO DIA �TIL DO ANO N�O TEM EXPEDIENTE BANC�RIO
-                
-            elseif(date("w", mktime(0,0,0, 12, 31, $ano_venc_tmp)) == "1") // se 31/12/anotual = segunda
-                $ret = $ano_venc_tmp."-12-28"; // vence em 28/12/anoatual (sexta-feira)     PORQUE O �LTIMO DIA �TIL DO ANO N�O TEM EXPEDIENTE BANC�RIO
-                
-            elseif(date("w", mktime(0,0,0, 12, 31, $ano_venc_tmp)) >= "2" AND date("w", mktime(0,0,0, 12, 31, $ano_venc_tmp)) <= "5") // se 31/12/anotual = ter�a A SEXTA
-                $ret = $ano_venc_tmp."-12-30"; // vence em 30/12/anoatual (dia anterior)     PORQUE O �LTIMO DIA �TIL DO ANO N�O TEM EXPEDIENTE BANC�RIO
-            
-            elseif(date("w", mktime(0,0,0, 12, 31, $ano_venc_tmp)) == "6") // se 31/12/anotual = s�bado
-                $ret = $ano_venc_tmp."-12-29"; // vence em 29/12/anoatual (quinta-feira)    PORQUE O �LTIMO DIA �TIL DO ANO N�O TEM EXPEDIENTE BANC�RIO
-        }
-
-       /*  $ret_vetor['ano'] = substr($ret, 0, 4);
-        $ret_vetor['mes'] = substr($ret, 5, 2);
-        $ret_vetor['dia'] = substr($ret, 8, 2);	 */	
-
-        return $ret;
-    }     
-
-    public function dias_feriados($ano = null)
-    {
-		if ($ano === null){
-			$ano = intval(date('Y'));
-		}
-
-        $pascoa     = easter_date($ano); // Limite de 1970 ou após 2037 da easter_date PHP consulta http://www.php.net/manual/pt_BR/function.easter-date.php
-        //echo "pascoa ".date('Y-m-d', $pascoa);
-		$dia_pascoa = date('j', $pascoa);
-		$mes_pascoa = date('n', $pascoa);
-		$ano_pascoa = date('Y', $pascoa);
-
-		$feriados = array(
-            // Datas Fixas dos feriados Nacionail Basileiras
-            mktime(0, 0, 0, 1,  1,   $ano), // Confraternização Universal - Lei nº 662, de 06/04/49
-            mktime(0, 0, 0, 4,  21,  $ano), // Tiradentes - Lei nº 662, de 06/04/49
-            mktime(0, 0, 0, 5,  1,   $ano), // Dia do Trabalhador - Lei nº 662, de 06/04/49
-            mktime(0, 0, 0, 9,  7,   $ano), // Dia da Independência - Lei nº 662, de 06/04/49
-            mktime(0, 0, 0, 10,  12, $ano), // N. S. Aparecida - Lei nº 6802, de 30/06/80
-            mktime(0, 0, 0, 11,  2,  $ano), // Todos os santos - Lei nº 662, de 06/04/49
-            mktime(0, 0, 0, 11, 15,  $ano), // Proclamação da republica - Lei nº 662, de 06/04/49
-            mktime(0, 0, 0, 12, 25,  $ano), // Natal - Lei nº 662, de 06/04/49
-            
-            //mktime(0, 0, 0, 11, 30,  $ano), // Dia do evangélico em Brasília
-            mktime(0, 0, 0, 8, 1,  $ano), // Aniversário de Formosa
-
-            // These days have a date depending on easter
-            mktime(0, 0, 0, $mes_pascoa, $dia_pascoa - 47,  $ano_pascoa),//2ºfeira Carnaval
-            mktime(0, 0, 0, $mes_pascoa, $dia_pascoa - 46,  $ano_pascoa),//3ºfeira Carnaval	
-            mktime(0, 0, 0, $mes_pascoa, $dia_pascoa - 2 ,  $ano_pascoa),//6ºfeira Santa  
-            mktime(0, 0, 0, $mes_pascoa, $dia_pascoa     ,  $ano_pascoa),//Pascoa
-            mktime(0, 0, 0, $mes_pascoa, $dia_pascoa + 60,  $ano_pascoa),//Corpus Christi
-		);
-
-        sort($feriados);
-                
-		return $feriados;
-    }
-
+   
 }

@@ -11,7 +11,7 @@ function calcularAcrescimos(index){
   document.getElementById("juro"+index).innerHTML = "";
   document.getElementById("total_boleto"+index).innerHTML = "";
 
-  document.getElementById("fk_id_recebivel_vencido["+index+"]").checked = false;    
+  document.getElementById("fk_id_recebivel["+index+"]").checked = false;    
 
     var indice_multa = document.getElementById("indice_correcao[0]").value;
     var indice_juro = document.getElementById("indice_correcao[1]").value;
@@ -39,7 +39,7 @@ function calcularAcrescimos(index){
         $('#multa'+index).append('<div class="form-group col-sm-3 col-xs-2"> <label>Multa: ('+indice_multa+'%)</label> <input type="number" step="0.010" class="form-control" readonly required name="valor_multa'+index+'" id="valor_multa'+index+'" readonly value="'+valor_multa+'" /> </div>');
         $('#multa'+index).append('<div class="form-group col-sm-3 col-xs-2"> <label>Desconto Multa:</label> <input type="number" step="0.010" class="form-control" name="valor_desconto_multa'+index+'" id="valor_desconto_multa'+index+'" value="" onBlur="recalcularValor(\'valor_multa'+index+'\', \'valor_desconto_multa'+index+'\', \'valor_desconto_multa'+index+'\', \'valor_total_multa'+index+'\'); somarRecebiveis('+index+');" /> </div>');
         $('#multa'+index).append('<div class="form-group col-sm-3 col-xs-2"> <label>Valor Multa:</label> <input type="number" step="0.010" class="form-control" readonly name="valor_total_multa'+index+'" id="valor_total_multa'+index+'" value="'+valor_multa+'" /> </div>');      
-      document.getElementById("fk_id_recebivel_vencido["+index+"]").checked = true;     
+      document.getElementById("fk_id_recebivel["+index+"]").checked = true;     
     }
 
     //aplicando juro
@@ -50,7 +50,7 @@ function calcularAcrescimos(index){
         $('#juro'+index).append('<div class="form-group col-sm-3 col-xs-2"> <label>Desconto Juros:</label> <input type="number" step="0.010" class="form-control" name="valor_desconto_juro'+index+'" id="valor_desconto_juro'+index+'" value="" onBlur="recalcularValor(\'valor_juro'+index+'\', \'valor_desconto_juro'+index+'\', \'valor_desconto_juro'+index+'\', \'valor_total_juro'+index+'\'); somarRecebiveis('+index+');" /> </div>');
         $('#juro'+index).append('<div class="form-group col-sm-3 col-xs-2"> <label>Valor Juros: ('+dias_atraso+' dias)</label> <input type="number" step="0.010" class="form-control" readonly name="valor_total_juro'+index+'" id="valor_total_juro'+index+'" value="'+valor_juro+'" /> </div>');      
         /* $('#juro'+index).append('</div>'); */
-      document.getElementById("fk_id_recebivel_vencido["+index+"]").checked = true;  
+      document.getElementById("fk_id_recebivel["+index+"]").checked = true;  
     }       
    
 }  

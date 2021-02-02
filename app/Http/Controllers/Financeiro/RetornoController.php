@@ -19,6 +19,7 @@ class RetornoController extends Controller
 
     public function index()
     {
+        $this->authorize('Retorno Ver');
         $retornos = $this->repositorio
             ->orderBy('data_retorno', 'desc')
             ->orderBy('data_processamento', 'desc')
@@ -30,6 +31,7 @@ class RetornoController extends Controller
 
     public function create()
     {        
+        $this->authorize('Retorno Cadastrar');
         $unidadeEnsino = User::getUnidadeEnsinoSelecionada();
         return view('financeiro.paginas.retornos.create',
             compact('unidadeEnsino'));
@@ -37,6 +39,7 @@ class RetornoController extends Controller
 
     public function store(StoreUpdateRetorno $request)
     {
+        $this->authorize('Retorno Cadastrar');
         $request['data_retorno'] = '20210130';
         $request['sequencial_retorno_banco'] = '1';
         
