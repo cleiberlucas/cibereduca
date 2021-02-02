@@ -277,7 +277,7 @@ class BoletoController extends Controller
             if ($somaBoleto->valor_desconto_total > 0)
                 $infoDesconto = 'Desconto de R$ '.number_format($somaBoleto->valor_desconto_total, 2, ',', '.').' para pagamento até '.date('d/m/Y', strtotime($somaBoleto->data_vencimento)).'.';
 
-            $infoOutros = 'NÃO PAGÁVEL TESTE TESTE TESTE TESTE. ';
+            $infoOutros = '';
             
             if ($dadoBancario->dias_baixa_automatica > 0)
                 $infoOutros.= 'Pagável em até '.$dadoBancario->dias_baixa_automatica.' dias após o vencimento.';

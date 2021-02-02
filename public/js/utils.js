@@ -102,3 +102,28 @@ function recalcularValor(campo_valor_principal, campo_valor_desconto, campo_desc
   document.getElementById(''+campo_valor_total).value = (valor_principal - valor_desconto).toFixed(2);
   //return valor_principal - valor_desconto;
 }
+
+function desmarcarTodosChecks()
+{
+  $('input:checkbox').prop('checked', false);
+}
+
+function limparTodasDiv(nome_div)
+{
+  console.log('limpando div '+nome_div);
+  /* var allDiv = document.getElementsByClassName("div"),
+            div = allDiv[allDiv.length - 1];
+  document.body.removeChild(div);
+ */
+  
+  var p = $(this)
+  .closest("."+nome_div); // seleciona o elemento pai com a classe
+
+  p
+  .fadeOut(350, function(){
+   p.remove();
+});
+
+ //$('#'+nome_div).empty();  
+
+}

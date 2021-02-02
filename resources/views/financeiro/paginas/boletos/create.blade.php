@@ -128,6 +128,14 @@
                         <input type="hidden" class="" id="aplica_correcao[{{$index}}]" name="aplica_correcao[{{$index}}]" value="{{$correcao->aplica_correcao}}">  
                     @endforeach
 
+                    <div class="row">
+                        <div class="col-sm-6"></div>
+                        <div class="col-sm-3" class="form-group">
+                            <label for="">Novo Vencimento</label>
+                            <td><input type="date" class="form-control" id="novo_vencimento" min="{{date('Y-m-d')}}" name="novo_vencimento" value="" required onBlur="desmarcarTodosChecks(); limparTodasDiv('acrescimo')"/></td>
+                        </div>
+                    </div>
+                    <br>
                     <div class="table-responsive">
                         <table class="table table-hover">
                             <thead>
@@ -136,25 +144,23 @@
                                 <th scope="col">Vencimento</th>
                                 <th scope="col">Valor R$</th>
                                 <th scope="col">Desconto R$</th>
-                                <th scope="col">Principal R$</th>
-                                <th scope="col">Novo Vencimento</th>                    
+                                <th scope="col">Principal R$</th>                                
                             </thead>
                             <tbody>     
                                 @foreach ($recebiveisVencidos as $indRecVencido => $recebivelVencido)                                    
                                     <tr bgcolor="#F8E0E0">
-                                        <td><input type="checkbox" name="fk_id_recebivel[{{$indRecVencido}}]" id="fk_id_recebivel[{{$indRecVencido}}]" value="{{$recebivelVencido->id_recebivel}}"></td>
+                                        <td><input type="checkbox" name="fk_id_recebivel[{{$indRecVencido}}]" id="fk_id_recebivel[{{$indRecVencido}}]" value="{{$recebivelVencido->id_recebivel}}" onClick="calcularAcrescimos({{$indRecVencido}}); somarRecebiveis({{$indRecVencido}});"></td>
                                         <td>{{$recebivelVencido->descricao_conta}} - {{$recebivelVencido->tipo_turma}} - {{$recebivelVencido->ano}} - Parc. {{$recebivelVencido->parcela}}</td>
                                         <td><input type="date" class="form-control" readonly id="data_vencimento[{{$indRecVencido}}]" name="data_vencimento[{{$indRecVencido}}]" value="{{$recebivelVencido->data_vencimento}}"/></td>                                                                                
                                         <td><input type="number" step="0.010" class="form-control" required readonly id="valor_principal[{{$indRecVencido}}]" name="valor_principal[{{$indRecVencido}}]" value="{{ $recebivelVencido->valor_principal ?? old('valor_principal') }}"/></td>
                                         <td><input type="number" step="0.010" class="form-control" name="valor_desconto_principal[{{$indRecVencido}}]" id="valor_desconto_principal[{{$indRecVencido}}]" value="{{$recebivelVencido->valor_desconto_principal ?? old('valor_desconto_principal')}}" onBlur="recalcularValor('valor_principal[{{$indRecVencido}}]', 'valor_desconto_principal[{{$indRecVencido}}]', 'valor_desconto_principal[{{$indRecVencido}}]', 'valor_total[{{$indRecVencido}}]'); calcularAcrescimos({{$indRecVencido}}); ; somarRecebiveis({{$indRecVencido}});" /></td>
-                                        <td><input type="number" step="0.010" class="form-control" required readonly id="valor_total[{{$indRecVencido}}]" name="valor_total[{{$indRecVencido}}]" value="{{ $recebivelVencido->valor_total ?? old('valor_total') }}"/></td>
-                                        <td><input type="date" class="form-control" id="novo_vencimento[{{$indRecVencido}}]" min="{{date('Y-m-d')}}" name="novo_vencimento[{{$indRecVencido}}]" value="" onBlur="calcularAcrescimos({{$indRecVencido}}); somarRecebiveis({{$indRecVencido}});"/></td>
+                                        <td><input type="number" step="0.010" class="form-control" required readonly id="valor_total[{{$indRecVencido}}]" name="valor_total[{{$indRecVencido}}]" value="{{ $recebivelVencido->valor_total ?? old('valor_total') }}"/></td>                                        
                                     </tr>          
                                     <tr bgcolor="#F8E0E0">
-                                        <td colspan=7>
-                                            <div class="row acrescimo" id="multa{{$indRecVencido}}"></div>
+                                        <td colspan=7>                                            
+                                            <div class="row acrescimo " id="multa{{$indRecVencido}}"></div>
                                             <div class="row acrescimo" id="juro{{$indRecVencido}}"></div>
-                                            <div class="row" id="total_boleto{{$indRecVencido}}"></div>
+                                            <div class="row acrescimo" id="total_boleto{{$indRecVencido}}"></div>                                        
                                         </td>    
                                     </tr>                  
                                 @endforeach
@@ -183,8 +189,6 @@
                         </div>
                     </div>
                     <br>
-                    
-        
                     <div class="row ">
                         <div class="form-group col-sm-4 col-xs-2">                         
                             <button type="submit" class="btn btn-success"><i class="fas fa-forward"></i> Lançar</button>            
