@@ -370,7 +370,7 @@ return [
                 ],
                 [
                     'text' => 'Retornos',
-                    /* 'route'  => 'retorno.index', */
+                    'route'  => 'retorno.index',
                     'icon' => 'fas fa-barcode',
                     'icon_color' => 'blue',
                     'can'  => 'Retorno Ver',

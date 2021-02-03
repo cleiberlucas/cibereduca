@@ -95,7 +95,7 @@
                                 @foreach ($recebiveis as $index => $recebivel)
                                     <tr>
                                         <td>
-                                            <input type="checkbox" name="fk_id_recebivel[]" value="{{$recebivel->id_recebivel}}" checked>
+                                            <input type="checkbox" name="fk_id_recebivel[]" value="{{$recebivel->id_recebivel}}" checked required>
                                         </td>
                                         <td>{{$recebivel->descricao_conta}} - {{$recebivel->tipo_turma}} - {{$recebivel->ano}}</td>
                                         <td>{{$recebivel->parcela}}</td>
@@ -159,7 +159,7 @@
                         <div class="col-sm-6"></div>
                         <div class="col-sm-3" class="form-group">
                             <label for="">Novo Vencimento</label>
-                            <td><input type="date" class="form-control" id="novo_vencimento" min="{{date('Y-m-d')}}" name="novo_vencimento" value="" required onBlur="desmarcarTodosChecks(); limparTodasDiv('acrescimo')"/></td>
+                            <td><input type="date" class="form-control" id="novo_vencimento" min="{{date('Y-m-d')}}" name="novo_vencimento" value='<?php echo date("Y-m-d"); ?>'' required onBlur="desmarcarTodosChecks();"/></td>
                         </div>
                     </div>
                     <br>
@@ -176,7 +176,7 @@
                                 @foreach ($recebiveisVencidos as $indRecVencido => $recebivelVencido)                                    
                                     <tr bgcolor="#F8E0E0">
                                         <td>
-                                            <input type="checkbox" name="fk_id_recebivel[{{$indRecVencido}}]" id="fk_id_recebivel[{{$indRecVencido}}]" value="{{$recebivelVencido->id_recebivel}}" onClick="calcularAcrescimos({{$indRecVencido}}); somarRecebiveis({{$indRecVencido}});">
+                                            <input type="checkbox" required name="fk_id_recebivel[{{$indRecVencido}}]" id="fk_id_recebivel[{{$indRecVencido}}]" value="{{$recebivelVencido->id_recebivel}}" onClick="calcularAcrescimos({{$indRecVencido}}); somarRecebiveis({{$indRecVencido}});">
                                             <label class="form-check-label" for="fk_id_recebivel[{{$indRecVencido}}]">
                                                 {{$recebivelVencido->descricao_conta}} - {{$recebivelVencido->tipo_turma}} - {{$recebivelVencido->ano}} - Parc. {{$recebivelVencido->parcela}}</td>
                                             </label>

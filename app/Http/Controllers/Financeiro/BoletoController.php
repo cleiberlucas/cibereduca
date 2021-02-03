@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Financeiro;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreUpdateBoleto;
 use App\Models\Financeiro\Boleto;
 use App\Models\Financeiro\BoletoRecebivel;
 use App\Models\Financeiro\Correcao;
@@ -279,7 +278,8 @@ class BoletoController extends Controller
                     ->join('tb_anos_letivos', 'fk_id_ano_letivo', 'id_ano_letivo')
                     ->join('tb_contas_contabeis', 'fk_id_conta_contabil_principal', 'id_conta_contabil')
                     ->join('tb_tipos_situacao_recebivel', 'fk_id_situacao_recebivel', 'id_situacao_recebivel')            
-                    ->whereIn('id_recebivel', $request->fk_id_recebivel)                    
+                    ->whereIn('id_recebivel', $request->fk_id_recebivel)      
+                    ->where('data_vencimento', $somaBoleto->data_vencimento)              
                     ->orderBy('descricao_conta')
                     ->get();
         

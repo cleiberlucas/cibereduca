@@ -24,10 +24,16 @@ function calcularAcrescimos(index){
     
     var data_venc = new Date(document.getElementById("data_vencimento["+index+"]").value);
     var data_novo_vencimento = new Date(document.getElementById("novo_vencimento").value);
-    console.log('data novo vencimento'+data_novo_vencimento);
-    if (data_novo_vencimento == 'Invalid Date'){
-      alert('Informe a data do novo vencimento.');
-      window.location.reload();
+    data_novo_vencimento = new Date(data_novo_vencimento.getTime() + data_novo_vencimento.getTimezoneOffset() * 510000);
+    data_novo_vencimento = data_novo_vencimento;
+    hoje = new Date();
+    hoje = new Date(hoje.getTime());
+    console.log('data novo vencimento '+document.getElementById("novo_vencimento").value);
+    console.log('data novo vencimento convertida '+data_novo_vencimento);
+    if (data_novo_vencimento == 'Invalid Date' || hoje > data_novo_vencimento){
+      alert('Informe a data do novo vencimento maior ou igual a hoje.');
+      document.getElementById("fk_id_recebivel["+index+"]").checked = false;
+      //window.location.reload();
     }
 
     var diff = Math.abs(data_novo_vencimento.getTime() - data_venc.getTime());
@@ -87,7 +93,9 @@ function somarRecebiveis(index){
 
   var valor_total_boleto = (valor_total_principal + valor_multa + valor_juro).toFixed(2);
 
-  if (document.getElementById("fk_id_recebivel["+index+"]").checked){
+  var data_novo_vencimento = new Date(document.getElementById("novo_vencimento").value);
+
+  if (document.getElementById("fk_id_recebivel["+index+"]").checked && data_novo_vencimento != 'Invalid Date'){
     $('#total_boleto'+index).append('<div class="form-group col-sm-9">&nbsp;</div>');
     $('#total_boleto'+index).append('<div class="form-group col-sm-3 col-xs-2 align=right"> <label>TOTAL BOLETO:</label> <input type="number" step="0.010" class="form-control" readonly name="valor_total_boleto'+index+'" id="valor_total_boleto'+index+'" value="'+valor_total_boleto+'" /> </div>');
   }
