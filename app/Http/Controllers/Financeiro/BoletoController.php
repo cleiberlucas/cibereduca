@@ -65,8 +65,21 @@ class BoletoController extends Controller
 
         //dd($boletos);
 
+        $recebiveis = new Recebivel;
+        $recebiveis = $recebiveis
+            ->select('fk_id_boleto',
+                    'valor_total',
+                    'parcela',
+                    'descricao_conta')
+            ->join('tb_boletos_recebiveis', 'fk_id_recebivel', 'id_recebivel')            
+            ->join( 'tb_matriculas', 'tb_recebiveis.fk_id_matricula', 'id_matricula')
+            ->join('tb_pessoas', 'fk_id_aluno', 'id_pessoa')            
+            ->join('tb_contas_contabeis', 'fk_id_conta_contabil_principal', 'id_conta_contabil')
+            ->where('fk_id_aluno', $id_aluno)  
+            ->get();
+
         return view('financeiro.paginas.boletos.index',
-            compact('aluno', 'boletos')
+            compact('aluno', 'boletos', 'recebiveis')
         );
 
     }
@@ -85,14 +98,15 @@ class BoletoController extends Controller
         if (!$aluno)
             return redirect()->back()->with('erro', 'Aluno não encontrado.');
 
-        /* $dadoBancario = new DadoBancario;
+        $dadoBancario = new DadoBancario;
         $dadoBancario = $dadoBancario
-            ->select('juros', 'multa', 'juros_apos')
+            ->select('pagamento_apos_vencimento', 'juros', 'multa', 'juros_apos',
+                'protesto', 'instrucao_multa_juros', 'dias_baixa_automatica')
             ->where('fk_id_unidade_ensino', '=', User::getUnidadeEnsinoSelecionada())   
             ->first();
 
         if (!$dadoBancario)
-            return redirect()->back()->with('erro', 'Configurações de multa e juros não cadastradas nos dados bancários da Unidade de Ensinoo.'); */
+            return redirect()->back()->with('erro', 'Configurações de multa e juros não cadastradas nos dados bancários da Unidade de Ensinoo.');
 
         $recebiveis = new Recebivel;            
        
@@ -158,7 +172,7 @@ class BoletoController extends Controller
             return redirect()->back()->with('erro', 'Correções de multa e juros não cadastradas nas configurações da Unidade de Ensinoo.');
         
         return view('financeiro.paginas.boletos.create',
-            compact('aluno', 'recebiveis', 'recebiveisVencidos', 'correcoes' )
+            compact('aluno', 'recebiveis', 'recebiveisVencidos', 'correcoes', 'dadoBancario' )
         );
     }
 

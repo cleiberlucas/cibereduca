@@ -16,7 +16,11 @@
     </ol>    
 @stop
 
-@section('content')
+@section('content')    
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    
     <div class="container-fluid">
         @include('admin.includes.alerts')
         <div class="card-header">
@@ -38,7 +42,8 @@
                 <table class="table table-hover">
                     <thead>
                         <th scope="col">#</th>
-                        <th scope="col">Data Vencimento</th>        
+                        <th scope="col">Boleto</th> 
+                        <th scope="col">Data Vencimento</th>                               
                         <th scope="col">Valor</th>        
                         <th scope="col">Data Pagamento</th>                        
                         <th scope="col">Situação</th>
@@ -58,9 +63,23 @@
                                 echo '<tr>';
                             ?>
                                 <th> <input type="checkbox" name="id_boleto[]" value="{{$boleto->id_boleto}}" checked></th>
+                                  
+                                <td>
+                                    <?php 
+                                        $textoPopover = '';
+                                        foreach ($recebiveis as $recebivel)
+                                        {
+                                            if ($recebivel->fk_id_boleto == $boleto->id_boleto){
+                                                $textoPopover .= $recebivel->descricao_conta. ' Parc. '.$recebivel->parcela.' R$ '.number_format($recebivel->valor_total, 2, ',', '.').', ';
+                                            }
+                                        }
+                                        
+                                    ?>
+                                    <a href="#" data-content="{{$textoPopover}}"{{--  title="Recebíveis" --}} data-toggle="popover" data-trigger="hover" disabled>Recebíveis</a>                                        
+                                </td>
                                 <td>
                                     {{date('d/m/Y', strtotime($boleto->data_vencimento))}}
-                                </td>    
+                                </td>  
                                 <td>
                                     {{number_format($boleto->valor_total, 2, ',', '.')}}    
                                 </td>                             
@@ -109,6 +128,8 @@
         $(document).ready(function(){
               $(".alert").slideDown(300).delay(5000).slideUp(300);
         });    
+
+        $('[data-toggle="popover"]').popover();  
     </script>
     
 @stop
