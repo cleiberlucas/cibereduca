@@ -54,7 +54,7 @@
                     <h5>IMPORTANTE:</h5>
                     <h6><strong>Vencimento:</strong> caso o vencimento original do recebível seja em final de semana ou feriado, o vencimento será recalculado para o próximo dia útil. 
                         Este recálculo é necessário para permitir o pagamento com desconto.</h6>
-                    <h6><strong>Registro do boleto no Banco:</strong> o boleto poderá ser pago, somente, após 30 minutos do envio da remessa ao Banco.</h6>
+                    <h6><strong>Registro do boleto no Banco:</strong> o boleto poderá ser pago, somente, após uma hora do envio da remessa ao Banco.</h6>
                 </div>
             </div>
             
