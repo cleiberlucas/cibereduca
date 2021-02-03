@@ -32,7 +32,9 @@ class BoletoController extends Controller
         $this->repositorio = $boleto;        
     }
 
-    public function indexAluno($id_aluno){
+    public function indexAluno($id_aluno)
+    {
+        $this->authorize('Boleto Ver');
 
         $aluno = new Pessoa;
         $aluno = $aluno
@@ -87,7 +89,7 @@ class BoletoController extends Controller
      * Abre interfaace para lançamento de boleto
      */
     public function create($id_aluno){
-        $this->authorize('Boleto Lançar');   
+        $this->authorize('Boleto Cadastrar');   
        
         $aluno = new Pessoa;
         $aluno = $aluno
