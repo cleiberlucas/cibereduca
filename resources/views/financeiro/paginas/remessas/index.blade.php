@@ -45,7 +45,7 @@
                                     {{date('d/m/Y - H:i:s', strtotime($remessa->data_remessa))}}
                                 </td>
                                 <td>
-                                    <a href="/storage/{{$remessa->nome_arquivo}}" download="{{$remessa->nome_arquivo}}">Baixar</a>    
+                                    <a href="/storage/boletos/remessas/{{$remessa->nome_arquivo}}" download="{{$remessa->nome_arquivo}}">Baixar</a>    
                                 </td>    
                                 <td>           
                                     {{$remessa->situacao_remessa}}                         

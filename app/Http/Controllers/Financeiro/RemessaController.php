@@ -131,7 +131,7 @@ class RemessaController extends Controller
 
         $remessa = $this->repositorio
             ->create(['fk_id_unidade_ensino' => User::getUnidadeEnsinoSelecionada(),
-                    'nome_arquivo' => 'boletos/remessas/'.$nomeArquivo]);
+                    'nome_arquivo' => $nomeArquivo]);
 
         $remessaBancoob->setIdremessa($remessa->id_remessa);
        
