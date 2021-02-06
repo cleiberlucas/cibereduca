@@ -66,7 +66,7 @@
                                   
                                 <td>
                                     <?php 
-                                        $textoPopover = '';
+                                        $textoPopover = ''; 
                                         foreach ($recebiveis as $recebivel)
                                         {
                                             if ($recebivel->fk_id_boleto == $boleto->id_boleto){
