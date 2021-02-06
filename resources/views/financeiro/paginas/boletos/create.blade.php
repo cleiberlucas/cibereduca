@@ -72,7 +72,7 @@
                 <a class="nav-link " href="#recebivel_vencer" aria-controls="recebivel_vencer" role="tab" data-toggle="tab">RECEBÍVEIS A VENCER</a>                    
             </li>                        
             <li role="presentation" class="nav-item">
-                <a class="nav-link disabled " href="#recebivel_vencido" aria-controls="recebivel_vencido" role="tab" data-toggle="tab" >RECEBÍVEIS VENCIDOS</a>                    
+                <a class="nav-link{{--  disabled --}} " href="#recebivel_vencido" aria-controls="recebivel_vencido" role="tab" data-toggle="tab" >RECEBÍVEIS VENCIDOS</a>                    
             </li>                                    
         </ul>
         <div class="tab-content">
@@ -95,7 +95,7 @@
                                 @foreach ($recebiveis as $index => $recebivel)
                                     <tr>
                                         <td>
-                                            <input type="checkbox" name="fk_id_recebivel[]" value="{{$recebivel->id_recebivel}}" checked required>
+                                            <input type="checkbox" name="fk_id_recebivel[]" value="{{$recebivel->id_recebivel}}" checked >
                                         </td>
                                         <td>{{$recebivel->descricao_conta}} - {{$recebivel->tipo_turma}} - {{$recebivel->ano}}</td>
                                         <td>{{$recebivel->parcela}}</td>
@@ -176,7 +176,7 @@
                                 @foreach ($recebiveisVencidos as $indRecVencido => $recebivelVencido)                                    
                                     <tr bgcolor="#F8E0E0">
                                         <td>
-                                            <input type="checkbox" required name="fk_id_recebivel[{{$indRecVencido}}]" id="fk_id_recebivel[{{$indRecVencido}}]" value="{{$recebivelVencido->id_recebivel}}" onClick="calcularAcrescimos({{$indRecVencido}}); somarRecebiveis({{$indRecVencido}});">
+                                            <input type="checkbox"  name="fk_id_recebivel[{{$indRecVencido}}]" id="fk_id_recebivel[{{$indRecVencido}}]" value="{{$recebivelVencido->id_recebivel}}" onClick="calcularAcrescimos({{$indRecVencido}}); somarRecebiveis({{$indRecVencido}});">
                                             <label class="form-check-label" for="fk_id_recebivel[{{$indRecVencido}}]">
                                                 {{$recebivelVencido->descricao_conta}} - {{$recebivelVencido->tipo_turma}} - {{$recebivelVencido->ano}} - Parc. {{$recebivelVencido->parcela}}</td>
                                             </label>
@@ -213,8 +213,8 @@
                     <br>
                     <div class="row">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="forma_geracao" id="boleto_vencimento" value="boleto_vencimento" required checked>
-                            <label for="boleto_vencimento" class="form-check-label">Boletos agrupados: recebíveis com Novos Vencimentos iguais, em 1 boleto.</label>
+                            <input class="form-check-input" type="radio" name="forma_geracao" id="recebivel_vencido" value="recebivel_vencido" required checked>
+                            <label for="recebivel_vencido" class="form-check-label">Boleto com todos os recebíveis selecionados</label>
                         </div>
                     </div>
                     <br>

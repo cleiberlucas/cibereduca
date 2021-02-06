@@ -180,6 +180,7 @@ class BoletoController extends Controller
     //Gravando boletos
     public function store(Request $request)
     {
+        //dd($request);
         $this->authorize('Boleto Cadastrar');
         
         //recebendo array de id_recebivel
@@ -233,19 +234,70 @@ class BoletoController extends Controller
         if (!$validaCpf)
             return redirect()->back()->with('erro', 'CPF do responsável inválido. Corrigir o cadastro do responsável. Os boletos não foram gerados.');
        
+        //$somasBoletos = array();
         //Agrupando boletos por data de vencimento
         //somando valor principal e valor desconto
         //Para recebíveis A VENCER
-        if (!$request->fk_id_conta_contabil_acrescimo)
+        if ($request->forma_geracao == 'boletos_vencimento'){
             $somasBoletos = DB::table('tb_recebiveis')        
                 ->select(DB::raw('data_vencimento'), DB::raw('sum(valor_principal) as valor_principal_total, sum(valor_desconto_principal) as valor_desconto_total'))
                 ->groupBy(DB::raw('data_vencimento'))                
                 ->whereIn('id_recebivel', $request->fk_id_recebivel)                           
                 ->get();
+                //dd($somasBoletos);
+        }
         /* Para recebíveis VENCIDOS */
         else
-        {
+        {            
+            //dd($request->fk_id_recebivel);
+            $valor_principal_total = 0;
+            $valor_desconto_total = 0;
+            $valor_total_multa = 0;
+            $valor_total_juro = 0;
+            $valor_desconto_multa = 0;
+            $valor_desconto_juro = 0;
+            
+            foreach($request->fk_id_recebivel as $indRec => $receb){
+                //somando valores dos recebíveis
+                $valor_principal_total+=$request->valor_principal[$indRec];
+                $valor_desconto_total+=$request->valor_desconto_principal[$indRec];
+                
+                //dd($request);
+                $valor_multa_var = 'valor_multa'.$indRec;
+                $valor_juro_var = 'valor_juro'.$indRec;
+                $valor_desconto_multa_var = 'valor_desconto_multa'.$indRec;
+                $valor_desconto_juro_var = 'valor_desconto_juro'.$indRec;
+                //dd($request->$valor_multa_tmp);
 
+                //somando valores dos acréscimos aos valores do boleto
+                $valor_principal_total+=$request->$valor_multa_var; /* multa */
+                $valor_principal_total+=$request->$valor_juro_var; /* juros */
+                $valor_desconto_total+=$request->$valor_desconto_multa_var; /* desconto multa */
+                $valor_desconto_total+=$request->$valor_desconto_juro_var; /* desconto juros */
+
+                //somando valores dos acréscimos para as instruções do boleto
+                $valor_total_multa+=$request->$valor_multa_var; /* multa */
+                $valor_total_juro+=$request->$valor_juro_var; /* juros */
+                $valor_desconto_multa+=$request->$valor_desconto_multa_var; /*desconto multa */
+                $valor_desconto_juro+=$request->$valor_desconto_juro_var; /* desconto juros */
+
+            }
+            //dd($valor_principal_total);
+            //dd($valor_desconto_total);
+
+            //somando valores dos acrescimos
+            
+            $somasBoletos[0]['data_vencimento'] = $request->novo_vencimento;
+            $somasBoletos[0]['valor_principal_total'] = $valor_principal_total;
+            $somasBoletos[0]['valor_desconto_total'] = $valor_desconto_total;
+            $somasBoletos = (object)$somasBoletos;
+           /*  $somasBoletos = new Recebivel;
+            $somasBoletos->data_vencimento = $request->novo_vencimento;
+            $somasBoletos->valor_principal_total = $valor_principal_total;
+            $somasBoletos->valor_desconto_total = $valor_desconto_total; */
+           // $somasBoletos = (object)$somasBoletos;
+            //dd($somasBoletos);
+            //dd($receb_temp);
         }
 
         if(!$somasBoletos)
@@ -254,7 +306,7 @@ class BoletoController extends Controller
         //dd($somasBoletos);
 
         foreach($somasBoletos as $somaBoleto){
-
+            //dd($somaBoleto->valor_desconto_total);
             //gravando recebiveis de um boleto
             //para relacionar boleto X recebiveis
            /*  $dadosRecebivel = new Recebivel;
@@ -278,29 +330,62 @@ class BoletoController extends Controller
                     ->join('tb_anos_letivos', 'fk_id_ano_letivo', 'id_ano_letivo')
                     ->join('tb_contas_contabeis', 'fk_id_conta_contabil_principal', 'id_conta_contabil')
                     ->join('tb_tipos_situacao_recebivel', 'fk_id_situacao_recebivel', 'id_situacao_recebivel')            
-                    ->whereIn('id_recebivel', $request->fk_id_recebivel)      
-                    ->where('data_vencimento', $somaBoleto->data_vencimento)              
+                    ->whereIn('id_recebivel', $request->fk_id_recebivel);
+            //Verificar vencimento se for recebível A VENCER
+            if (isset($somaBoleto->data_vencimento)) 
+                $recebiveis = $recebiveis
+                    ->where('data_vencimento', $somaBoleto->data_vencimento);
+
+            $recebiveis = $recebiveis
                     ->orderBy('descricao_conta')
                     ->get();
+
+            //dd($recebiveis);
+
+            if (!$recebiveis or count($recebiveis) <= 0)
+                return redirect()->back()->with('erro', 'Não foi possível pesquisar os recebíveis. Favor entrar em contato com a CiberSys.');
         
+            //Verificando e recalculando o vencimento que caiu em feriado ou final de semana
+            $vencimento_verificado = '';
+            if (isset($somaBoleto->data_vencimento))//recebível a vencer
+                $vencimento_verificado = recalcularVencimento($somaBoleto->data_vencimento);
+            else if (isset($somaBoleto['data_vencimento']))//recebível vencido
+                $vencimento_verificado = recalcularVencimento($somaBoleto['data_vencimento']);
+
+
             $infoRecebivel = '';
             foreach($recebiveis as $recebivel){
                 //lendo recebíveis do boleto para gravar nas instruções do boleto
-                $infoRecebivel.= $recebivel->tipo_turma.' '.$recebivel->ano.' - '.$recebivel->descricao_conta.' Parc. '.$recebivel->parcela.' R$ '.number_format($recebivel->valor_principal, 2, ',', '.')." | \r\n";
+                $infoRecebivel.= $recebivel->tipo_turma.' '.$recebivel->ano.' - '.$recebivel->descricao_conta.' Parc. '.$recebivel->parcela.' R$ '.number_format($recebivel->valor_principal, 2, ',', '.')." # \r\n";
             }
 
+            //se tiver multa
+            //incluir nas informações do boleto
+            //$valor_total_multa_tmp = $valor_total_multa-$valor_desconto_multa;
+            if ($valor_total_multa > 0)
+                $infoRecebivel.= 'Multa R$ '.number_format($valor_total_multa, '2', ',', '.').' # ';
+
+            //se tiver juro
+            //incluir nas informações do boleto
+            //$valor_total_juro_tmp = $valor_total_juro-$valor_desconto_juro;
+            if ($valor_total_juro > 0)
+                $infoRecebivel.= 'Juro R$ '.number_format($valor_total_juro, '2', ',', '.');
+
             $infoDesconto = '';
-            if ($somaBoleto->valor_desconto_total > 0)
-                $infoDesconto = 'Desconto de R$ '.number_format($somaBoleto->valor_desconto_total, 2, ',', '.').' para pagamento até '.date('d/m/Y', strtotime($somaBoleto->data_vencimento)).'.';
+            if ($request->forma_geracao == 'boletos_vencimento' and $somaBoleto->valor_desconto_total > 0)//recebivel a vencer
+                $infoDesconto = 'Desconto de R$ '.number_format($somaBoleto->valor_desconto_total, 2, ',', '.').' para pagamento até '.date('d/m/Y', strtotime($vencimento_verificado)).'.';
+
+            if ($request->forma_geracao == 'recebivel_vencido' and $somaBoleto['valor_desconto_total'] > 0)//recebivel vencido
+                $infoDesconto = 'Desconto de R$ '.number_format($somaBoleto['valor_desconto_total'], 2, ',', '.').' para pagamento até '.date('d/m/Y', strtotime($vencimento_verificado)).'.';
 
             $infoOutros = '';
             
             if ($dadoBancario->dias_baixa_automatica > 0)
                 $infoOutros.= 'Pagável em até '.$dadoBancario->dias_baixa_automatica.' dias após o vencimento.';
 
-            //Verificando e recalculando o vencimento que caiu em feriado ou final de semana
-            $vencimento_verificado = recalcularVencimento($somaBoleto->data_vencimento);
+           
             //dd($vencimento_verificado);
+            //dd($somaBoleto);
 
             //gerar array com dados do boleto para gravar
             $boleto = array(
@@ -312,9 +397,9 @@ class BoletoController extends Controller
                 'cidade_pagador' => $dadosPagador->cidade_pagador,
                 'uf_pagador' => $dadosPagador->uf_pagador,
                 'cep_pagador' => $dadosPagador->cep_pagador,
-                'valor_total' => $somaBoleto->valor_principal_total,
+                'valor_total' => isset($somaBoleto->valor_principal_total) ? $somaBoleto->valor_principal_total : $somaBoleto['valor_principal_total'],
                 'data_vencimento' => $vencimento_verificado,
-                'valor_desconto' => $somaBoleto->valor_desconto_total,
+                'valor_desconto' => isset($somaBoleto->valor_desconto_total) ? $somaBoleto->valor_desconto_total : $somaBoleto['valor_desconto_total'],
                 'data_desconto' => $vencimento_verificado,
                 'fk_id_situacao_registro' => 1,
                 'fk_id_usuario_cadastro' => Auth::id(),               

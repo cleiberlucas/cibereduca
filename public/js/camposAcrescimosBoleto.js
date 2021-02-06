@@ -97,6 +97,6 @@ function somarRecebiveis(index){
 
   if (document.getElementById("fk_id_recebivel["+index+"]").checked && data_novo_vencimento != 'Invalid Date'){
     $('#total_boleto'+index).append('<div class="form-group col-sm-9">&nbsp;</div>');
-    $('#total_boleto'+index).append('<div class="form-group col-sm-3 col-xs-2 align=right"> <label>TOTAL BOLETO:</label> <input type="number" step="0.010" class="form-control" readonly name="valor_total_boleto'+index+'" id="valor_total_boleto'+index+'" value="'+valor_total_boleto+'" /> </div>');
+    $('#total_boleto'+index).append('<div class="form-group col-sm-3 col-xs-2 align=right"> <label>TOTAL A PAGAR:</label> <input type="number" step="0.010" class="form-control" readonly name="valor_total_boleto'+index+'" id="valor_total_boleto'+index+'" value="'+valor_total_boleto+'" /> </div>');
   }
 }

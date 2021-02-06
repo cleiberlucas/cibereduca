@@ -75,7 +75,7 @@
                                         }
                                         
                                     ?>
-                                    <a href="#" data-content="{{$textoPopover}}"{{--  title="Recebíveis" --}} data-toggle="popover" data-trigger="hover" disabled>Recebíveis</a>                                        
+                                    <a href="#" onclick="return false;" class="disabled" data-content="{{$textoPopover}}"{{--  title="Recebíveis" --}} data-toggle="popover" data-trigger="hover" role="button" aria-disabled="true">Detalhes Boleto</a>                                        
                                 </td>
                                 <td>
                                     {{date('d/m/Y', strtotime($boleto->data_vencimento))}}
