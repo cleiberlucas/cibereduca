@@ -41,6 +41,40 @@ class AcrescimoController extends Controller
         return $gravou_acrescimo;       
     }
 
+    //Gravando acrescimo de boletos
+    public function storeAcrescimosBoleto(Array $acrescimos)
+    {        
+       // dd($acrescimos);
+        $gravou_acrescimo = true;
+    
+        foreach($acrescimos as $index => $acrescimo){            
+            //gravando multa
+            $dados = array(
+                'fk_id_recebivel' => $acrescimos[$index]['id_recebivel'],
+                'fk_id_conta_contabil_acrescimo' => '4', // multa
+                'valor_acrescimo' => $acrescimos[$index]['valor_acrescimo_multa'],
+                'valor_desconto_acrescimo'  => $acrescimos[$index]['valor_desconto_acrescimo_multa'],
+                'valor_total_acrescimo'  => $acrescimos[$index]['valor_total_acrescimo_multa'],                
+            );              
+            $gravou_acrescimo = $this->repositorio->create($dados);
+
+            //gravando juros
+            $dados = array(
+                'fk_id_recebivel' => $acrescimos[$index]['id_recebivel'],
+                'fk_id_conta_contabil_acrescimo' => '5', // juros
+                'valor_acrescimo' => $acrescimos[$index]['valor_acrescimo_juro'],
+                'valor_desconto_acrescimo'  => $acrescimos[$index]['valor_desconto_acrescimo_juro'],
+                'valor_total_acrescimo'  => $acrescimos[$index]['valor_total_acrescimo_juro'],                
+            );              
+            $gravou_acrescimo = $this->repositorio->create($dados);
+            if (! $gravou_acrescimo->wasRecentlyCreated){
+                return false;
+                break;
+            }    
+        }       
+        return $gravou_acrescimo;       
+    }
+
     //Remover acréscimo de um recebível
     public function apagarAcrescimo($id_recebivel)
     {                

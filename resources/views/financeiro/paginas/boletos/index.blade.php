@@ -62,20 +62,9 @@
                             else 
                                 echo '<tr>';
                             ?>
-                                <th> <input type="checkbox" name="id_boleto[]" value="{{$boleto->id_boleto}}" checked></th>
-                                  
-                                <td>
-                                    <?php 
-                                        $textoPopover = ''; 
-                                        foreach ($recebiveis as $recebivel)
-                                        {
-                                            if ($recebivel->fk_id_boleto == $boleto->id_boleto){
-                                                $textoPopover .= $recebivel->descricao_conta. ' Parc. '.$recebivel->parcela.' R$ '.number_format($recebivel->valor_total, 2, ',', '.').', ';
-                                            }
-                                        }
-                                        
-                                    ?>
-                                    <a href="#" onclick="return false;" class="disabled" data-content="{{$textoPopover}}"{{--  title="Recebíveis" --}} data-toggle="popover" data-trigger="hover" role="button" aria-disabled="true">Detalhes Boleto</a>                                        
+                                <th> <input type="checkbox" name="id_boleto[]" value="{{$boleto->id_boleto}}" checked></th>                                  
+                                <td>                                   
+                                    <a href="#" onclick="return false;" class="disabled" data-content="{{$boleto->instrucoes_recebiveis}}"{{--  title="Recebíveis" --}} data-toggle="popover" data-trigger="hover" role="button" aria-disabled="true">Detalhes Boleto</a>                                        
                                 </td>
                                 <td>
                                     {{date('d/m/Y', strtotime($boleto->data_vencimento))}}

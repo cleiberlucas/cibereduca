@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Financeiro;
 
 use App\Http\Controllers\Controller;
+use App\Models\Financeiro\Acrescimo;
 use App\Models\Financeiro\Boleto;
 use App\Models\Financeiro\BoletoRecebivel;
 use App\Models\Financeiro\Correcao;
@@ -15,12 +16,10 @@ use App\Utils\CpfValidation;
 use Carbon\Carbon;
 use Eduardokum\LaravelBoleto\Boleto\Banco\Bancoob;
 use Eduardokum\LaravelBoleto\Boleto\Render\Html;
-use Eduardokum\LaravelBoleto\Boleto\Render\Pdf;
 use Eduardokum\LaravelBoleto\Pessoa as LaravelBoletoPessoa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use PhpParser\Node\Stmt\TryCatch;
 
 class BoletoController extends Controller
 {
@@ -43,7 +42,7 @@ class BoletoController extends Controller
 
         $boletos = $this->repositorio
             ->select('id_boleto','tb_boletos.data_vencimento',
-                'tb_boletos.valor_total',
+                'tb_boletos.valor_total', 'instrucoes_recebiveis',
                 'situacao_registro', 'fk_id_situacao_registro',
                 'data_recebimento'
                 )
@@ -61,31 +60,16 @@ class BoletoController extends Controller
             ->groupBy('situacao_registro')
             ->groupBy('fk_id_situacao_registro')
             ->groupBy('data_recebimento')            
-            ->paginate(25)
-            ;
+            ->paginate(25);
 
         //dd($boletos);
-
-        $recebiveis = new Recebivel;
-        $recebiveis = $recebiveis
-            ->select('fk_id_boleto',
-                    'valor_total',
-                    'parcela',
-                    'descricao_conta')
-            ->join('tb_boletos_recebiveis', 'fk_id_recebivel', 'id_recebivel')            
-            ->join( 'tb_matriculas', 'tb_recebiveis.fk_id_matricula', 'id_matricula')
-            ->join('tb_pessoas', 'fk_id_aluno', 'id_pessoa')            
-            ->join('tb_contas_contabeis', 'fk_id_conta_contabil_principal', 'id_conta_contabil')
-            ->where('fk_id_aluno', $id_aluno)  
-            ->get();
-
         return view('financeiro.paginas.boletos.index',
-            compact('aluno', 'boletos', 'recebiveis')
+            compact('aluno', 'boletos', )
         );
 
     }
     /**
-     * Abre interfaace para lançamento de boleto
+     * Abre interface para lançamento de boleto
      */
     public function create($id_aluno){
         $this->authorize('Boleto Cadastrar');   
@@ -256,9 +240,11 @@ class BoletoController extends Controller
             $valor_total_juro = 0;
             $valor_desconto_multa = 0;
             $valor_desconto_juro = 0;
+
+            $acrescimos = array();
             
             foreach($request->fk_id_recebivel as $indRec => $receb){
-                //somando valores dos recebíveis
+                //somando valores dos recebíveis vencidos
                 $valor_principal_total+=$request->valor_principal[$indRec];
                 $valor_desconto_total+=$request->valor_desconto_principal[$indRec];
                 
@@ -281,24 +267,31 @@ class BoletoController extends Controller
                 $valor_desconto_multa+=$request->$valor_desconto_multa_var; /*desconto multa */
                 $valor_desconto_juro+=$request->$valor_desconto_juro_var; /* desconto juros */
 
-            }
-            //dd($valor_principal_total);
-            //dd($valor_desconto_total);
+                //Montando array para gravar acrescimos no BD
+                $acrescimos[$indRec]['id_recebivel'] = $request->fk_id_recebivel[$indRec]; // mesmo recebível p multa e juros
 
-            //somando valores dos acrescimos
+                $acrescimos[$indRec]['conta_multa'] = 4; //4 = multa
+                $acrescimos[$indRec]['valor_acrescimo_multa'] = $request->$valor_multa_var;
+                $acrescimos[$indRec]['valor_desconto_acrescimo_multa'] = $request->$valor_desconto_multa_var;
+                $acrescimos[$indRec]['valor_total_acrescimo_multa'] =  $request->$valor_multa_var - $request->$valor_desconto_multa_var;                
+
+                $acrescimos[$indRec]['conta_juro'] = 5; //5 = juro
+                $acrescimos[$indRec]['valor_acrescimo_juro'] = $request->$valor_juro_var;
+                $acrescimos[$indRec]['valor_desconto_acrescimo_juro'] = $request->$valor_desconto_juro_var;
+                $acrescimos[$indRec]['valor_total_acrescimo_juro'] =  $request->$valor_juro_var - $request->$valor_desconto_juro_var;
+
+            } /* fim for recebiveis */
+            //dd($valor_principal_total);
+            //dd($valor_desconto_total);            
             
             $somasBoletos[0]['data_vencimento'] = $request->novo_vencimento;
             $somasBoletos[0]['valor_principal_total'] = $valor_principal_total;
             $somasBoletos[0]['valor_desconto_total'] = $valor_desconto_total;
             $somasBoletos = (object)$somasBoletos;
-           /*  $somasBoletos = new Recebivel;
-            $somasBoletos->data_vencimento = $request->novo_vencimento;
-            $somasBoletos->valor_principal_total = $valor_principal_total;
-            $somasBoletos->valor_desconto_total = $valor_desconto_total; */
-           // $somasBoletos = (object)$somasBoletos;
+          
             //dd($somasBoletos);
             //dd($receb_temp);
-        }
+        } /* fim else recebiveis vencidos */
 
         if(!$somasBoletos)
             return redirect()->back()->with('erro', 'Não foi possível somar os boletos. Favor entrar em contato com a CiberSys.');
@@ -308,14 +301,7 @@ class BoletoController extends Controller
         foreach($somasBoletos as $somaBoleto){
             //dd($somaBoleto->valor_desconto_total);
             //gravando recebiveis de um boleto
-            //para relacionar boleto X recebiveis
-           /*  $dadosRecebivel = new Recebivel;
-            $dadosRecebivel = $dadosRecebivel
-                ->select('id_recebivel')
-                ->whereIn('id_recebivel', $request->fk_id_recebivel)
-                ->where('data_vencimento', $somaBoleto->data_vencimento)
-                ->get(); */
-            //dd($dadosRecebivel);
+            //para relacionar boleto X recebiveis           
            
             $recebiveis = new Recebivel;
             $recebiveis = $recebiveis
@@ -369,7 +355,7 @@ class BoletoController extends Controller
             //incluir nas informações do boleto
             //$valor_total_juro_tmp = $valor_total_juro-$valor_desconto_juro;
             if ($valor_total_juro > 0)
-                $infoRecebivel.= 'Juro R$ '.number_format($valor_total_juro, '2', ',', '.');
+                $infoRecebivel.= 'Juros R$ '.number_format($valor_total_juro, '2', ',', '.');
 
             $infoDesconto = '';
             if ($request->forma_geracao == 'boletos_vencimento' and $somaBoleto->valor_desconto_total > 0)//recebivel a vencer
@@ -382,7 +368,6 @@ class BoletoController extends Controller
             
             if ($dadoBancario->dias_baixa_automatica > 0)
                 $infoOutros.= 'Pagável em até '.$dadoBancario->dias_baixa_automatica.' dias após o vencimento.';
-
            
             //dd($vencimento_verificado);
             //dd($somaBoleto);
@@ -428,35 +413,20 @@ class BoletoController extends Controller
                 $boletoRecebivel = new BoletoRecebivel;
                 $boletoRecebivel->create($dadosBoletoRecebivel);
             }
-        }
-        
-        //Se estiver vencido
-        //$acrescimo = new AcrescimoController(new Acrescimo);
-        //Gravando as contas contábeis de acréscimos
-        //$gravou_acrescimo = $acrescimo->store($dados);
 
-      /*   if ($gravou_acrescimo){
-            //Gravar recebimentos
-            foreach($dados['valor_recebido'] as $index => $valor_recebido){
-                if ( $dados['valor_recebido'][$index] > 0){
-                    $insert = array(
-                        'fk_id_recebivel' => $dados['fk_id_recebivel'],
-                        'fk_id_forma_pagamento' => $dados['fk_id_forma_pagamento'][$index],
-                        'valor_recebido'    => $dados['valor_recebido'][$index],
-                        'data_recebimento'  => $dados['data_recebimento'],
-                        'data_credito'      => $dados['data_credito'],
-                        'numero_recibo'     => $dados['numero_recibo'],
-                        'codigo_validacao'  => $dados['codigo_validacao'],
-                        'fk_id_usuario_recebimento' => $dados['fk_id_usuario_recebimento'],
-                    );
-                    //Gravando recebimentos
-                    $this->repositorio->create($insert);
-                }                
-            } */
+            //lançar acréscimos
+            if($request->forma_geracao == 'recebivel_vencido' ){
+                if (!$this->storeAcrescimos($acrescimos))
+                    return redirect()->back()->with('erro', 'Houve erro ao lançar os acréscimos do boleto. Favor entrar em contato com a CiberSys.');
+            }
+        }        
+        return redirect()->route('boleto.indexAluno', $dadosPagador->id_aluno)->with('sucesso', 'Boletos lançados com sucesso.');
+    }
 
-            return redirect()->route('boleto.indexAluno', $dadosPagador->id_aluno)->with('sucesso', 'Boletos lançados com sucesso.');
-            //return redirect()->route('boleto.indexAluno',68)->with('erro', 'Houve erro ao gravar o recebimento. Entre em contato com o desenvolvedor.');
-       
+    //salvar os acrescimos dos boletos
+    function storeAcrescimos(Array $dados){
+        $acrescimo = new AcrescimoController(new Acrescimo());        
+        return $acrescimo->storeAcrescimosBoleto($dados);
     }
 
     /* Impressão de vários boletos (botão) */

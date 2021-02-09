@@ -18,6 +18,7 @@ function calcularAcrescimos(index){
     var aplicar_juro = document.getElementById("aplica_correcao[1]").value;
 
     var valor_total_principal = document.getElementById("valor_total["+index+"]").value;
+    var valor_principal = document.getElementById("valor_principal["+index+"]").value;
     console.log('valor total principal '+valor_total_principal);
 
     //console.log('conta multa '+id_conta_contabil_multa);
@@ -39,14 +40,14 @@ function calcularAcrescimos(index){
     var diff = Math.abs(data_novo_vencimento.getTime() - data_venc.getTime());
     var dias_atraso = Math.ceil(diff / (1000 * 60 * 60 * 24));
     
-    console.log('DIAS ATRASO '+dias_atraso);
+    //console.log('DIAS ATRASO '+dias_atraso);
 
     //selecionou um recebível
     console.log('marcou '+document.getElementById("fk_id_recebivel["+index+"]").checked)
     if (document.getElementById("fk_id_recebivel["+index+"]").checked){
       //aplicando multa
       if (aplicar_multa == 1 && dias_atraso > 0){
-        var valor_multa = (valor_total_principal * indice_multa / 100).toFixed(2);      
+        var valor_multa = (valor_principal * indice_multa / 100).toFixed(2);      
           $('#multa'+index).append('<div class="form-group col-sm-1">&nbsp;</div>');
           $('#multa'+index).append('<div class="form-group col-sm-3 col-xs-2"> <label>Multa: ('+indice_multa+'%)</label> <input type="number" step="0.010" class="form-control" readonly required name="valor_multa'+index+'" id="valor_multa'+index+'" readonly value="'+valor_multa+'" /> </div>');
           $('#multa'+index).append('<div class="form-group col-sm-3 col-xs-2"> <label>Desconto Multa:</label> <input type="number" step="0.010" class="form-control" name="valor_desconto_multa'+index+'" id="valor_desconto_multa'+index+'" value="" onBlur="recalcularValor(\'valor_multa'+index+'\', \'valor_desconto_multa'+index+'\', \'valor_desconto_multa'+index+'\', \'valor_total_multa'+index+'\'); somarRecebiveis('+index+');" /> </div>');
@@ -56,7 +57,7 @@ function calcularAcrescimos(index){
 
       //aplicando juro
       if (aplicar_juro == 1 && dias_atraso > 0){         
-          var valor_juro = (valor_total_principal / 30 * indice_juro / 100 * dias_atraso).toFixed(2);     
+          var valor_juro = (valor_principal / 30 * indice_juro / 100 * dias_atraso).toFixed(2);     
           $('#juro'+index).append('<div class="form-group col-sm-1">&nbsp;</div>');
           $('#juro'+index).append('<div class="form-group col-sm-3 col-xs-2"> <label>Juros: ('+indice_juro+'% ao mês)</label> <input type="number" step="0.010" class="form-control" readonly required name="valor_juro'+index+'" id="valor_juro'+index+'" readonly value="'+valor_juro+'" /> </div>');
           $('#juro'+index).append('<div class="form-group col-sm-3 col-xs-2"> <label>Desconto Juros:</label> <input type="number" step="0.010" class="form-control" name="valor_desconto_juro'+index+'" id="valor_desconto_juro'+index+'" value="" onBlur="recalcularValor(\'valor_juro'+index+'\', \'valor_desconto_juro'+index+'\', \'valor_desconto_juro'+index+'\', \'valor_total_juro'+index+'\'); somarRecebiveis('+index+');" /> </div>');
