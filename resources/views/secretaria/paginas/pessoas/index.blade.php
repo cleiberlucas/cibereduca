@@ -40,6 +40,9 @@
 @stop
 
 @section('content')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    
     <div class="container-fluid">
         @include('admin.includes.alerts')
         <div class="card-header">
@@ -94,13 +97,13 @@
                                 <td >
                                     {{-- Link para pasta do aluno --}}
                                     @if ($tipo_pessoa == 1)
-                                        <a href="{{ route('matriculas.pasta', $pessoa->id_pessoa) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-archive"></i></a>    
+                                        <a href="{{ route('matriculas.pasta', $pessoa->id_pessoa) }}" data-content="Arquivo do aluno" data-toggle="popover" data-trigger="hover" class="btn btn-sm btn-outline-info"><i class="fas fa-archive"></i></a>    
                                     @else
                                         {{-- link para arquivo do responsável --}}
-                                        <a href="{{ route('matriculas.arquivo', $pessoa->id_pessoa) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-archive"></i></a>    
+                                        <a href="{{ route('matriculas.arquivo', $pessoa->id_pessoa) }}" data-content="Arquivo do responsável" data-toggle="popover" data-trigger="hover" class="btn btn-sm btn-outline-info"><i class="fas fa-archive"></i></a>    
                                     @endif 
                                     
-                                    <a href="{{ route('pessoas.edit', $pessoa->id_pessoa) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>
+                                    <a href="{{ route('pessoas.edit', $pessoa->id_pessoa) }}" data-content="Editar Cadastro" data-toggle="popover" data-trigger="hover" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>
                                     <a href="{{ route('pessoas.show', $pessoa->id_pessoa) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-eye"></i></a>
                                     {{-- link para geração de usuário do sistema --}}
                                     @if ($tipo_pessoa == 2)
@@ -127,6 +130,8 @@
         $(document).ready(function(){
               $(".alert").slideDown(300).delay(5000).slideUp(300);
         });    
+
+        $('[data-toggle="popover"]').popover();  
     </script>
     
 @stop

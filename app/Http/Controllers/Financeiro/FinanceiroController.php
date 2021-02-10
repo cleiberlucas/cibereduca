@@ -199,6 +199,23 @@ class FinanceiroController extends Controller
         $dados = $request->all();
 
        // dd($dados);
+
+       //verificando se está lançando parcela repetida
+       //se for mesmo recebível, mesmo valor
+       foreach($dados['valor_principal'] as $index => $recebivel ){
+            if ($recebivel != null){
+                $receb = new Recebivel;
+                $receb = $receb
+                    ->select()
+                    ->where('fk_id_matricula', $dados['fk_id_matricula'])
+                    ->where('fk_id_conta_contabil_principal', $dados['fk_id_conta_contabil_principal'])
+                    ->where('parcela', $dados['parcela'][$index])
+                    ->first();
+
+                if ($receb)
+                    return redirect()->back()->with('erro', 'Já existe recebível lançado com o mesmo número de parcela. Favor revisar os lançamentos.');
+            }
+       }
        
         foreach($dados['valor_principal'] as $index => $recebivel ){
             //dd($professor);        

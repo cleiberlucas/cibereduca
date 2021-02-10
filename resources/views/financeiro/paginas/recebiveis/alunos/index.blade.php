@@ -18,6 +18,9 @@
 @stop
 
 @section('content')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    
     <div class="container-fluid">
         @include('admin.includes.alerts')
         <div class="card-header">
@@ -75,15 +78,15 @@
                                 {{-- A receber --}}
                                 @if ($recebivel->fk_id_situacao_recebivel == 1)
                                     {{-- Receber --}}
-                                    <a href="{{ route('recebimento.create', $recebivel->id_recebivel) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-hand-holding-usd"></i></a>    
+                                    <a href="{{ route('recebimento.create', $recebivel->id_recebivel) }}" data-content="Receber" data-toggle="popover" data-trigger="hover"  class="btn btn-sm btn-outline-info"><i class="fas fa-hand-holding-usd"></i></a>    
                                     {{-- Editar --}}
-                                    <a href="{{ route('financeiro.edit', $recebivel->id_recebivel) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-edit"></i></a>
-                                    <a href="javascript:confirmaExcluiRecebivel({{$recebivel->id_recebivel}});" class="btn btn-sm btn-outline-danger"> <i class="fas fa-trash"></i></a>
+                                    <a href="{{ route('financeiro.edit', $recebivel->id_recebivel) }}" data-content="Editar recebível" data-toggle="popover" data-trigger="hover" class="btn btn-sm btn-outline-info"><i class="fas fa-edit"></i></a>
+                                    <a href="javascript:confirmaExcluiRecebivel({{$recebivel->id_recebivel}});" data-content="Excluir recebível" data-toggle="popover" data-trigger="hover" class="btn btn-sm btn-outline-danger"> <i class="fas fa-trash"></i></a>
 
                                 {{-- Recebido --}}
                                 @elseif ($recebivel->fk_id_situacao_recebivel == 2)
                                     {{-- Impressão recibo --}}
-                                    <a href="{{ route('recebimento.recibo', $recebivel->id_recebivel) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-receipt"></i></i></a>
+                                    <a href="{{ route('recebimento.recibo', $recebivel->id_recebivel) }}" data-content="Recibo" data-toggle="popover" data-trigger="hover" class="btn btn-sm btn-outline-info"><i class="fas fa-receipt"></i></i></a>
                                 @endif   
                                 {{-- show --}}
                                 <a href="{{ route('financeiro.show', $recebivel->id_recebivel) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-eye"></i></i></a>
@@ -109,6 +112,7 @@
         $(document).ready(function(){
               $(".alert").slideDown(300).delay(5000).slideUp(300);
         });    
+        $('[data-toggle="popover"]').popover(); 
     </script>
     
 @stop

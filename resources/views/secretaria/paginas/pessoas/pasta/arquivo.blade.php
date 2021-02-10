@@ -17,6 +17,9 @@
 @stop
 
 @section('content')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    
     <div class="container-fluid">
         {{-- <div class="card-header">
             <form action="{{ route('pessoas.search') }}" method="POST" class="form form-inline">
@@ -76,12 +79,12 @@
                                     {{$matricula->situacaoMatricula->situacao_matricula}}                                        
                                 </td>              
                                 <td >
-                                    <a href="{{ route('matriculas.edit', $matricula->id_matricula) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>
-                                    <a href="{{ route('financeiro.indexAluno', $matricula->fk_id_aluno) }}" class="btn btn-sm btn-outline-primary"> <i class="fas fa-dollar-sign"></i></a>                                    
-                                    <a href="{{ route('matriculas.documentos', $matricula->id_matricula) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-tasks"></i></a>                                    
-                                    <a href="{{ route('matriculas.show', $matricula->id_matricula) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-eye"></i></a>                                    
-                                    <a href="{{ route('matriculas.contrato', $matricula->id_matricula) }}" target="_blank" class="btn btn-sm btn-outline-dark"><i class="fas fa-file-contract"></i></a>
-                                    <a href="{{ route('matriculas.requerimento', $matricula->id_matricula) }}" target="_blank" class="btn btn-sm btn-outline-dark"><i class="fas fa-file-signature"></i></a>
+                                    <a href="{{ route('matriculas.edit', $matricula->id_matricula) }}" data-content="Editar Matrícula" data-toggle="popover" data-trigger="hover" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>
+                                    <a href="{{ route('financeiro.indexAluno', $matricula->fk_id_aluno) }}" data-content="Financeiro" data-toggle="popover" data-trigger="hover" class="btn btn-sm btn-outline-primary"> <i class="fas fa-dollar-sign"></i></a>                                    
+                                    <a href="{{ route('matriculas.documentos', $matricula->id_matricula) }}" data-content="Entrega documentos" data-toggle="popover" data-trigger="hover" class="btn btn-sm btn-outline-success"><i class="fas fa-tasks"></i></a>                                    
+                                    <a href="{{ route('matriculas.show', $matricula->id_matricula) }}"  class="btn btn-sm btn-outline-info"><i class="fas fa-eye"></i></a>                                    
+                                    <a href="{{ route('matriculas.contrato', $matricula->id_matricula) }}" data-content="Contrato" data-toggle="popover" data-trigger="hover" target="_blank" class="btn btn-sm btn-outline-dark"><i class="fas fa-file-contract"></i></a>
+                                    <a href="{{ route('matriculas.requerimento', $matricula->id_matricula) }}" data-content="Requerimento" data-toggle="popover" data-trigger="hover"  target="_blank" class="btn btn-sm btn-outline-dark"><i class="fas fa-file-signature"></i></a>
                                     
                                    {{--  <form action="{{ route('captacao.search') }}" method="POST" class="form form-inline">
                                         @csrf
@@ -104,4 +107,7 @@
                 </div> --}}
         </div>
     </div>
+    <script>
+        $('[data-toggle="popover"]').popover();  
+    </script>
 @stop
