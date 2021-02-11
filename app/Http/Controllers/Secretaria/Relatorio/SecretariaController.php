@@ -72,6 +72,12 @@ class SecretariaController extends Controller
         if ($request['turma']) {
             $turma = $turma->where('id_turma', $request->turma)->first();
         }
+        //se não escolheu turma, verificar a ordenação escolhida
+        else{
+            //se escolheu ordenação por turma, forçar outra ordenação
+            if ($request->ordem == 'nome_turma')
+                $request['ordem'] = 'nome';
+        }
 
         /**Alunos de uma turma  */
         if ($request->tipo_relatorio == 'alunos_turma') {
