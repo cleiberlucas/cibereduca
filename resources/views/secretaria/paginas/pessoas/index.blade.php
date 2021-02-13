@@ -107,7 +107,7 @@
                                     <a href="{{ route('pessoas.show', $pessoa->id_pessoa) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-eye"></i></a>
                                     {{-- link para geração de usuário do sistema --}}
                                     @if ($tipo_pessoa == 2)
-                                    <a href="{{ route('pessoas.gerarlogin', $pessoa->id_pessoa) }}" class="btn btn-sm btn-outline-dark"><i class="fas fa-fw fa-user"></i></a>
+                                    <a href="{{ route('pessoas.gerarlogin', $pessoa->id_pessoa) }}" class="btn btn-sm btn-outline-dark" data-content="Gerar login" data-toggle="popover"><i class="fas fa-fw fa-user"></i></a>
                                     @endif
                                 </td>
                                 

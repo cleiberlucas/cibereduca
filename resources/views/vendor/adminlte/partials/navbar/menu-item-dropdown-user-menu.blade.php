@@ -13,7 +13,7 @@
     @php( $logout_url = $logout_url ? url($logout_url) : '' )
 @endif
 
-<li class="nav-item dropdown user-menu">
+<li class="nav-item dropdown user-menu-sm">
 
     {{-- User menu toggler --}}
     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
@@ -28,7 +28,7 @@
     </a>
 
     {{-- User menu dropdown --}}
-    <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+    <ul class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
 
         {{-- User menu header --}}
         @if(!View::hasSection('usermenu_header') && config('adminlte.usermenu_header'))
@@ -62,6 +62,13 @@
 
         {{-- User menu footer --}}
         <li class="user-footer">
+            <a class="btn btn-default btn-flat float-right @if(!$profile_url) btn-block @endif"
+               href="{{route('users.editsenha')}}">
+                <i class="fas fa-fw fa-lock"></i> Alterar Senha        
+            </a>            
+        </li>
+
+        <li class="user-footer">
             @if($profile_url)
                 <a href="{{ $profile_url }}" class="btn btn-default btn-flat">
                     <i class="fa fa-fw fa-user"></i>
@@ -70,8 +77,8 @@
             @endif
             <a class="btn btn-default btn-flat float-right @if(!$profile_url) btn-block @endif"
                href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                <i class="fa fa-fw fa-power-off"></i>
-                {{ __('adminlte::adminlte.log_out') }}
+                <i class="fa fa-fw fa-power-off"></i> Sair
+                {{-- {{ __('adminlte::adminlte.log_out') }} --}}
             </a>
             <form id="logout-form" action="{{ $logout_url }}" method="POST" style="display: none;">
                 @if(config('adminlte.logout_method'))

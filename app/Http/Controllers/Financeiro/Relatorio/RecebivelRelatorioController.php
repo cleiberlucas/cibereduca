@@ -127,6 +127,7 @@ class RecebivelRelatorioController extends Controller
 
             //filtrando tipo recebível (conta contábil)
             if ($request->tipo_recebivel > 0){
+                //dd($request->tipo_recebivel);
                 $recebiveis = $recebiveis->where('fk_id_conta_contabil_principal', $request->tipo_recebivel);
 
                 $tipoRecebivel = ContaContabil::where('id_conta_contabil', $request->tipo_recebivel)->first();

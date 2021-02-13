@@ -560,12 +560,12 @@ return [
                 ],                
             ],
         ],
-        [
+       /*  [
             'text' => 'Alterar Senha',
             'route'  => 'users.editsenha',                   
             'icon' => 'fas fa-fw fa-lock',
-            /* 'can'  => 'Usuarios', */
-        ],
+             //'can'  => 'Usuarios', 
+        ], */
         
     ],
 
