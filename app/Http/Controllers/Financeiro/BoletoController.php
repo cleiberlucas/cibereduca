@@ -183,6 +183,8 @@ class BoletoController extends Controller
             return redirect()->back()->with('erro', 'Dados bancários não configurados.');
 
        // dd($dadoBancario);
+       //dd( count($request->fk_id_recebivel));
+     // dd($request->fk_id_recebivel[count($request->fk_id_recebivel)]);
 
         $dadosPagador = new Recebivel;
         $dadosPagador = $dadosPagador
@@ -196,7 +198,7 @@ class BoletoController extends Controller
             ->join('tb_enderecos', 'fk_id_pessoa', 'resp.id_pessoa')
             ->leftJoin('tb_cidades', 'fk_id_cidade', 'id_cidade')
             ->leftJoin('tb_estados', 'fk_id_estado', 'id_estado')
-            ->where('id_recebivel', $request->fk_id_recebivel[0])
+            ->where('id_recebivel', $request->fk_id_recebivel[count($request->fk_id_recebivel)])
             ->first();
            // dd($dadosPagador);
 
@@ -305,7 +307,7 @@ class BoletoController extends Controller
            
             $recebiveis = new Recebivel;
             $recebiveis = $recebiveis
-                    ->select('descricao_conta', 
+                    ->select('descricao_conta', 'id_conta_contabil',
                         'tipo_turma', 'ano', 
                         'id_recebivel', 'parcela', 'valor_principal', 'valor_desconto_principal', 'valor_total', 'data_vencimento', 'obs_recebivel',
                         'id_pessoa', 'nome')                    
@@ -338,12 +340,17 @@ class BoletoController extends Controller
             else if (isset($somaBoleto['data_vencimento']))//recebível vencido
                 $vencimento_verificado = recalcularVencimento($somaBoleto['data_vencimento']);
 
-
+            $existe_material = false;
             $infoRecebivel = '';
             foreach($recebiveis as $recebivel){
                 //lendo recebíveis do boleto para gravar nas instruções do boleto
                 $infoRecebivel.= $recebivel->tipo_turma.' '.$recebivel->ano.' - '.$recebivel->descricao_conta.' Parc. '.$recebivel->parcela.' R$ '.number_format($recebivel->valor_principal, 2, ',', '.')." # \r\n";
+                if ($recebivel->id_conta_contabil == 3)
+                    $existe_material = true;
             }
+
+            if ($existe_material)
+                $infoRecebivel.= "Material Didático parcelado conforme solicitação do responsável. # ";
 
             //se tiver multa
             //incluir nas informações do boleto

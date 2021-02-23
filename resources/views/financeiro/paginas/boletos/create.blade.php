@@ -95,7 +95,7 @@
                                 @foreach ($recebiveis as $index => $recebivel)
                                     <tr>
                                         <td>
-                                            <input type="checkbox" name="fk_id_recebivel[]" value="{{$recebivel->id_recebivel}}" checked >
+                                            <input type="checkbox" name="fk_id_recebivel[1]" value="{{$recebivel->id_recebivel}}" checked >
                                         </td>
                                         <td>{{$recebivel->descricao_conta}} - {{$recebivel->tipo_turma}} - {{$recebivel->ano}}</td>
                                         <td>{{$recebivel->parcela}}</td>
