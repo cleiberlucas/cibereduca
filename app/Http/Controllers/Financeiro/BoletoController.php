@@ -348,13 +348,13 @@ class BoletoController extends Controller
             //se tiver multa
             //incluir nas informações do boleto
             //$valor_total_multa_tmp = $valor_total_multa-$valor_desconto_multa;
-            if ($valor_total_multa > 0)
+            if (isset($valor_total_multa) and $valor_total_multa > 0)
                 $infoRecebivel.= 'Multa R$ '.number_format($valor_total_multa, '2', ',', '.').' # ';
 
             //se tiver juro
             //incluir nas informações do boleto
             //$valor_total_juro_tmp = $valor_total_juro-$valor_desconto_juro;
-            if ($valor_total_juro > 0)
+            if (isset($valor_total_juro) and $valor_total_juro > 0)
                 $infoRecebivel.= 'Juros R$ '.number_format($valor_total_juro, '2', ',', '.');
 
             $infoDesconto = '';
