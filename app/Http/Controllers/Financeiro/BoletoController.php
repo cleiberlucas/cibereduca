@@ -182,10 +182,6 @@ class BoletoController extends Controller
         if(!$dadoBancario)
             return redirect()->back()->with('erro', 'Dados bancários não configurados.');
 
-       // dd($dadoBancario);
-     //  dd( $request->fk_id_recebivel[count($request->fk_id_recebivel)-1]);
-     // dd($request->fk_id_recebivel[count($request->fk_id_recebivel)]);
-
         $dadosPagador = new Recebivel;
         $dadosPagador = $dadosPagador
             ->select('resp.nome as nome_pagador', 'resp.cpf as cpf_cnpj_pagador',
@@ -198,7 +194,7 @@ class BoletoController extends Controller
             ->join('tb_enderecos', 'fk_id_pessoa', 'resp.id_pessoa')
             ->leftJoin('tb_cidades', 'fk_id_cidade', 'id_cidade')
             ->leftJoin('tb_estados', 'fk_id_estado', 'id_estado')
-            ->where('id_recebivel', $request->fk_id_recebivel[count($request->fk_id_recebivel)-1])
+            ->where('id_recebivel', $request->fk_id_recebivel[array_key_first($request->fk_id_recebivel)])
             ->first();
            // dd($dadosPagador);
 
