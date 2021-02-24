@@ -336,7 +336,7 @@ class BoletoController extends Controller
             else if (isset($somaBoleto['data_vencimento']))//recebível vencido
                 $vencimento_verificado = recalcularVencimento($somaBoleto['data_vencimento']);
 
-           // $existe_material = false;
+            $existe_material = false;
             $infoRecebivel = '';
             foreach($recebiveis as $recebivel){
                 //lendo recebíveis do boleto para gravar nas instruções do boleto
