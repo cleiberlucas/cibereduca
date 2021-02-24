@@ -27,9 +27,6 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
     <div class="container-fluid">
-        @include('admin.includes.alerts')
-
-
         <div class="card-header">
             <div class="row">
                 <div class="col-sm-8">
@@ -66,6 +63,7 @@
                 </div>                
             </div> 
         </div>
+        @include('admin.includes.alerts')
          {{-- Abas --}}
          <ul class="nav nav-tabs nav-pills nav-fill justify-content-center" role="tablist">            
             <li role="presentation" class="nav-item">
@@ -95,7 +93,7 @@
                                 @foreach ($recebiveis as $index => $recebivel)
                                     <tr>
                                         <td>
-                                            <input type="checkbox" name="fk_id_recebivel[1]" value="{{$recebivel->id_recebivel}}" checked >
+                                            <input type="checkbox" name="fk_id_recebivel[]" value="{{$recebivel->id_recebivel}}" checked >
                                         </td>
                                         <td>{{$recebivel->descricao_conta}} - {{$recebivel->tipo_turma}} - {{$recebivel->ano}}</td>
                                         <td>{{$recebivel->parcela}}</td>
