@@ -345,8 +345,8 @@ class BoletoController extends Controller
                     $existe_material = true;
             }
 
-           // if ($existe_material)
-             //   $infoRecebivel.= "Material Didático parcelado conforme solicitação do responsável. # ";
+            if ($existe_material)
+                $infoRecebivel.= "Material Didático parcelado conforme solicitação do responsável. # ";
 
             //se tiver multa
             //incluir nas informações do boleto
