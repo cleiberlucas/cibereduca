@@ -114,7 +114,7 @@ class BoletoController extends Controller
             ->orderBy('ano', 'desc')
             ->orderBy('data_vencimento')
             ->orderBy('descricao_conta')
-            ->paginate(25);
+            ->paginate(80);
 
         if (!$recebiveis)
             return redirect()->back()->with('erro', 'Recebível não encontrado.');
