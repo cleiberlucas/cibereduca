@@ -366,7 +366,7 @@ return [
                     'route'  => 'boleto.relatorio',
                     'icon' => 'fas fa-barcode',
                     'icon_color' => 'blue',
-                    'can'  => 'Boletos',
+                    'can'  => 'Boleto Ver',
                 ],
                 [
                     'text' => 'Remessas',
