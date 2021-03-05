@@ -48,10 +48,10 @@ class BoletoRelatorioController extends Controller
             ->where('fk_id_turma', $request->turma)
             ->where('fk_id_situacao_registro', '<=', '3')
             ->where('tb_boletos.data_vencimento', '>=', now())
-            ->get();
-        
-        
-        //dd($boletos->id_boleto);
+            ->orderBy('instrucoes_dados_aluno')
+            ->orderBy('tb_boletos.data_vencimento')
+            ->get();        
+                
         $dadosUnidadeEnsino = new UnidadeEnsino();
         $dadosUnidadeEnsino = $dadosUnidadeEnsino->getUnidadeEnsino(User::getUnidadeEnsinoSelecionada());
 
