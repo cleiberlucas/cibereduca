@@ -362,6 +362,13 @@ return [
                     'can'  => 'Recebível Ver',
                 ],
                 [
+                    'text' => 'Boletos',
+                    'route'  => 'boleto.relatorio',
+                    'icon' => 'fas fa-barcode',
+                    'icon_color' => 'blue',
+                    'can'  => 'Boletos',
+                ],
+                [
                     'text' => 'Remessas',
                     'route'  => 'remessa.index',
                     'icon' => 'fas fa-barcode',
