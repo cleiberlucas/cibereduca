@@ -103,7 +103,7 @@
                                     {{-- aluno --}}
                                     @elseif($tipo_pessoa == 1)
                                         <a href="{{ route('pessoas.gerarlogin.aluno', $pessoa->id_pessoa) }}" class="btn btn-sm btn-outline-dark" data-content="Gerar login" data-toggle="popover"><i class="fas fa-fw fa-user"></i></a>
-                                        <a href="{{ route('pessoas.gerarlogin.aluno.todos') }}" class="btn btn-sm btn-outline-dark" data-content="Gerar login" data-toggle="popover"><i class="fas fa-fw fa-user"></i></a>
+                                        {{-- <a href="{{ route('pessoas.gerarlogin.aluno.todos') }}" class="btn btn-sm btn-outline-dark" data-content="Gerar login" data-toggle="popover"><i class="fas fa-fw fa-user"></i></a> --}}
                                     @endif
                                 </td>                                
                             </tr>
