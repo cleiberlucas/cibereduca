@@ -99,10 +99,10 @@
                                     {{-- link para geração de login usuário do sistema --}}
                                     {{-- Responsavel --}}
                                     @if ($tipo_pessoa == 2)
-                                        <a href="{{ route('pessoas.gerarlogin.resp', $pessoa->id_pessoa) }}" class="btn btn-sm btn-outline-dark" data-content="Gerar login" data-toggle="popover"><i class="fas fa-fw fa-user"></i></a>
+                                        <a href="{{ route('pessoas.gerarlogin.resp', $pessoa->id_pessoa) }}" class="btn btn-sm btn-outline-dark" data-content="Login: {{$pessoa->login}}" data-toggle="popover" data-trigger="hover"><i class="fas fa-fw fa-user"></i></a>
                                     {{-- aluno --}}
                                     @elseif($tipo_pessoa == 1)
-                                        <a href="{{ route('pessoas.gerarlogin.aluno', $pessoa->id_pessoa) }}" class="btn btn-sm btn-outline-dark" data-content="Gerar login" data-toggle="popover"><i class="fas fa-fw fa-user"></i></a>
+                                        <a href="{{ route('pessoas.gerarlogin.aluno', $pessoa->id_pessoa) }}" class="btn btn-sm btn-outline-dark" data-content="Login: {{$pessoa->login}}" data-toggle="popover" data-trigger="hover"><i class="fas fa-fw fa-user"></i></a>
                                         {{-- <a href="{{ route('pessoas.gerarlogin.aluno.todos') }}" class="btn btn-sm btn-outline-dark" data-content="Gerar login" data-toggle="popover"><i class="fas fa-fw fa-user"></i></a> --}}
                                     @endif
                                 </td>                                

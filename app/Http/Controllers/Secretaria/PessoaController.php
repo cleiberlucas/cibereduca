@@ -57,11 +57,14 @@ class PessoaController extends Controller
                 ->count();
 
             $pessoas = $this->repositorio
+                ->select('id_pessoa', 'nome', 'data_nascimento', 'telefone_1', 'situacao_pessoa',
+                    'users.email as login')
                 ->join('tb_unidades_ensino', 'fk_id_unidade_ensino', 'id_unidade_ensino')
+                ->leftJoin('users', 'id', 'fk_id_user')
                 ->where('fk_id_tipo_pessoa', $request->segment(2))
                 ->where('id_unidade_ensino', '=', User::getUnidadeEnsinoSelecionada())
                 ->orderBy('nome', 'asc')
-                ->paginate(20);
+                ->paginate(25);
         }
         /* Responsável 
             Não mostra unidade ensino
@@ -407,7 +410,7 @@ class PessoaController extends Controller
             redirect()->back()->with('erro', 'Aluno não encontrado para geração de login.');
 
         if ($aluno->fk_id_user != null)
-            return redirect()->back()->with('atencao', 'O '.$aluno->nome.' aluno já possui login');
+            return redirect()->back()->with('atencao', 'O(a) aluno(a) '.$aluno->nome.' já possui login.');
         
         //gerando nome de usuário para o aluno
         //primeironome.ultimosobrenome
