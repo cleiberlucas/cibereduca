@@ -1,8 +1,5 @@
 
-
 @extends('adminlte::page')
-
-
 
 @section('title_postfix', ' Pessoas')
 
@@ -35,8 +32,7 @@
                 Total Ativos: {{$qtdPessoas}} 
             @endif
         </div>
-    </div>
-    
+    </div>    
 @stop
 
 @section('content')
@@ -45,8 +41,7 @@
     
     <div class="container-fluid">
         @include('admin.includes.alerts')
-        <div class="card-header">
-           
+        <div class="card-header">           
             <form action="{{ route('pessoas.search') }}" method="POST" class="form form-inline">
                 @csrf
                 <input type="text" name="filtro" placeholder="Nome" class="form-control" value="{{ $filtros['filtro'] ?? '' }}">
@@ -64,10 +59,8 @@
                         <th scope="col">Situação</th>
                         <th scope="col">Ações</th>
                     </thead>
-                    <tbody>              
-                        
-                        @foreach ($pessoas as $index => $pessoa)
-                        
+                    <tbody>                                      
+                        @foreach ($pessoas as $index => $pessoa)                        
                             <tr>
                                 <th scope="row">{{$index+1}}</th>
                                 <td>
@@ -77,8 +70,7 @@
                                     {{-- RESPONSAVEL - link p editar registro --}}
                                     @else
                                         <a href="{{ route('pessoas.edit', $pessoa->id_pessoa) }}" class="btn btn-link">{{$pessoa->nome}}</a>
-                                    @endif
-                                    
+                                    @endif                                    
                                 </td> 
                                 <td>
                                     {{date('d/m/Y', strtotime($pessoa->data_nascimento))}}
@@ -91,8 +83,7 @@
                                         <b>Ativo</b>
                                     @else
                                         Inativo                                        
-                                    @endif
-                                    
+                                    @endif                                    
                                 </td>              
                                 <td >
                                     {{-- Link para pasta do aluno --}}
@@ -105,12 +96,16 @@
                                     
                                     <a href="{{ route('pessoas.edit', $pessoa->id_pessoa) }}" data-content="Editar Cadastro" data-toggle="popover" data-trigger="hover" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>
                                     <a href="{{ route('pessoas.show', $pessoa->id_pessoa) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-eye"></i></a>
-                                    {{-- link para geração de usuário do sistema --}}
+                                    {{-- link para geração de login usuário do sistema --}}
+                                    {{-- Responsavel --}}
                                     @if ($tipo_pessoa == 2)
-                                    <a href="{{ route('pessoas.gerarlogin', $pessoa->id_pessoa) }}" class="btn btn-sm btn-outline-dark" data-content="Gerar login" data-toggle="popover"><i class="fas fa-fw fa-user"></i></a>
+                                        <a href="{{ route('pessoas.gerarlogin.resp', $pessoa->id_pessoa) }}" class="btn btn-sm btn-outline-dark" data-content="Gerar login" data-toggle="popover"><i class="fas fa-fw fa-user"></i></a>
+                                    {{-- aluno --}}
+                                    @elseif($tipo_pessoa == 1)
+                                        <a href="{{ route('pessoas.gerarlogin.aluno', $pessoa->id_pessoa) }}" class="btn btn-sm btn-outline-dark" data-content="Gerar login" data-toggle="popover"><i class="fas fa-fw fa-user"></i></a>
+                                        <a href="{{ route('pessoas.gerarlogin.aluno.todos') }}" class="btn btn-sm btn-outline-dark" data-content="Gerar login" data-toggle="popover"><i class="fas fa-fw fa-user"></i></a>
                                     @endif
-                                </td>
-                                
+                                </td>                                
                             </tr>
                         @endforeach
                     </tbody>
@@ -120,18 +115,15 @@
                         {!! $pessoas->appends($filtros)->links()!!}
                     @else
                         {!! $pessoas->links()!!}     
-                    @endif
-                    
+                    @endif                    
                 </div>
         </div>
     </div>
-
     <script>
-        $(document).ready(function(){
+        /* $(document).ready(function(){
               $(".alert").slideDown(300).delay(5000).slideUp(300);
-        });    
+        });     */
 
         $('[data-toggle="popover"]').popover();  
-    </script>
-    
+    </script>    
 @stop

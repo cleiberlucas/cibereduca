@@ -37,6 +37,7 @@ class Pessoa extends Model
                             'empresa',
                             'obs_pessoa', 
                             'fk_id_unidade_ensino',
+                            'fk_id_user',
                             'fk_id_user_cadastro',
                             'situacao_pessoa',
                             'data_cadastro',

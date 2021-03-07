@@ -124,11 +124,18 @@ class PessoaController extends Controller
         if ($dados['fk_id_tipo_pessoa'] == 2) {
             try {
                 $insertPessoa->endereco()->create($request->except('pai', 'mae', 'fk_id_sexo'));
+                $this->gerarLoginResponsavel($insertPessoa->id_pessoa);
             } catch (\Throwable $th) {
                 //throw $th;
             }
         }
-
+        else if($dados['fk_id_tipo_pessoa'] == 1){
+            try {
+                $this->gerarLoginAluno($insertPessoa->id_pessoa);
+            } catch (\Throwable $th) {
+                //throw $th;
+            }
+        }
         return redirect()->back()->with('sucesso', 'Cadastro realizado com sucesso.');
     }
 
@@ -299,10 +306,8 @@ class PessoaController extends Controller
             ->where('nome', $nome)
             ->get();
         echo json_encode($pessoa);
-        exit;
-        // dd($pessoa);
+        exit;     
     }
-
     
     /*
     *Lista de todos responsaveis cadastrados
@@ -321,14 +326,13 @@ class PessoaController extends Controller
     }
 
     /**
-     * Geração de login para pessoa cadastrada (responsável ou aluno)     
+     * Geração de login para pessoa cadastrada (responsável)     
      */
-    public function gerarLogin($id_pessoa)
-    {
-        
+    public function gerarLoginResponsavel($id_pessoa)
+    {        
         $resp = new Pessoa;
         $resp = $resp
-            ->select('nome', 'email_1', 'cpf', 'fk_id_tipo_pessoa')            
+            ->select('id_pessoa', 'nome', 'email_1', 'cpf', 'fk_id_tipo_pessoa')            
             ->where('id_pessoa', $id_pessoa)                        
             ->first();
 
@@ -338,7 +342,7 @@ class PessoaController extends Controller
         if ($resp->cpf != null)
             $user = $user->where('email', $resp->cpf)->first();
         else            
-            return redirect()->route('pessoas.index', $resp->fk_id_tipo_pessoa)->with('atencao', ''.$resp->nome.' não possui CPF cadastrado.');
+            return redirect()->route('pessoas.index', $resp->fk_id_tipo_pessoa)->with('atencao', 'Login para '.$resp->nome.' não foi gerado, pois não possui CPF cadastrado.');
         
         //verificando se a pessoa já possui login cadastrado
         if ($user)
@@ -356,23 +360,108 @@ class PessoaController extends Controller
             $idRespUser = $userController->storeRespUser($dadosUser);            
 
             if ($idRespUser > 0){
-
+                //atualizando cadastro pessoa com o id_user
+                $fk_id_user = array('fk_id_user' => $idRespUser);
+                $resp->update($fk_id_user);                
                 //vinculando à unidade de ensino                     
                 $userUnidadeController->vincularUnidadesRespUser($unidadesEnsino, $idRespUser);
-
                 //atribuindo perfil 6 = RESPONSAVEL
                 $userPerfil = array(                        
                     'fk_id_perfil' => 6,                         
                 );
                 $userUnidadeController->updateRespUser($userPerfil, $idRespUser);                    
             }
-
         } catch(\Throwable $qe) {
-            return redirect()->back()->with('erro', 'Erro ao gerar user. Verifique se o CPF está cadastrado.'.$qe);
-        }
+            return redirect()->back()->with('erro', 'Erro ao gerar login para o responsável. Verifique se o CPF está cadastrado.'.$qe);
+        }        
+        return redirect()->route('pessoas.index', $resp->fk_id_tipo_pessoa)->with('sucesso', 'Login cadastrado com sucesso.');    
+    }
+
+    public function gerarLoginTodosAlunos(){
+        $alunos = new Pessoa;
+        $alunos = $alunos
+            ->select('id_pessoa')
+            ->where('fk_id_tipo_pessoa', 1)
+            ->where('fk_id_user', null)
+            ->get();
+        //dd($alunos);
         
-        return redirect()->back()->with('sucesso', 'Login cadastrado com sucesso.');
-    
+            foreach($alunos as $aluno){
+                $this->gerarLoginAluno($aluno->id_pessoa);
+            }
+        return redirect()->back()->with('atencao', 'Geração de logins concluída.');
+    }
+
+    /**
+     * Geração de login para pessoa cadastrada (responsável)     
+     */
+    public function gerarLoginAluno($id_pessoa)
+    {        
+        $aluno = new Pessoa;
+        $aluno = $aluno
+            ->select('id_pessoa', 'nome', 'fk_id_tipo_pessoa', 'fk_id_user')            
+            ->where('id_pessoa', $id_pessoa)                        
+            ->first();
+        
+        if (!$aluno)
+            redirect()->back()->with('erro', 'Aluno não encontrado para geração de login.');
+
+        if ($aluno->fk_id_user != null)
+            return redirect()->back()->with('atencao', 'O '.$aluno->nome.' aluno já possui login');
+        
+        //gerando nome de usuário para o aluno
+        //primeironome.ultimosobrenome
+        $nome = explode(' ', $aluno->nome);
+        $login = strtolower(removerAcentos($nome[0]).'.'.removerAcentos($nome[count($nome)-1]));
+        
+        $user = new User;        
+        /* verificando se existe login igual - dois alunos que tenham primeiro e último nome iguais
+        Caso exista, incrementa um número no final
+        Exemplo 
+            cleiber.pereira
+            cleiber.pereira1
+            cleiber.pereira2
+        */
+        $login_existe = true;
+        $cont = 0;
+        while($login_existe){
+            $user = $user->where('email', $login)->first();
+            if (isset($user->email)){
+                $cont++;
+                $login .= $cont;
+            }
+            else
+                $login_existe = false;
+        }
+        $senha = $login.'-'.date('Y');
+        
+        $userController = new UserController(new User);
+        $userUnidadeController = new UserUnidadeEnsinoController(new User, new UnidadeEnsino);
+
+        $unidadesEnsino = array('0' => User::getUnidadeEnsinoSelecionada());
+        
+        $dadosUser = array('name' => $aluno->nome,
+            'email' => $login,
+            'password' => $senha);
+        try{
+            $idRespUser = $userController->storeRespUser($dadosUser);            
+            if ($idRespUser > 0){
+                //atualizando cadastro pessoa com o id_user
+                $fk_id_user = array('fk_id_user' => $idRespUser);
+                $aluno->update($fk_id_user);
+                                
+                //vinculando à unidade de ensino                     
+                $userUnidadeController->vincularUnidadesRespUser($unidadesEnsino, $idRespUser);
+                //atribuindo perfil 7 = ALUNO
+                $userPerfil = array(                        
+                    'fk_id_perfil' => 7,                         
+                );
+                $userUnidadeController->updateRespUser($userPerfil, $idRespUser);                    
+            }
+        } catch(\Throwable $qe) {
+            return redirect()->back()->with('erro', 'Erro ao gerar login para o aluno.'.$qe);
+        }        
+        return redirect()->route('pessoas.index', $aluno->fk_id_tipo_pessoa)->with('sucesso', 'Login cadastrado com sucesso.');    
     }
 
 

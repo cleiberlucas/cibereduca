@@ -73,6 +73,19 @@ class User extends Authenticatable
             ->first();
     }
 
+    /**
+     * Consulta perfil do usuário
+     * Somente ativos
+     */
+    public function getPerfilUsuario($idUsuario)
+    {
+        return $this
+            ->join('tb_usuarios_unidade_ensino', 'fk_id_user', 'id')            
+            ->where('fk_id_user', $idUsuario)
+            ->where('situacao_vinculo', 1) 
+            ->first();
+    }
+
     /* public function perfil()
     {
         //join M:M user X perfil

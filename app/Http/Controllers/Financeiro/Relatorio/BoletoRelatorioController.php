@@ -39,6 +39,8 @@ class BoletoRelatorioController extends Controller
 
     //Pesquisa boletos da turma selecionada
     public function imprimir(Request $request){
+        $this->authorize('Boleto Ver');
+        
         $boletos = new Matricula;
         $boletos = $boletos
             ->select('id_boleto')

@@ -305,7 +305,9 @@ Route::prefix('secretaria')
                 /*
                 *Rotas Pessoas
                 */
-                Route::any('pessoas/gerarLogin/{id_user}', 'PessoaController@gerarLogin')->name('pessoas.gerarlogin');
+                Route::any('pessoas/gerarlogin/{id_user}', 'PessoaController@gerarLoginResponsavel')->name('pessoas.gerarlogin.resp');
+                Route::any('pessoas/gerarloginaluno/{id_user}', 'PessoaController@gerarLoginAluno')->name('pessoas.gerarlogin.aluno');
+                Route::any('pessoas/gerarlogintodosaluno', 'PessoaController@gerarLoginTodosAlunos')->name('pessoas.gerarlogin.aluno.todos');
                 Route::get('pessoas/create/aluno', 'PessoaController@create')->name('pessoas.create.aluno');
                 Route::get('pessoas/create/responsavel', 'PessoaController@create')->name('pessoas.create.responsavel');
                 Route::put('pessoas/{id_pessoa}', 'PessoaController@update')->name('pessoas.update');
@@ -488,6 +490,7 @@ Route::get('pdf', 'PdfController@gerarPdf');
  * Principal
  */
 Route::get('/', 'Principal\PrincipalController@index')->name('home');
+//Route::get('/', 'Principal\PrincipalController@portalAluno')->name('portal.aluno');
 Route::put('/', 'Principal\PrincipalController@defineUnidadePadrao')->name('home.define');
 
 //Auth::routes(); 
