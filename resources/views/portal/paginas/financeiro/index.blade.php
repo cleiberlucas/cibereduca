@@ -9,22 +9,16 @@
 <body>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-3 col-xs-2">
-                <img width="30%" height="" src="vendor/adminlte/dist/img/logo.png" alt="">
-            </div>
-            <div class="form-group col-sm-6 col-xs-2" align="center"> 
-                <h3>Portal do Aluno</h3>
-                <h3>Recebíveis do(a) Aluno(a)</h3>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-12 col-xs-2" align="center">
-                <h4>Matrículas</h4>
+    @include('portal.paginas._partials.cabecalho')    
+    <div class="container">
+        <div class="card border-success">
+            <div class="card-footer bg-transparent border-success"> 
+                <div class="col-sm-12 col-xs-2" align="center">
+                    <h4>Ficha financeira</h4>
+                    {{-- <h4>Matrículas</h4> --}}
+                </div>
             </div>
         </div>
-        <br>
     </div>
     <div class="container">
         <div class="table table-responsive"> 

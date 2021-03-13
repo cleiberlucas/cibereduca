@@ -12,20 +12,14 @@
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-3 col-xs-2">
-                <img width="30%" height="" src="/vendor/adminlte/dist/img/logo.png" alt="">
-            </div>
-            <div class="form-group col-sm-6 col-xs-2" align="center"> 
-                <h3>Portal do Aluno</h3>
-                <h3>Recebíveis do(a) Aluno(a)</h3>
-                <h4>{{$aluno->nome}}</h4>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-12 col-xs-2" align="center">
-                <h5>Recebíveis</h5>
+    @include('portal.paginas._partials.cabecalho')    
+    <div class="container">
+        <div class="card border-success">
+            <div class="card-footer bg-transparent border-success"> 
+                <div class="col-sm-12 col-xs-2" align="center">
+                    <h4>Recebíveis do(a) Aluno(a)</h4>
+                    <h5>{{$aluno->nome}}</h5>
+                </div>
             </div>
         </div>
     </div>

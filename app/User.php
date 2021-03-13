@@ -86,6 +86,17 @@ class User extends Authenticatable
             ->first();
     }
 
+    /**
+     * Consulta nome de login do usuário
+     */
+    public function getNomeUsuario($idUsuario)
+    {
+        return $this->
+            select('name')
+            ->where('id', $idUsuario)
+            ->first();
+    }
+
     /* public function perfil()
     {
         //join M:M user X perfil

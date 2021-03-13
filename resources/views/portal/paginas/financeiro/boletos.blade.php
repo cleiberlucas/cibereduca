@@ -17,7 +17,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     
-
+    @include('portal.paginas._partials.cabecalho')    
+    <div class="container">
+        <div class="card border-success">
+            <div class="card-footer bg-transparent border-success"> 
+                <div class="col-sm-12 col-xs-2" align="center">
+                    <h4>Boletos do(a) Aluno(a)</h4>
+                    <h5>{{$aluno->nome}}</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+{{-- 
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-3 col-xs-2">
@@ -34,7 +45,7 @@
                 <h5>Boletos</h5>
             </div>
         </div>
-    </div>
+    </div> --}}
     <div class="container">
         @include('admin.includes.alerts')     
         <div class="table table-responsive">

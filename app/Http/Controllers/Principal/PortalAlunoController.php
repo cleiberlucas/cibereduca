@@ -51,44 +51,32 @@ class PortalAlunoController extends Controller
                 ->orderBy('aluno.nome')
                 ->orderBy('id_turma', 'desc')
                 ->get();
-
-            return view('portal.paginas.rendimento.index',
+        }
+        else if($perfil->fk_id_perfil == 7){
+            $matriculas = $matriculas
+            ->select(
+                'id_matricula',
+                'aluno.nome as nome_aluno',
+                'id_ano_letivo', 'ano',
+                'id_turma','nome_turma',
+                'descricao_turno',
+                'sub_nivel_ensino')
+            /* ->join('tb_pessoas as resp', 'resp.id_pessoa', 'tb_matriculas.fk_id_responsavel')             */
+            ->join('tb_pessoas as aluno', 'aluno.id_pessoa', 'tb_matriculas.fk_id_aluno' )
+            ->Join('users', 'id', 'aluno.fk_id_user')            
+            ->join('tb_turmas', 'id_turma', 'fk_id_turma')
+            ->join('tb_tipos_turmas', 'tb_turmas.fk_id_tipo_turma', '=', 'tb_tipos_turmas.id_tipo_turma')
+            ->join('tb_sub_niveis_ensino', 'tb_tipos_turmas.fk_id_sub_nivel_ensino', '=', 'tb_sub_niveis_ensino.id_sub_nivel_ensino')
+            ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')
+            ->join('tb_turnos', 'tb_turmas.fk_id_turno', '=', 'tb_turnos.id_turno') 
+            ->where('aluno.fk_id_user', Auth::id())
+            ->orderBy('aluno.nome')
+            ->orderBy('id_turma', 'desc')
+            ->get();
+        }        
+        $nomeLogin = Auth::id();
+        return view('portal.paginas.rendimento.index',
                 compact('matriculas'));
-        }
-        else if($perfil == 7){
-
-        }
-        
-        $unidadesEnsino = UnidadeEnsino::where('situacao', '=', '1')
-                        ->where('situacao_vinculo', '=', '1')                         
-                        ->where('tb_usuarios_unidade_ensino.fk_id_user', '=', Auth::id())        
-                        ->join('tb_usuarios_unidade_ensino', 'fk_id_unidade_ensino', 'id_unidade_ensino')                                                            
-                        ->get();
-
-        //dd($perfil);
-        /* Portal do aluno
-        Se for responsável ou aluno  
-        6=responsável
-        7=aluno
-        */
-        if (isset($perfil) and ($perfil->fk_id_perfil == 6 or $perfil->fk_id_perfil == 7)){
-            $pessoa = new Pessoa;
-            $pessoa = $pessoa
-                ->select('nome')
-                ->where('fk_id_user', Auth::id())
-                ->first();
-
-           /*  if (!$pessoa)
-                return view()->with('atencao', 'O seu login não foi liberado. Favor entrar em contato com a secretaria do Colégio.');
- */
-            return view('principal.paginas.home.portal_aluno',
-                compact('unidadesEnsino', 'pessoa')
-            );
-        }
-        else                
-            return view('principal.paginas.home.index',[
-                'unidadesEnsino' => $unidadesEnsino,
-            ]);
     }
 
     public function indexDeclaracoes()
@@ -119,13 +107,31 @@ class PortalAlunoController extends Controller
                 ->orderBy('aluno.nome')
                 ->orderBy('id_turma', 'desc')
                 ->get();
-
-            return view('portal.paginas.declaracoes.index',
-                compact('matriculas'));
         }
-        else if($perfil == 7){
-
-        }
+        else if($perfil->fk_id_perfil == 7){
+            $matriculas = $matriculas
+            ->select(
+                'id_matricula',
+                'aluno.nome as nome_aluno',
+                'id_ano_letivo', 'ano',
+                'id_turma','nome_turma',
+                'descricao_turno',
+                'sub_nivel_ensino')
+            /* ->join('tb_pessoas as resp', 'resp.id_pessoa', 'tb_matriculas.fk_id_responsavel')             */
+            ->join('tb_pessoas as aluno', 'aluno.id_pessoa', 'tb_matriculas.fk_id_aluno' )
+            ->Join('users', 'id', 'aluno.fk_id_user')            
+            ->join('tb_turmas', 'id_turma', 'fk_id_turma')
+            ->join('tb_tipos_turmas', 'tb_turmas.fk_id_tipo_turma', '=', 'tb_tipos_turmas.id_tipo_turma')
+            ->join('tb_sub_niveis_ensino', 'tb_tipos_turmas.fk_id_sub_nivel_ensino', '=', 'tb_sub_niveis_ensino.id_sub_nivel_ensino')
+            ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')
+            ->join('tb_turnos', 'tb_turmas.fk_id_turno', '=', 'tb_turnos.id_turno') 
+            ->where('aluno.fk_id_user', Auth::id())
+            ->orderBy('aluno.nome')
+            ->orderBy('id_turma', 'desc')
+            ->get();
+        }        
+        return view('portal.paginas.declaracoes.index',
+            compact('matriculas'));
     }
 
     public function indexFinanceiro()
@@ -157,13 +163,32 @@ class PortalAlunoController extends Controller
                 ->orderBy('aluno.nome')
                 ->orderBy('id_turma', 'desc')
                 ->get();
-
-            return view('portal.paginas.financeiro.index',
-                compact('matriculas'));
         }
-        else if($perfil == 7){
-
+        else if($perfil->fk_id_perfil == 7){
+            $matriculas = $matriculas
+                ->select(
+                    'id_matricula',
+                    'aluno.id_pessoa',
+                    'aluno.nome as nome_aluno',
+                    'id_ano_letivo', 'ano',
+                    'id_turma','nome_turma',
+                    'descricao_turno',
+                    'sub_nivel_ensino')
+                /* ->join('tb_pessoas as resp', 'resp.id_pessoa', 'tb_matriculas.fk_id_responsavel')             */
+                ->join('tb_pessoas as aluno', 'aluno.id_pessoa', 'tb_matriculas.fk_id_aluno' )
+                ->Join('users', 'id', 'aluno.fk_id_user')            
+                ->join('tb_turmas', 'id_turma', 'fk_id_turma')
+                ->join('tb_tipos_turmas', 'tb_turmas.fk_id_tipo_turma', '=', 'tb_tipos_turmas.id_tipo_turma')
+                ->join('tb_sub_niveis_ensino', 'tb_tipos_turmas.fk_id_sub_nivel_ensino', '=', 'tb_sub_niveis_ensino.id_sub_nivel_ensino')
+                ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')
+                ->join('tb_turnos', 'tb_turmas.fk_id_turno', '=', 'tb_turnos.id_turno') 
+                ->where('aluno.fk_id_user', Auth::id())
+                ->orderBy('aluno.nome')
+                ->orderBy('id_turma', 'desc')
+                ->get();
         }
+        return view('portal.paginas.financeiro.index',
+            compact('matriculas'));
     }
 
     public function indexOutros()
@@ -194,13 +219,31 @@ class PortalAlunoController extends Controller
                 ->orderBy('aluno.nome')
                 ->orderBy('id_turma', 'desc')
                 ->get();
-
-            return view('portal.paginas.outros.index',
-                compact('matriculas'));
         }
-        else if($perfil == 7){
-
+        else if($perfil->fk_id_perfil == 7){
+            $matriculas = $matriculas
+            ->select(
+                'id_matricula',
+                'aluno.nome as nome_aluno',
+                'id_ano_letivo', 'ano',
+                'id_turma','nome_turma',
+                'descricao_turno',
+                'sub_nivel_ensino')
+            /* ->join('tb_pessoas as resp', 'resp.id_pessoa', 'tb_matriculas.fk_id_responsavel')             */
+            ->join('tb_pessoas as aluno', 'aluno.id_pessoa', 'tb_matriculas.fk_id_aluno' )
+            ->Join('users', 'id', 'aluno.fk_id_user')            
+            ->join('tb_turmas', 'id_turma', 'fk_id_turma')
+            ->join('tb_tipos_turmas', 'tb_turmas.fk_id_tipo_turma', '=', 'tb_tipos_turmas.id_tipo_turma')
+            ->join('tb_sub_niveis_ensino', 'tb_tipos_turmas.fk_id_sub_nivel_ensino', '=', 'tb_sub_niveis_ensino.id_sub_nivel_ensino')
+            ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')
+            ->join('tb_turnos', 'tb_turmas.fk_id_turno', '=', 'tb_turnos.id_turno') 
+            ->where('aluno.fk_id_user', Auth::id())
+            ->orderBy('aluno.nome')
+            ->orderBy('id_turma', 'desc')
+            ->get();
         }
+        return view('portal.paginas.outros.index',
+            compact('matriculas'));
     }
 
     /**
