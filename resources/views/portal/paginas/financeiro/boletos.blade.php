@@ -1,44 +1,43 @@
-@extends('adminlte::page')
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Portal do Aluno - Boletos</title>
 
-@section('title_postfix', ' Boletos')
+</head>
+<body>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">    
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    {{-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> --}}
 
-@section('content_header')
-    <ol class="breadcrumb">        
-        <li class="breadcrumb-item active" >            
-            <a href="#" class=""> Financeiro</a>
-        </li>
-        <li class="breadcrumb-item active" >            
-            <a href="{{ route('financeiro.index') }} " class=""> Recebíveis</a>
-        </li>
-        <li class="breadcrumb-item active" >            
-            <a href="#" class=""> Boletos</a>
-        </li>
-    </ol>    
-@stop
-
-@section('content')    
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     
+
     <div class="container-fluid">
-        @include('admin.includes.alerts')
-        <div class="card-header">
-            <h4>Boletos aluno(a)</h4>
-            <div class="row">
-                <div class="col-sm my-3">                                
-                    <strong>{{$aluno->nome}}</strong>  <a href="{{ route('boleto.create', $aluno->id_pessoa) }}" class="btn btn-success"><i class="fas fa-plus-square"></i> Lançar Boleto</a>                              
-                </div>                
-            </div> 
-            {{-- <form action="{{ route('recebivel.aluno.search') }}" method="POST" class="form form-inline">
-                @csrf
-                <input type="text" name="filtro" placeholder="Nome" class="form-control" value="{{ $filtros['filtro'] ?? '' }}">                
-                <button type="submit" class="btn btn-outline-secondary"><i class="fas fa-filter"></i></button>
-            </form> --}}
+        <div class="row">
+            <div class="col-sm-3 col-xs-2">
+                <img width="30%" height="" src="/vendor/adminlte/dist/img/logo.png" alt="">
+            </div>
+            <div class="form-group col-sm-6 col-xs-2" align="center"> 
+                <h3>Portal do Aluno</h3>
+                <h3>Boletos do(a) Aluno(a)</h3>
+                <h4>{{$aluno->nome}}</h4>
+            </div>
         </div>
-        <form action="{{ route('boletos.imprimir')}}" class="form" name="form" method="POST">
-            @csrf 
-            <div class="table-responsive">
+        <div class="row">
+            <div class="col-sm-12 col-xs-2" align="center">
+                <h5>Boletos</h5>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        @include('admin.includes.alerts')     
+        <div class="table table-responsive">
                 <table class="table table-hover">
                     <thead>
                         <th scope="col">#</th>
@@ -49,9 +48,9 @@
                         <th scope="col">Situação</th>
                         <th scope="col">Ações</th>                    
                     </thead>
-                    <tbody>                                  
+                    <tbody>                        
                         @foreach ($boletos as $index => $boleto)
-                            <?php
+                        <?php
                             $hoje = date('Y-m-d');
                             /* Pago */
                             if ($boleto->fk_id_situacao_registro == 4)
@@ -62,7 +61,7 @@
                             else 
                                 echo '<tr>';
                             ?>
-                                <th> <input type="checkbox" name="id_boleto[]" value="{{$boleto->id_boleto}}" checked></th>                                  
+                                <th> {{$index+1}}</th>                                  
                                 <td>                                   
                                     <a href="#" onclick="return false;" class="disabled" data-content="{{$boleto->instrucoes_recebiveis}}"{{--  title="Recebíveis" --}} data-toggle="popover" data-trigger="hover" role="button" aria-disabled="true">Detalhes Boleto</a>                                        
                                 </td>
@@ -82,44 +81,23 @@
                                 </td>  
                                 <td>
                                     <?php $hash = preg_replace("/[^a-zA-Z0-9\s]/", "", crypt($boleto->id_boleto, 'cs'));?>
-                                    <a href="{{ route('boleto.imprimir', [$boleto->id_boleto, $hash]) }}" class="btn btn-sm btn-outline-info"><i class="fas fa-print"></i></a>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    {{-- Só permite excluir se não foi pago --}}
-                                    @if ($boleto->fk_id_situacao_registro != 4)
-                                        <a href="{{ route('boleto.destroy', $boleto->id_boleto) }}" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></a>
-                                    @endif
-                                    
-                                    {{-- Link para todos os boletos de um aluno em qq ano letivo --}}
-                                    {{-- <a href="{{ route('boleto.indexAluno', $boleto->id_pessoa) }}" class="btn btn-sm btn-outline-dark"><i class="fas fa-barcode"></i></a> --}}
+                                    <a href="{{ route('boleto.imprimir', [$boleto->id_boleto, $hash])}}" class="btn btn-sm btn-outline-info">Imprimir</a>
                                 </td>                                                                           
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
-            </div>
-            <div class="card-footer">
-                @if (isset($filtros))
-                    {!! $boletos->appends($filtros)->links()!!}
-                @else
-                    {!! $boletos->links()!!}     
-                @endif                    
-            </div>
-
-            <div class="row ">
-                <div class="form-group col-sm-4 col-xs-2">                         
-                    <button type="submit" class="btn btn-info"><i class="fas fa-print"></i> Imprimir boletos selecionados</button>            
+                <div class="card-footer">                    
+                    {!! $boletos->links()!!}    
                 </div>
-            </div>
-        </form>
-        
+        </div>
     </div>
 
     <script>
         $(document).ready(function(){
               $(".alert").slideDown(300).delay(5000).slideUp(300);
         });    
-
         $('[data-toggle="popover"]').popover();  
     </script>
-    
-@stop
+</body>
+</html>

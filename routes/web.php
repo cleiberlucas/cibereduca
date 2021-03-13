@@ -4,6 +4,22 @@ use Illuminate\Support\Facades\Route;
 
 
 /**
+ * Rotas Portal Aluno
+ */
+/* Route::prefix('portal')
+        ->namespace('Portal')
+        ->middleware('auth')
+        ->group(function () {
+
+                /**
+                 * Rotas Portal Aluno
+                 */               
+               
+/* 
+        }
+); */
+ 
+/**
  * Rotas Captacao
  */
 Route::prefix('captacao')
@@ -60,7 +76,7 @@ Route::prefix('financeiro')
                 Route::get('create/boleto/{id_aluno}', 'BoletoController@create')->name('boleto.create');     
                 Route::post('imprimir/boleto', 'BoletoController@imprimirBoletos')->name('boletos.imprimir');           
                 Route::get('boleto/destroy/{id_boleto}', 'BoletoController@destroy')->name('boleto.destroy');   
-                Route::get('boleto/imprimir/{id_boleto}', 'BoletoController@imprimirBoleto')->name('boleto.imprimir');   
+                Route::get('boleto/imprimir/{id_boleto}/{hash}', 'BoletoController@imprimirBoleto')->name('boleto.imprimir');   
 
                 Route::get('relatorio/boleto', 'Relatorio\BoletoRelatorioController@index')->name('boleto.relatorio');
                 Route::post('relatorio/boleto', 'Relatorio\BoletoRelatorioController@imprimir')->name('boletos.turma.imprimir');
@@ -262,7 +278,7 @@ Route::prefix('secretaria')
                 Route::any('{id_turma}/matriculas', 'MatriculaController@index')->name('matriculas.index')->middleware('can:Matrícula Ver');
 
                 Route::get('matriculas/requerimento/{id_matricula}', 'MatriculaController@imprimirReqMatricula')->name('matriculas.requerimento')->middleware('can:Matrícula Contrato Ver');
-                Route::get('matriculas/contrato/{id_matricula}', 'MatriculaController@imprimirContrato')->name('matriculas.contrato')->middleware('can:Matrícula Contrato Ver');
+                Route::get('matriculas/contrato/{id_matricula}/{hash}', 'MatriculaController@imprimirContrato')->name('matriculas.contrato')->middleware('can:Matrícula Contrato Ver');
                 Route::get('matriculas/ficha/{id_aluno}', 'MatriculaController@imprimirFichaMatricula')->name('matriculas.ficha')->middleware('can:Matrícula Ver');
                 Route::get('matriculas/getAlunos/{id_ano_letivo}', 'MatriculaController@getAlunos')->name('matriculas.getAlunos');                                
                 Route::get('matriculas/getAlunosTurma/{id_turma}', 'MatriculaController@getAlunosTurma')->name('matriculas.getAlunosTurma');                
@@ -307,7 +323,7 @@ Route::prefix('secretaria')
                 */
                 Route::any('pessoas/gerarlogin/{id_user}', 'PessoaController@gerarLoginResponsavel')->name('pessoas.gerarlogin.resp');
                 Route::any('pessoas/gerarloginaluno/{id_user}', 'PessoaController@gerarLoginAluno')->name('pessoas.gerarlogin.aluno');
-                Route::any('pessoas/gerarlogintodosaluno', 'PessoaController@gerarLoginTodosAlunos')->name('pessoas.gerarlogin.aluno.todos');
+                /* Route::any('pessoas/gerarlogintodosaluno', 'PessoaController@gerarLoginTodosAlunos')->name('pessoas.gerarlogin.aluno.todos'); */
                 Route::get('pessoas/create/aluno', 'PessoaController@create')->name('pessoas.create.aluno');
                 Route::get('pessoas/create/responsavel', 'PessoaController@create')->name('pessoas.create.responsavel');
                 Route::put('pessoas/{id_pessoa}', 'PessoaController@update')->name('pessoas.update');
@@ -492,6 +508,19 @@ Route::get('pdf', 'PdfController@gerarPdf');
 Route::get('/', 'Principal\PrincipalController@index')->name('home');
 //Route::get('/', 'Principal\PrincipalController@portalAluno')->name('portal.aluno');
 Route::put('/', 'Principal\PrincipalController@defineUnidadePadrao')->name('home.define');
+
+route::any('index_rendimento', 'Principal\PortalAlunoController@indexRendimento')->name('portal.indexrendimento');
+route::get('portal/notas/{id_matricula}/{hash}', 'Principal\PortalAlunoController@indexnotas')->name('portal.indexnotas');
+route::get('portal/frequencias/{id_matricula}', 'Principal\PortalAlunoController@indexfrequencias')->name('portal.indexfrequencias');
+
+route::any('index_declaracoes', 'Principal\PortalAlunoController@indexDeclaracoes')->name('portal.indexdeclaracoes');
+route::get('portal/declaracoes/{id_matricula}', 'Principal\PortalAlunoController@declaracoes')->name('portal.declaracoes');
+
+route::any('index_financeiro', 'Principal\PortalAlunoController@indexFinanceiro')->name('portal.indexfinanceiro');
+route::get('portal/financeiro/{id_aluno}/{hash}', 'Principal\PortalAlunoController@indexRecebiveis')->name('portal.recebiveis');
+route::get('portal/boletos/{id_aluno}/{hash}', 'Principal\PortalAlunoController@indexBoletos')->name('portal.boletos');
+
+route::any('index_outros', 'Principal\PortalAlunoController@indexOutros')->name('portal.indexoutros');
 
 //Auth::routes(); 
 //desabilita link para auto registro de usuário

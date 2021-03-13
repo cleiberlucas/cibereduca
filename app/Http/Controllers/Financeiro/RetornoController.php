@@ -42,7 +42,8 @@ class RetornoController extends Controller
         $this->authorize('Retorno Cadastrar');
         $request['data_retorno'] = '20210130';
         $request['sequencial_retorno_banco'] = '1';
-        
+        //$arquivo = 
+        //dd($request->hasFile('nome_arquivo'));;
         $dados = $request->all();
 
         if ($request->hasfile('nome_arquivo') && $request->nome_arquivo->isValid()) {                       
@@ -50,7 +51,9 @@ class RetornoController extends Controller
                 $nomeArquivo = $request->file('nome_arquivo')->getClientOriginalName();
                 $nomeArquivo = str_replace(' ', '_', $nomeArquivo);
                 $dados['nome_arquivo'] = $nomeArquivo; 
-                $request->file('nome_arquivo')->storeAs('boletos/retornos/processar', $nomeArquivo);            
+                $request->file('nome_arquivo')->storeAs('boletos/retornos/processar', $nomeArquivo);          
+                //dd($dados['nome_arquivo']);
+                
             }
             catch(Exception $e)
             {

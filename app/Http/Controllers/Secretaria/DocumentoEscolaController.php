@@ -9,9 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\Secretaria\Matricula;
 use App\Models\UnidadeEnsino;
 use App\User;
-use LaravelQRCode\Facades\QRCode;
-use PDF;
-use PhpParser\Node\Stmt\TryCatch;
+use Illuminate\Support\Facades\Auth;
 
 class DocumentoEscolaController extends Controller
 {
@@ -152,6 +150,9 @@ class DocumentoEscolaController extends Controller
     {
         $this->authorize('Documento Escola Ver'); 
 
+        $perfil = new User;
+        $perfil = $perfil->getPerfilUsuario(Auth::id()); 
+
         $documentosEscola = $this->repositorio
             ->join('tb_matriculas', 'id_matricula', '=', 'tb_documentos_escola.fk_id_matricula')
             ->join('tb_turmas', 'id_turma', '=', 'tb_matriculas.fk_id_turma')
@@ -166,10 +167,9 @@ class DocumentoEscolaController extends Controller
         if (count($documentosEscola) == 0)
             return redirect()->back()->with('info', 'Nenhum documento gerado para este aluno.');
 
-
         return view('secretaria.paginas.matriculas.documentos_escola.index', [
             'documentosEscola' => $documentosEscola,
-
+            'perfil' => $perfil,
         ]);
     }
 

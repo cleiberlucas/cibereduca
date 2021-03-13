@@ -39,7 +39,7 @@
     .div-pai:before {
         content: '';
         position: absolute;
-        top: 0; bottom: 0;
+        top: 100px; bottom: 0;
         left: 0; right: 0;
         background: white;
         opacity: 0.3;
@@ -57,7 +57,7 @@
     }
 </style>
 <script src="js/app.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <body>
     
     <div class="container-fluid">       
@@ -68,7 +68,32 @@
                 <h3><strong>Seja bem vindo ao Colégio Rede Educa Goiás</strong></h3>
                 <br>
                 <h2><strong>Portal do Aluno</strong></h2>
-            </div>
+            </div>            
+            <div class="col-sm-3 col-xs-2" align="center">
+           {{--      <ul class="navbar-nav mr-auto">
+                <li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> --}}
+                        @if (isset($pessoa->nome))
+                            {{$pessoa->nome}}                                                            
+                        @else
+                            <font color=red>Login incompleto. Favor entrar em contato com a secretaria da escola.</font>                            
+                        @endif                   
+                        <br>
+                        <a href="{{route('users.editsenha')}}"> <i class="fas fa-fw fa-lock"></i>Alterar Senha</a> 
+                        <br>
+                        <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="fa fa-fw fa-power-off"></i>Sair</a>
+                        <form id="logout-form" action="logout" method="POST" style="display: none;">
+                            @csrf
+                        </form>
+                        
+					{{-- </a>
+					<div class="dropdown-menu" >
+                        <a class="dropdown-item" href="">Alterar Senha</a>						  
+						<a class="dropdown-item" href="">Sair</a>						  
+					</div>
+                </li>
+            </ul> --}}
+            
         </div>    
         <div class="row my-0 py-0">
             <div class="form-group col-sm-12 col-xs-2"> 
@@ -115,28 +140,28 @@
         <div class="overlay"></div>
         <div class="row justify-content-md-center" >         
             <div class="col-sm-4 col-xs-2 imagem-botoes" align="center">
-                <strong>Rendimento do Aluno</strong>
-                <br>
-                <a href="#" data-content="Boletins, notas e frequência." data-toggle="popover" data-trigger="hover">
+                <h5><strong>Rendimento do Aluno</strong></h5>                
+                <a href="{{route('portal.indexrendimento')}}" data-content="Boletins e notas." data-toggle="popover" data-trigger="hover">
                     <img width="20%" src="vendor/adminlte/dist/img/aluno.png" alt="">
                 </a>
             </div>
             <div class="col-sm-4 col-xs-2" align="center">
-                <strong>Declarações</strong>
-                <br>
-                <img width="40%"src="vendor/adminlte/dist/img/documentos.png" alt="">
+                <h5><strong>Declarações</strong></h5>        
+                <a href="{{route('portal.indexdeclaracoes')}}" data-content="Declarações" data-toggle="popover" data-trigger="hover">        
+                    <img width="40%"src="vendor/adminlte/dist/img/documentos.png" alt="">
+                </a>
             </div>
         </div>
         <div class="row justify-content-md-center" align="center">                     
-            <div class="col-sm-4 col-xs-2 my-5" align="center">
-                <strong>Financeiro</strong>
-                <br>
-                <img width="35%" src="vendor/adminlte/dist/img/financeiro.png" alt="">
+            <div class="col-sm-4 col-xs-2 my-5" align="center">                
+                <h5><strong>Financeiro</strong></h5>
+                <a href="{{route('portal.indexfinanceiro')}}" data-content="Mensalidades" data-toggle="popover" data-trigger="hover">
+                    <img width="35%" src="vendor/adminlte/dist/img/financeiro.png" alt="">
+                </a>
             </div>
             <div class="col-sm-4 col-xs-2 my-5" align="center">
-                <strong>Outros</strong>
-                <br>
-                <a href="#" data-content="Contrato, opção educacional." data-toggle="popover" data-trigger="hover">
+                <h5><strong>Outros</strong></h5>
+                <a href="{{route('portal.indexoutros')}}" data-content="Contrato, opção educacional." data-toggle="popover" data-trigger="hover" >
                     <img width="30%"src="vendor/adminlte/dist/img/ponteiro_azul.png" alt="">
                 </a>
             </div>            

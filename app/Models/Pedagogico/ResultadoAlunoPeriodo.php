@@ -28,8 +28,8 @@ class ResultadoAlunoPeriodo extends Model
     }
 
     /**
-     * Consulta lançamento de resultado de FALTA OU NOTA para um aluno
-     * @param $id_turma
+     * Consulta lançamento de todos os resultados de FALTA OU NOTA para um aluno
+     * @param $id_matricula
      * @return array
      */
     public function getResultadosAluno($id_matricula)
@@ -97,6 +97,19 @@ class ResultadoAlunoPeriodo extends Model
             ->join('tb_periodos_letivos', 'fk_id_periodo_letivo', 'id_periodo_letivo')
             ->where('fk_id_matricula', $id_matricula)            
             ->get();
+    }
+
+    /**
+     * Consulta resultados de FALTA OU NOTA de um aluno com todos os joins
+     */
+    public function getResultadosPortalAluno($id_matricula){
+        return $this
+            ->join('tb_periodos_letivos', 'fk_id_periodo_letivo', 'id_periodo_letivo')
+            ->join('tb_disciplinas', 'id_disciplina', 'fk_id_disciplina')
+            ->where('fk_id_matricula', $id_matricula)            
+            ->orderBy('periodo_letivo')
+            ->orderBy('disciplina')
+            ->paginate(20);
     }
 
     public function matricula()

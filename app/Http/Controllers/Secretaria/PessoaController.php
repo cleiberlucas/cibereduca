@@ -73,7 +73,11 @@ class PessoaController extends Controller
                 ->where('situacao_pessoa', 1)                          
                 ->count();
 
-            $pessoas = $this->repositorio->where('fk_id_tipo_pessoa', $request->segment(2))
+            $pessoas = $this->repositorio
+                ->select('id_pessoa', 'nome', 'data_nascimento', 'telefone_1', 'situacao_pessoa',
+                    'users.email as login')
+                ->where('fk_id_tipo_pessoa', $request->segment(2))
+                ->leftJoin('users', 'id', 'fk_id_user')
                 ->orderBy('nome', 'asc')
                 ->paginate(20);
         }
@@ -201,7 +205,7 @@ class PessoaController extends Controller
     {
         $filtros = $request->except('_token');
         $pessoas = $this->repositorio->search($request->filtro, $request->tipo_pessoa);
-        //dd($filtros);
+        //dd($pessoas);
         return view('secretaria.paginas.pessoas.index', [
             'pessoas' => $pessoas,
             'tipo_pessoa' => $request->tipo_pessoa,
@@ -338,6 +342,7 @@ class PessoaController extends Controller
             ->select('id_pessoa', 'nome', 'email_1', 'cpf', 'fk_id_tipo_pessoa')            
             ->where('id_pessoa', $id_pessoa)                        
             ->first();
+            //dd($resp);
 
         $user = new User;
         
@@ -349,17 +354,20 @@ class PessoaController extends Controller
         
         //verificando se a pessoa já possui login cadastrado
         if ($user)
-            return redirect()->back()->with('atencao', 'Esta pessoa (CPF) já possui login cadastrado.');
+            return redirect()->route('pessoas.index', $resp->fk_id_tipo_pessoa)->with('atencao', 'Esta pessoa (CPF) já possui login cadastrado.');
+            //return redirect()->back()->with('atencao', 'Esta pessoa (CPF) já possui login cadastrado.');
 
         $userController = new UserController(new User);
+        dd($userController);
         $userUnidadeController = new UserUnidadeEnsinoController(new User, new UnidadeEnsino);
-
+        
         $unidadesEnsino = array('0' => User::getUnidadeEnsinoSelecionada());
         
         $dadosUser = array('name' => $resp->nome,
             'email' => $resp->cpf,
             'password' => $resp->cpf);
         try{
+            dd($dadosUser);
             $idRespUser = $userController->storeRespUser($dadosUser);            
 
             if ($idRespUser > 0){
@@ -373,11 +381,13 @@ class PessoaController extends Controller
                     'fk_id_perfil' => 6,                         
                 );
                 $userUnidadeController->updateRespUser($userPerfil, $idRespUser);                    
+                dd($resp);
+                return redirect()->route('pessoas.index', $resp->fk_id_tipo_pessoa)->with('sucesso', 'Login cadastrado com sucesso.');    
             }
         } catch(\Throwable $qe) {
+            dd($qe);
             return redirect()->back()->with('erro', 'Erro ao gerar login para o responsável. Verifique se o CPF está cadastrado.'.$qe);
-        }        
-        return redirect()->route('pessoas.index', $resp->fk_id_tipo_pessoa)->with('sucesso', 'Login cadastrado com sucesso.');    
+        }           
     }
 
     public function gerarLoginTodosAlunos(){

@@ -54,9 +54,9 @@
                     <thead>
                         <th>#</th>
                         <th>Ano Letivo</th>                                                
-                        <th>Documento</th>
-                        <th>Data</th>
                         <th>Turma </th>
+                        <th>Documento</th>
+                        <th>Data</th>                        
                         <th>Situação</th>
                         <th >Ações</th>
                     </thead>
@@ -66,6 +66,9 @@
                                 <th scope="row">{{$index+1}}</th>    
                                 <td>
                                     {{$documento->matricula->turma->tipoTurma->anoLetivo->ano}}
+                                </td>
+                                <td>
+                                    {{$documento->matricula->turma->nome_turma}}
                                 </td>                            
                                 <td>
                                     @if ($documento->situacao_documento == 1)
@@ -76,10 +79,7 @@
                                 </td>                                
                                 <td>
                                     {{date('d/m/Y H:i:s', strtotime($documento->data_geracao))}}
-                                </td>
-                                <td>
-                                    {{$documento->matricula->turma->nome_turma}}
-                                </td>
+                                </td>                                
                                 <td>
                                     @if ($documento->situacao_documento == 1)
                                         <b> Válido</b>
@@ -91,9 +91,13 @@
                                 <td style="width=10px;">                                
                                     @if ($documento->situacao_documento == 1)
                                         <a href="{{ route('matriculas.documentos_escola.show', $documento->id_documento_escola) }}" target="_blank" class="btn btn-sm btn-outline-info"><i class="fas fa-print"></i></a>                                    
-                                        <a href="{{ route('matriculas.documentos_escola.invalidar', [$documento->id_documento_escola, $documento->matricula->fk_id_aluno])}}" class="btn btn-sm btn-outline-danger"><i class="fas fa-ban"></i></a>
+                                        @if ($perfil->fk_id_perfil != 6 and $perfil->fk_id_perfil != 7)
+                                            <a href="{{ route('matriculas.documentos_escola.invalidar', [$documento->id_documento_escola, $documento->matricula->fk_id_aluno])}}" class="btn btn-sm btn-outline-danger"><i class="fas fa-ban"></i></a>
+                                        @endif
                                     @else
-                                        <a href="{{ route('matriculas.documentos_escola.revalidar', [$documento->id_documento_escola, $documento->matricula->fk_id_aluno])}}" class="btn btn-sm btn-outline-success"><i class="far fa-check-circle"></i></a>
+                                        @if ($perfil->fk_id_perfil != 6 and $perfil->fk_id_perfil != 7)
+                                            <a href="{{ route('matriculas.documentos_escola.revalidar', [$documento->id_documento_escola, $documento->matricula->fk_id_aluno])}}" class="btn btn-sm btn-outline-success"><i class="far fa-check-circle"></i></a>
+                                        @endif
                                     @endif
 
                                     {{-- <a href="{{ route('matriculas.edit', $documento->id_matricula) }}" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>

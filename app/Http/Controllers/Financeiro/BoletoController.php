@@ -519,10 +519,13 @@ class BoletoController extends Controller
    }
 
    /* Impressão de 1 boleto (link) */
-   public function imprimirBoleto($id_boleto)
+   public function imprimirBoleto($id_boleto, $hash)
    {
     $this->authorize('Boleto Ver');
-    //dd($boletos->id_boleto);
+    
+    if(!decodificarHash($id_boleto, $hash))
+        return redirect()->back()->with('erro', 'Código do boleto inválido');
+        
     $dadosUnidadeEnsino = new UnidadeEnsino;
     $dadosUnidadeEnsino = $dadosUnidadeEnsino->getUnidadeEnsino(User::getUnidadeEnsinoSelecionada());
 

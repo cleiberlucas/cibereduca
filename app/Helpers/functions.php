@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Hash;
+
 /**
  * Remove caracteres que não sejam números
  * Utilizado por CPF, CNPJ e telefone
@@ -295,4 +297,9 @@ function removerAcentos($string) {
     $string = preg_replace('/( ){2,}/', '$1', $string);
     $string = strtoupper(trim($string));
     return $string;
+}
+
+function decodificarHash($id, $hash){    
+    $id = preg_replace("/[^a-zA-Z0-9\s]/", "", crypt($id, 'cs'));
+    return $id == $hash;
 }

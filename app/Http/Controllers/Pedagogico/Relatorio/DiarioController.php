@@ -92,6 +92,10 @@ class DiarioController extends Controller
 
         //Consultar apenas um aluno da turma
         if ($request->tipo_relatorio == 'boletim_aluno') {
+            if($request->hash){
+                if (!decodificarHash($request->fk_id_matricula, $request->hash))
+                    return redirect()->back()->with('erro', 'Boletim não encontrado.');
+            }
             $alunos = $alunos->getMatriculaAluno($request->fk_id_matricula); 
 
             $resultadoFinal = new ResultadoFinal;

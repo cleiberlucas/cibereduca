@@ -63,12 +63,25 @@ class Nota extends Model
 
     public function getNotasAluno($id_matricula)
     {
-        return $this->select('*')
-                            ->join('tb_avaliacoes', 'fk_id_avaliacao', 'id_avaliacao')
-                            ->join('tb_tipos_avaliacao', 'fk_id_tipo_avaliacao', 'id_tipo_avaliacao')
-                            ->where('fk_id_matricula', $id_matricula)
-                            ->get();
+        return $this
+            ->select('*')
+            ->join('tb_avaliacoes', 'fk_id_avaliacao', 'id_avaliacao')
+            ->join('tb_tipos_avaliacao', 'fk_id_tipo_avaliacao', 'id_tipo_avaliacao')
+            ->where('fk_id_matricula', $id_matricula)
+            ->get();
 
+    }
+    
+    public function getNotasPortalAluno($id_matricula){
+        return $this
+            ->join('tb_avaliacoes', 'fk_id_avaliacao', 'id_avaliacao')
+            ->join('tb_tipos_avaliacao', 'fk_id_tipo_avaliacao', 'id_tipo_avaliacao')
+            ->join('tb_periodos_letivos', 'tb_avaliacoes.fk_id_periodo_letivo', 'id_periodo_letivo')
+            ->join('tb_disciplinas', 'fk_id_disciplina', 'id_disciplina')
+            ->where('fk_id_matricula', $id_matricula)
+            ->orderBy('periodo_letivo')
+            ->orderBy('disciplina')
+            ->paginate(20);
     }
 
     /**
@@ -77,11 +90,11 @@ class Nota extends Model
     public function getNotasAlunoPeriodoDisciplina($id_matricula, $id_periodo_letivo, $id_disciplina) 
     {
         return $this
-                    ->join('tb_avaliacoes', 'fk_id_avaliacao', 'id_avaliacao')                    
-                    ->where('fk_id_matricula', $id_matricula)
-                    ->where('fk_id_periodo_letivo', $id_periodo_letivo)
-                    ->where('fk_id_disciplina', $id_disciplina)
-                    ->sum('nota');
+            ->join('tb_avaliacoes', 'fk_id_avaliacao', 'id_avaliacao')                                   
+            ->where('fk_id_matricula', $id_matricula)
+            ->where('fk_id_periodo_letivo', $id_periodo_letivo)
+            ->where('fk_id_disciplina', $id_disciplina)
+            ->sum('nota');
     }
 /* 
     public function getPeriodoLetivo($id_nota_avaliacao, $id_matricula, $id_turma, $id_periodo_letivo)

@@ -79,11 +79,12 @@
                                     {{$matricula->situacaoMatricula->situacao_matricula}}                                        
                                 </td>              
                                 <td >
+                                    <?php $hash = preg_replace("/[^a-zA-Z0-9\s]/", "", crypt($matricula->id_matricula, 'cs'));?>  
                                     <a href="{{ route('matriculas.edit', $matricula->id_matricula) }}" data-content="Editar Matrícula" data-toggle="popover" data-trigger="hover" class="btn btn-sm btn-outline-success"><i class="fas fa-edit"></i></a>
                                     <a href="{{ route('financeiro.indexAluno', $matricula->fk_id_aluno) }}" data-content="Financeiro" data-toggle="popover" data-trigger="hover" class="btn btn-sm btn-outline-primary"> <i class="fas fa-dollar-sign"></i></a>                                    
                                     <a href="{{ route('matriculas.documentos', $matricula->id_matricula) }}" data-content="Entrega documentos" data-toggle="popover" data-trigger="hover" class="btn btn-sm btn-outline-success"><i class="fas fa-tasks"></i></a>                                    
                                     <a href="{{ route('matriculas.show', $matricula->id_matricula) }}"  class="btn btn-sm btn-outline-info"><i class="fas fa-eye"></i></a>                                    
-                                    <a href="{{ route('matriculas.contrato', $matricula->id_matricula) }}" data-content="Contrato" data-toggle="popover" data-trigger="hover" target="_blank" class="btn btn-sm btn-outline-dark"><i class="fas fa-file-contract"></i></a>
+                                    <a href="{{ route('matriculas.contrato', [$matricula->id_matricula, $hash]) }}" data-content="Contrato" data-toggle="popover" data-trigger="hover" target="_blank" class="btn btn-sm btn-outline-dark"><i class="fas fa-file-contract"></i></a>
                                     <a href="{{ route('matriculas.requerimento', $matricula->id_matricula) }}" data-content="Requerimento" data-toggle="popover" data-trigger="hover"  target="_blank" class="btn btn-sm btn-outline-dark"><i class="fas fa-file-signature"></i></a>
                                     
                                    {{--  <form action="{{ route('captacao.search') }}" method="POST" class="form form-inline">

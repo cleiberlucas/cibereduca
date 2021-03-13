@@ -322,9 +322,12 @@ class MatriculaController extends Controller
         return redirect()->route('matriculas.index', $matricula->fk_id_turma)->with('sucesso', 'A turma do aluno foi alterada com sucesso.');
     }
 
-    public function imprimirContrato($id_matricula)
+    public function imprimirContrato($id_matricula, $hash)
     {
         $this->authorize('Matrícula Contrato Ver');  
+        if (!decodificarHash($id_matricula, $hash))
+            return redirect()->back()->with('erro', 'Matrícula não encontrada');
+            
         $matricula = $this->repositorio->where('id_matricula', $id_matricula)->first();
         /* $corpoContrato = new CorpoContrato;
         $corpoContrato = $corpoContrato->where('fk_id_unidade_ensino', $matricula->turma->tipoTurma->anoLetivo->fk_id_unidade_ensino)->first(); */
