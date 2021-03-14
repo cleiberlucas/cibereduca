@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateRetorno;
 use App\Models\Financeiro\Retorno;
 use App\User;
+use Eduardokum\LaravelBoleto\Cnab\Retorno\Factory;
 use Exception;
 
 class RetornoController extends Controller
@@ -40,6 +41,7 @@ class RetornoController extends Controller
     public function store(StoreUpdateRetorno $request)
     {
         $this->authorize('Retorno Cadastrar');
+       
         $request['data_retorno'] = '20210130';
         $request['sequencial_retorno_banco'] = '1';
         //$arquivo = 
@@ -53,6 +55,7 @@ class RetornoController extends Controller
                 $dados['nome_arquivo'] = $nomeArquivo; 
                 $request->file('nome_arquivo')->storeAs('boletos/retornos/processar', $nomeArquivo);          
                 //dd($dados['nome_arquivo']);
+               
                 
             }
             catch(Exception $e)
@@ -61,9 +64,56 @@ class RetornoController extends Controller
             }
             //dd($gravou);            
         }
+        $this->processarRetorno($request->file('nome_arquivo')->getClientOriginalName());
 
         $this->repositorio->create($dados);
 
         return $this->index()->with('sucesso', 'Retorno gravado com sucesso.');
+    }
+
+    public function processarRetorno($arquivo)
+    {
+        //require 'autoload.php';
+        //dd($arquivo);
+
+        $retorno = Factory::make('storage/boletos/retornos/processar' . DIRECTORY_SEPARATOR . "$arquivo");
+        $retorno->processar();
+
+        echo $retorno->getBancoNome();
+        dd($retorno);
+        $arrayRetorno = $retorno->getDetalhes()->toArray();
+        //dd($arrayRetorno[1]);
+        foreach ($arrayRetorno as $itemRetorno){
+            //dd($itemRetorno->ocorrencia);
+            $ocorrencia = $itemRetorno->ocorrencia;
+            $idBoleto = $itemRetorno->numeroDocumento;
+            $data_recebimento = $itemRetorno->dataOcorrencia; // formato brasileiro
+            $valorBoleto = $itemRetorno->valor;
+            $valorDesconto = $itemRetorno->valorDesconto;
+            $valorMora = $itemRetorno->valorMora;
+            $valorMulta = $itemRetorno->valorMulta;
+            $valor_recebido = $itemRetorno->valorRecebido;
+            $valor_tarifa = $itemRetorno->valorTarifa;
+
+            //identificar recebiveis de um boleto
+            
+            //separar/identificar o valor pago entre os recebiveis
+            
+            //lançar o recebimento separado de cada recebível de um boleto
+
+            /*se pagou boleto atrasado com juro e multa
+            lançar em acrescimos*/
+
+            //atualizar a situação do registro do boleto
+
+            //não preciso preocupar com tabela tb_acrescimos
+
+            dd($itemRetorno);
+          //  dd($data_recebimento = $itemRetorno->dataOcorrencia);
+            
+        }
+        
+
+        dd($retorno->getDetalhes()->toArray());
     }
 }

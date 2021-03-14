@@ -107,3 +107,28 @@ function desmarcarTodosChecks()
 {
   $('input:checkbox').prop('checked', false);
 }
+
+function identificarNavegador()
+{
+  var navegadores = "";
+
+  if (navegadores = navigator.userAgent.toLowerCase().indexOf('op') > -1) {
+      return "Opera";
+  }else if (navegadores = navigator.userAgent.indexOf('MSIE') > -1) {
+      return "Internet Explorer ou Edge";
+  }else if (navegadores = navigator.userAgent.indexOf('Firefox') > -1) {
+      return "Mozilla Firefox";
+  }else if (navegadores = navigator.userAgent.indexOf('Epiphany') > -1) {
+      return "Epiphany";
+  }else if (navegadores = navigator.userAgent.indexOf('Chrome') > -1) {
+      return "Google Chrome";
+  }else if (navegadores = navigator.userAgent.indexOf('Safari') > -1) {
+      return "Safari";
+  }
+  else 
+    return '';
+
+ /*  if ((chrome) && (safari)) safari = false;
+  if ((chrome) && (opera)) chrome = false;
+  if ((safari) && (epiphany)) safari = false; */
+}

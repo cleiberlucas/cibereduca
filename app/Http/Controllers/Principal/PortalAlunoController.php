@@ -160,6 +160,7 @@ class PortalAlunoController extends Controller
                 ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')
                 ->join('tb_turnos', 'tb_turmas.fk_id_turno', '=', 'tb_turnos.id_turno') 
                 ->where('resp.fk_id_user', Auth::id())
+                ->where('id_ano_letivo', '>=', 2)
                 ->orderBy('aluno.nome')
                 ->orderBy('id_turma', 'desc')
                 ->get();

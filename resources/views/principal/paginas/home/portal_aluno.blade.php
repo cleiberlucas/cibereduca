@@ -8,27 +8,28 @@
 </head>
 <style>  
     .container-portal{
-        background-image: url('vendor/adminlte/dist/img/fundo_rede_educa.png');
+        background-image: url('vendor/adminlte/dist/img/fundo_rede_educa_transp.png');
         background-size: contain;        
         height: 70vh;
+        /* opacity: 0.65; */
         background-repeat: no-repeat;
     }
 
     @media (min-width: sm) {
         .container-portal{
-            background-image: url('vendor/adminlte/dist/img/fundo_rede_educa.png');
+            background-image: url('vendor/adminlte/dist/img/fundo_rede_educa_transp.png');
         }
     }
 
     @media (min-width: md) {
         .container-portal{
-            background-image: url('vendor/adminlte/dist/img/fundo_rede_educa.png');
+            background-image: url('vendor/adminlte/dist/img/fundo_rede_educa_transp.png');
         }
     }
 
     @media (min-width: lg) {
         .container-portal{
-            background-image: url('vendor/adminlte/dist/img/fundo_rede_educa.png');
+            background-image: url('vendor/adminlte/dist/img/fundo_rede_educa_transp.png');
         }
     }
 
@@ -39,16 +40,16 @@
     .div-pai:before {
         content: '';
         position: absolute;
-        top: 100px; bottom: 0;
+        top: 600px; bottom: 0;
         left: 0; right: 0;
         background: white;
-        opacity: 0.3;
+        opacity: 0.5;
     }
 
     .overlay {
         content: '';
         position: absolute;
-        top:130px; bottom: 80px;
+        top:730px; bottom: 80px;
         left: 0; right: 0;
         background: white;
 
@@ -65,7 +66,7 @@
         <div class="row justify-content-md-center">
             {{-- <div class="form-group col-sm-3 col-xs-2"><img width="50%" height="" src="vendor/adminlte/dist/img/logo.png" alt=""></div> --}}
             <div class="form-group col-sm-9 col-xs-2" align="center"> 
-                <h3><strong>Seja bem vindo ao Colégio Rede Educa Goiás</strong></h3>
+                <h3><strong>Seja bem vindo(a) ao Colégio Rede Educa Goiás</strong></h3>
                 <br>
                 <h2><strong>Portal do Aluno</strong></h2>
             </div>            
@@ -136,10 +137,10 @@
             @endif                      
         </div>
     </div>
-    <div class="container-fluid container-portal div-pai">
+    <div class="container-fluid container-portal">
         <div class="overlay"></div>
-        <div class="row justify-content-md-center" >         
-            <div class="col-sm-4 col-xs-2 imagem-botoes" align="center">
+        <div class="row justify-content-md-center " >         
+            <div class="col-sm-4 col-xs-2 " align="center">
                 <h5><strong>Rendimento do Aluno</strong></h5>                
                 <a href="{{route('portal.indexrendimento')}}" data-content="Boletins e notas." data-toggle="popover" data-trigger="hover">
                     <img width="20%" src="vendor/adminlte/dist/img/aluno.png" alt="">
