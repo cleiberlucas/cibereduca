@@ -5,12 +5,14 @@ namespace App\Http\Controllers\Financeiro;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateRecebimento;
 use App\Models\Financeiro\Acrescimo;
+use App\Models\Financeiro\Boleto;
 use App\Models\Financeiro\Correcao;
 use App\Models\Financeiro\Recebimento;
 use App\Models\Financeiro\Recebivel;
 use App\Models\FormaPagamento;
 use App\Models\UnidadeEnsino;
 use App\User;
+use Illuminate\Support\Facades\Auth;
 
 class RecebimentoController extends Controller
 {
@@ -89,11 +91,11 @@ class RecebimentoController extends Controller
         if ($gravou_acrescimo){
             //Gravar recebimentos
             foreach($dados['valor_recebido'] as $index => $valor_recebido){
-                if ( $dados['valor_recebido'][$index] > 0){
+                if ( $dados['valor_recebido'][$indDetalhe][$index] > 0){
                     $insert = array(
                         'fk_id_recebivel' => $dados['fk_id_recebivel'],
-                        'fk_id_forma_pagamento' => $dados['fk_id_forma_pagamento'][$index],
-                        'valor_recebido'    => $dados['valor_recebido'][$index],
+                        'fk_id_forma_pagamento' => $dados['fk_id_forma_pagamento'][$indDetalhe][$index],
+                        'valor_recebido'    => $dados['valor_recebido'][$indDetalhe][$index],
                         'data_recebimento'  => $dados['data_recebimento'],
                         'data_credito'      => $dados['data_credito'],
                         'numero_recibo'     => $dados['numero_recibo'],
@@ -196,6 +198,136 @@ class RecebimentoController extends Controller
             return redirect()->back()->with('error', 'Não foi possível excluir o recebimento. ');            
         }
         return redirect()->back();
+    }
 
+    /**
+     * Lançando recebimento de boleto via arquivo retorno
+     */
+    public function receberBoleto(Array $detalhesRetorno)
+    {
+        //dd($detalhesRetorno);
+        $arrayRecebimento = Array();
+        $arrayRecebivel = array();
+        foreach($detalhesRetorno as $indDetalhe => $detalhe){
+            $recebiveisBoleto = new Boleto;
+            //se ocorrencia de pagamento
+            if ($detalhe->ocorrencia == '06'){ // liquidação
+                //identificar recebiveis de um boleto    
+                $recebiveisBoleto = $recebiveisBoleto->getRecebiveisBoleto($detalhe->numeroDocumento);
+                //dd($recebiveisBoleto);
+               
+                
+                /*conferir valor total recebido
+                    se pagar valor menor???
+                    
+                    se pagou com desconto dentro do prazo
+
+                    se pagou com desconto fora do prazo
+
+                    se pagou sem desconto
+                */
+                /* $soma_principal = 0;
+                $soma_desconto = 0;
+                $soma_total = 0; */
+                $confereValorPago = -1;
+                
+
+                foreach($recebiveisBoleto as $index => $recebivel){
+                    //dd(array('fk_id_recebivel'=>$recebivel->id_recebivel));
+                    if ($index == 0){        
+                        //não pagou com multa ou juro
+                        if ( ($detalhe->valorMora == null or $detalhe->valorMora == 0) and ($detalhe->valorMulta == null or $detalhe->valorMulta == 0)){
+                            $valorCorreto = $recebivel->valor_total_boleto - $recebivel->valor_desconto_boleto;
+                            if($detalhe->valorRecebido == $valorCorreto){
+                                $confereValorPago = 1;//'Pagou valor correto.';
+                            }
+                            else if($detalhe->valorRecebido < $valorCorreto){
+                                $confereValorPago = 2; // pagou valor menor
+                            }
+                            else if($detalhe->valorRecebido > $valorCorreto){
+                                $confereValorPago = 3; // pagou valor maior
+                            }
+                        }
+                        else{
+                            
+                            /*se pagou boleto atrasado com juro e multa
+                                -> ratear valor da multa e juros entre os recebiveis do boleto
+                                -> lançar em acrescimos                
+                            */
+                            
+                            $confereValorPago = 4; //pago com juros
+
+                        }                        
+                    }
+
+                    $arrayRecebivel[$indDetalhe][$index]['id_recebivel'] = $recebivel->id_recebivel;
+                    //$arrayRecebivel[$indDetalhe][$index]['fk_id_situacao_recebivel'] = 2;
+                    //dd(date('Y-d-m', strtotime($detalhe->dataOcorrencia)));
+                    $arrayRecebimento[$indDetalhe][$index]['fk_id_recebivel'] = $recebivel->id_recebivel;
+                    $arrayRecebimento[$indDetalhe][$index]['fk_id_forma_pagamento'] = 2; // 2 = boleto
+                    $arrayRecebimento[$indDetalhe][$index]['data_recebimento'] = date('Y-d-m', strtotime($detalhe->dataOcorrencia));
+                    $arrayRecebimento[$indDetalhe][$index]['data_credito'] = date('Y-d-m', strtotime($detalhe->dataOcorrencia));
+                    $arrayRecebimento[$indDetalhe][$index]['numero_recibo'] = (int)$detalhe->numeroDocumento;
+                    $arrayRecebimento[$indDetalhe][$index]['codigo_validacao'] = (int)$detalhe->nossoNumero;
+                    $arrayRecebimento[$indDetalhe][$index]['fk_id_usuario_recebimento'] = Auth::id();
+
+                     //se pagou com desconto
+                     if ($detalhe->valorDesconto > 0 )
+                         $arrayRecebimento[$indDetalhe][$index]['valor_recebido'] = $recebivel->valor_total;
+                    //se pagou sem desconto
+                    else
+                        $arrayRecebimento[$indDetalhe][$index]['valor_recebido'] = $recebivel->valor_principal;
+                    
+                    //somando valor dos recebiveis
+                    /* $soma_principal += $recebivel->valor_principal;
+                    $soma_desconto += $recebivel->valor_desconto_principal;
+                    $soma_total +- $recebivel->valor_total; */
+                    //dd(array_push($arrayRecebimento, $arrayRecebimento));
+                    
+                }//fim foreache recebiveisboleto
+                
+            
+                
+                if ($confereValorPago == -1)
+                    return false;
+                else{
+                    if ($confereValorPago <= 3){
+
+                    }
+                }
+            }
+        }//fim foreach detalhes
+        //dd($arrayRecebimento);
+
+        //lançar o recebimento separado de cada recebível de um boleto
+        if ($this->storeRecebimentoBoleto($arrayRecebimento)){            
+            $recebivel = new FinanceiroController(new Recebivel);
+            //Atualizar a situação do recebível para recebido
+            $recebivel->updateSituacaoRecebidoBoleto($arrayRecebivel);
+        }
+         
+                        
+            
+
+
+    }
+
+    private function storeRecebimentoBoleto(Array $arrayRecebimento)
+    {
+        try {
+            //code...            
+            foreach($arrayRecebimento as $recebimentos)
+            {
+            //   dd($recebimentos);
+                foreach($recebimentos as $receb){
+                    //dd($receb);
+                    $this->repositorio->create($receb);
+                }
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+            return false;
+        }
+        return true;
     }
 }

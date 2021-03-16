@@ -38,4 +38,24 @@ class Boleto extends Model
         'dias_baixa_automatica',
     ];
    
+    /**
+     * Retorna todos os recebíveis vinculados a um boleto
+     * para baixa de boleto
+     */
+    function getRecebiveisBoleto($id_boleto)
+    {
+        return $this
+            ->select(
+                'id_recebivel',
+                'tb_recebiveis.valor_principal',
+                'tb_recebiveis.valor_desconto_principal',
+                'tb_recebiveis.valor_total',
+                'tb_boletos.valor_total as valor_total_boleto',
+                'tb_boletos.valor_desconto as valor_desconto_boleto'
+                )            
+            ->join('tb_boletos_recebiveis', 'fk_id_boleto', 'id_boleto')
+            ->join('tb_recebiveis', 'fk_id_recebivel', 'id_recebivel')
+            ->where('fk_id_boleto', $id_boleto)
+            ->get();
+    }
 }

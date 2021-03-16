@@ -322,6 +322,32 @@ class FinanceiroController extends Controller
         $recebivel->where('id_recebivel', $id_recebivel)->update($situacao_recebivel);
     }
 
+    /**
+     * Atualiza a situação de recebível pago via boleto
+     */
+    public function updateSituacaoRecebidoBoleto(Array $arrayRecebiveis)
+    {
+        try {
+            //code...
+            foreach($arrayRecebiveis as $recebiveis){
+                foreach($recebiveis as $receb){
+                    //dd($receb);
+                    
+                    $recebivel = $this->repositorio->where('id_recebivel', $receb['id_recebivel'])->first();    
+                    if (!$recebivel)
+                        return redirect()->back()->with('erro', 'Recebível não encontrado.');    
+                    
+                    $recebivel->where('id_recebivel', $receb['id_recebivel'])->update(Array('fk_id_situacao_recebivel' => 2));
+                   // dd($recebivel);
+                }
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+            return false;
+        }
+        return true;        
+    }
+
     /* Dados de um recebíuvel */
     public function show($id)
     {

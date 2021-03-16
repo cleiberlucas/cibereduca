@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Financeiro;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateRetorno;
+use App\Models\Financeiro\DadoBancario;
+use App\Models\Financeiro\Recebimento;
 use App\Models\Financeiro\Retorno;
 use App\User;
 use Eduardokum\LaravelBoleto\Cnab\Retorno\Factory;
@@ -42,8 +44,7 @@ class RetornoController extends Controller
     {
         $this->authorize('Retorno Cadastrar');
        
-        $request['data_retorno'] = '20210130';
-        $request['sequencial_retorno_banco'] = '1';
+       
         //$arquivo = 
         //dd($request->hasFile('nome_arquivo'));;
         $dados = $request->all();
@@ -55,36 +56,58 @@ class RetornoController extends Controller
                 $dados['nome_arquivo'] = $nomeArquivo; 
                 $request->file('nome_arquivo')->storeAs('boletos/retornos/processar', $nomeArquivo);          
                 //dd($dados['nome_arquivo']);
+                $retorno = Factory::make('storage/boletos/retornos/processar' . DIRECTORY_SEPARATOR . "$nomeArquivo");
+                $retorno->processar();
+                //dd($retorno);
+
+                //validar dados da conta e convênio
+                $dadoBancario = $this->verificarConvenio($retorno->getHeader()->getAgencia(), $retorno->getHeader()->getConta(), $retorno->getHeaderLote()->getConvenio());
+                //dd($dadoBancario);
                
+                if (!isset($dadoBancario->id_dado_bancario))
+                    return redirect()->back()->with('erro', 'Este arquivo não está no convênio do Colégio X Banco.');
+
+                    
+                //dd($id_dado_bancario);
+                //dd($retorno);
+
+                //verificar se retorno ja foi processado
+                $retornoProcessado = $this->verificarRetornoProcessado($dadoBancario->id_dado_bancario, $retorno->getHeader()->getNumeroSequencialArquivo());
+                if (isset($retornoProcessado->id_retorno))
+                    return redirect()->back()->with('erro', 'Este arquivo já foi processado anteriormente.');
+
+               // dd('ok');
+                $this->processarRetorno($retorno);
+
+                $request['data_retorno'] = $retorno->getHeaderLote()->getDataGravacao('Y-m-d');
+                $request['sequencial_retorno_banco'] = $retorno->getHeader()->getNumeroSequencialArquivo();
+            
                 
             }
             catch(Exception $e)
             {
-                return redirect()->back()->with('erro', 'Não foi possível processar o arquivo. Favor entrar em contato com a CiberSys.');
+                return redirect()->back()->with('erro', 'Não foi possível processar o arquivo. Favor entrar em contato com a CiberSys.'.$e->getMessage());
             }
             //dd($gravou);            
         }
-        $this->processarRetorno($request->file('nome_arquivo')->getClientOriginalName());
 
         $this->repositorio->create($dados);
 
         return $this->index()->with('sucesso', 'Retorno gravado com sucesso.');
     }
 
-    public function processarRetorno($arquivo)
-    {
-        //require 'autoload.php';
-        //dd($arquivo);
-
-        $retorno = Factory::make('storage/boletos/retornos/processar' . DIRECTORY_SEPARATOR . "$arquivo");
-        $retorno->processar();
-
-        echo $retorno->getBancoNome();
-        dd($retorno);
+    public function processarRetorno($retorno)
+    {   
+        //echo $retorno->getBancoNome();
+        
         $arrayRetorno = $retorno->getDetalhes()->toArray();
+        $recebimento = new RecebimentoController(new Recebimento);
+        //dd($retorno->getDetalhes());
+        $recebimento->receberBoleto( $retorno->getDetalhes()->toArray());
         //dd($arrayRetorno[1]);
+        
         foreach ($arrayRetorno as $itemRetorno){
-            //dd($itemRetorno->ocorrencia);
+            //dd($itemRetorno->valorMulta);
             $ocorrencia = $itemRetorno->ocorrencia;
             $idBoleto = $itemRetorno->numeroDocumento;
             $data_recebimento = $itemRetorno->dataOcorrencia; // formato brasileiro
@@ -95,16 +118,22 @@ class RetornoController extends Controller
             $valor_recebido = $itemRetorno->valorRecebido;
             $valor_tarifa = $itemRetorno->valorTarifa;
 
-            //identificar recebiveis de um boleto
-            
-            //separar/identificar o valor pago entre os recebiveis
-            
-            //lançar o recebimento separado de cada recebível de um boleto
+           
 
             /*se pagou boleto atrasado com juro e multa
-            lançar em acrescimos*/
+                -> ratear valor da multa e juros entre os recebiveis do boleto
+                -> lançar em acrescimos                
+            */
 
             //atualizar a situação do registro do boleto
+
+            //gravar tarifas pagas
+
+            //quantidade de baixas de boletos, boletos pagos mais de uma vez
+
+            //gerar log
+
+            //verificar se há registro de erro no arquivo retorno
 
             //não preciso preocupar com tabela tb_acrescimos
 
@@ -115,5 +144,27 @@ class RetornoController extends Controller
         
 
         dd($retorno->getDetalhes()->toArray());
+    }
+
+    public function verificarConvenio($agencia, $conta, $convenio_retorno)
+    {        
+        $dadoBancario = new DadoBancario;
+        $dadoBancario = $dadoBancario
+            ->select('id_dado_bancario')
+            ->where('agencia', $agencia)
+            ->where('conta', $conta)
+            ->where('convenio_retorno', $convenio_retorno)
+            ->first();        
+        
+        return $dadoBancario;
+    }
+    
+    public function verificarRetornoProcessado($id_dado_bancario, $sequencial_retorno)
+    {
+        return $this->repositorio
+            ->select('id_retorno')
+            ->where('fk_id_dado_bancario', $id_dado_bancario)
+            ->where('sequencial_retorno_banco', $sequencial_retorno)
+            ->first();            
     }
 }

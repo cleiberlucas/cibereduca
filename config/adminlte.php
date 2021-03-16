@@ -563,7 +563,7 @@ return [
                     'text' => 'Permissões',
                     'url'  => 'admin/permissoes',
                     'icon' => 'fas fa-fw fa-lock',
-                    'can'  => 'Usuarios', //somente Cleiber
+                    'can'  => 'Permissões', //somente Cleiber
                 ],                
             ],
         ],
