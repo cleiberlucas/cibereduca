@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Financeiro;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateRetorno;
+use App\Models\Financeiro\Boleto;
 use App\Models\Financeiro\DadoBancario;
 use App\Models\Financeiro\Recebimento;
 use App\Models\Financeiro\Retorno;
@@ -69,7 +70,7 @@ class RetornoController extends Controller
 
                     
                 //dd($id_dado_bancario);
-                //dd($retorno);
+                dd($retorno);
 
                 //verificar se retorno ja foi processado
                 $retornoProcessado = $this->verificarRetornoProcessado($dadoBancario->id_dado_bancario, $retorno->getHeader()->getNumeroSequencialArquivo());
@@ -77,10 +78,15 @@ class RetornoController extends Controller
                     return redirect()->back()->with('erro', 'Este arquivo já foi processado anteriormente.');
 
                // dd('ok');
-                $this->processarRetorno($retorno);
+                $respLancamentos = $this->processarRetorno($retorno);
+                if ($respLancamentos == 'ok'){
 
-                $request['data_retorno'] = $retorno->getHeaderLote()->getDataGravacao('Y-m-d');
-                $request['sequencial_retorno_banco'] = $retorno->getHeader()->getNumeroSequencialArquivo();
+                    $dados['data_retorno'] = $retorno->getHeaderLote()->getDataGravacao('Y-m-d');
+                    $dados['sequencial_retorno_banco'] = $retorno->getHeader()->getNumeroSequencialArquivo();
+                    $dados['fk_id_dado_bancario'] = $dadoBancario->id_dado_bancario;
+                }
+                else
+                    return redirect()->back()->with('erro', $respLancamentos);
             
                 
             }
@@ -93,57 +99,64 @@ class RetornoController extends Controller
 
         $this->repositorio->create($dados);
 
-        return $this->index()->with('sucesso', 'Retorno gravado com sucesso.');
+        return $this->index()->with('sucesso', 'Retorno processado com sucesso.');
     }
 
     public function processarRetorno($retorno)
     {   
         //echo $retorno->getBancoNome();
-        
+        //dd($retorno->getDetalhes());
+
         $arrayRetorno = $retorno->getDetalhes()->toArray();
         $recebimento = new RecebimentoController(new Recebimento);
-        //dd($retorno->getDetalhes());
-        $recebimento->receberBoleto( $retorno->getDetalhes()->toArray());
+        /**
+         *  A classe recebimento controller faz:
+         * - lança recebimentos
+         * - atualiza recebíveis
+         * -lança acrescimos, se o boleto foi pago em atraso
+         * */
+        $respLancamentos = $recebimento->receberBoleto( $retorno->getDetalhes()->toArray());
+
+        if ($respLancamentos != 'ok')
+            return $respLancamentos;
+
         //dd($arrayRetorno[1]);
+
+        //situações de boleto
+        //convertendo as situações do Sicoob para o Cibereduca
+        $situacoesBoleto = Array(
+            '02' => 3, // registrado
+            '03' => 6, // rejeitado
+            '06' => 4, // pago
+        );
         
-        foreach ($arrayRetorno as $itemRetorno){
-            //dd($itemRetorno->valorMulta);
-            $ocorrencia = $itemRetorno->ocorrencia;
-            $idBoleto = $itemRetorno->numeroDocumento;
-            $data_recebimento = $itemRetorno->dataOcorrencia; // formato brasileiro
-            $valorBoleto = $itemRetorno->valor;
-            $valorDesconto = $itemRetorno->valorDesconto;
-            $valorMora = $itemRetorno->valorMora;
-            $valorMulta = $itemRetorno->valorMulta;
-            $valor_recebido = $itemRetorno->valorRecebido;
-            $valor_tarifa = $itemRetorno->valorTarifa;
+        $arrayBoletos = Array();
+        //gerar array para atualizar a situação dos boletos.
+        foreach ($arrayRetorno as $index => $itemRetorno){
+            $arrayBoletos[$index]['id_boleto'] = $itemRetorno->numeroDocumento;
+            $arrayBoletos[$index]['fk_id_situacao_registro'] = $situacoesBoleto[$itemRetorno->ocorrencia];
 
-           
-
-            /*se pagou boleto atrasado com juro e multa
-                -> ratear valor da multa e juros entre os recebiveis do boleto
-                -> lançar em acrescimos                
-            */
-
-            //atualizar a situação do registro do boleto
 
             //gravar tarifas pagas
 
-            //quantidade de baixas de boletos, boletos pagos mais de uma vez
+            //quantidade de baixas de boletos, 
+            
+            //boletos pagos mais de uma vez
 
             //gerar log
 
-            //verificar se há registro de erro no arquivo retorno
+            //verificar se há registro de erro no arquivo retorno            
 
-            //não preciso preocupar com tabela tb_acrescimos
-
-            dd($itemRetorno);
+           // dd($itemRetorno);
           //  dd($data_recebimento = $itemRetorno->dataOcorrencia);
             
         }
-        
 
-        dd($retorno->getDetalhes()->toArray());
+        //atualizar a situação do registro do boleto
+        $atualizaBoleto = new BoletoController(new Boleto);
+        return $atualizaBoleto->updateBoletoRetorno($arrayBoletos);
+
+        //dd($retorno->getDetalhes()->toArray());
     }
 
     public function verificarConvenio($agencia, $conta, $convenio_retorno)

@@ -622,6 +622,20 @@ class BoletoController extends Controller
         return redirect()->back()->with('sucesso', 'Boleto excluído com sucesso.');
    }
 
+   public function updateBoletoRetorno($arrayBoletos){
+       try {
+            foreach($arrayBoletos as $boleto){
+                $this->repositorio
+                    ->where('id_boleto', $boleto['id_boleto'])
+                    ->update(['fk_id_situacao_registro' => $boleto['fk_id_situacao_registro']]);
+            }
+            return 'ok';
+       } catch (\Throwable $th) {
+           //throw $th;
+           return 'Erro ao atualizar a situação dos boletos.';
+       }
+   }
+
     /* public function destroy($fk_id_recebivel)
     {
         //Remover recebimento

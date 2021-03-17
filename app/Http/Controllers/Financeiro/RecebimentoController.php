@@ -206,8 +206,10 @@ class RecebimentoController extends Controller
     public function receberBoleto(Array $detalhesRetorno)
     {
         //dd($detalhesRetorno);
-        $arrayRecebimento = Array();
-        $arrayRecebivel = array();
+        $processouRecebimento = false;
+        $arrayRecebimento = Array(); // para lançar recebimentos
+        $arrayRecebivel = Array(); // para atualizar recebiveis
+        $arrayAcrescimos = Array(); // para lançar acrescimos - boletos pagos em atraso
         foreach($detalhesRetorno as $indDetalhe => $detalhe){
             $recebiveisBoleto = new Boleto;
             //se ocorrencia de pagamento
@@ -216,24 +218,17 @@ class RecebimentoController extends Controller
                 $recebiveisBoleto = $recebiveisBoleto->getRecebiveisBoleto($detalhe->numeroDocumento);
                 //dd($recebiveisBoleto);
                
-                
-                /*conferir valor total recebido
-                    se pagar valor menor???
-                    
-                    se pagou com desconto dentro do prazo
-
-                    se pagou com desconto fora do prazo
-
-                    se pagou sem desconto
-                */
-                /* $soma_principal = 0;
-                $soma_desconto = 0;
-                $soma_total = 0; */
                 $confereValorPago = -1;
                 
-
+                /**
+                 * lendo os recebiveis e montando array para registrar 
+                 *  - recebimentos.
+                 *  - atualizar recebivel
+                 * */
                 foreach($recebiveisBoleto as $index => $recebivel){
                     //dd(array('fk_id_recebivel'=>$recebivel->id_recebivel));
+
+                    //somente no primeiro índice verificar se pagou valor correto
                     if ($index == 0){        
                         //não pagou com multa ou juro
                         if ( ($detalhe->valorMora == null or $detalhe->valorMora == 0) and ($detalhe->valorMulta == null or $detalhe->valorMulta == 0)){
@@ -250,19 +245,16 @@ class RecebimentoController extends Controller
                         }
                         else{
                             
-                            /*se pagou boleto atrasado com juro e multa
-                                -> ratear valor da multa e juros entre os recebiveis do boleto
-                                -> lançar em acrescimos                
-                            */
-                            
                             $confereValorPago = 4; //pago com juros
-
                         }                        
-                    }
+                    }//fim index=0
 
-                    $arrayRecebivel[$indDetalhe][$index]['id_recebivel'] = $recebivel->id_recebivel;
+                    //array para atualizar recebível
+                    $arrayRecebivel[$indDetalhe][$index]['id_recebivel'] = $recebivel->id_recebivel;                    
                     //$arrayRecebivel[$indDetalhe][$index]['fk_id_situacao_recebivel'] = 2;
+                    
                     //dd(date('Y-d-m', strtotime($detalhe->dataOcorrencia)));
+                    //array para lançar recebimentos
                     $arrayRecebimento[$indDetalhe][$index]['fk_id_recebivel'] = $recebivel->id_recebivel;
                     $arrayRecebimento[$indDetalhe][$index]['fk_id_forma_pagamento'] = 2; // 2 = boleto
                     $arrayRecebimento[$indDetalhe][$index]['data_recebimento'] = date('Y-d-m', strtotime($detalhe->dataOcorrencia));
@@ -275,9 +267,39 @@ class RecebimentoController extends Controller
                      if ($detalhe->valorDesconto > 0 )
                          $arrayRecebimento[$indDetalhe][$index]['valor_recebido'] = $recebivel->valor_total;
                     //se pagou sem desconto
-                    else
-                        $arrayRecebimento[$indDetalhe][$index]['valor_recebido'] = $recebivel->valor_principal;
-                    
+                    else{
+                        //se pagou sem juros                        
+                        if ( ($detalhe->valorMora == null or $detalhe->valorMora == 0) and ($detalhe->valorMulta == null or $detalhe->valorMulta == 0)){
+                            $arrayRecebimento[$indDetalhe][$index]['valor_recebido'] = $recebivel->valor_principal;
+                        }
+                        //se pagou com juros ou multa
+                        //ratear juros e multa entre os recebíveis do boleto
+                        else {
+                            $valorRecTmp = $recebivel->valor_principal;
+                            //se pagou com juros                            
+                            if ($detalhe->valorMora > 0){
+                                //cálculo rateio valor juro
+                                //acrescenta ao valor principal
+                                $valorRecTmp += $recebivel->valor_principal / $recebivel->valor_total_boleto * $detalhe->valorMora;          
+
+                                $arrayAcrescimos[$indDetalhe][$index]['juro']['fk_id_recebivel'] = $recebivel->id_recebivel;                                
+                                $arrayAcrescimos[$indDetalhe][$index]['juro']['valor_acrescimo'] = $detalhe->valorMora;
+                                $arrayAcrescimos[$indDetalhe][$index]['juro']['valor_total_acrescimo'] = $detalhe->valorMora;
+                            }
+                            //se pagou com multa
+                            if ($detalhe->valorMulta > 0){
+                                //cálculo rateio multa
+                                //acrescenta ao valor principal
+                                $valorRecTmp += $recebivel->valor_principal / $recebivel->valor_total_boleto * $detalhe->valorMulta;                                
+
+                                $arrayAcrescimos[$indDetalhe][$index]['multa']['fk_id_recebivel'] = $recebivel->id_recebivel;                                
+                                $arrayAcrescimos[$indDetalhe][$index]['multa']['valor_acrescimo'] = $detalhe->valorMulta;
+                                $arrayAcrescimos[$indDetalhe][$index]['multa']['valor_total_acrescimo'] = $detalhe->valorMulta;
+                            }
+                            $arrayRecebimento[$indDetalhe][$index]['valor_recebido'] = $valorRecTmp;
+                        }
+                    }
+
                     //somando valor dos recebiveis
                     /* $soma_principal += $recebivel->valor_principal;
                     $soma_desconto += $recebivel->valor_desconto_principal;
@@ -286,10 +308,8 @@ class RecebimentoController extends Controller
                     
                 }//fim foreache recebiveisboleto
                 
-            
-                
                 if ($confereValorPago == -1)
-                    return false;
+                    return 'Erro ao conferir o valor pago';
                 else{
                     if ($confereValorPago <= 3){
 
@@ -297,18 +317,39 @@ class RecebimentoController extends Controller
                 }
             }
         }//fim foreach detalhes
-        //dd($arrayRecebimento);
+        dd($arrayRecebimento);
 
         //lançar o recebimento separado de cada recebível de um boleto
-        if ($this->storeRecebimentoBoleto($arrayRecebimento)){            
-            $recebivel = new FinanceiroController(new Recebivel);
-            //Atualizar a situação do recebível para recebido
-            $recebivel->updateSituacaoRecebidoBoleto($arrayRecebivel);
-        }
-         
-                        
-            
+        $lancouRecebimento = $this->storeRecebimentoBoleto($arrayRecebimento);
+        
 
+        $atualizouRecebivel = false;
+        //Atualizar a situação do recebível para recebido
+        if ($lancouRecebimento){            
+            $recebivel = new FinanceiroController(new Recebivel);
+            
+            $atualizouRecebivel = $recebivel->updateSituacaoRecebidoBoleto($arrayRecebivel);
+        }
+        else
+            return 'Erro ao lançar os recebimentos.';
+
+        $lancouAcrescimo = true;
+        //lançar acrescimos caso boleto pago em atraso
+        //não preciso atualizar com tabela tb_acrescimos, somente lançar caso o boleto foi pago em atraso
+        if ($atualizouRecebivel){
+            if (count($arrayAcrescimos) > 0){
+                $acrescimo = new AcrescimoController(new Acrescimo);
+                $lancouAcrescimo = $acrescimo->storeAcrescimosRetornoBoleto($arrayAcrescimos);
+                if (!$lancouAcrescimo)
+                    return 'Erro ao lançar os acréscimos.';
+                else
+                    return 'ok';
+            }
+            return 'ok';
+
+        }
+        else
+            return 'Erro ao atualizar os recebíveis.';
 
     }
 

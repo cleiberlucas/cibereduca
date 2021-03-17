@@ -75,6 +75,43 @@ class AcrescimoController extends Controller
         return $gravou_acrescimo;       
     }
 
+    //Gravando acrescimo de boletos
+    public function storeAcrescimosRetornoBoleto(Array $acrescimos)
+    {        
+       // dd($acrescimos);
+        $gravou_acrescimo = true;
+        
+        foreach($acrescimos as $acrescimoBol){
+            foreach($acrescimoBol as $acrescimoRec){
+                foreach($acrescimoRec as $acrescimo){            
+                    //gravando multa
+                    $dados = array(
+                        'fk_id_recebivel' => $acrescimo['multa']['fk_id_recebivel'],
+                        'fk_id_conta_contabil_acrescimo' => '4', // multa
+                        'valor_acrescimo' => $acrescimo['multa']['valor_acrescimo'],                        
+                        'valor_total_acrescimo'  => $acrescimo['multa']['valor_total_acrescimo'],   
+                    );              
+                    $gravou_acrescimo = $this->repositorio->create($dados);
+
+                    //gravando juros
+                    $dados = array(
+                        'fk_id_recebivel' => $acrescimos['juro']['fk_id_recebivel'],
+                        'fk_id_conta_contabil_acrescimo' => '5', // juros
+                        'valor_acrescimo' => $acrescimos['juro']['valor_acrescimo'],                        
+                        'valor_total_acrescimo'  => $acrescimos['juro']['valor_total_acrescimo'],  
+                    );              
+                    $gravou_acrescimo = $this->repositorio->create($dados);
+                    if (! $gravou_acrescimo->wasRecentlyCreated){
+                        return false;
+                        break;
+                    }    
+                }    
+            }
+        }
+
+        return $gravou_acrescimo;       
+    }
+
     //Remover acréscimo de um recebível
     public function apagarAcrescimo($id_recebivel)
     {                
