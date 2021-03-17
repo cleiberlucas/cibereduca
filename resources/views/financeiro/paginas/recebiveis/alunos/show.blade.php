@@ -84,9 +84,11 @@
             @foreach ($formasPagamento as $index => $forma_pagto)
                 @if (isset($forma_pagto))
                     @if ($index == 0)
-                        <h5>Pagamento em: {{date('d/m/Y', strtotime($recebimento->data_recebimento))}}                                
-                            <a href="javascript:confirmaExcluiRecebimento({{$recebivel->id_recebivel}});" class="btn btn-outline-danger"> <i class="fas fa-trash"></i> Remover Pagamento </a></h5>
-
+                        <h5>Pagamento em: {{date('d/m/Y', strtotime($recebimento->data_recebimento))}}
+                        @if ($forma_pagto->id_forma_pagamento != 2)
+                            <a href="javascript:confirmaExcluiRecebimento({{$recebivel->id_recebivel}});" class="btn btn-sm btn-outline-danger"> <i class="fas fa-trash"></i> Remover Pagamento </a>    
+                        @endif
+                        </h5>
                         <h6>Data de crédito: {{date('d/m/Y', strtotime($recebimento->data_credito))}}</h6>
                         <h6>Número Recibo: {{$recebimento->numero_recibo}}</h6>
                         <h6>Código Validação: {{$recebimento->codigo_validacao}}</h6>        

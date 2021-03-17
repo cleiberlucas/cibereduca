@@ -44,8 +44,10 @@ class RetornoController extends Controller
     public function store(StoreUpdateRetorno $request)
     {
         $this->authorize('Retorno Cadastrar');
-       
-       
+       //dd(User::getUnidadeEnsinoSelecionada());
+      /*   if(!User::getUnidadeEnsinoSelecionada())
+            return redirect()->back()->with('atencao', 'Sessão encerrada, favor efetuar login novamente.');
+       */ 
         //$arquivo = 
         //dd($request->hasFile('nome_arquivo'));;
         $dados = $request->all();
@@ -56,21 +58,20 @@ class RetornoController extends Controller
                 $nomeArquivo = str_replace(' ', '_', $nomeArquivo);
                 $dados['nome_arquivo'] = $nomeArquivo; 
                 $request->file('nome_arquivo')->storeAs('boletos/retornos/processar', $nomeArquivo);          
-                //dd($dados['nome_arquivo']);
+                
                 $retorno = Factory::make('storage/boletos/retornos/processar' . DIRECTORY_SEPARATOR . "$nomeArquivo");
-                $retorno->processar();
-                //dd($retorno);
+                $retorno->processar();       
+                //dd($retorno);    
+                //dd(method_exists($retorno, 'getHeaderLote'));
 
+                if(!method_exists($retorno, 'getHeaderLote'))
+                    return redirect()->back()->with('erro', 'Envie somente arquivo com formato CNAB240. O arquivo está com formato incorreto.');
+            
                 //validar dados da conta e convênio
                 $dadoBancario = $this->verificarConvenio($retorno->getHeader()->getAgencia(), $retorno->getHeader()->getConta(), $retorno->getHeaderLote()->getConvenio());
-                //dd($dadoBancario);
-               
+                               
                 if (!isset($dadoBancario->id_dado_bancario))
                     return redirect()->back()->with('erro', 'Este arquivo não está no convênio do Colégio X Banco.');
-
-                    
-                //dd($id_dado_bancario);
-                dd($retorno);
 
                 //verificar se retorno ja foi processado
                 $retornoProcessado = $this->verificarRetornoProcessado($dadoBancario->id_dado_bancario, $retorno->getHeader()->getNumeroSequencialArquivo());
@@ -79,27 +80,43 @@ class RetornoController extends Controller
 
                // dd('ok');
                 $respLancamentos = $this->processarRetorno($retorno);
-                if ($respLancamentos == 'ok'){
+                //gravando log
+                $nomeArquivoLog = 'retorno_'.$retorno->getHeader()->getNumeroSequencialArquivo().'_'.date('YmdHis').'.txt';
 
+                $fp = fopen('storage/boletos/retornos/logs/'.$nomeArquivoLog, 'a');
+                fwrite($fp, $respLancamentos[key($respLancamentos)]);
+                fclose($fp);                
+
+                if (array_key_exists('ok', $respLancamentos)){                            
                     $dados['data_retorno'] = $retorno->getHeaderLote()->getDataGravacao('Y-m-d');
                     $dados['sequencial_retorno_banco'] = $retorno->getHeader()->getNumeroSequencialArquivo();
                     $dados['fk_id_dado_bancario'] = $dadoBancario->id_dado_bancario;
+                    $dados['situacao_processamento'] = 1;
+                    $dados['nome_arquivo'] = $nomeArquivo;
+                    $dados['nome_arquivo_log'] = $nomeArquivoLog;
+
+                    $this->repositorio->create($dados);
+                    //dd($respLancamentos['ok']);    
+                    return $this->index()->with('sucesso', 'Retorno processado com sucesso.');
                 }
-                else
-                    return redirect()->back()->with('erro', $respLancamentos);
-            
-                
+                else{
+                    //dd($respLancamentos['erro']);
+                    $dados['data_retorno'] = $retorno->getHeaderLote()->getDataGravacao('Y-m-d');
+                    $dados['sequencial_retorno_banco'] = $retorno->getHeader()->getNumeroSequencialArquivo();
+                    $dados['fk_id_dado_bancario'] = $dadoBancario->id_dado_bancario;
+                    $dados['situacao_processamento'] = 0;
+                    $dados['nome_arquivo'] = $nomeArquivo;
+                    $dados['nome_arquivo_log'] = $nomeArquivoLog;
+
+                    return redirect()->back()->with('erro', 'Houve erro no processamento do retorno. Verifique o arquivo de log.');           
+                }                
             }
             catch(Exception $e)
             {
                 return redirect()->back()->with('erro', 'Não foi possível processar o arquivo. Favor entrar em contato com a CiberSys.'.$e->getMessage());
             }
             //dd($gravou);            
-        }
-
-        $this->repositorio->create($dados);
-
-        return $this->index()->with('sucesso', 'Retorno processado com sucesso.');
+        }       
     }
 
     public function processarRetorno($retorno)
@@ -113,17 +130,15 @@ class RetornoController extends Controller
          *  A classe recebimento controller faz:
          * - lança recebimentos
          * - atualiza recebíveis
-         * -lança acrescimos, se o boleto foi pago em atraso
+         * - lança acrescimos, se o boleto foi pago em atraso
          * */
-        $respLancamentos = $recebimento->receberBoleto( $retorno->getDetalhes()->toArray());
+        $respLancamentos = $recebimento->receberBoleto($arrayRetorno);
 
-        if ($respLancamentos != 'ok')
+        if (array_key_exists('erro', $respLancamentos))
             return $respLancamentos;
-
-        //dd($arrayRetorno[1]);
-
+        
         //situações de boleto
-        //convertendo as situações do Sicoob para o Cibereduca
+        //convertendo as situações do boleto do Sicoob para o Cibereduca
         $situacoesBoleto = Array(
             '02' => 3, // registrado
             '03' => 6, // rejeitado
@@ -136,27 +151,22 @@ class RetornoController extends Controller
             $arrayBoletos[$index]['id_boleto'] = $itemRetorno->numeroDocumento;
             $arrayBoletos[$index]['fk_id_situacao_registro'] = $situacoesBoleto[$itemRetorno->ocorrencia];
 
-
             //gravar tarifas pagas
-
-            //quantidade de baixas de boletos, 
             
             //boletos pagos mais de uma vez
 
-            //gerar log
-
             //verificar se há registro de erro no arquivo retorno            
-
-           // dd($itemRetorno);
-          //  dd($data_recebimento = $itemRetorno->dataOcorrencia);
-            
         }
-
+        
         //atualizar a situação do registro do boleto
         $atualizaBoleto = new BoletoController(new Boleto);
-        return $atualizaBoleto->updateBoletoRetorno($arrayBoletos);
 
-        //dd($retorno->getDetalhes()->toArray());
+        $logBoletos = $atualizaBoleto->updateBoletoRetorno($arrayBoletos);
+
+        //unindo o log dos recebimentos com log dos boletos
+        $logBoletos[key($logBoletos)] = $respLancamentos['ok'].$logBoletos[key($logBoletos)];
+
+        return $logBoletos;
     }
 
     public function verificarConvenio($agencia, $conta, $convenio_retorno)

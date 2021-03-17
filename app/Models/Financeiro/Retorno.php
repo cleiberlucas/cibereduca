@@ -17,7 +17,9 @@ class Retorno extends Model
         'data_retorno',
         'sequencial_retorno_banco',                  
         'fk_id_usuario_retorno',    
+        'situacao_processamento',
         'nome_arquivo',
+        'nome_arquivo_log',
     ];
    
     /**

@@ -12,15 +12,18 @@ use App\Models\Financeiro\Recebivel;
 use App\Models\FormaPagamento;
 use App\Models\UnidadeEnsino;
 use App\User;
+use Carbon\Carbon;
+use DateTime;
 use Illuminate\Support\Facades\Auth;
 
 class RecebimentoController extends Controller
 {
     private $repositorio;
-        
+    private $logProcessaRetorno = '';
     public function __construct(Recebimento $recebimento)
     {
         $this->repositorio = $recebimento;        
+        
     }
 
     /**
@@ -206,11 +209,24 @@ class RecebimentoController extends Controller
     public function receberBoleto(Array $detalhesRetorno)
     {
         //dd($detalhesRetorno);
-        $processouRecebimento = false;
+        $quebra = chr(13).chr(10);
+        $this->logProcessaRetorno = date('d/m/Y H:i:s').' INÍCIO PROCESSAMENTO RETORNO '.$quebra;
+        
         $arrayRecebimento = Array(); // para lançar recebimentos
         $arrayRecebivel = Array(); // para atualizar recebiveis
         $arrayAcrescimos = Array(); // para lançar acrescimos - boletos pagos em atraso
         foreach($detalhesRetorno as $indDetalhe => $detalhe){
+            if ($indDetalhe == 2){
+                //dd($detalhe->numeroDocumento);
+                //dd(gettype($detalhe->dataOcorrencia));
+                //$dataRecebimento = str_replace('/', '-', $detalhe->dataOcorrencia);
+                
+                
+               // dd($dataRecebimento);
+                //$dataRecebimento = DateTime::createFromFormat('d/m/Y', $detalhe->dataOcorrencia);
+                //dd(date('Y-m-d', strtotime($dataRecebimento)));
+            }
+
             $recebiveisBoleto = new Boleto;
             //se ocorrencia de pagamento
             if ($detalhe->ocorrencia == '06'){ // liquidação
@@ -252,13 +268,19 @@ class RecebimentoController extends Controller
                     //array para atualizar recebível
                     $arrayRecebivel[$indDetalhe][$index]['id_recebivel'] = $recebivel->id_recebivel;                    
                     //$arrayRecebivel[$indDetalhe][$index]['fk_id_situacao_recebivel'] = 2;
-                    
-                    //dd(date('Y-d-m', strtotime($detalhe->dataOcorrencia)));
+                    //dd($detalhe->dataOcorrencia);
+                    /* //if ($index == 1)
+                        dd($detalhe->numeroDocumento);
+                        dd($detalhe->dataOcorrencia);
+                        dd(date('Y-d-m', strtotime($detalhe->dataOcorrencia))); */
+                        
+                    $dataRecebimento = str_replace('/', '-', $detalhe->dataOcorrencia);
+                    $dataRecebimento = date('Y-m-d', strtotime($dataRecebimento));
                     //array para lançar recebimentos
                     $arrayRecebimento[$indDetalhe][$index]['fk_id_recebivel'] = $recebivel->id_recebivel;
                     $arrayRecebimento[$indDetalhe][$index]['fk_id_forma_pagamento'] = 2; // 2 = boleto
-                    $arrayRecebimento[$indDetalhe][$index]['data_recebimento'] = date('Y-d-m', strtotime($detalhe->dataOcorrencia));
-                    $arrayRecebimento[$indDetalhe][$index]['data_credito'] = date('Y-d-m', strtotime($detalhe->dataOcorrencia));
+                    $arrayRecebimento[$indDetalhe][$index]['data_recebimento'] = $dataRecebimento;
+                    $arrayRecebimento[$indDetalhe][$index]['data_credito'] = $dataRecebimento;
                     $arrayRecebimento[$indDetalhe][$index]['numero_recibo'] = (int)$detalhe->numeroDocumento;
                     $arrayRecebimento[$indDetalhe][$index]['codigo_validacao'] = (int)$detalhe->nossoNumero;
                     $arrayRecebimento[$indDetalhe][$index]['fk_id_usuario_recebimento'] = Auth::id();
@@ -308,8 +330,10 @@ class RecebimentoController extends Controller
                     
                 }//fim foreache recebiveisboleto
                 
-                if ($confereValorPago == -1)
-                    return 'Erro ao conferir o valor pago';
+                if ($confereValorPago == -1){
+                    $this->logProcessaRetornolog .= 'Erro ao conferir o valor pago';
+                    return $this->logProcessaRetorno;
+                }
                 else{
                     if ($confereValorPago <= 3){
 
@@ -317,58 +341,77 @@ class RecebimentoController extends Controller
                 }
             }
         }//fim foreach detalhes
-        dd($arrayRecebimento);
+        //dd($arrayRecebimento);
 
         //lançar o recebimento separado de cada recebível de um boleto
         $lancouRecebimento = $this->storeRecebimentoBoleto($arrayRecebimento);
+        //dd($lancouRecebimento);
         
-
-        $atualizouRecebivel = false;
+        $atualizouRecebivel = array();
         //Atualizar a situação do recebível para recebido
-        if ($lancouRecebimento){            
+        if (array_key_exists('ok', $lancouRecebimento)){            
             $recebivel = new FinanceiroController(new Recebivel);
             
             $atualizouRecebivel = $recebivel->updateSituacaoRecebidoBoleto($arrayRecebivel);
+           // dd($atualizouRecebivel);
+            $this->logProcessaRetorno .= $atualizouRecebivel['ok'];
         }
-        else
-            return 'Erro ao lançar os recebimentos.';
+        else{
+            $this->logProcessaRetorno .= $atualizouRecebivel['erro'];
+            return $this->logProcessaRetorno;
+        }
 
         $lancouAcrescimo = true;
         //lançar acrescimos caso boleto pago em atraso
         //não preciso atualizar com tabela tb_acrescimos, somente lançar caso o boleto foi pago em atraso
-        if ($atualizouRecebivel){
+        if (array_key_exists('ok', $atualizouRecebivel)){
             if (count($arrayAcrescimos) > 0){
                 $acrescimo = new AcrescimoController(new Acrescimo);
                 $lancouAcrescimo = $acrescimo->storeAcrescimosRetornoBoleto($arrayAcrescimos);
-                if (!$lancouAcrescimo)
-                    return 'Erro ao lançar os acréscimos.';
-                else
-                    return 'ok';
+                if (!$lancouAcrescimo){
+                    $this->logProcessaRetorno .= 'Erro ao lançar os acréscimos. '.$quebra;
+                    return array('erro' => $this->logProcessaRetorno);
+                }
+                else{
+                    $this->logProcessaRetorno .= 'Acréscimos lançados com sucesso. '.$quebra;
+                    return array('ok' => $this->logProcessaRetorno);
+                }
             }
-            return 'ok';
-
+            $this->logProcessaRetorno .= 'Não há acréscimo a ser lançado. '.$quebra;
+            return array('ok' => $this->logProcessaRetorno);
         }
         else
-            return 'Erro ao atualizar os recebíveis.';
+            return $atualizouRecebivel;
 
-    }
+    }//fim function receber boleto
 
+    /**
+     * Lançamento de recebimentos via boleto
+     * recebe array de recebimentos
+     * retorna array com log do processamento, ou erro
+     * */
     private function storeRecebimentoBoleto(Array $arrayRecebimento)
     {
+        $quebra = chr(13).chr(10);
+        $quant = 0;
         try {
             //code...            
+            $this->logProcessaRetorno .= '#### Lançamento recebimentos'.$quebra;
             foreach($arrayRecebimento as $recebimentos)
             {
             //   dd($recebimentos);
                 foreach($recebimentos as $receb){
+                    $this->logProcessaRetorno .= 'id_recebivel '. $receb['fk_id_recebivel']. ' Data recebimento '.$receb['data_recebimento'].' Valor '.$receb['valor_recebido']. ''.$quebra;
                     //dd($receb);
                     $this->repositorio->create($receb);
-                }
+                    $quant++;   
+                }                             
             }
+            $this->logProcessaRetorno .= $quant. ' Recebimentos lançados '.$quebra;
         } catch (\Throwable $th) {
             //throw $th;
-            return false;
+            return array('erro' => 'Erro ao lançar recebimento.'.$quebra.$this->logProcessaRetorno);
         }
-        return true;
+        return array('ok' => $this->logProcessaRetorno);
     }
 }

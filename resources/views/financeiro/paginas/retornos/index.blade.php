@@ -53,8 +53,14 @@
                                 <td>                                    
                                     <a href="{{'/storage/boletos/retornos/processar/'.$retorno->nome_arquivo}}" download="{{$retorno->nome_arquivo}}" class="href">Arquivo</a>
                                 </td>                                                             
-                                <td><a href="#" download="" class="href">Log</a></td>
-                                <td></td>
+                                <td><a href="{{'/storage/boletos/retornos/logs/'.$retorno->nome_arquivo_log}}" download="" class="href">Log</a></td>
+                                <td>
+                                    @if ($retorno->situacao_processamento == 1)
+                                        Ok
+                                    @else
+                                        Erro
+                                    @endif
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>

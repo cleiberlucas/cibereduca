@@ -623,16 +623,20 @@ class BoletoController extends Controller
    }
 
    public function updateBoletoRetorno($arrayBoletos){
+    $quebra = chr(13).chr(10);
+       $log = '#### ATUALIZANDO A SITUAÇÃO DOS BOLETOS'.$quebra;
        try {
             foreach($arrayBoletos as $boleto){
                 $this->repositorio
                     ->where('id_boleto', $boleto['id_boleto'])
                     ->update(['fk_id_situacao_registro' => $boleto['fk_id_situacao_registro']]);
+                $log .= 'id_boleto '.$boleto['id_boleto']. ' Situação '.$boleto['fk_id_situacao_registro'].$quebra;
             }
-            return 'ok';
+            $log .= 'Total de boletos atualizados: '.count($arrayBoletos).$quebra;
+            return array('ok' => $log);
        } catch (\Throwable $th) {
            //throw $th;
-           return 'Erro ao atualizar a situação dos boletos.';
+           return array('erro', 'Erro ao atualizar a situação dos boletos.'.$quebra.$log);
        }
    }
 

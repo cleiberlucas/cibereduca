@@ -1,0 +1,39 @@
+17/03/2021 16:24:01 INÍCIO PROCESSAMENTO RETORNO 
+#### Lançamento recebimentos
+id_recebivel 7101 Data recebimento 2021-03-01 Valor 328
+id_recebivel 6513 Data recebimento 2021-02-26 Valor 359
+id_recebivel 6400 Data recebimento 2021-03-01 Valor 393
+id_recebivel 6411 Data recebimento 2021-03-01 Valor 96
+id_recebivel 10787 Data recebimento 2021-03-01 Valor 373
+id_recebivel 10799 Data recebimento 2021-03-01 Valor 96
+id_recebivel 5952 Data recebimento 2021-03-01 Valor 273
+id_recebivel 5963 Data recebimento 2021-03-01 Valor 96
+id_recebivel 11952 Data recebimento 2021-03-01 Valor 339
+id_recebivel 3051 Data recebimento 2021-03-01 Valor 96
+id_recebivel 10370 Data recebimento 2021-03-01 Valor 339.75
+id_recebivel 10381 Data recebimento 2021-03-01 Valor 96
+12 Recebimentos lançados 
+#### Atualizando situação dos recebíveis para RECEBIDO 
+id_recebivel 7101 
+id_recebivel 6513 
+id_recebivel 6400 
+id_recebivel 6411 
+id_recebivel 10787 
+id_recebivel 10799 
+id_recebivel 5952 
+id_recebivel 5963 
+id_recebivel 11952 
+id_recebivel 3051 
+id_recebivel 10370 
+id_recebivel 10381 
+12 Recebíveis atualizados. 
+Não há acréscimo a ser lançado. 
+#### ATUALIZANDO A SITUAÇÃO DOS BOLETOS
+id_boleto 000000000000793 Situação 4
+id_boleto 000000000000953 Situação 4
+id_boleto 000000000001183 Situação 4
+id_boleto 000000000001392 Situação 4
+id_boleto 000000000001452 Situação 4
+id_boleto 000000000001766 Situação 4
+id_boleto 000000000002344 Situação 4
+Total de boletos atualizados: 7

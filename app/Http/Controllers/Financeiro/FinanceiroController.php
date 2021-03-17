@@ -327,25 +327,31 @@ class FinanceiroController extends Controller
      */
     public function updateSituacaoRecebidoBoleto(Array $arrayRecebiveis)
     {
+        $quebra = chr(13).chr(10);
+        $quant = 0;
         try {
+            $log = '#### Atualizando situação dos recebíveis para RECEBIDO '.$quebra;
             //code...
             foreach($arrayRecebiveis as $recebiveis){
                 foreach($recebiveis as $receb){
                     //dd($receb);
                     
                     $recebivel = $this->repositorio->where('id_recebivel', $receb['id_recebivel'])->first();    
-                    if (!$recebivel)
-                        return redirect()->back()->with('erro', 'Recebível não encontrado.');    
+                   /*  if (!$recebivel)
+                        return redirect()->back()->with('erro', 'Recebível não encontrado.');  */   
                     
                     $recebivel->where('id_recebivel', $receb['id_recebivel'])->update(Array('fk_id_situacao_recebivel' => 2));
+                    $log .= 'id_recebivel '.$receb['id_recebivel'].' '.$quebra;
                    // dd($recebivel);
-                }
+                   $quant++;
+                }                
             }
+            $log .= $quant.' Recebíveis atualizados. '.$quebra;            
         } catch (\Throwable $th) {
             //throw $th;
-            return false;
+            return array('erro' => $log);
         }
-        return true;        
+        return array('ok' => $log);        
     }
 
     /* Dados de um recebíuvel */
@@ -395,7 +401,7 @@ class FinanceiroController extends Controller
             ->get();
 
         $formasPagamento = $recebimentos
-            ->select('valor_recebido', 'forma_pagamento')            
+            ->select('valor_recebido', 'forma_pagamento', 'id_forma_pagamento')            
             ->join('tb_formas_pagamento', 'fk_id_forma_pagamento', 'id_forma_pagamento')
             ->where('fk_id_recebivel', $id)
             ->get();
