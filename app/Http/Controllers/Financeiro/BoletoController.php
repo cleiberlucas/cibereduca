@@ -623,7 +623,7 @@ class BoletoController extends Controller
    }
 
    public function updateBoletoRetorno($arrayBoletos){
-    $quebra = chr(13).chr(10);
+        $quebra = chr(13).chr(10);
        $log = '#### ATUALIZANDO A SITUAÇÃO DOS BOLETOS'.$quebra;
        try {
             foreach($arrayBoletos as $boleto){

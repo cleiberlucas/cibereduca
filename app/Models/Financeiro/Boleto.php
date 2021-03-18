@@ -58,4 +58,15 @@ class Boleto extends Model
             ->where('fk_id_boleto', $id_boleto)
             ->get();
     }
+
+    function getSituacaoBoletoSicoob(){
+        //situações de boleto
+        //convertendo as situações do boleto do Sicoob para o Cibereduca
+        $situacoesBoleto = Array(
+            '02' => 3, // registrado
+            '03' => 6, // rejeitado
+            '06' => 4, // pago
+        );
+        return $situacoesBoleto;
+    }
 }

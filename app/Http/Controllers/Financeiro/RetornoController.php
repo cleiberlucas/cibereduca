@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Financeiro;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateRetorno;
 use App\Models\Financeiro\Boleto;
+use App\Models\Financeiro\BoletoRetorno;
 use App\Models\Financeiro\DadoBancario;
 use App\Models\Financeiro\Recebimento;
 use App\Models\Financeiro\Retorno;
@@ -61,8 +62,7 @@ class RetornoController extends Controller
                 
                 $retorno = Factory::make('storage/boletos/retornos/processar' . DIRECTORY_SEPARATOR . "$nomeArquivo");
                 $retorno->processar();       
-                //dd($retorno);    
-                //dd(method_exists($retorno, 'getHeaderLote'));
+                //dd($retorno);                
 
                 if(!method_exists($retorno, 'getHeaderLote'))
                     return redirect()->back()->with('erro', 'Envie somente arquivo com formato CNAB240. O arquivo está com formato incorreto.');
@@ -77,8 +77,7 @@ class RetornoController extends Controller
                 $retornoProcessado = $this->verificarRetornoProcessado($dadoBancario->id_dado_bancario, $retorno->getHeader()->getNumeroSequencialArquivo());
                 if (isset($retornoProcessado->id_retorno))
                     return redirect()->back()->with('erro', 'Este arquivo já foi processado anteriormente.');
-
-               // dd('ok');
+               
                 $respLancamentos = $this->processarRetorno($retorno);
                 //gravando log
                 $nomeArquivoLog = 'retorno_'.$retorno->getHeader()->getNumeroSequencialArquivo().'_'.date('YmdHis').'.txt';
@@ -107,6 +106,8 @@ class RetornoController extends Controller
                     $dados['situacao_processamento'] = 0;
                     $dados['nome_arquivo'] = $nomeArquivo;
                     $dados['nome_arquivo_log'] = $nomeArquivoLog;
+
+                    $this->repositorio->create($dados);
 
                     return redirect()->back()->with('erro', 'Houve erro no processamento do retorno. Verifique o arquivo de log.');           
                 }                
@@ -139,35 +140,82 @@ class RetornoController extends Controller
         
         //situações de boleto
         //convertendo as situações do boleto do Sicoob para o Cibereduca
-        $situacoesBoleto = Array(
-            '02' => 3, // registrado
-            '03' => 6, // rejeitado
-            '06' => 4, // pago
-        );
+        $situacoesBoleto = new Boleto;
+        $situacoesBoleto = $situacoesBoleto->getSituacaoBoletoSicoob();
         
         $arrayBoletos = Array();
         //gerar array para atualizar a situação dos boletos.
         foreach ($arrayRetorno as $index => $itemRetorno){
             $arrayBoletos[$index]['id_boleto'] = $itemRetorno->numeroDocumento;
             $arrayBoletos[$index]['fk_id_situacao_registro'] = $situacoesBoleto[$itemRetorno->ocorrencia];
-
-            //gravar tarifas pagas
             
-            //boletos pagos mais de uma vez
-
             //verificar se há registro de erro no arquivo retorno            
         }
         
+        //lançar tarifa dos boletos
+        $logBoletoRetorno = $this->gravarBoletoRetorno($retorno);
+        if (array_key_exists('erro', $logBoletoRetorno))
+            return $logBoletoRetorno;
+
         //atualizar a situação do registro do boleto
         $atualizaBoleto = new BoletoController(new Boleto);
 
         $logBoletos = $atualizaBoleto->updateBoletoRetorno($arrayBoletos);
 
-        //unindo o log dos recebimentos com log dos boletos
-        $logBoletos[key($logBoletos)] = $respLancamentos['ok'].$logBoletos[key($logBoletos)];
+        $quebra = chr(13).chr(10);
+        //unindo o log dos recebimentos com log dos boletosretornos e boletos
+        $logBoletos[key($logBoletos)] = $respLancamentos['ok'].$logBoletoRetorno[key($logBoletoRetorno)].$logBoletos[key($logBoletos)];
+
+        $logResumo = '#### TOTAIS DO ARQUIVO RETORNO'.$quebra;
+        foreach($retorno->getTotais() as $index => $total){
+            //dd($index);
+            $logResumo .= $index. ' = '.$total.$quebra;
+        }
+
+        $logBoletos[key($logBoletos)] = $logBoletos[key($logBoletos)].$logResumo;
 
         return $logBoletos;
     }
+    
+   /**
+    * Grava tarifa e ocorrencia dos boletos
+    * vai possibilitar identificar boletos pagos duas vezes
+    */
+   public function gravarBoletoRetorno($retorno)
+   {
+       try {
+           //situações de boleto
+            //convertendo as situações do boleto do Sicoob para o Cibereduca
+            $situacoesBoleto = new Boleto;
+            $situacoesBoleto = $situacoesBoleto->getSituacaoBoletoSicoob();
+
+            $boletos = $retorno->getDetalhes()->toArray();
+            $arrayBoletos = array();
+            foreach($boletos as $index => $boleto){
+                $arrayBoletos[$index]['fk_id_boleto'] = $boleto->numeroDocumento;
+                $arrayBoletos[$index]['valor_tarifa'] = $boleto->valorTarifa;
+                $arrayBoletos[$index]['ocorrencia'] = $situacoesBoleto[$boleto->ocorrencia];
+                $arrayBoletos[$index]['fk_id_situacao_registro'] = $situacoesBoleto[$boleto->ocorrencia];
+                $arrayBoletos[$index]['sequencial_retorno_banco'] = $retorno->getHeader()->getNumeroSequencialArquivo();
+            }
+
+            $quebra = chr(13).chr(10);
+            /**
+             * gravando tarifas e ocorrencias de todos os boletos do retorno
+             */
+            $log = '#### GRAVANDO TARIFAS E OCORRÊNCIAS DOS BOLETOS'.$quebra;
+            $log.= 'Sequencial retorno '.$retorno->getHeader()->getNumeroSequencialArquivo().$quebra;
+            
+            $boletoRetorno = new BoletoRetorno;
+            foreach($arrayBoletos as $boleto){
+                $boletoRetorno->create($boleto);
+            }
+            return array('ok' => $log);
+       } catch (Exception $e) {
+           //throw $th;
+           return array('erro' => ''.$log.'Erro ao gravar tarifas e ocorrências dos boletos.'.$e);
+       }       
+   }   
 
     public function verificarConvenio($agencia, $conta, $convenio_retorno)
     {        
