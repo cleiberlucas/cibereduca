@@ -94,11 +94,11 @@ class RecebimentoController extends Controller
         if ($gravou_acrescimo){
             //Gravar recebimentos
             foreach($dados['valor_recebido'] as $index => $valor_recebido){
-                if ( $dados['valor_recebido'][$indDetalhe][$index] > 0){
+                if ( $dados['valor_recebido'][$index] > 0){
                     $insert = array(
                         'fk_id_recebivel' => $dados['fk_id_recebivel'],
-                        'fk_id_forma_pagamento' => $dados['fk_id_forma_pagamento'][$indDetalhe][$index],
-                        'valor_recebido'    => $dados['valor_recebido'][$indDetalhe][$index],
+                        'fk_id_forma_pagamento' => $dados['fk_id_forma_pagamento'][$index],
+                        'valor_recebido'    => $dados['valor_recebido'][$index],
                         'data_recebimento'  => $dados['data_recebimento'],
                         'data_credito'      => $dados['data_credito'],
                         'numero_recibo'     => $dados['numero_recibo'],
