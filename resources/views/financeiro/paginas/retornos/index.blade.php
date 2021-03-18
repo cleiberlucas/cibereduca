@@ -51,7 +51,7 @@
                                     {{date('d/m/Y H:i:s', strtotime($retorno->data_processamento))}}
                                 </td>
                                 <td>                                    
-                                    <a href="{{'/storage/boletos/retornos/processar/'.$retorno->nome_arquivo}}" download="{{$retorno->nome_arquivo}}" class="href">Arquivo</a>
+                                    <a href="{{'/storage/boletos/retornos/processados/'.$retorno->nome_arquivo}}" download="{{$retorno->nome_arquivo}}" class="href">Arquivo</a>
                                 </td>                                                             
                                 <td><a href="{{'/storage/boletos/retornos/logs/'.$retorno->nome_arquivo_log}}" download="" class="href">Log</a></td>
                                 <td>

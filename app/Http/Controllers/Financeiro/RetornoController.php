@@ -58,9 +58,9 @@ class RetornoController extends Controller
                 $nomeArquivo = $request->file('nome_arquivo')->getClientOriginalName();
                 $nomeArquivo = str_replace(' ', '_', $nomeArquivo);
                 $dados['nome_arquivo'] = $nomeArquivo; 
-                $request->file('nome_arquivo')->storeAs('boletos/retornos/processar', $nomeArquivo);          
+                $request->file('nome_arquivo')->storeAs('boletos/retornos/processados', $nomeArquivo);          
                 
-                $retorno = Factory::make('storage/boletos/retornos/processar' . DIRECTORY_SEPARATOR . "$nomeArquivo");
+                $retorno = Factory::make('storage/boletos/retornos/processados' . DIRECTORY_SEPARATOR . "$nomeArquivo");
                 $retorno->processar();       
                 //dd($retorno);                
 
