@@ -88,7 +88,7 @@
         
         <div class="row justify-content-md-center " align="center">
             <div class="col-sm-12 col-xs-2 col-md-6 text-white ">
-            <h5>Seja bem vindo(a) ao Colégio Rede Educa</h5>
+            <h5>Seja bem-vindo(a) ao Colégio Rede Educa</h5>
             </div>
         </div>
         <div class="row justify-content-md-center" style="float: right">            
