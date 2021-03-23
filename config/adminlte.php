@@ -380,7 +380,7 @@ return [
                     'route'  => 'retorno.index',
                     'icon' => 'fas fa-barcode',
                     'icon_color' => 'blue',
-                    'can'  => 'Retorno Ver dev',
+                    'can'  => 'Retorno Ver',
                 ],
                 [
                     'text' => 'Relatórios',
