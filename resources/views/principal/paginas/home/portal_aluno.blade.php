@@ -8,31 +8,54 @@
 </head>
 <style>  
     .container-portal{
-        background-image: url('vendor/adminlte/dist/img/fundo_rede_educa_transp.png');
-        background-size: contain;        
-        height: 70vh;
+        /* background-image: url('vendor/adminlte/dist/img/portal_aluno_fundo.png') ; */
+       /*  background-size: cover;        
+        /* height: 70vh; */
         /* opacity: 0.65; */
-        background-repeat: no-repeat;
-    }
+        /* background-repeat: no-repeat;  */
+        /* background-size: : 100%; */
 
+        /* background-repeat: no-repeat;
+        background-size:auto 100%;
+        bottom: 0;
+        color: black;
+        left: 0;
+        /* overflow: auto; */
+        /* padding: 3em; */
+        /* position: absolute; */
+        /*right: 0;
+        text-align: center;
+        top: 0;
+        background-size: cover;
+         */
+
+        background-image: url('vendor/adminlte/dist/img/portal_aluno_fundo.png') ; 
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+        
+        
+    }
+/* 
     @media (min-width: sm) {
         .container-portal{
-            background-image: url('vendor/adminlte/dist/img/fundo_rede_educa_transp.png');
+            background-image: url('vendor/adminlte/dist/img/portal_aluno_fundo.png');
         }
     }
 
     @media (min-width: md) {
         .container-portal{
-            background-image: url('vendor/adminlte/dist/img/fundo_rede_educa_transp.png');
+            background-image: url('vendor/adminlte/dist/img/portal_aluno_fundo.png');
         }
     }
 
     @media (min-width: lg) {
         .container-portal{
-            background-image: url('vendor/adminlte/dist/img/fundo_rede_educa_transp.png');
+            background-image: url('vendor/adminlte/dist/img/portal_aluno_fundo.png');
         }
-    }
-
+    } */
+/* 
     .imagem-botoes{
         opacity: 1; !important
     }
@@ -54,23 +77,22 @@
         background: white;
 
         filter: alpha(opacity=30); /* IE5-8 */
-        opacity: 0.65; /* IE9+ e todos browsers modernos */
-    }
+   /*     opacity: 0.65; /* IE9+ e todos browsers modernos */
+    /*} */
 </style>
 <script src="js/app.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <body>
     
-    <div class="container-fluid">       
-         
-        <div class="row justify-content-md-center">
-            {{-- <div class="form-group col-sm-3 col-xs-2"><img width="50%" height="" src="vendor/adminlte/dist/img/logo.png" alt=""></div> --}}
-            <div class="form-group col-sm-9 col-xs-2" align="center"> 
-                <h3><strong>Seja bem vindo(a) ao Colégio Rede Educa Goiás</strong></h3>
-                <br>
-                <h2><strong>Portal do Aluno</strong></h2>
-            </div>            
-            <div class="col-sm-3 col-xs-2" align="center">
+    <div class="container-fluid container-portal">       
+        
+        <div class="row justify-content-md-center " align="center">
+            <div class="col-sm-12 col-xs-2 col-md-6 text-white ">
+            <h5>Seja bem vindo(a) ao Colégio Rede Educa</h5>
+            </div>
+        </div>
+        <div class="row justify-content-md-center" style="float: right">            
+            <div class="col-sm-12 col-xs-2  bg-primary text-white" align="right">
            {{--      <ul class="navbar-nav mr-auto">
                 <li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> --}}
@@ -80,9 +102,9 @@
                             <font color=red>Login incompleto. Favor entrar em contato com a secretaria da escola.</font>                            
                         @endif                   
                         <br>
-                        <a href="{{route('users.editsenha')}}"> <i class="fas fa-fw fa-lock"></i>Alterar Senha</a> 
+                        <a href="{{route('users.editsenha')}}" class="btn-sm btn-outline-light"> Alterar Senha</a> 
                         <br>
-                        <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="fa fa-fw fa-power-off"></i>Sair</a>
+                        <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="btn-sm btn-outline-light">Sair</a>
                         <form id="logout-form" action="logout" method="POST" style="display: none;">
                             @csrf
                         </form>
@@ -94,9 +116,10 @@
 					</div>
                 </li>
             </ul> --}}
+            </div>
             
         </div>    
-        <div class="row my-0 py-0">
+        <div class="row mt-0 pt-0 ">
             <div class="form-group col-sm-12 col-xs-2"> 
                 <form action="{{ route('home.define')}}" class="form" method="POST">
                     @csrf
@@ -134,46 +157,45 @@
                 <div class="form-group col-sm-1 col-xs-2">                 
                     <button type="submit" class="btn btn-success"><i class="fas fa-check-double"></i></button>
                 </div>
-            @endif                      
+            @endif     
+                             
         </div>
-    </div>
-    <div class="container-fluid container-portal">
-        <div class="overlay"></div>
-        <div class="row justify-content-md-center " >         
-            <div class="col-sm-4 col-xs-2 " align="center">
-                <h5><strong>Rendimento do Aluno</strong></h5>                
+        
+        <br><br><br><br><br><br>
+        <br><br><br><br><br><br>
+        
+        <div class="row justify-content-md-center mt-5 pt-5 " >         
+            <div class="form-group col-sm-6 col-xs-2 " align="center">               
                 <a href="{{route('portal.indexrendimento')}}" data-content="Boletins e notas." data-toggle="popover" data-trigger="hover">
-                    <img width="20%" src="vendor/adminlte/dist/img/aluno.png" alt="">
+                    <img width="40%" src="vendor/adminlte/dist/img/rendimento_aluno.png" alt="">
                 </a>
             </div>
-            <div class="col-sm-4 col-xs-2" align="center">
-                <h5><strong>Declarações</strong></h5>        
+            <div class="form-group col-sm-6 col-xs-2" align="center">
                 <a href="{{route('portal.indexdeclaracoes')}}" data-content="Declarações" data-toggle="popover" data-trigger="hover">        
-                    <img width="40%"src="vendor/adminlte/dist/img/documentos.png" alt="">
+                    <img width="40%" src="vendor/adminlte/dist/img/declaracoes.png" alt="">
                 </a>
             </div>
         </div>
         <div class="row justify-content-md-center" align="center">                     
-            <div class="col-sm-4 col-xs-2 my-5" align="center">                
-                <h5><strong>Financeiro</strong></h5>
+            <div class="form-group col-sm-6 col-xs-2 " align="center">                
                 <a href="{{route('portal.indexfinanceiro')}}" data-content="Mensalidades" data-toggle="popover" data-trigger="hover">
-                    <img width="35%" src="vendor/adminlte/dist/img/financeiro.png" alt="">
+                    <img width="40%" src="vendor/adminlte/dist/img/financeiro_new.png" alt="">
                 </a>
             </div>
-            <div class="col-sm-4 col-xs-2 my-5" align="center">
-                <h5><strong>Outros</strong></h5>
+            <div class="form-group col-sm-6 col-xs-2" align="center">
                 <a href="{{route('portal.indexoutros')}}" data-content="Contrato, opção educacional." data-toggle="popover" data-trigger="hover" >
-                    <img width="30%"src="vendor/adminlte/dist/img/ponteiro_azul.png" alt="">
+                    <img width="40%" src="vendor/adminlte/dist/img/outros.png" alt="">
                 </a>
             </div>            
         </div>        
+        
         <div class="row justify-content-center">     
-            <div class="col-sm-12 col-xs-2" align="center">
+            <div class="form-group col-sm-12 col-xs-2" align="center">
                 <img width="5%" src="vendor/cibersys/img/cubo_magico.gif" alt="">   
                 <strong>CiberSys - Sistemas Inteligentes</strong>
             </div>
         </div>    
-    </div> 
+    </div> {{-- fim container-fluid --}}
  </body>
  <script>
       $('[data-toggle="popover"]').popover();  
