@@ -78,34 +78,39 @@ class AcrescimoController extends Controller
     //Gravando acrescimo de boletos
     public function storeAcrescimosRetornoBoleto(Array $acrescimos)
     {        
-       // dd($acrescimos);
+        //dd($acrescimos);
         $gravou_acrescimo = true;
         
         foreach($acrescimos as $acrescimoBol){
             foreach($acrescimoBol as $acrescimoRec){
-                foreach($acrescimoRec as $acrescimo){            
-                    //gravando multa
+                //dd($acrescimoRec);                     
+                
+                //gravando multa
+                if (array_key_exists('multa', $acrescimoRec)){
                     $dados = array(
-                        'fk_id_recebivel' => $acrescimo['multa']['fk_id_recebivel'],
+                        'fk_id_recebivel' => $acrescimoRec['multa']['fk_id_recebivel'],
                         'fk_id_conta_contabil_acrescimo' => '4', // multa
-                        'valor_acrescimo' => $acrescimo['multa']['valor_acrescimo'],                        
-                        'valor_total_acrescimo'  => $acrescimo['multa']['valor_total_acrescimo'],   
+                        'valor_acrescimo' => $acrescimoRec['multa']['valor_acrescimo'],                        
+                        'valor_total_acrescimo'  => $acrescimoRec['multa']['valor_total_acrescimo'],   
                     );              
                     $gravou_acrescimo = $this->repositorio->create($dados);
+                }
 
-                    //gravando juros
+                //gravando juros
+                if (array_key_exists('juro', $acrescimoRec)){
                     $dados = array(
-                        'fk_id_recebivel' => $acrescimos['juro']['fk_id_recebivel'],
+                        'fk_id_recebivel' => $acrescimoRec['juro']['fk_id_recebivel'],
                         'fk_id_conta_contabil_acrescimo' => '5', // juros
-                        'valor_acrescimo' => $acrescimos['juro']['valor_acrescimo'],                        
-                        'valor_total_acrescimo'  => $acrescimos['juro']['valor_total_acrescimo'],  
+                        'valor_acrescimo' => $acrescimoRec['juro']['valor_acrescimo'],                        
+                        'valor_total_acrescimo'  => $acrescimoRec['juro']['valor_total_acrescimo'],  
                     );              
                     $gravou_acrescimo = $this->repositorio->create($dados);
-                    if (! $gravou_acrescimo->wasRecentlyCreated){
-                        return false;
-                        break;
-                    }    
-                }    
+                }
+                /* if (! $gravou_acrescimo->wasRecentlyCreated){
+                    return false;
+                    break;
+                }     */
+                
             }
         }
 

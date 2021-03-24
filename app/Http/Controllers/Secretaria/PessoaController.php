@@ -358,7 +358,7 @@ class PessoaController extends Controller
             //return redirect()->back()->with('atencao', 'Esta pessoa (CPF) já possui login cadastrado.');
 
         $userController = new UserController(new User);
-        dd($userController);
+        //dd($userController);
         $userUnidadeController = new UserUnidadeEnsinoController(new User, new UnidadeEnsino);
         
         $unidadesEnsino = array('0' => User::getUnidadeEnsinoSelecionada());
@@ -367,7 +367,7 @@ class PessoaController extends Controller
             'email' => $resp->cpf,
             'password' => $resp->cpf);
         try{
-            dd($dadosUser);
+            //dd($dadosUser);
             $idRespUser = $userController->storeRespUser($dadosUser);            
 
             if ($idRespUser > 0){
@@ -381,11 +381,11 @@ class PessoaController extends Controller
                     'fk_id_perfil' => 6,                         
                 );
                 $userUnidadeController->updateRespUser($userPerfil, $idRespUser);                    
-                dd($resp);
+                //dd($resp);
                 return redirect()->route('pessoas.index', $resp->fk_id_tipo_pessoa)->with('sucesso', 'Login cadastrado com sucesso.');    
             }
         } catch(\Throwable $qe) {
-            dd($qe);
+            //dd($qe);
             return redirect()->back()->with('erro', 'Erro ao gerar login para o responsável. Verifique se o CPF está cadastrado.'.$qe);
         }           
     }

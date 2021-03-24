@@ -630,7 +630,7 @@ class BoletoController extends Controller
                 $this->repositorio
                     ->where('id_boleto', $boleto['id_boleto'])
                     ->update(['fk_id_situacao_registro' => $boleto['fk_id_situacao_registro']]);
-                $log .= 'id_boleto '.$boleto['id_boleto']. ' Situação '.$boleto['fk_id_situacao_registro'].$quebra;
+                $log .= 'id_boleto '.$boleto['id_boleto']. ' Situação '.$boleto['fk_id_situacao_registro'].' '.$boleto['textoOcorrencia'].$quebra;
             }
             $log .= 'Total de boletos atualizados: '.count($arrayBoletos).$quebra;
             return array('ok' => $log);

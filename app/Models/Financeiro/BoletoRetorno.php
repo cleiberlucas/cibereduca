@@ -17,7 +17,7 @@ class BoletoRetorno extends Model
         'valor_tarifa',
         'ocorrencia',
         'data_gravacao',
-        
+        'obs',        
     ];
    
 }

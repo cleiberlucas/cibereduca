@@ -15,6 +15,7 @@ use App\User;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Support\Facades\Auth;
+use PhpParser\Node\Stmt\TryCatch;
 
 class RecebimentoController extends Controller
 {
@@ -211,7 +212,7 @@ class RecebimentoController extends Controller
         //dd($detalhesRetorno);
         $quebra = chr(13).chr(10);
         $this->logProcessaRetorno = date('d/m/Y H:i:s').' INÍCIO PROCESSAMENTO RETORNO '.$quebra;
-        
+        $valorCorreto = 0;
         $arrayRecebimento = Array(); // para lançar recebimentos
         $arrayRecebivel = Array(); // para atualizar recebiveis
         $arrayAcrescimos = Array(); // para lançar acrescimos - boletos pagos em atraso
@@ -232,7 +233,8 @@ class RecebimentoController extends Controller
             if ($detalhe->ocorrencia == '06'){ // liquidação
                 //identificar recebiveis de um boleto    
                 $recebiveisBoleto = $recebiveisBoleto->getRecebiveisBoleto($detalhe->numeroDocumento);
-                //dd($recebiveisBoleto);
+               /*  if (count($recebiveisBoleto) < 1)
+                    dd($detalhe); */
                
                 $confereValorPago = -1;
                 
@@ -241,6 +243,7 @@ class RecebimentoController extends Controller
                  *  - recebimentos.
                  *  - atualizar recebivel
                  * */
+               
                 foreach($recebiveisBoleto as $index => $recebivel){
                     //dd(array('fk_id_recebivel'=>$recebivel->id_recebivel));
 
@@ -249,6 +252,7 @@ class RecebimentoController extends Controller
                         //não pagou com multa ou juro
                         if ( ($detalhe->valorMora == null or $detalhe->valorMora == 0) and ($detalhe->valorMulta == null or $detalhe->valorMulta == 0)){
                             $valorCorreto = $recebivel->valor_total_boleto - $recebivel->valor_desconto_boleto;
+                            
                             if($detalhe->valorRecebido == $valorCorreto){
                                 $confereValorPago = 1;//'Pagou valor correto.';
                             }
@@ -259,11 +263,13 @@ class RecebimentoController extends Controller
                                 $confereValorPago = 3; // pagou valor maior
                             }
                         }
-                        else{
-                            
+                        else{                            
                             $confereValorPago = 4; //pago com juros
-                        }                        
+                        }    
+                        if ($confereValorPago == -1)
+                            dd($recebivel);
                     }//fim index=0
+                  
 
                     //array para atualizar recebível
                     $arrayRecebivel[$indDetalhe][$index]['id_recebivel'] = $recebivel->id_recebivel;                    
@@ -305,18 +311,19 @@ class RecebimentoController extends Controller
                                 $valorRecTmp += $recebivel->valor_principal / $recebivel->valor_total_boleto * $detalhe->valorMora;          
 
                                 $arrayAcrescimos[$indDetalhe][$index]['juro']['fk_id_recebivel'] = $recebivel->id_recebivel;                                
-                                $arrayAcrescimos[$indDetalhe][$index]['juro']['valor_acrescimo'] = $detalhe->valorMora;
-                                $arrayAcrescimos[$indDetalhe][$index]['juro']['valor_total_acrescimo'] = $detalhe->valorMora;
+                                $arrayAcrescimos[$indDetalhe][$index]['juro']['valor_acrescimo'] = $recebivel->valor_principal / $recebivel->valor_total_boleto * $detalhe->valorMora; // rateio do acrescimo entre os recebiveis
+                                $arrayAcrescimos[$indDetalhe][$index]['juro']['valor_total_acrescimo'] = $recebivel->valor_principal / $recebivel->valor_total_boleto * $detalhe->valorMora; // rateio do acrescimo entre os recebiveis
                             }
                             //se pagou com multa
                             if ($detalhe->valorMulta > 0){
                                 //cálculo rateio multa
                                 //acrescenta ao valor principal
+                              //  dd($detalhe);
                                 $valorRecTmp += $recebivel->valor_principal / $recebivel->valor_total_boleto * $detalhe->valorMulta;                                
 
                                 $arrayAcrescimos[$indDetalhe][$index]['multa']['fk_id_recebivel'] = $recebivel->id_recebivel;                                
-                                $arrayAcrescimos[$indDetalhe][$index]['multa']['valor_acrescimo'] = $detalhe->valorMulta;
-                                $arrayAcrescimos[$indDetalhe][$index]['multa']['valor_total_acrescimo'] = $detalhe->valorMulta;
+                                $arrayAcrescimos[$indDetalhe][$index]['multa']['valor_acrescimo'] = $recebivel->valor_principal / $recebivel->valor_total_boleto * $detalhe->valorMulta; // rateio do acrescimo entre os recebiveis
+                                $arrayAcrescimos[$indDetalhe][$index]['multa']['valor_total_acrescimo'] = $recebivel->valor_principal / $recebivel->valor_total_boleto * $detalhe->valorMulta; // rateio do acrescimo entre os recebiveis
                             }
                             $arrayRecebimento[$indDetalhe][$index]['valor_recebido'] = $valorRecTmp;
                         }
@@ -328,10 +335,14 @@ class RecebimentoController extends Controller
                     $soma_total +- $recebivel->valor_total; */
                     //dd(array_push($arrayRecebimento, $arrayRecebimento));
                     
-                }//fim foreache recebiveisboleto
+                }//fim foreach recebiveisboleto
+                /* 
+                if (count($arrayAcrescimos) > 0)
+                    dd($arrayAcrescimos); */
                 
                 if ($confereValorPago == -1){
-                    $this->logProcessaRetornolog .= 'Erro ao conferir o valor pago';
+                    $this->logProcessaRetorno .= 'Erro ao conferir o valor pago';
+                   // dd($detalhe->valorCorreto);
                     return $this->logProcessaRetorno;
                 }
                 else{
@@ -366,18 +377,23 @@ class RecebimentoController extends Controller
         //não preciso atualizar com tabela tb_acrescimos, somente lançar caso o boleto foi pago em atraso
         if (array_key_exists('ok', $atualizouRecebivel)){
             if (count($arrayAcrescimos) > 0){
-                $acrescimo = new AcrescimoController(new Acrescimo);
-                $lancouAcrescimo = $acrescimo->storeAcrescimosRetornoBoleto($arrayAcrescimos);
-                if (!$lancouAcrescimo){
-                    $this->logProcessaRetorno .= 'Erro ao lançar os acréscimos. '.$quebra;
-                    return array('erro' => $this->logProcessaRetorno);
+                try {
+                    $acrescimo = new AcrescimoController(new Acrescimo);
+                    $lancouAcrescimo = $acrescimo->storeAcrescimosRetornoBoleto($arrayAcrescimos);
+                    if (!$lancouAcrescimo){
+                        $this->logProcessaRetorno .= '#### ERRO AO LANÇAR OS ACRÉSCIMOS. '.$quebra;
+                        return array('erro' => $this->logProcessaRetorno);
+                    }
+                    else{
+                        $this->logProcessaRetorno .= '#### ACRÉSCIMOS LANÇADOS COM SUCESSO. '.$quebra;
+                        return array('ok' => $this->logProcessaRetorno);
+                    }
+                } catch (\Exception $e) {
+                    return array('erro' => $this->logProcessaRetorno.$e);
                 }
-                else{
-                    $this->logProcessaRetorno .= 'Acréscimos lançados com sucesso. '.$quebra;
-                    return array('ok' => $this->logProcessaRetorno);
-                }
+               
             }
-            $this->logProcessaRetorno .= 'Não há acréscimo a ser lançado. '.$quebra;
+            $this->logProcessaRetorno .= '#### Não há acréscimo a ser lançado. '.$quebra;
             return array('ok' => $this->logProcessaRetorno);
         }
         else

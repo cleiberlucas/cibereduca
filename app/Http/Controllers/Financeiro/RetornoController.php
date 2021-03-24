@@ -19,7 +19,7 @@ class RetornoController extends Controller
         
     public function __construct(Retorno $retorno)
     {
-        $this->repositorio = $retorno;        
+        $this->repositorio = $retorno;
     }
 
     public function index()
@@ -62,7 +62,7 @@ class RetornoController extends Controller
                 
                 $retorno = Factory::make('storage/boletos/retornos/processados' . DIRECTORY_SEPARATOR . "$nomeArquivo");
                 $retorno->processar();       
-                //dd($retorno);                
+                //dd($retorno->getDetalhes());                
 
                 if(!method_exists($retorno, 'getHeaderLote'))
                     return redirect()->back()->with('erro', 'Envie somente arquivo com formato CNAB240. O arquivo está com formato incorreto.');
@@ -75,8 +75,8 @@ class RetornoController extends Controller
 
                 //verificar se retorno ja foi processado
                 $retornoProcessado = $this->verificarRetornoProcessado($dadoBancario->id_dado_bancario, $retorno->getHeader()->getNumeroSequencialArquivo());
-                if (isset($retornoProcessado->id_retorno))
-                    return redirect()->back()->with('erro', 'Este arquivo já foi processado anteriormente.');
+               /*  if (isset($retornoProcessado->id_retorno))
+                    return redirect()->back()->with('erro', 'Este arquivo já foi processado anteriormente.'); */
                
                 $respLancamentos = $this->processarRetorno($retorno);
                 //gravando log
@@ -147,9 +147,15 @@ class RetornoController extends Controller
         //gerar array para atualizar a situação dos boletos.
         foreach ($arrayRetorno as $index => $itemRetorno){
             $arrayBoletos[$index]['id_boleto'] = $itemRetorno->numeroDocumento;
-            $arrayBoletos[$index]['fk_id_situacao_registro'] = $situacoesBoleto[$itemRetorno->ocorrencia];
+            $arrayBoletos[$index]['fk_id_situacao_registro'] = $situacoesBoleto[$itemRetorno->ocorrencia];            
             
             //verificar se há registro de erro no arquivo retorno            
+           /*  if ($itemRetorno->ocorrencia == '06')
+                dd($itemRetorno); */
+            if ($itemRetorno->error != null)
+                $arrayBoletos[$index]['textoOcorrencia'] = " ATENÇÃO-ERRO ".$itemRetorno->error;
+            else
+                $arrayBoletos[$index]['textoOcorrencia'] = $itemRetorno->ocorrenciaDescricao;
         }
         
         //lançar tarifa dos boletos
@@ -197,6 +203,13 @@ class RetornoController extends Controller
                 $arrayBoletos[$index]['ocorrencia'] = $situacoesBoleto[$boleto->ocorrencia];
                 $arrayBoletos[$index]['fk_id_situacao_registro'] = $situacoesBoleto[$boleto->ocorrencia];
                 $arrayBoletos[$index]['sequencial_retorno_banco'] = $retorno->getHeader()->getNumeroSequencialArquivo();
+                
+                if ($boleto->error != null)
+                    $arrayBoletos[$index]['obs'] = $boleto->error;
+                else
+                    $arrayBoletos[$index]['obs'] = $boleto->ocorrenciaDescricao;
+                
+                
             }
 
             $quebra = chr(13).chr(10);
@@ -204,7 +217,7 @@ class RetornoController extends Controller
              * gravando tarifas e ocorrencias de todos os boletos do retorno
              */
             $log = '#### GRAVANDO TARIFAS E OCORRÊNCIAS DOS BOLETOS'.$quebra;
-            $log.= 'Sequencial retorno '.$retorno->getHeader()->getNumeroSequencialArquivo().$quebra;
+            $log.= 'Sequencial retorno '.$retorno->getHeader()->getNumeroSequencialArquivo().$quebra;           
             
             $boletoRetorno = new BoletoRetorno;
             foreach($arrayBoletos as $boleto){
