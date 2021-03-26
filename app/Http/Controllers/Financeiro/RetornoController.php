@@ -75,8 +75,8 @@ class RetornoController extends Controller
 
                 //verificar se retorno ja foi processado
                 $retornoProcessado = $this->verificarRetornoProcessado($dadoBancario->id_dado_bancario, $retorno->getHeader()->getNumeroSequencialArquivo());
-               /*  if (isset($retornoProcessado->id_retorno))
-                    return redirect()->back()->with('erro', 'Este arquivo já foi processado anteriormente.'); */
+                if (isset($retornoProcessado->id_retorno))
+                    return redirect()->back()->with('erro', 'Este arquivo já foi processado anteriormente.');
                
                 $respLancamentos = $this->processarRetorno($retorno);
                 //gravando log
@@ -126,6 +126,16 @@ class RetornoController extends Controller
         //dd($retorno->getDetalhes());
 
         $arrayRetorno = $retorno->getDetalhes()->toArray();
+        /* $log_tmp = '';
+        $quebra = chr(13).chr(10);
+        foreach($arrayRetorno as $ret){
+            if ($ret->valorMulta > 0 or $ret->valorMora > 0){
+                $log_tmp .= 'Boleto '.$ret->nossoNumero.' Multa '.$ret->valorMulta.' Juro '.$ret->valorJuro.$quebra;
+            }
+            
+        } */
+        //dd($log_tmp);
+
         $recebimento = new RecebimentoController(new Recebimento);
         /**
          *  A classe recebimento controller faz:
