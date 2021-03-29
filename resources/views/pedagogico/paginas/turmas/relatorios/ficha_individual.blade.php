@@ -114,7 +114,7 @@
                                         <?php
                                             foreach ($gradeCurricular as $disciplina) {
                                                 echo '<div class="col px-0 text-center font-cabecalho border border-dark border-top-0 border-left-0">';
-                                                    
+                                                $existeNota = false;
                                                 foreach ($resultados as $resultado) {
                                                     $existeNota = false;
                                                     if($resultado->fk_id_disciplina == $disciplina->id_disciplina 
@@ -144,6 +144,7 @@
                                         <?php
                                             foreach ($gradeCurricular as $disciplina) {
                                                 echo '<div class="col text-center font-cabecalho border border-dark border-top-0 border-left-0">';
+                                                $existeFalta = false;
                                                 foreach ($resultados as $resultado) {
                                                     $existeFalta = false;
                                                     if($resultado->fk_id_disciplina == $disciplina->id_disciplina 
