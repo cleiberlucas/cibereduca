@@ -35,6 +35,79 @@ return [
     */
 
     'channels' => [
+        
+        'secretaria_pessoa' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/secretaria_pessoa.log'),
+            'level' => 'debug',
+        ],
+        
+        'secretaria_matricula' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/secretaria_matricula.log'),
+            'level' => 'debug',
+        ],
+        
+        'pedagogico_conteudo_lecionado' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/pedagogico_conteudo_lecionado.log'),
+            'level' => 'debug',
+        ],
+
+        'pedagogico_frequencia' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/pedagogico_frequencia.log'),
+            'level' => 'debug',
+        ],
+
+        'pedagogico_nota' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/pedagogico_nota.log'),
+            'level' => 'debug',
+        ],
+
+        'pedagogico_resultado_final' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/pedagogico_resultado_final.log'),
+            'level' => 'debug',
+        ],
+
+        'financeiro_recebivel' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/financeiro_recebivel.log'),
+            'level' => 'debug',
+        ],
+
+        'financeiro_recebimento' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/financeiro_recebimento.log'),
+            'level' => 'debug',
+        ],
+
+        'financeiro_boleto' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/financeiro_boleto.log'),
+            'level' => 'debug',
+        ],
+
+        'user_acesso' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/user_acesso.log'),
+            'level' => 'debug',
+        ],
+
+        'perfil_permissao' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/perfil_permissao.log'),
+            'level' => 'debug',
+        ],
+
+        'portal_aluno' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/portal_aluno.log'),
+            'level' => 'debug',
+        ],
+
         'stack' => [
             'driver' => 'stack',
             'channels' => ['single'],

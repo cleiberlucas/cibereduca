@@ -12,8 +12,9 @@
         </li>
     </ol>
 
-    <h1>Permissões do Perfil <strong>{{$perfil->perfil}}</strong> 
-    <a href="{{ route('perfis.permissoes.add', $perfil->id_perfil) }}" class="btn btn-success"><i class="fas fa-plus-square"></i> Adicionar permissão</a></h1>
+    <h3>Permissões do Perfil <strong>{{$perfil->perfil}}</strong> 
+    <a href="{{ route('perfis.permissoes.add', $perfil->id_perfil) }}" class="btn btn-success"><i class="fas fa-plus-square"></i> Adicionar permissão</a></h3>
+    @include('admin.includes.alerts')
 
 @stop
 
@@ -56,4 +57,9 @@
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function(){
+              $(".alert").slideDown(300).delay(5000).slideUp(300);
+        });          
+    </script>
 @stop

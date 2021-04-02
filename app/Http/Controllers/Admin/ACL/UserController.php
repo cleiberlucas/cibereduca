@@ -148,7 +148,7 @@ class UserController extends Controller
 
         /* Verificando se informou a senha atual corretamente */
         $senhaAtual = bcrypt($request->senhaAtual);
-        dd($senhaAtual);
+        //dd($senhaAtual);
         
         if ($senhaAtual != $user->password)
             return redirect()->back()->with('erro', 'A senha atual está incorreta.');

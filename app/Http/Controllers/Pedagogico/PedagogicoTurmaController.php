@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Pedagogico;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Secretaria\TurmaController;
 use App\Models\Secretaria\Turma;
 use App\User;
 use Illuminate\Http\Request;

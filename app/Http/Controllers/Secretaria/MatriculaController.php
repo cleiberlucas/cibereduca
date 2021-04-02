@@ -8,19 +8,17 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateMatricula;
 use App\Models\FormaPagamento;
 use App\Models\Secretaria\ContratoAtividadeExtraCurricular;
-use App\Models\Secretaria\CorpoContrato;
 use App\Models\Secretaria\Matricula;
 use App\Models\Secretaria\Pessoa;
 use App\Models\Secretaria\Turma;
-use App\Models\Secretaria\UserUnidadeEnsino;
 use App\Models\TipoDescontoCurso;
 use App\Models\SituacaoMatricula;
 use App\Models\TipoAtendimentoEspecializado;
-use App\Models\TipoTurma;
 use App\Models\UnidadeEnsino;
 use App\User;
-use PDF;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class MatriculaController extends Controller
 {
@@ -109,7 +107,8 @@ class MatriculaController extends Controller
         $dados = array_merge($dados, $sit); */
         //dd($request->fk_id_turma);
         try{
-            $this->repositorio->create($dados);
+            $matricula = $this->repositorio->create($dados);
+            Log::channel('secretaria_matricula')->info('Usuário '.Auth::id(). ' - Matrícula Cadastrar '.$matricula->id_matricula);
         } catch(\Throwable $qe) {
             return redirect()->back()->with('erro', 'Não foi possível gravar a matrícula. Possivelmente, o aluno já esteja matriculado nesta turma.');
         }
@@ -306,6 +305,7 @@ class MatriculaController extends Controller
         $request->merge($sit); */
 
         $matricula->where('id_matricula', $id)->update($request->except('_token', '_method'));
+        Log::channel('secretaria_matricula')->info('Usuário '.Auth::id(). ' - Matrícula Alterar '.$id);
 
         return redirect()->route('matriculas.index', $matricula->fk_id_turma);
     }

@@ -13,6 +13,7 @@ use App\Models\Pedagogico\TipoFrequencia;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use PhpParser\Node\Stmt\TryCatch;
 
 class FrequenciaController extends Controller
@@ -84,7 +85,9 @@ class FrequenciaController extends Controller
         $this->authorize('Frequência Alterar');
         //dd($request);
         $frequencia = $this->repositorio
-            ->select('tb_turmas_periodos_letivos.situacao',
+            ->select(
+                'data_aula',
+                'tb_turmas_periodos_letivos.situacao',
                 'id_matricula',
                 'fk_id_disciplina',
                 'tb_frequencias.fk_id_periodo_letivo'
@@ -103,7 +106,9 @@ class FrequenciaController extends Controller
         if ($frequencia->situacao == 0 )
             return redirect()->back()->with('erro', 'Período letivo fechado. Não é possível alterar a frequência.');
 
-        $frequencia_up = $this->repositorio->where('id_frequencia', $id)->update($request->except('_token', '_method', 'fk_id_turma', 'fk_id_periodo_letivo'));
+        $freq = $this->repositorio->where('id_frequencia', $id)->update($request->except('_token', '_method', 'fk_id_turma', 'fk_id_periodo_letivo'));
+
+        Log::channel('pedagogico_frequencia')->info('Usuário '.Auth::id(). ' - Frequência Alterar '.$id. ' - Data aula: '.$frequencia->data_aula. ' - Tipo Frequência: '.$request->fk_id_tipo_frequencia);  
         
         $dadosFrequencia = array(['fk_id_periodo_letivo' => $frequencia->fk_id_periodo_letivo, 
                                     'fk_id_matricula' => $frequencia->id_matricula,
@@ -137,7 +142,8 @@ class FrequenciaController extends Controller
             $frequencia['fk_id_user'] = $dados['fk_id_user'];
 
             /* gravando a frequencia de um aluno */
-            $this->repositorio->create($frequencia);    
+            $freq = $this->repositorio->create($frequencia);  
+            Log::channel('pedagogico_frequencia')->info('Usuário '.Auth::id(). ' - Frequência Cadastrar '.$freq->id_frequencia. ' - Data aula: '.$freq->data_aula. ' - Tipo Frequência: '.$freq->fk_id_tipo_frequencia);  
 
             /*gerando novo array com todos os alunos p gravar resultado aluno X PERIODO X DISCIPLINA*/
             $frequencias[$index] = $frequencia;
@@ -333,6 +339,8 @@ class FrequenciaController extends Controller
             ->where('fk_id_disciplina', $id_disciplina)
             ->where('data_aula', $data_aula)
             ->delete();
+
+            Log::channel('pedagogico_frequencia')->alert('Usuário '.Auth::id(). ' - Frequência Remover Turma '.$id_turma. ' - Data aula: '.$data_aula. ' - Disciplina: '.$id_disciplina);  
         
         //Atualizar o total de faltas dos alunos X período X disciplina
         $this->gravarFaltasAlunoPeriodoDisciplina($dadosFrequencias);

@@ -11,8 +11,8 @@ use App\Models\Secretaria\Turma;
 use App\Models\Secretaria\TurmaProfessor;
 use App\User;
 use PDF;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class ConteudoLecionadoController extends Controller
 {
@@ -59,7 +59,8 @@ class ConteudoLecionadoController extends Controller
         $dados = $request->all();
         $id_turma = $dados['fk_id_turma'];
        
-        $this->repositorio->create($dados);
+        $conteudo = $this->repositorio->create($dados);
+        Log::channel('pedagogico_conteudo_lecionado')->info('Usuário '.Auth::id(). ' - Conteúdo Cadastrar '.$conteudo->id_conteudo_lecionado.' - Turma '.$id_turma.' - Disciplina '.$dados['fk_id_disciplina']);
         
         $idUnidade = User::getUnidadeEnsinoSelecionada();
         $perfilUsuario = new User;        
@@ -100,6 +101,7 @@ class ConteudoLecionadoController extends Controller
             return redirect()->back();
       
         $conteudoLecionado->where('id_conteudo_lecionado', $id)->update($request->except('_token', '_method', 'fk_id_turma', 'id_periodo_letivo'));
+        Log::channel('pedagogico_conteudo_lecionado')->info('Usuário '.Auth::id(). ' - Conteúdo Alterar '.$id);
 
         $dados = $request->all();
         $id_turma = $dados['fk_id_turma'];
@@ -149,6 +151,8 @@ class ConteudoLecionadoController extends Controller
         $id_turma = $conteudoLecionado->turmaPeriodoLetivo->fk_id_turma;
         $id_periodo_letivo = $conteudoLecionado->turmaPeriodoLetivo->fk_id_periodo_letivo;
         $id_disciplina = $conteudoLecionado->fk_id_disciplina;
+
+        Log::channel('pedagogico_conteudo_lecionado')->alert('Usuário '.Auth::id(). ' - Conteúdo Remover '.$conteudoLecionado->id_conteudo_lecionado. ' - Data aula: '.$conteudoLecionado->data_aula. ' - Conteúdo removido: '.$conteudoLecionado->conteudo_lecionado);
 
         $conteudoLecionado->where('id_conteudo_lecionado', $id_conteudo_lecionado, )->delete(); 
 

@@ -14,6 +14,7 @@ use App\Models\Secretaria\Pessoa;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class FinanceiroController extends Controller
 {
@@ -239,7 +240,8 @@ class FinanceiroController extends Controller
                     return redirect()->back()->with('erro', 'Verifique o valor total da parcela.');
 
                // dd($insert);
-                $this->repositorio->create($insert);
+                $rec = $this->repositorio->create($insert);
+                Log::channel('financeiro_recebivel')->info('Usuário '.Auth::id(). ' - Recebível Cadastrar '.$rec->id_recebivel);
             }
         }
 
@@ -290,6 +292,8 @@ class FinanceiroController extends Controller
             return redirect()->back()->with('erro', 'Recebível não encontrado.');
 
         $recebivel->where('id_recebivel', $id)->update($request->except('_token', '_method', 'id_aluno'));
+
+        Log::channel('financeiro_recebivel')->info('Usuário '.Auth::id(). ' - Recebível Alterar '.$id. ' - Valor: '.$request['valor_principal']. ' - Desconto: '.$request['valor_desconto_principal']. ' - Parcela: '.$request['parcela']. ' - Data Venc: '.$request['data_vencimento']. ' - Valor Total '.$request['valor_total'] );
 
         return redirect()->route('financeiro.indexAluno', $request['id_aluno'])->with('sucesso', 'Recebível alterado com sucesso.');
     }
@@ -429,6 +433,7 @@ class FinanceiroController extends Controller
 
         try {
             $recebivel->where('id_recebivel', $id_recebivel)->delete();
+            Log::channel('financeiro_recebivel')->alert('Usuário '.Auth::id(). ' - Recebível Remover '.$id_recebivel. ' - Valor: '.$recebivel->valor_principal. ' - Desconto: '.$recebivel->valor_desconto_principal. ' - Parcela: '.$recebivel->parcela. ' - Data Venc: '.$recebivel->data_vencimento. ' - Valor Total '.$recebivel->valor_total );
             return true;     
         } catch (QueryException $qe) {
             //return redirect()->back()->with('error', 'Não foi possível excluir o recebível.');            

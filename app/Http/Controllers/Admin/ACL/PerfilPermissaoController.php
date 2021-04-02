@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Perfil;
 use App\Models\Permissao;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class PerfilPermissaoController extends Controller
 {
@@ -62,12 +64,19 @@ class PerfilPermissaoController extends Controller
         if (!$request->permissoes || count($request->permissoes) == 0){
             return redirect()
                     ->back()
-                    ->with('info', 'Escolha pelo menos uma permissão.');
+                    ->with('atencao', 'Escolha pelo menos uma permissão.');
         }
+
+        //Gerando log de permissões liberadas
+        $log = 'Usuário '.Auth::id(). ' - Perfil Permissão Cadastrar - Perfil: '.$id_perfil. ' - Permissões:';        
+        foreach($request->permissoes as $perm){
+            $log .= ' # '.$perm;
+        }
+        Log::channel('perfil_permissao')->info($log);
 
         $perfil->permissoes()->attach($request->permissoes);
 
-        return redirect()->route('perfis.permissoes', $perfil->id_perfil);
+        return redirect()->route('perfis.permissoes', $perfil->id_perfil)->with('sucesso', 'Permissão(ões) adicionada(s) com sucesso.');
     }
 
     public function removerPermissoesPerfil($id_perfil, $id_permissao)
@@ -80,7 +89,8 @@ class PerfilPermissaoController extends Controller
             return redirect()->back();
 
         $perfil->permissoes()->detach($permissao);
+        Log::channel('perfil_permissao')->info('Usuário '.Auth::id(). ' - Perfil Permissão Remover - Perfil: '.$id_perfil. ' - Permissão: '.$id_permissao);   
 
-        return redirect()->route('perfis.permissoes', $perfil->id_perfil);
+        return redirect()->route('perfis.permissoes', $perfil->id_perfil)->with('sucesso', 'Permissão removida com sucesso.');
     }
 }

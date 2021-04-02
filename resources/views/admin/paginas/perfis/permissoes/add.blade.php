@@ -15,7 +15,8 @@
         </li>
     </ol>
 
-    <h1>Adicionar Permissões ao Perfil <strong>{{$perfil->perfil}}</strong> 
+    <h3>Adicionar Permissões ao Perfil <strong>{{$perfil->perfil}}</strong> </h3>
+         @include('admin.includes.alerts')
         
 @stop
 
@@ -54,8 +55,6 @@
                             @endforeach
                             <tr>
                                 <td colspan=500>
-                                    @include('admin.includes.alerts')
-
                                     <button type="submit" class="btn btn-success">Adicionar</button>
                                 </td>
                             </tr>
@@ -72,4 +71,9 @@
                 </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function(){
+              $(".alert").slideDown(300).delay(5000).slideUp(300);
+        });          
+    </script>
 @stop

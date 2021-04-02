@@ -15,6 +15,7 @@ use App\Models\UnidadeEnsino;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class PortalAlunoController extends Controller
 {   
@@ -244,6 +245,9 @@ class PortalAlunoController extends Controller
             ->orderBy('id_turma', 'desc')
             ->get();
         }
+
+        Log::channel('portal_aluno')->info('Usuário '.Auth::id().' - Acesso Outros');
+
         return view('portal.paginas.outros.index',
             compact('matriculas'));
     }
@@ -284,6 +288,8 @@ class PortalAlunoController extends Controller
             ->orderBy('parcela')
             ->paginate(20);
 
+        Log::channel('portal_aluno')->info('Usuário '.Auth::id().' - Acesso Recebíveis aluno: '.$id_aluno);
+
         return view('portal.paginas.financeiro.recebiveis', 
             compact('aluno', 'recebiveis')
         );
@@ -322,6 +328,8 @@ class PortalAlunoController extends Controller
             ->groupBy('data_recebimento')            
             ->paginate(25);
 
+        Log::channel('portal_aluno')->info('Usuário '.Auth::id().' - Acesso Boletos aluno: '.$id_aluno);
+
         return view('portal/paginas/financeiro/boletos', 
             compact('boletos', 'aluno'));
     }
@@ -344,6 +352,8 @@ class PortalAlunoController extends Controller
 
         if (count($documentosEscola) == 0)
             return redirect()->back()->with('info', 'Nenhum documento gerado para este aluno.');
+
+        Log::channel('portal_aluno')->info('Usuário '.Auth::id().' - Acesso Declarações matrícula: '.$id_matricula);
 
         return view('portal.paginas.declaracoes.declaracoes', [
             'documentosEscola' => $documentosEscola,
@@ -372,6 +382,9 @@ class PortalAlunoController extends Controller
 
         $avaliacoes = new Nota;
         $avaliacoes = $avaliacoes->getNotasPortalAluno($id_matricula);
+
+        Log::channel('portal_aluno')->info('Usuário '.Auth::id().' - Acesso Notas matrícula: '.$id_matricula);
+
         return view('portal.paginas.rendimento.notas',
             compact('aluno','avaliacoes'));
     }
@@ -394,6 +407,9 @@ class PortalAlunoController extends Controller
 
         $frequencias = new ResultadoAlunoPeriodo;
         $frequencias = $frequencias->getResultadosPortalAluno($id_matricula);
+
+        Log::channel('portal_aluno')->info('Usuário '.Auth::id().' - Acesso Frequências matrícula: '.$id_matricula);
+
         return view('portal.paginas.rendimento.frequencias',
             compact('aluno','frequencias'));
     }
@@ -404,6 +420,5 @@ class PortalAlunoController extends Controller
         session()->put('id_unidade_ensino', $request['unidadeensino']);
 
         return redirect()->back();
-    }
-    
+    }    
 }

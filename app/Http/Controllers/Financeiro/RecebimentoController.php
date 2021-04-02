@@ -15,6 +15,7 @@ use App\User;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use PhpParser\Node\Stmt\TryCatch;
 
 class RecebimentoController extends Controller
@@ -189,6 +190,8 @@ class RecebimentoController extends Controller
 
         try {
             $recebimento->where('fk_id_recebivel', $fk_id_recebivel)->delete();
+
+            Log::channel('financeiro_recebimento')->alert('Usuário '.Auth::id(). ' - Recebimento Remover '.$fk_id_recebivel. ' - Valor recebido: '.$recebimento->valor_recebido. ' - Data: '.$recebimento->data_recebimento. ' - Código: '.$recebimento->codigo_validacao);
 
             //Remover acréscimos
             $acrescimos = new AcrescimoController(new Acrescimo);

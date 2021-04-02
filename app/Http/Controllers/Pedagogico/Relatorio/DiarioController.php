@@ -14,13 +14,17 @@ use App\Models\Pedagogico\Nota;
 use App\Models\Pedagogico\RecuperacaoFinal;
 use App\Models\Pedagogico\ResultadoAlunoPeriodo;
 use App\Models\Pedagogico\ResultadoFinal;
+use App\Models\Perfil;
 use App\Models\PeriodoLetivo;
 use App\Models\Secretaria\Disciplina;
 use App\Models\Secretaria\Matricula;
 use App\Models\Secretaria\Turma;
 use App\Models\UnidadeEnsino;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 
 class DiarioController extends Controller
@@ -170,6 +174,12 @@ class DiarioController extends Controller
             $disciplinas = $disciplinas->disciplinasTurma($request->turma);
             
             $periodosLetivos = $periodosLetivos->getPeriodosLetivosAno($request->anoLetivo);
+
+            $usuario = new User();
+            $perfilUsuario = $usuario->getPerfilUsuario(Auth::id())->fk_id_perfil;
+            //dd($perfilUsuario);
+            if ($perfilUsuario == 6 or $perfilUsuario == 7)
+                Log::channel('portal_aluno')->info('Usuário '.Auth::id().' - Boletim Ver matrícula: '.$request->fk_id_matricula );
 
             //dd($periodosLetivos);
             return view('pedagogico.paginas.turmas.relatorios.boletim', [

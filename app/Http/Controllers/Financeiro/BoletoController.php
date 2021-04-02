@@ -20,6 +20,7 @@ use Eduardokum\LaravelBoleto\Pessoa as LaravelBoletoPessoa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class BoletoController extends Controller
 {
@@ -405,7 +406,9 @@ class BoletoController extends Controller
             //dd($boleto);
 
             //Lançando boleto na base
-            $boletoGravado = $this->repositorio->create($boleto);           
+            $boletoGravado = $this->repositorio->create($boleto);        
+            
+            Log::channel('financeiro_boleto')->info('Usuário '.Auth::id().' - Boleto Cadastrar '.$boletoGravado->id_boleto);
 
             foreach ($recebiveis as $recebivel){
                 $dadosBoletoRecebivel = array(
@@ -614,6 +617,8 @@ class BoletoController extends Controller
             ->where('id_boleto', $id_boleto)
             ->where('fk_id_situacao_registro', '!=', '4') /* não permite excluir boleto pago */
             ->update(['fk_id_situacao_registro' => '5']);
+
+            Log::channel('financeiro_boleto')->info('Usuário '.Auth::id().' - Boleto Remover-exclusão lógica: '.$id_boleto);
 
         } catch (\Throwable $th) {
              return redirect()->back()->with('erro', 'Não foi possível excluir o boleto.');

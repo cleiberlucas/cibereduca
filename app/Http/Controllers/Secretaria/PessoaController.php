@@ -15,6 +15,8 @@ use App\Models\TipoDocIdentidade;
 use App\Models\UnidadeEnsino;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class PessoaController extends Controller
@@ -121,6 +123,7 @@ class PessoaController extends Controller
         //Gravando pessoa
         try {            
             $insertPessoa = Pessoa::create($dados);
+            Log::channel('secretaria_pessoa')->info('Usuário '.Auth::id(). ' - Pessoa Cadastrar '.$insertPessoa->id_pessoa);
         } catch (\Throwable $th) {
             //throw $th;
             return back()->withInput()->with('atencao', 'Erro ao gravar. Verifique se já existe o cadastro desta pessoa.');
@@ -193,6 +196,7 @@ class PessoaController extends Controller
         try {
             //code...
             $pessoa->where('id_pessoa', $id)->delete();
+            Log::channel('secretaria_pessoa')->info('Usuário '.Auth::id(). ' - Pessoa Remover '.$id);
         } catch (\Throwable $th) {
             //throw $th;
             return redirect()->back()->with('atencao', 'Não é possível excluir este cadastro. Alguma informação pode estar vinculada a registros anteriores.');
@@ -260,6 +264,7 @@ class PessoaController extends Controller
         }
 
         $pessoa->update($dados);
+        Log::channel('secretaria_pessoa')->info('Usuário '.Auth::id(). ' - Pessoa Alterar '.$id);
 
         //Gravando endereço
         //somente para responsável

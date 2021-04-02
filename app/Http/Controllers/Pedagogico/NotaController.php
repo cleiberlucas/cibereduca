@@ -15,7 +15,7 @@ use App\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class NotaController extends Controller
 {
@@ -139,6 +139,7 @@ class NotaController extends Controller
             return redirect()->back();
       
         $nota->where('id_nota_avaliacao', $id)->update($request->except('_token', '_method'));
+        Log::channel('pedagogico_nota')->info('Usuário '.Auth::id(). ' - Nota Alterar '.$id. ' - Matrícula: '. $nota->fk_id_matricula. ' - Avaliação: '.$nota->fk_id_avaliacao. ' - Nota: '.$request->nota);  
 
         //$periodoLetivo = $this->repositorio->getPeriodoLetivo($id, $nota->fk_id_matricula, $nota->matricula->fk_id_turma, $nota->avaliacao->fk_id_periodo_letivo);
 
@@ -202,7 +203,8 @@ class NotaController extends Controller
             if (count($notas) > 0)
             {
                 try {
-                    $this->repositorio->create($notas); 
+                    $nt = $this->repositorio->create($notas); 
+                    Log::channel('pedagogico_nota')->info('Usuário '.Auth::id(). ' - Nota Cadastrar '.$nt->id_nota_avaliacao. ' - Matrícula: '. $notas['fk_id_matricula']. ' - Avaliação: '.$notas['fk_id_avaliacao']. ' - Nota: '.$notas['nota']);  
 
                 } catch (QueryException $qe) {
                     $notaAluno = $this->repositorio->where('fk_id_matricula', $notas['fk_id_matricula'])->first();
@@ -523,7 +525,8 @@ class NotaController extends Controller
 
         $id_matricula = $notaAluno->fk_id_matricula;
 
-        $notaAluno= $this->repositorio->where('id_nota_avaliacao', $id_nota, )->delete();        
+        $notaAluno2 = $this->repositorio->where('id_nota_avaliacao', $id_nota, )->delete();        
+        Log::channel('pedagogico_nota')->alert('Usuário '.Auth::id(). ' - Nota Remover '.$notaAluno->id_nota_avaliacao. ' - Matrícula: '. $notaAluno['fk_id_matricula']. ' - Avaliação: '.$notaAluno->fk_id_avaliacao. ' - Nota: '.$notaAluno->nota);  
 
         //Atualizar a nota média do aluno X período X disciplina
         $this->gravarNotasAlunoPeriodoDisciplina($dadosNota);

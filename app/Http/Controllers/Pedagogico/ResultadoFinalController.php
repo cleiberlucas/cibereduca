@@ -14,6 +14,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ResultadoFinalController extends Controller
 {
@@ -169,7 +170,8 @@ class ResultadoFinalController extends Controller
             if (count($resultadosFinais) > 0)
             {
                 try {
-                    $this->repositorio->create($resultadosFinais); 
+                    $result = $this->repositorio->create($resultadosFinais); 
+                    Log::channel('pedagogico_resultado_final')->info('Usuário '.Auth::id(). ' - Resultado Final Cadastrar '.$result->id_resultado_final. ' - Matrícula: '.  $resultadosFinais['fk_id_matricula']. ' - Resultado final: '.$resultadosFinais['fk_id_tipo_resultado_final']);
 
                 } catch (QueryException $qe) {
                     $resultadoAluno = $this->repositorio->where('fk_id_matricula', $resultadosFinais['fk_id_matricula'])->first();
@@ -213,6 +215,8 @@ class ResultadoFinalController extends Controller
             return redirect()->back()->with('erro', 'Resultado final não encontrado');
       
         $resultadoFinal->where('id_resultado_final', $id)->update($request->except('_token', '_method', 'id_turma'));
+        
+        Log::channel('pedagogico_resultado_final')->info('Usuário '.Auth::id(). ' - Resultado Final Alterar '.$id. ' - Matrícula: '.  $resultadoFinal->fk_id_matricula. ' - Resultado final: '.$request['fk_id_tipo_resultado_final']);    
 
         return $this->index($request->id_turma, 'Resultado Final alterado com sucesso.');
     }

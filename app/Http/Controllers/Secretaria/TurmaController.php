@@ -10,7 +10,9 @@ use App\Models\TipoTurma;
 use App\Models\Turno;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class TurmaController extends Controller
 {
@@ -91,6 +93,7 @@ class TurmaController extends Controller
     public function show($id)
     {
         $this->authorize('Turma Ver');
+        
         $turma = $this->repositorio
             ->join('tb_tipos_turmas', 'fk_id_tipo_turma', 'id_tipo_turma')
             ->join('tb_anos_letivos', 'tb_tipos_turmas.fk_id_ano_letivo', '=', 'tb_anos_letivos.id_ano_letivo')
