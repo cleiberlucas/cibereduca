@@ -35,8 +35,11 @@ class RemessaController extends Controller
             ->orderBy('data_remessa', 'desc')
             ->paginate(25);
 
+        $boletosLancados = new Boleto;
+        $boletosLancados = $boletosLancados->getCountBoletoSituacao(1);
+            
         return view('financeiro.paginas.remessas.index',
-            compact('remessas'));
+            compact('remessas', 'boletosLancados'));
     }
 
     public function gerarRemessaBancoob()

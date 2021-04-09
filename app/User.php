@@ -158,4 +158,22 @@ class User extends Authenticatable
     {
         return in_array($this->email, config('acl.admins'));
     }
+
+    /**
+     * Retorna lista de usuários do colégio
+     * Não lista pais e alunos
+     * para carregar combo
+     * @return array
+     */
+    public function getUsuariosColegio()
+    {
+        return $this->select('id', 'name')
+        ->join('tb_usuarios_unidade_ensino', 'fk_id_user', 'id')
+        ->where('fk_id_unidade_ensino', '=', session()->get('id_unidade_ensino'))
+        ->where('situacao_vinculo', '1')
+        ->where('fk_id_perfil', '!=', 6)
+        ->where('fk_id_perfil', '!=', 7)
+        ->orderBy('name')        
+        ->get();
+    }
 }

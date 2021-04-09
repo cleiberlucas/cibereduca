@@ -16,11 +16,25 @@
 @section('content')
     <div class="container-fluid">
         @include('admin.includes.alerts')
+        <div class="card">
         <div class="card-header">
-            <h4>Remessas geradas</h4> 
-            <br>
-            <a href="{{ route('remessa.bancoob.gerar') }}" class="btn btn-success"><i class="fas fa-plus-square"></i> Gerar remessa</a>
-            &nbsp;&nbsp;&nbsp;* Todos os boletos, na situação "lançado", serão incluídos na remessa.
+            <div class="row">
+                <div class="col-sm-8 col-xs-2">
+                    <h4>Remessas geradas</h4> 
+                    <br>
+                    <a href="{{ route('remessa.bancoob.gerar') }}" class="btn btn-success"><i class="fas fa-plus-square"></i> Gerar remessa</a>
+                    &nbsp;&nbsp;&nbsp;* Todos os boletos, na situação "lançado", serão incluídos na remessa.
+                </div>
+                <div class="col-sm-4 col-xs-2">
+                    <br>
+                    @if ($boletosLancados == 0)
+                        <strong>Não há novos boletos lançados.</strong>
+                    @else
+                        <strong>Há <?=$boletosLancados?> boletos lançados para geração de remessa.</strong>
+                    @endif
+                </div>
+            </div>
+        </div>
             
             {{-- <form action="{{ route('recebivel.aluno.search') }}" method="POST" class="form form-inline">
                 @csrf

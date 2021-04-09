@@ -34,13 +34,7 @@ class RecebivelRelatorioController extends Controller
         $situacoesRecebivel = TipoSituacaoRecebivel::get();
 
         $usuarios = new User;
-        $usuarios = $usuarios
-            ->select('id', 'name')
-            ->join('tb_usuarios_unidade_ensino', 'fk_id_user', 'id')
-            ->where('fk_id_unidade_ensino', '=', session()->get('id_unidade_ensino'))
-            ->where('situacao_vinculo', '1')
-            ->orderBy('name')        
-            ->get();
+        $usuarios = $usuarios->getUsuariosColegio();            
 
         $formasPagamento = new FormaPagamento;
         $formasPagamento = $formasPagamento->getFormasPagamento();

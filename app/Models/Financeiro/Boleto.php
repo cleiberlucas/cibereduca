@@ -59,7 +59,8 @@ class Boleto extends Model
             ->get();
     }
 
-    function getSituacaoBoletoSicoob(){
+    function getSituacaoBoletoSicoob()
+    {
         //situações de boleto
         //convertendo as situações do boleto do Sicoob para o Cibereduca
         $situacoesBoleto = Array(
@@ -68,5 +69,15 @@ class Boleto extends Model
             '06' => 4, // pago
         );
         return $situacoesBoleto;
+    }
+
+    /**
+     * Retorna a quantidade de boletos em uma situação
+     * @param situacao int
+     * @return qtd int
+     */
+    function getCountBoletoSituacao($id_situacao)
+    {
+        return $this->where('fk_id_situacao_registro', $id_situacao)->count();
     }
 }
