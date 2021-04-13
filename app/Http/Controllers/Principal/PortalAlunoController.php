@@ -138,7 +138,10 @@ class PortalAlunoController extends Controller
     public function indexFinanceiro()
     {   
         $perfil = new User;
-        $perfil = $perfil->getPerfilUsuario(Auth::id());            
+        $perfil = $perfil->getPerfilUsuario(Auth::id());     
+        
+        if(!$perfil)
+            return redirect()->back()->with('erro', 'Faça login novamente.');
         
         $matriculas = new Matricula;
         //se for responsavel

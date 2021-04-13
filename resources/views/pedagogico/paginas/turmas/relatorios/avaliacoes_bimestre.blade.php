@@ -58,26 +58,16 @@
             
             <div class="row">
                 <div class="col-sm-5">
-                    <h6>{{$turma->nome_turma}} - {{$turma->sub_nivel_ensino}} - {{$turma->descricao_turno}}</h6>
-                    
-                    <h6>{{$periodoLetivo->periodo_letivo}}/{{$periodoLetivo->anoLetivo->ano}}</h6>
-                    
+                    <h6>{{$turma->nome_turma}} - {{$turma->sub_nivel_ensino}} - {{$turma->descricao_turno}}</h6>                    
+                    <h6>{{$periodoLetivo->periodo_letivo}}/{{$periodoLetivo->anoLetivo->ano}}</h6>                    
                     <h6>Disciplina: {{$disciplina->disciplina}}</h6>
                 </div>
-            </div>            
-           
+            </div>                       
             <div class="row mt-3 text-center ">
-
-                <div class="larg-div-n  border border-dark">
-                    <strong>Nº</strong>
-                </div>
-
-                <div class="col-sm-5 border border-dark">
-                    <strong>Alunos</strong>
-                </div>
+                <div class="larg-div-n  border border-dark"><strong>Nº</strong></div>
+                <div class="col-sm-5 border border-dark"><strong>Alunos</strong></div>
                 {{-- imprimindo tipos de avaliações --}}
-                @foreach ($avaliacoes as $avaliacao)
-                    
+                @foreach ($avaliacoes as $avaliacao)                    
                         @if ($disciplina->id_disciplina == $avaliacao->fk_id_disciplina)
                             <div class="  foo font-cabecalho  border border-dark" > 
                             {{$avaliacao->tipo_avaliacao}}
@@ -86,105 +76,69 @@
                         </div>  
                         @endif                        
                                                   
-                @endforeach
-                
-                <div class="foo font-cabecalho  border border-dark" style="width: 50px;">
-                    Média
-                </div>
-
-                <div class="foo font-cabecalho  border border-dark" style="width: 50px;">
-                    Média Após Recuperação
-                </div>
-
-                <div class="foo font-cabecalho  border border-dark" style="width: 50px;">
-                    Faltas Bimestre
-                </div>
+                @endforeach                
+                <div class="foo font-cabecalho  border border-dark" style="width: 50px;">Média</div>
+                <div class="foo font-cabecalho  border border-dark" style="width: 50px;">Média Após Recuperação</div>
+                <div class="foo font-cabecalho  border border-dark" style="width: 50px;">Faltas Bimestre</div>
             </div>
             @foreach ($matriculas as $index => $matricula)
                 <div class="row py-0 " >
                     <div class="larg-div-n font-cabecalho  pl-2 pr-1 text-center border border-dark "> {{str_pad($index+1, 2, '0', STR_PAD_LEFT)}} </div>
                         <div class="font-cabecalho col-sm-5  border border-dark "> {{$matricula->nome}} </div>                    
                         {{-- varrendo array p imprimir nota da avaliação de um aluno --}}
-                        @foreach ($avaliacoes as $avaliacao)
-                            
-                            @if($disciplina->id_disciplina == $avaliacao->fk_id_disciplina)
-                                <div class="font-cabecalho border border-dark text-center" style="width: 50px;">
-                                <?php
-                                    $mediaAprovaAvaliacao = $mediaAprovacao * $avaliacao->valor_avaliacao / 100;
-                                ?>
-                            
-                                @foreach ($notas as $nota)                           
-                                    @if ($nota->fk_id_avaliacao == $avaliacao->id_avaliacao
-                                        and $nota->fk_id_matricula == $matricula->id_matricula)
-                                        @if ($nota->nota > 0)
-                                            @if ($nota->nota >= $mediaAprovaAvaliacao)
-                                                {{number_format($nota->nota, 1, ',', '.')}}
-                                            @else
-                                                <font color="red">{{number_format($nota->nota, 1, ',', '.')}}</font>
-                                            @endif
-                                        @endif
-                                        @break;
-                                    @endif                                                
-                                @endforeach
-                                </div>    
-                            @endif   
-                            
-                        @endforeach
-                    
-                        {{-- varrendo array p imprimir media e falta de um aluno --}}
-                        @foreach ($resultados as $resultado)
-                            @if ($resultado->fk_id_matricula == $matricula->id_matricula
-                                and $disciplina->id_disciplina == $resultado->fk_id_disciplina)
-                                <div class="font-cabecalho  border border-dark text-center " style="width: 50px;">
-                                    @if ($resultado->nota_media > 0)
-                                        @if($resultado->nota_media >= $mediaAprovacao)
-                                            <strong> {{number_format($resultado->nota_media, 1, ',', '.')}} </strong> 
-                                        @else
-                                            <font color="red"><strong> {{number_format($resultado->nota_media, 1, ',', '.')}} </strong> </font>
-                                        @endif
-                                    @endif
-                                </div>            
-                                <div class="font-cabecalho  border border-dark text-center" style="width: 50px;"> </div>            
-                                <div class="font-cabecalho  border border-dark text-center" style="width: 50px;">{{$resultado->total_faltas}} </div>
-                                @break;
-                            @endif
-                            
-                        @endforeach
-                    </div>
-
+                        <?php
+                        foreach ($avaliacoes as $avaliacao){                           
+                            if($disciplina->id_disciplina == $avaliacao->fk_id_disciplina){
+                                echo '<div class="font-cabecalho border border-dark text-center" style="width: 50px;">';
+                                $mediaAprovaAvaliacao = $mediaAprovacao * $avaliacao->valor_avaliacao / 100;
+                                foreach ($notas as $nota){                        
+                                    if ($nota->fk_id_avaliacao == $avaliacao->id_avaliacao and $nota->fk_id_matricula == $matricula->id_matricula){
+                                        if ($nota->nota > 0){
+                                            if ($nota->nota >= $mediaAprovaAvaliacao)
+                                                echo number_format($nota->nota, 1, ',', '.');
+                                            else
+                                                echo '<font color="red">{{number_format($nota->nota, 1, ',', '.')}}</font>';                                            
+                                        }
+                                        break;
+                                    }
+                                }
+                                echo '</div>';
+                            }   
+                        }                    
+                        /* varrendo array p imprimir media e falta de um aluno */
+                        foreach ($resultados as $resultado){
+                            if ($resultado->fk_id_matricula == $matricula->id_matricula and $disciplina->id_disciplina == $resultado->fk_id_disciplina){
+                                echo '<div class="font-cabecalho  border border-dark text-center " style="width: 50px;">';
+                                    if ($resultado->nota_media > 0){
+                                        if($resultado->nota_media >= $mediaAprovacao)
+                                            echo '<strong> '.number_format($resultado->nota_media, 1, ',', '.').'</strong>';
+                                        else
+                                            echo '<font color="red"><strong> '.number_format($resultado->nota_media, 1, ',', '.').'</strong> </font>';                                        
+                                    }
+                                echo '</div>';
+                                echo '<div class="font-cabecalho  border border-dark text-center" style="width: 50px;"> </div>';
+                                echo '<div class="font-cabecalho  border border-dark text-center" style="width: 50px;">'.$resultado->total_faltas.'</div>';
+                                break;
+                            }                            
+                        }
+                    echo '</div>';
+                    ?>
                 @endforeach {{-- fim matriculas --}}
-
+                
                 <div class="row mt-4">
-                    <div class="col-sm-5 text-center">
-                        ________ Aulas previstas
-                    </div>
-                    <div class="col-sm-5 text-center">
-                        ________ Aulas dadas
-                    </div>
+                    <div class="col-sm-5 text-center">________ Aulas previstas</div>
+                    <div class="col-sm-5 text-center">________ Aulas dadas</div>
                 </div>
-
                 <div class="row mt-4">
-                    <div class="col-sm-5 text-center">
-                        _________________________________________________
-                        <br>
-                        Professor(a)
-                    </div>
-                    <div class="col-sm-5 text-center">
-                        _________________________________________________
-                        <br>
-                        Coordenador(a)
-                    </div>
+                    <div class="col-sm-5 text-center">_________________________________________________<br>
+                        Professor(a)</div>
+                    <div class="col-sm-5 text-center">_________________________________________________<br>
+                        Coordenador(a)</div>
                 </div>
             </div>
-        
-            
             <br><br><br><br><br><br><br><br><br><br><br><br><br>
-
-        
-        @include('secretaria.paginas._partials.rodape_redeeduca')
-            
-        <div style="page-break-after: always"></div>         
-    
+        @include('secretaria.paginas._partials.rodape_redeeduca')            
+        <div style="page-break-after: always"></div>             
         @endforeach            
     </div>
     </body>

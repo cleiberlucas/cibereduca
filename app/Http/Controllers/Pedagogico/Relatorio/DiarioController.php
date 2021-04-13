@@ -584,6 +584,7 @@ class DiarioController extends Controller
                 ->where('fk_id_tipo_turma', $turma->fk_id_tipo_turma)                
                 ->orderBy('tipo_avaliacao')
                 ->get();
+            //dd($avaliacoes);
 
             $notas = Nota::   
                 select('fk_id_avaliacao', 'fk_id_matricula', 'nota')         
@@ -591,6 +592,7 @@ class DiarioController extends Controller
                 ->where('fk_id_tipo_turma', $turma->fk_id_tipo_turma)
                 ->where('fk_id_periodo_letivo', $request->periodo)                
                 ->get();
+            //dd($notas);
 
             $resultados = new ResultadoAlunoPeriodo;
             $resultados = $resultados 
@@ -599,8 +601,9 @@ class DiarioController extends Controller
                 ->where('fk_id_turma', $request->turma)            
                 ->where('tb_resultados_alunos_periodos.fk_id_periodo_letivo', $request->periodo)                        
                 ->get();
-
+            
             //dd($resultados);
+            
             return view('pedagogico.paginas.turmas.relatorios.avaliacoes_bimestre', [
                 'unidadeEnsino' => $unidadeEnsino,
                 'periodoLetivo' => $periodoLetivo,
