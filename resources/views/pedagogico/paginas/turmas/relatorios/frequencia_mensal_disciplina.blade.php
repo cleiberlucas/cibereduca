@@ -19,11 +19,11 @@
         font-size: 20px;
     }
     html {
-        height: 100%;
+        height: 98%;
     }
 
     body {
-        min-height: 100%;
+        min-height: 98%;
         display: grid;
         grid-template-rows: 1fr auto;
     }
@@ -36,8 +36,12 @@
 </style>
 
 <body>
+    <div class="container-fluid">
+        <div class="container">
+            @include('secretaria.paginas._partials.cabecalho_redeeduca')
+        
     {{-- início tabela --}}
-    
+    <br>
     <table border=1 cellspacing=0 cellpadding=2 >
            
         {{-- cabecalho ficha de frequencia mensal --}}
@@ -97,27 +101,8 @@
         </tr>
     
     </table>{{-- fim tabela --}}
-
-   
-    <footer class="footer">        
-        <div class="row my-0 py-0 mr-0 ">            
-            <div class="col-sm-11 col-xs-2 ml-5 my-0 py-0 text-right">
-                <font size="1px">CiberEduca - Plataforma de Gestão Escolar</font>
-            </div>         
-        </div>
-      
-        <div class="row mx-0 my-0 py-0">
-            <div class="col-sm-12 text-center my-0 py-0 mx-0">        
-                <img src="/vendor/adminlte/dist/img/rodape.jpg" width="100%" height="90%" alt="logo">
-            </div>
-        </div>
-        {{-- <div class="row my-0">
-            <div class="col-sm-12 col-xs-2 ml-5 my-0 py-0" align="center">
-                <font size="1px">CiberSys - Sistemas Inteligentes</font>
-            </div>            
-        </div> --}}
-
-    </footer> 
-
+    </div>
+</div>
+    @include('secretaria.paginas._partials.rodape_redeeduca')       
 </body>
 </html>

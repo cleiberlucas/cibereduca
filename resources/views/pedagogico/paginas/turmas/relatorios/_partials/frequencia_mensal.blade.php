@@ -1,10 +1,10 @@
 {{-- Cabeçalho da ficha de frequencia mensal --}}
-<tr>
-    <td colspan=26 align="center">
+{{-- <tr>
+    <td colspan=26 align="center"> --}}
         {{-- <strong>{{mb_strToUpper ($unidadeEnsino->nome_fantasia)}}</strong> --}}
-        <img src="/vendor/adminlte/dist/img/cabecalho.jpg" width="100%" height="80%" alt="logo"> 
+        {{-- <img src="/vendor/adminlte/dist/img/cabecalho.jpg" width="100%" height="80%" alt="logo"> 
     </td>
-</tr>
+</tr> --}}
 <tr>
     <td colspan=2>            
         <strong>{{$turma->ano}} - {{$turma->nome_turma}}</strong>
