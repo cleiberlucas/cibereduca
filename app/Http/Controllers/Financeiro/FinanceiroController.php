@@ -433,7 +433,8 @@ class FinanceiroController extends Controller
 
         try {
             $recebivel->where('id_recebivel', $id_recebivel)->delete();
-            Log::channel('financeiro_recebivel')->alert('Usuário '.Auth::id(). ' - Recebível Remover '.$id_recebivel. ' - Valor: '.$recebivel->valor_principal. ' - Desconto: '.$recebivel->valor_desconto_principal. ' - Parcela: '.$recebivel->parcela. ' - Data Venc: '.$recebivel->data_vencimento. ' - Valor Total '.$recebivel->valor_total );
+            //Log::channel('financeiro_recebivel')->alert('Usuário '.Auth::id(). ' - Recebível Remover '.$id_recebivel. ' - Valor: '.$recebivel->valor_principal. ' - Desconto: '.$recebivel->valor_desconto_principal. ' - Parcela: '.$recebivel->parcela. ' - Data Venc: '.$recebivel->data_vencimento. ' - Valor Total '.$recebivel->valor_total );
+            Log::channel('financeiro_recebivel')->alert('Usuário '.Auth::id(). ' - Recebível Remover '.$recebivel);
             return true;     
         } catch (QueryException $qe) {
             //return redirect()->back()->with('error', 'Não foi possível excluir o recebível.');            
