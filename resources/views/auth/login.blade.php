@@ -106,7 +106,7 @@
     
     <div class="row justify-content-center">
         <div class="">
-            <a href="cibereduca.cibersys.com.br"> 
+            {{-- <a href="http://cibereduca.cibersys.com.br">  --}}
             CiberSys - Sistemas Inteligentes </a>
         </div>
     </div>
