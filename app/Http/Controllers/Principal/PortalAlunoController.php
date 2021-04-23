@@ -26,6 +26,7 @@ class PortalAlunoController extends Controller
 
     public function indexRendimento()
     {   
+        $this->authorize('Nota Ver');   
         $perfil = new User;
         $perfil = $perfil->getPerfilUsuario(Auth::id());            
         
@@ -82,6 +83,7 @@ class PortalAlunoController extends Controller
 
     public function indexDeclaracoes()
     {   
+        $this->authorize('Documento Escola Ver');   
         $perfil = new User;
         $perfil = $perfil->getPerfilUsuario(Auth::id());            
         
@@ -137,6 +139,7 @@ class PortalAlunoController extends Controller
 
     public function indexFinanceiro()
     {   
+        $this->authorize('Boleto Ver');   
         $perfil = new User;
         $perfil = $perfil->getPerfilUsuario(Auth::id());     
         
@@ -198,6 +201,7 @@ class PortalAlunoController extends Controller
 
     public function indexOutros()
     {   
+        $this->authorize('Matrícula Contrato Ver');   
         $perfil = new User;
         $perfil = $perfil->getPerfilUsuario(Auth::id());            
         
@@ -259,6 +263,7 @@ class PortalAlunoController extends Controller
      * Lista recebíveis de um aluno
      */
     public function indexRecebiveis($id_aluno, $hash){
+        $this->authorize('Recebível Ver');   
         if (!decodificarHash($id_aluno, $hash))
             return redirect()->back()->with('erro', 'Aluno não encontrado.');
                     
@@ -299,6 +304,7 @@ class PortalAlunoController extends Controller
     }
 
     public function indexBoletos($id_aluno, $hash){
+        $this->authorize('Boleto Ver');   
         if (!decodificarHash($id_aluno, $hash))
             return redirect()->back()->with('erro', 'Aluno não encontrado.');
 
@@ -338,6 +344,7 @@ class PortalAlunoController extends Controller
     }
 
     public function declaracoes($id_matricula){        
+        $this->authorize('Documento Escola Ver');   
         $perfil = new User;
         $perfil = $perfil->getPerfilUsuario(Auth::id()); 
 
@@ -365,6 +372,7 @@ class PortalAlunoController extends Controller
     }
 
     public function indexNotas($id_matricula, $hash){
+        $this->authorize('Nota Ver');   
         if (!decodificarHash($id_matricula, $hash))
             return redirect()->back()->with('erro',  'Notas não encontradas.');
 
@@ -393,6 +401,7 @@ class PortalAlunoController extends Controller
     }
 
     public function indexFrequencias($id_matricula){
+        $this->authorize('Frequência Ver');   
         $aluno = new Pessoa;
         $aluno = $aluno
             ->select(
