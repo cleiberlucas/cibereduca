@@ -1,11 +1,13 @@
 @extends('adminlte::page')
 
-@section('title_postfix', ' Não Autorizado' )
+@section('title_postfix', ' - Não Autorizado' )
 
 @section('content')
 
-<div>
-    <h2>Você não possui acesso a esta operação.</h2>
+<div class="container">
+    <div class="alert alert-info">
+        <h3>Você não possui acesso a esta operação.</h3>
+    </div>
 </div>
 
 @endsection
