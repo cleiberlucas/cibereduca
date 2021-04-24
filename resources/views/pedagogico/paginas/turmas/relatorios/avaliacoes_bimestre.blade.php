@@ -97,7 +97,7 @@
                                             if ($nota->nota >= $mediaAprovaAvaliacao)
                                                 echo number_format($nota->nota, 1, ',', '.');
                                             else
-                                                echo '<font color="red">{{number_format($nota->nota, 1, ',', '.')}}</font>';                                            
+                                                echo '<font color="red">'.number_format($nota->nota, 1, ',', '.').'</font>';                                            
                                         }
                                         break;
                                     }
