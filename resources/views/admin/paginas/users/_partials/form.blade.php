@@ -4,7 +4,7 @@
     <div class="row">
         <div class="form-group col-sm-4 col-xs-2">
             <label>Login do usuário (email):</label>
-            <input type="email" name="email" class="form-control" placeholder="Email" value="{{ $user->email ?? old('email') }} ">
+            <input type="text" name="email" class="form-control" placeholder="Email" value="{{ $user->email ?? old('email') }} ">
         </div>
     </div>
     <div class="row">
