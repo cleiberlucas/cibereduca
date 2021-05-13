@@ -122,6 +122,7 @@ class RetornoController extends Controller
 
     public function processarRetorno($retorno)
     {   
+        $this->authorize('Retorno Cadastrar');
         //echo $retorno->getBancoNome();
         //dd($retorno->getDetalhes());
 
