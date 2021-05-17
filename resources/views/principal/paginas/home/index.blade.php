@@ -8,11 +8,11 @@
 
 @section('content')
     <div class="container">
-        <div class="row">
+       {{--  <div class="row">
             <div class="form-group col-sm-12 col-xs-2"> 
                 <h3>Seja bem vindo ao Colégio Rede Educa Goiás</h3>
             </div>
-        </div>
+        </div> --}}
         <div class="row">
             <div class="form-group col-sm-8 col-xs-2"> 
                 <form action="{{ route('home.define')}}" class="form" method="POST">
