@@ -19,12 +19,12 @@
 
                     <div class="card-body">
                         <div class="form-group row ">
-                            {{-- <div class="col-md-3 col-xs-2 ">        
+                            <div class="col-md-3 col-xs-2 ">        
                                 <img src="vendor/adminlte/dist/img/logo_redeeduca.png" alt="">                            
-                            </div>  --}}
-                            <div class="col-sm-3 col-xs-2">
+                            </div> 
+                            {{-- <div class="col-sm-3 col-xs-2">
                                 <img src="vendor/adminlte/dist/img/logo_forbis2.png" alt="">  
-                            </div>
+                            </div> --}}
                             
                             <div class="col-md-6">        
                                 <form method="POST" action="{{ route('login') }}">
