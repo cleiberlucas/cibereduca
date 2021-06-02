@@ -66,6 +66,7 @@ class RecebivelRelatorioController extends Controller
                 'parcela',
                 'valor_total',
                 'data_vencimento',
+                'fk_id_situacao_recebivel',
                 'situacao_recebivel',
                 'forma_pagamento', 
                 'data_recebimento',

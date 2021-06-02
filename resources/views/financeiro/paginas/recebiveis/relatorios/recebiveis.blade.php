@@ -78,7 +78,10 @@
             <th>Valor Pago</th>
         </tr>
 
-        <?php $totalRecebido = 0;?>
+        <?php 
+            $totalRecebido = 0;
+            $totalReceber = 0;        
+        ?>
         {{-- Lista de alunos --}} 
         @foreach ($recebiveis as $index => $recebivel)
             <tr>               
@@ -106,8 +109,18 @@
                 </td>
                 <td align="right">{{number_format($recebivel->valor_recebido, 2, ',', '.')}}</td>
             </tr>
-            <?php $totalRecebido += $recebivel->valor_recebido;?>
+            <?php 
+                if ($recebivel->fk_id_situacao_recebivel == 1)//a receber
+                    $totalReceber += $recebivel->valor_total;
+
+                $totalRecebido += $recebivel->valor_recebido;
+            
+            ?>
         @endforeach        
+        <tr>
+            <td colspan="8" align="center"><strong>TOTAL A RECEBER (líquido, com desconto)</strong></td>
+            <td align="right"><strong><?php echo 'R$ '.number_format($totalReceber, 2, ',', '.')?></strong></td>
+        </tr>
         <tr>
             <td colspan="8" align="center"><strong>TOTAL RECEBIDO</strong></td>
             <td align="right"><strong><?php echo 'R$ '.number_format($totalRecebido, 2, ',', '.')?></strong></td>
