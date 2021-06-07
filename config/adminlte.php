@@ -392,6 +392,39 @@ return [
             ],
         ],
         [
+            'text'    => 'Biblioteca',
+            'icon'    => 'fas fa-book',                        
+            'icon_color' => 'yellow',  
+            'can'  => 'Acervo Ver',          
+            'submenu' => [
+                [
+                    'text' => 'Acervo',
+                    'route'  => 'financeiro.index',                    
+                    'icon_color' => 'yellow',
+                    'icon'    => 'fas fa-book',                        
+                    'can'  => 'Acervo Ver',
+                ],
+                [
+                    'text' => 'Autores',
+                    'route'  => 'boleto.relatorio',                    
+                    'icon_color' => 'yellow',
+                    'can'  => 'Autor Ver',
+                ],
+                [
+                    'text' => 'Editoras',
+                    'route'  => 'boleto.relatorio',                    
+                    'icon_color' => 'yellow',
+                    'can'  => 'Editora Ver',
+                ],
+                [
+                    'text' => 'Assuntos',
+                    'route'  => 'boleto.relatorio',                    
+                    'icon_color' => 'yellow',
+                    'can'  => 'Assunto Ver',
+                ],
+            ],
+        ],
+        [
             'text'    => 'Captação',
             'icon'    => 'fas fa-plus',                        
             'icon_color' => 'orange',            

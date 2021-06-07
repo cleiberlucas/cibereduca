@@ -264,7 +264,7 @@ class PortalAlunoController extends Controller
      * Lista recebíveis de um aluno
      */
     public function indexRecebiveis($id_aluno, $hash){
-        $this->authorize('Recebível Ver');   
+        $this->authorize('Portal - Recebível Ver');   
         if (!decodificarHash($id_aluno, $hash))
             return redirect()->back()->with('erro', 'Aluno não encontrado.');
                     
