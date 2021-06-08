@@ -127,7 +127,7 @@ class FinanceiroController extends Controller
      */
     public function indexAluno($id_aluno)
     {
-        $this->authorize('Portal Recebível Ver'); 
+        $this->authorize('Recebível Ver'); 
 
         $aluno = new Pessoa;
         $aluno = $aluno->select('nome', 'id_pessoa')
