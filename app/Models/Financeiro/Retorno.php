@@ -14,9 +14,9 @@ class Retorno extends Model
     protected $fillable = [
         'fk_id_unidade_ensino',
         'fk_id_dado_bancario',
-        'data_retorno',
-        'sequencial_retorno_banco',                  
-        'fk_id_usuario_retorno',    
+      //  'data_retorno',
+       // 'sequencial_retorno_banco',                  
+       // 'fk_id_usuario_retorno',    
         'situacao_processamento',
         'nome_arquivo',
         'nome_arquivo_log',

@@ -12,6 +12,7 @@ use App\Models\Financeiro\Retorno;
 use App\User;
 use Eduardokum\LaravelBoleto\Cnab\Retorno\Factory;
 use Exception;
+use Illuminate\Http\Request;
 
 class RetornoController extends Controller
 {    
@@ -35,25 +36,30 @@ class RetornoController extends Controller
     }
 
     public function create()
-    {        
+    {                
         $this->authorize('Retorno Cadastrar');
         $unidadeEnsino = User::getUnidadeEnsinoSelecionada();
         return view('financeiro.paginas.retornos.create',
             compact('unidadeEnsino'));
     }
 
-    public function store(StoreUpdateRetorno $request)
+    //public function store(StoreUpdateRetorno $request)
+    public function store(Request $request)
     {
-        $this->authorize('Retorno Cadastrar');
+       //dd($request);
+        //$this->authorize('Retorno Cadastrar');
        //dd(User::getUnidadeEnsinoSelecionada());
       /*   if(!User::getUnidadeEnsinoSelecionada())
             return redirect()->back()->with('atencao', 'Sessão encerrada, favor efetuar login novamente.');
        */ 
         //$arquivo = 
         //dd($request->hasFile('nome_arquivo'));;
-        $dados = $request->all();
+        $dados = $request->all();        
+       // dd($dados);
 
-        if ($request->hasfile('nome_arquivo') && $request->nome_arquivo->isValid()) {                       
+        if ($request->hasfile('nome_arquivo') && $request->nome_arquivo->isValid()) {  
+            
+            //dd('aqui');
             try{
                 $nomeArquivo = $request->file('nome_arquivo')->getClientOriginalName();
                 $nomeArquivo = str_replace(' ', '_', $nomeArquivo);
@@ -62,7 +68,8 @@ class RetornoController extends Controller
                 
                 $retorno = Factory::make('storage/boletos/retornos/processados' . DIRECTORY_SEPARATOR . "$nomeArquivo");
                 $retorno->processar();       
-                //dd($retorno->getDetalhes());                
+               // dd($retorno->getDetalhes());        
+                //dd($retorno->getHeader());
 
                 if(!method_exists($retorno, 'getHeaderLote'))
                     return redirect()->back()->with('erro', 'Envie somente arquivo com formato CNAB240. O arquivo está com formato incorreto.');
@@ -79,7 +86,7 @@ class RetornoController extends Controller
                     return redirect()->back()->with('erro', 'Este arquivo já foi processado anteriormente.');
                
                 $respLancamentos = $this->processarRetorno($retorno);
-                //gravando log
+             ;   //gravando log
                 $nomeArquivoLog = 'retorno_'.$retorno->getHeader()->getNumeroSequencialArquivo().'_'.date('YmdHis').'.txt';
 
                 $fp = fopen('storage/boletos/retornos/logs/'.$nomeArquivoLog, 'a');
@@ -117,7 +124,11 @@ class RetornoController extends Controller
                 return redirect()->back()->with('erro', 'Não foi possível processar o arquivo. Favor entrar em contato com a CiberSys.'.$e->getMessage());
             }
             //dd($gravou);            
-        }       
+        }
+        else{
+            return redirect()->back()->with('erro', 'erro');
+        }
+
     }
 
     public function processarRetorno($retorno)
@@ -200,7 +211,9 @@ class RetornoController extends Controller
     */
    public function gravarBoletoRetorno($retorno)
    {
+       dd($retorno);
        try {
+          // dd($retorno);
            //situações de boleto
             //convertendo as situações do boleto do Sicoob para o Cibereduca
             $situacoesBoleto = new Boleto;
@@ -220,7 +233,6 @@ class RetornoController extends Controller
                 else
                     $arrayBoletos[$index]['obs'] = $boleto->ocorrenciaDescricao;
                 
-                
             }
 
             $quebra = chr(13).chr(10);
@@ -229,7 +241,7 @@ class RetornoController extends Controller
              */
             $log = '#### GRAVANDO TARIFAS E OCORRÊNCIAS DOS BOLETOS'.$quebra;
             $log.= 'Sequencial retorno '.$retorno->getHeader()->getNumeroSequencialArquivo().$quebra;           
-            
+           // dd($arrayBoletos);
             $boletoRetorno = new BoletoRetorno;
             foreach($arrayBoletos as $boleto){
                 $boletoRetorno->create($boleto);
