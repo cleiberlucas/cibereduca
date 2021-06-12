@@ -46,7 +46,7 @@ class RetornoController extends Controller
     //public function store(StoreUpdateRetorno $request)
     public function store(Request $request)
     {
-       dd('Em manutenção');
+       //dd($request);
         //$this->authorize('Retorno Cadastrar');
        //dd(User::getUnidadeEnsinoSelecionada());
       /*   if(!User::getUnidadeEnsinoSelecionada())
@@ -92,6 +92,7 @@ class RetornoController extends Controller
                 $fp = fopen('storage/boletos/retornos/logs/'.$nomeArquivoLog, 'a');
                 fwrite($fp, $respLancamentos[key($respLancamentos)]);
                 fclose($fp);                
+               // dd($retorno->getHeader()->getNumeroSequencialArquivo());
 
                 if (array_key_exists('ok', $respLancamentos)){                            
                     $dados['data_retorno'] = $retorno->getHeaderLote()->getDataGravacao('Y-m-d');
@@ -100,6 +101,7 @@ class RetornoController extends Controller
                     $dados['situacao_processamento'] = 1;
                     $dados['nome_arquivo'] = $nomeArquivo;
                     $dados['nome_arquivo_log'] = $nomeArquivoLog;
+                   // dd($dados);
 
                     $this->repositorio->create($dados);
                     //dd($respLancamentos['ok']);    
