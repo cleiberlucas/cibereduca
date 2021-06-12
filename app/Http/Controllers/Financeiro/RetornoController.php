@@ -46,7 +46,7 @@ class RetornoController extends Controller
     //public function store(StoreUpdateRetorno $request)
     public function store(Request $request)
     {
-       //dd($request);
+       dd('Em manutenção');
         //$this->authorize('Retorno Cadastrar');
        //dd(User::getUnidadeEnsinoSelecionada());
       /*   if(!User::getUnidadeEnsinoSelecionada())
@@ -211,7 +211,7 @@ class RetornoController extends Controller
     */
    public function gravarBoletoRetorno($retorno)
    {
-       dd($retorno);
+       //dd($retorno);
        try {
           // dd($retorno);
            //situações de boleto
