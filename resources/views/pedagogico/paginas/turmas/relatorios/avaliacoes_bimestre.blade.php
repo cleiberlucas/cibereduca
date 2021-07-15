@@ -136,9 +136,9 @@
                         Coordenador(a)</div>
                 </div>
             </div>
-            <br><br><br><br><br><br><br><br><br><br><br><br><br>
-        @include('secretaria.paginas._partials.rodape_redeeduca')            
-        <div style="page-break-after: always"></div>             
+            <br><br><br>
+            @include('secretaria.paginas._partials.rodape_redeeduca')            
+            <div style="page-break-after: always"></div>             
         @endforeach            
     </div>
     </body>

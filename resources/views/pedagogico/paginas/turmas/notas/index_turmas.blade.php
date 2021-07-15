@@ -57,7 +57,7 @@
             <div class="card-footer"> 
                 @if (isset($filtros))
                     {!! $turmas->appends($filtros)->links()!!}
-                @else
+                @else 
                     {!! $turmas->links()!!}    
                 @endif
                 
